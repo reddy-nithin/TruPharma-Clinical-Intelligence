@@ -205,3 +205,54 @@ GEO_PROFILES_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_geographic_profiles.json"
 CENSUS_API_BASE = "https://api.census.gov/data"
 CENSUS_API_KEY = "00ea40392d577c234f83e960a8ce07b5c0bab1b8"
 
+# === TIER 3 ADDITIONS ===
+
+# Pharmacology data
+PHARMACOLOGY_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_pharmacology.json"
+CHEMBL_DELAY_SECONDS = 0.1
+CHEMBL_OPIOID_TARGETS = {
+    "mu":    {"chembl_id": "CHEMBL233",     "gene": "OPRM1", "uniprot": "P35372", "gtopdb_id": 319},
+    "kappa": {"chembl_id": "CHEMBL237",     "gene": "OPRK1", "uniprot": "P41145", "gtopdb_id": 320},
+    "delta": {"chembl_id": "CHEMBL236",     "gene": "OPRD1", "uniprot": "P41143", "gtopdb_id": 321},
+    "nop":   {"chembl_id": "CHEMBL2014868", "gene": "OPRL1", "uniprot": "P41146", "gtopdb_id": 322},
+}
+GTOPDB_API_BASE = "https://www.guidetopharmacology.org/services"
+PUBCHEM_API_BASE = "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
+
+# Toxicology
+TOXICOLOGY_SPECIES_PRIORITY = ["human", "rat", "mouse", "rabbit", "dog"]
+TOXICOLOGY_ROUTE_PRIORITY = ["oral", "intravenous", "subcutaneous", "intraperitoneal", "inhalation"]
+
+KM_SCALING = {
+    "mouse": 3.0,
+    "rat": 6.2,
+    "rabbit": 12.0,
+    "dog": 20.0,
+    "human": 37.0,
+}
+
+# NLP — CDCgov/Opioid_Involvement_NLP vendor path
+NLP_INSIGHTS_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_nlp_insights.json"
+CDC_NLP_VENDOR_DIR = "opioid_track/vendor/Opioid_Involvement_NLP"
+SPL_OPIOID_SECTIONS = {
+    "boxed_warning":       "34066-1",
+    "indications":         "34067-9",
+    "dosage_admin":        "34068-7",
+    "warnings_precautions":"43685-7",
+    "adverse_reactions":   "34084-4",
+    "drug_interactions":   "34073-7",
+    "abuse_dependence":    "42227-9",
+    "overdosage":          "34088-5",
+    "clinical_pharmacology":"34090-1",
+}
+
+# Dashboard — reference repos
+DASH_DEMO_VENDOR_DIR = "opioid_track/vendor/dash-opioid-epidemic-demo"
+DASHBOARD_TITLE = "TruPharma Opioid Intelligence"
+DASHBOARD_PORT = 8502
+
+# Knowledge chunks for RAG
+KNOWLEDGE_CHUNKS_DIR = f"{OPIOID_DATA_DIR}/knowledge_chunks"
+CHUNK_SIZE_TOKENS = 600
+CHUNK_OVERLAP_TOKENS = 100
+
