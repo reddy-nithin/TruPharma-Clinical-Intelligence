@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-Tier 2 extends the Opioid Track with three external data ingestion pipelines (CMS prescribing, CDC mortality, DEA ARCOS supply chain), a pharmacovigilance signal detection module using faerslib, and a geographic joiner that produces county-level risk profiles. All code lives under `opioid_track/` and does not modify existing Tier 1 files.
+Tier 2 extends the Opioid Track with three external data ingestion pipelines (CMS prescribing, CDC mortality, CMS Medicaid Opioid Prescribing Rates), a pharmacovigilance signal detection module using faerslib, and a geographic joiner that produces county-level risk profiles. All code lives under `opioid_track/` and does not modify existing Tier 1 files.
 
 **Design principles (carried from Tier 1):**
 - Complete isolation from the parent TruPharma project
@@ -145,11 +145,19 @@ opioid_track/
 
 ### 5.1 CMS Data API (used by cms_opioid_fetcher.py)
 
+> **Note:** CMS migrated from Socrata to their own `data-api/v1` in 2024. All legacy Socrata resource IDs return 410 Gone.
+
 | Endpoint | Purpose |
 |----------|---------|
-| `GET https://data.cms.gov/data-api/v1/dataset?keyword=opioid+prescribing+geography` | Discover dataset ID |
-| `GET https://data.cms.gov/resource/{id}.json?$limit=5000&$offset=0` | Socrata paginated JSON |
-| Direct CSV download from `CMS_GEO_URL` config | Fallback if API unavailable |
+| `GET https://data.cms.gov/data-api/v1/dataset/{uuid}/data?size=5000&offset=0` | Paginated JSON data (primary) |
+| `GET https://data.cms.gov/data.json` | Dataset catalog for UUID discovery |
+| `GET https://data.cms.gov/resource/{id}.json?$limit=5000&$offset=0` | Legacy Socrata (fallback, mostly 410 Gone) |
+
+**Known UUIDs (discovered 2026-03-06):**
+| Dataset | UUID |
+|---------|------|
+| Medicare Part D Opioid Prescribing by Geography | `94d00f36-73ce-4520-9b3f-83cd3cded25c` |
+| Medicare Part D Prescribers by Provider and Drug | `9552739e-3d05-4c1b-8eff-ecabf391e2e5` |
 
 ### 5.2 CDC Socrata API (used by cdc_mortality_fetcher.py)
 
@@ -184,7 +192,7 @@ CDC WONDER uses an XML-based POST API. The `alipphardt/cdc-wonder-api` library c
 
 ## 6. Configuration Reference (Tier 2 Additions to config.py)
 
-_(Will be populated with exact constants once Session A is complete)_
+**Status:** ✅ Appended during Session A (2026-03-06)
 
 ### 6.1 New Output Paths
 
@@ -194,14 +202,18 @@ _(Will be populated with exact constants once Session A is complete)_
 | `CDC_MORTALITY_OUTPUT` | `opioid_track/data/opioid_mortality.json` | CDC fetcher output |
 | `ARCOS_OUTPUT` | `opioid_track/data/opioid_supply_chain.json` | ARCOS fetcher output |
 | `SIGNAL_RESULTS_OUTPUT` | `opioid_track/data/faers_signal_results.json` | Signal detector output |
+| `SIGNAL_CACHE_FILE` | `opioid_track/data/faers_signal_cache.json` | Signal detection cache |
 | `GEO_PROFILES_OUTPUT` | `opioid_track/data/opioid_geographic_profiles.json` | Geographic joiner output |
 
 ### 6.2 New API URLs
 
 | Constant | Value |
 |----------|-------|
-| `CMS_GEO_URL` | Medicare Part D Opioid Prescribing by Geography page |
+| `CMS_GEO_URL` | `https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-opioid-prescribing-rates/medicare-part-d-opioid-prescribing-rates-by-geography` |
+| `CMS_PROVIDER_DRUG_URL` | `https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider-and-drug` |
+| `MEDICAID_SDUD_BASE` | `https://data.medicaid.gov/resource` |
 | `CDC_VSRR_ENDPOINT` | `https://data.cdc.gov/resource/xkb8-kh2a.json` |
+| `CDC_WONDER_BASE` | `https://wonder.cdc.gov` |
 | `CENSUS_API_BASE` | `https://api.census.gov/data` |
 
 ### 6.3 ARCOS Settings
@@ -225,6 +237,12 @@ _(Will be populated with exact constants once Session A is complete)_
 |----------|-------------|
 | `VSRR_OPIOID_INDICATORS` | 5 opioid-related VSRR indicator strings |
 | `ICD10_OPIOID_CODES` | T40.0–T40.6 ICD-10 code descriptions |
+
+### 6.6 Census API
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `CENSUS_API_KEY` | `00ea40392d...` (user-provided) | Free key for Census Bureau ACS API |
 
 ---
 
@@ -422,13 +440,13 @@ pytest opioid_track/tests/ -v                              # 23 existing + 11 ne
 
 _(Will be populated as each session completes)_
 
-| Dataset | Count | Size | Source |
-|---------|-------|------|--------|
-| CMS prescribing records | _(pending)_ | _(pending)_ | CMS Socrata API |
-| CDC mortality records | _(pending)_ | _(pending)_ | CDC VSRR + WONDER |
-| ARCOS county records | _(pending)_ | _(pending)_ | arcospy |
-| Signal detection results | _(pending)_ | _(pending)_ | faerslib |
-| Geographic profiles | _(pending)_ | _(pending)_ | Joined output |
+| Ingestion Script | Execution Time | Records Fetched | Output Size | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `cms_opioid_fetcher.py` | 89.9s | 200,000 Geo, 9,616 Prov | 46 MB | ✅ Complete |
+| `cdc_mortality_fetcher.py` | 9.5s | 81,270 VSRR, 33,550 Opioid | ~1 MB | ✅ Complete |
+| `medicaid_opioid_fetcher.py` | 111.5s | 500k claims, 2723 counties | ~6 MB | ✅ Complete |
+| `signal_detector.py` | 169.8s | 265 pairs, 204 consensus | ~100 KB | ✅ Complete |
+| `geographic_joiner.py`| 1.5s | 3148 county risk profiles | ~1.5 MB | ✅ Complete |
 | Total new tests | 11 target | -- | pytest |
 
 ---

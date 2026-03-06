@@ -1,0 +1,6378 @@
+{
+  "metadata": {
+    "source": "FDA Adverse Event Reporting System (FAERS) via OpenFDA",
+    "methods_used": [
+      "prr",
+      "ror",
+      "mgps"
+    ],
+    "consensus_threshold_methods": 2,
+    "total_faers_baseline": 20006989,
+    "generated_at": "2026-03-06T19:00:44.747251+00:00",
+    "target_drugs_scanned": 14,
+    "safety_terms_scanned": 21,
+    "total_consensus_signals": 204
+  },
+  "signals": [
+    {
+      "drug_name": "morphine",
+      "reaction": "Respiratory depression",
+      "report_count": 1491,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.26,
+        "chi2": 20025.45,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.41,
+        "ci_lower": 16.49,
+        "ci_upper": 18.38,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.25,
+        "eb05": 14.61,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Respiratory failure",
+      "report_count": 2297,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.23,
+        "chi2": 3468.1,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.27,
+        "ci_lower": 3.13,
+        "ci_upper": 3.4,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.18,
+        "eb05": 3.07,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Respiratory arrest",
+      "report_count": 2786,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.28,
+        "chi2": 9285.92,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.35,
+        "ci_lower": 5.15,
+        "ci_upper": 5.56,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.1,
+        "eb05": 4.94,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Drug dependence",
+      "report_count": 21827,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 19.38,
+        "chi2": 331161.18,
+        "signal": true
+      },
+      "ror": {
+        "value": 22.24,
+        "ci_lower": 21.91,
+        "ci_upper": 22.58,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 16.87,
+        "eb05": 16.68,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Drug abuse",
+      "report_count": 5985,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.82,
+        "chi2": 44044.73,
+        "signal": true
+      },
+      "ror": {
+        "value": 10.15,
+        "ci_lower": 9.89,
+        "ci_upper": 10.43,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.16,
+        "eb05": 8.97,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Substance abuse",
+      "report_count": 1128,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 20.18,
+        "chi2": 17661.45,
+        "signal": true
+      },
+      "ror": {
+        "value": 20.32,
+        "ci_lower": 19.07,
+        "ci_upper": 21.64,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 17.47,
+        "eb05": 16.63,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Overdose",
+      "report_count": 17693,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.95,
+        "chi2": 86687.96,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.68,
+        "ci_lower": 7.56,
+        "ci_upper": 7.8,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.63,
+        "eb05": 6.55,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Intentional overdose",
+      "report_count": 582,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.19,
+        "chi2": 17.75,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.19,
+        "ci_lower": 1.1,
+        "ci_upper": 1.29,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.19,
+        "eb05": 1.11,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Accidental overdose",
+      "report_count": 1338,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.87,
+        "chi2": 3967.56,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.91,
+        "ci_lower": 4.64,
+        "ci_upper": 5.18,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.72,
+        "eb05": 4.52,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Drug toxicity",
+      "report_count": 625,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.88,
+        "chi2": 2417.74,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.9,
+        "ci_lower": 5.44,
+        "ci_upper": 6.39,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.66,
+        "eb05": 5.3,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Death",
+      "report_count": 11550,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.66,
+        "chi2": 3110.5,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.71,
+        "ci_lower": 1.68,
+        "ci_upper": 1.74,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.65,
+        "eb05": 1.62,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Completed suicide",
+      "report_count": 2456,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.85,
+        "chi2": 5047.98,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.9,
+        "ci_lower": 3.74,
+        "ci_upper": 4.06,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.76,
+        "eb05": 3.64,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 8821,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.0,
+        "chi2": 51083.37,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.4,
+        "ci_lower": 8.22,
+        "ci_upper": 8.59,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.57,
+        "eb05": 7.44,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 7277,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.44,
+        "chi2": 51253.22,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.84,
+        "ci_lower": 9.6,
+        "ci_upper": 10.08,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.84,
+        "eb05": 8.67,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Somnolence",
+      "report_count": 4138,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.68,
+        "chi2": 4314.72,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.73,
+        "ci_lower": 2.64,
+        "ci_upper": 2.81,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.65,
+        "eb05": 2.58,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Coma",
+      "report_count": 1719,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.8,
+        "chi2": 3454.11,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.83,
+        "ci_lower": 3.65,
+        "ci_upper": 4.02,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.72,
+        "eb05": 3.57,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Loss of consciousness",
+      "report_count": 1963,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.98,
+        "chi2": 946.48,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.99,
+        "ci_lower": 1.91,
+        "ci_upper": 2.09,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.97,
+        "eb05": 1.9,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Constipation",
+      "report_count": 5167,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.17,
+        "chi2": 7556.6,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.24,
+        "ci_lower": 3.15,
+        "ci_upper": 3.33,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.11,
+        "eb05": 3.04,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "morphine",
+      "reaction": "Serotonin syndrome",
+      "report_count": 479,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.3,
+        "chi2": 747.85,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.31,
+        "ci_lower": 3.02,
+        "ci_upper": 3.62,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.24,
+        "eb05": 3.0,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Respiratory depression",
+      "report_count": 440,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.65,
+        "chi2": 2453.34,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.68,
+        "ci_lower": 6.98,
+        "ci_upper": 8.45,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.41,
+        "eb05": 6.85,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Respiratory failure",
+      "report_count": 731,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.67,
+        "chi2": 195.72,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.67,
+        "ci_lower": 1.56,
+        "ci_upper": 1.8,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.66,
+        "eb05": 1.57,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Respiratory arrest",
+      "report_count": 1160,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.54,
+        "chi2": 2084.36,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.57,
+        "ci_lower": 3.37,
+        "ci_upper": 3.78,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.5,
+        "eb05": 3.33,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Drug dependence",
+      "report_count": 2543,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.27,
+        "chi2": 3981.47,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.33,
+        "ci_lower": 3.2,
+        "ci_upper": 3.47,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.24,
+        "eb05": 3.13,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Drug abuse",
+      "report_count": 3094,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.07,
+        "chi2": 18502.96,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.3,
+        "ci_lower": 8.0,
+        "ci_upper": 8.61,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.8,
+        "eb05": 7.57,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Substance abuse",
+      "report_count": 631,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.39,
+        "chi2": 8977.82,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.49,
+        "ci_lower": 16.12,
+        "ci_upper": 18.98,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 16.09,
+        "eb05": 15.07,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Overdose",
+      "report_count": 7688,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.83,
+        "chi2": 23205.67,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.16,
+        "ci_lower": 5.04,
+        "ci_upper": 5.28,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.74,
+        "eb05": 4.66,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Intentional overdose",
+      "report_count": 828,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.81,
+        "chi2": 955.95,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.83,
+        "ci_lower": 2.64,
+        "ci_upper": 3.03,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.79,
+        "eb05": 2.63,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Accidental overdose",
+      "report_count": 500,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.93,
+        "chi2": 629.81,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.94,
+        "ci_lower": 2.7,
+        "ci_upper": 3.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.91,
+        "eb05": 2.7,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Drug toxicity",
+      "report_count": 276,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.18,
+        "chi2": 654.27,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.19,
+        "ci_lower": 3.72,
+        "ci_upper": 4.72,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.11,
+        "eb05": 3.73,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Death",
+      "report_count": 4407,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.04,
+        "chi2": 5.87,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.04,
+        "ci_lower": 1.01,
+        "ci_upper": 1.07,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.04,
+        "eb05": 1.01,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Completed suicide",
+      "report_count": 1574,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.03,
+        "chi2": 3533.64,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.08,
+        "ci_lower": 3.88,
+        "ci_upper": 4.29,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.97,
+        "eb05": 3.81,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 1858,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.65,
+        "chi2": 1893.47,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.68,
+        "ci_lower": 2.56,
+        "ci_upper": 2.81,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.63,
+        "eb05": 2.53,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 1253,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.52,
+        "chi2": 1145.24,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.54,
+        "ci_lower": 2.41,
+        "ci_upper": 2.69,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.51,
+        "eb05": 2.39,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Somnolence",
+      "report_count": 2376,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.52,
+        "chi2": 2174.5,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.56,
+        "ci_lower": 2.46,
+        "ci_upper": 2.67,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.5,
+        "eb05": 2.42,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Coma",
+      "report_count": 1088,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.93,
+        "chi2": 2339.54,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.96,
+        "ci_lower": 3.73,
+        "ci_upper": 4.21,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.88,
+        "eb05": 3.69,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Loss of consciousness",
+      "report_count": 1137,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.88,
+        "chi2": 470.32,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.89,
+        "ci_lower": 1.79,
+        "ci_upper": 2.01,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.88,
+        "eb05": 1.79,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Constipation",
+      "report_count": 2437,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.44,
+        "chi2": 2059.9,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.47,
+        "ci_lower": 2.37,
+        "ci_upper": 2.57,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.42,
+        "eb05": 2.34,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "codeine",
+      "reaction": "Serotonin syndrome",
+      "report_count": 402,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.55,
+        "chi2": 1091.35,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.57,
+        "ci_lower": 4.14,
+        "ci_upper": 5.04,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.48,
+        "eb05": 4.12,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Respiratory depression",
+      "report_count": 885,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.35,
+        "chi2": 2898.66,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.36,
+        "ci_lower": 5.0,
+        "ci_upper": 5.74,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.03,
+        "eb05": 4.76,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Respiratory failure",
+      "report_count": 1901,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.47,
+        "chi2": 280.66,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.47,
+        "ci_lower": 1.41,
+        "ci_upper": 1.54,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.46,
+        "eb05": 1.41,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Respiratory arrest",
+      "report_count": 5030,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.44,
+        "chi2": 16943.69,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.52,
+        "ci_lower": 5.36,
+        "ci_upper": 5.68,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.11,
+        "eb05": 5.0,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Drug dependence",
+      "report_count": 65099,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 46.51,
+        "chi2": 1730059.35,
+        "signal": true
+      },
+      "ror": {
+        "value": 59.56,
+        "ci_lower": 58.92,
+        "ci_upper": 60.21,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 27.94,
+        "eb05": 27.76,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Drug abuse",
+      "report_count": 11588,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.34,
+        "chi2": 93894.93,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.76,
+        "ci_lower": 11.53,
+        "ci_upper": 12.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.85,
+        "eb05": 9.7,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Substance abuse",
+      "report_count": 1363,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 13.94,
+        "chi2": 13570.37,
+        "signal": true
+      },
+      "ror": {
+        "value": 14.0,
+        "ci_lower": 13.2,
+        "ci_upper": 14.84,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 11.72,
+        "eb05": 11.21,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Overdose",
+      "report_count": 46720,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.16,
+        "chi2": 377180.45,
+        "signal": true
+      },
+      "ror": {
+        "value": 13.1,
+        "ci_lower": 12.96,
+        "ci_upper": 13.24,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.72,
+        "eb05": 9.65,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Intentional overdose",
+      "report_count": 1066,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.21,
+        "chi2": 39.52,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.21,
+        "ci_lower": 1.14,
+        "ci_upper": 1.29,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.21,
+        "eb05": 1.15,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Accidental overdose",
+      "report_count": 2329,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.82,
+        "chi2": 6596.62,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.85,
+        "ci_lower": 4.65,
+        "ci_upper": 5.06,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.57,
+        "eb05": 4.41,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Drug toxicity",
+      "report_count": 649,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.38,
+        "chi2": 1034.25,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.38,
+        "ci_lower": 3.12,
+        "ci_upper": 3.66,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.26,
+        "eb05": 3.06,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Death",
+      "report_count": 28513,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.3,
+        "chi2": 21272.48,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.45,
+        "ci_lower": 2.42,
+        "ci_upper": 2.48,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.26,
+        "eb05": 2.24,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Completed suicide",
+      "report_count": 6631,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.06,
+        "chi2": 25826.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.18,
+        "ci_lower": 6.03,
+        "ci_upper": 6.34,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.65,
+        "eb05": 5.53,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 27404,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.9,
+        "chi2": 312017.12,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.45,
+        "ci_lower": 17.21,
+        "ci_upper": 17.69,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 13.06,
+        "eb05": 12.93,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 24056,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 20.95,
+        "chi2": 350550.57,
+        "signal": true
+      },
+      "ror": {
+        "value": 22.74,
+        "ci_lower": 22.4,
+        "ci_upper": 23.08,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 16.23,
+        "eb05": 16.05,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Somnolence",
+      "report_count": 4732,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.7,
+        "chi2": 1336.88,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.71,
+        "ci_lower": 1.66,
+        "ci_upper": 1.76,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.68,
+        "eb05": 1.64,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Coma",
+      "report_count": 1380,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.67,
+        "chi2": 366.65,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.68,
+        "ci_lower": 1.59,
+        "ci_upper": 1.77,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.66,
+        "eb05": 1.59,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Loss of consciousness",
+      "report_count": 2484,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.39,
+        "chi2": 268.16,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.39,
+        "ci_lower": 1.34,
+        "ci_upper": 1.45,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.38,
+        "eb05": 1.34,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Constipation",
+      "report_count": 6344,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.16,
+        "chi2": 3868.36,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.19,
+        "ci_lower": 2.13,
+        "ci_upper": 2.24,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.12,
+        "eb05": 2.08,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxycodone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 775,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.99,
+        "chi2": 986.83,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.0,
+        "ci_lower": 2.79,
+        "ci_upper": 3.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.91,
+        "eb05": 2.74,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Respiratory depression",
+      "report_count": 302,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.35,
+        "chi2": 227.52,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.35,
+        "ci_lower": 2.09,
+        "ci_upper": 2.63,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.31,
+        "eb05": 2.1,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Respiratory failure",
+      "report_count": 1044,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.08,
+        "chi2": 6.4,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.08,
+        "ci_lower": 1.02,
+        "ci_upper": 1.15,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.08,
+        "eb05": 1.03,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Respiratory arrest",
+      "report_count": 4266,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.17,
+        "chi2": 17379.58,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.28,
+        "ci_lower": 6.08,
+        "ci_upper": 6.48,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.85,
+        "eb05": 5.7,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Drug dependence",
+      "report_count": 40492,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 31.06,
+        "chi2": 886070.38,
+        "signal": true
+      },
+      "ror": {
+        "value": 37.97,
+        "ci_lower": 37.5,
+        "ci_upper": 38.43,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 23.43,
+        "eb05": 23.24,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Drug abuse",
+      "report_count": 6996,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.68,
+        "chi2": 43614.73,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.94,
+        "ci_lower": 8.72,
+        "ci_upper": 9.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.02,
+        "eb05": 7.86,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Substance abuse",
+      "report_count": 407,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.92,
+        "chi2": 1206.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.93,
+        "ci_lower": 4.46,
+        "ci_upper": 5.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.72,
+        "eb05": 4.35,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Overdose",
+      "report_count": 35187,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.93,
+        "chi2": 288306.65,
+        "signal": true
+      },
+      "ror": {
+        "value": 12.86,
+        "ci_lower": 12.7,
+        "ci_upper": 13.01,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.87,
+        "eb05": 9.78,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Intentional overdose",
+      "report_count": 557,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.85,
+        "chi2": 14.47,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.85,
+        "ci_lower": 0.78,
+        "ci_upper": 0.92,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.85,
+        "eb05": 0.79,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Accidental overdose",
+      "report_count": 1332,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.62,
+        "chi2": 2435.11,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.64,
+        "ci_lower": 3.44,
+        "ci_upper": 3.84,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.52,
+        "eb05": 3.37,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Drug toxicity",
+      "report_count": 501,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.49,
+        "chi2": 856.49,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.49,
+        "ci_lower": 3.19,
+        "ci_upper": 3.82,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.4,
+        "eb05": 3.15,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Death",
+      "report_count": 22402,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.43,
+        "chi2": 19230.04,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.6,
+        "ci_lower": 2.56,
+        "ci_upper": 2.63,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.39,
+        "eb05": 2.37,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Completed suicide",
+      "report_count": 8640,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.99,
+        "chi2": 70305.63,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.4,
+        "ci_lower": 11.15,
+        "ci_upper": 11.67,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.92,
+        "eb05": 9.74,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 16853,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 12.14,
+        "chi2": 153100.1,
+        "signal": true
+      },
+      "ror": {
+        "value": 13.07,
+        "ci_lower": 12.86,
+        "ci_upper": 13.29,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.83,
+        "eb05": 10.69,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 13874,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 14.45,
+        "chi2": 150755.09,
+        "signal": true
+      },
+      "ror": {
+        "value": 15.37,
+        "ci_lower": 15.09,
+        "ci_upper": 15.66,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.61,
+        "eb05": 12.44,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Somnolence",
+      "report_count": 2409,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.16,
+        "chi2": 50.2,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.16,
+        "ci_lower": 1.11,
+        "ci_upper": 1.2,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.15,
+        "eb05": 1.12,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Coma",
+      "report_count": 667,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.08,
+        "chi2": 4.03,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.08,
+        "ci_lower": 1.0,
+        "ci_upper": 1.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.08,
+        "eb05": 1.01,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Loss of consciousness",
+      "report_count": 1367,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.03,
+        "chi2": 0.88,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.03,
+        "ci_lower": 0.97,
+        "ci_upper": 1.08,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.03,
+        "eb05": 0.98,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Constipation",
+      "report_count": 3499,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.59,
+        "chi2": 759.06,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.6,
+        "ci_lower": 1.55,
+        "ci_upper": 1.65,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.58,
+        "eb05": 1.54,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydrocodone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 176,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.89,
+        "chi2": 2.38,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.89,
+        "ci_lower": 0.77,
+        "ci_upper": 1.03,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.89,
+        "eb05": 0.79,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Respiratory depression",
+      "report_count": 1316,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.67,
+        "chi2": 18444.1,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.83,
+        "ci_lower": 16.83,
+        "ci_upper": 18.88,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.85,
+        "eb05": 15.14,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Respiratory failure",
+      "report_count": 1995,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.3,
+        "chi2": 3139.61,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.33,
+        "ci_lower": 3.19,
+        "ci_upper": 3.49,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.25,
+        "eb05": 3.13,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Respiratory arrest",
+      "report_count": 4197,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.58,
+        "chi2": 30339.52,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.85,
+        "ci_lower": 9.54,
+        "ci_upper": 10.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.04,
+        "eb05": 8.82,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Drug dependence",
+      "report_count": 6603,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.23,
+        "chi2": 27985.25,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.49,
+        "ci_lower": 6.33,
+        "ci_upper": 6.65,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.01,
+        "eb05": 5.89,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Drug abuse",
+      "report_count": 12500,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 26.48,
+        "chi2": 259995.99,
+        "signal": true
+      },
+      "ror": {
+        "value": 29.02,
+        "ci_lower": 28.45,
+        "ci_upper": 29.61,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 22.53,
+        "eb05": 22.2,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Substance abuse",
+      "report_count": 482,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.29,
+        "chi2": 3351.23,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.32,
+        "ci_lower": 8.5,
+        "ci_upper": 10.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.79,
+        "eb05": 8.15,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Overdose",
+      "report_count": 10763,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.87,
+        "chi2": 32603.45,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.2,
+        "ci_lower": 5.1,
+        "ci_upper": 5.31,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.75,
+        "eb05": 4.67,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Intentional overdose",
+      "report_count": 396,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.95,
+        "chi2": 0.93,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.95,
+        "ci_lower": 0.86,
+        "ci_upper": 1.05,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.95,
+        "eb05": 0.88,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Accidental overdose",
+      "report_count": 1283,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.5,
+        "chi2": 4557.66,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.54,
+        "ci_lower": 5.24,
+        "ci_upper": 5.86,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.33,
+        "eb05": 5.09,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Drug toxicity",
+      "report_count": 611,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.77,
+        "chi2": 2872.71,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.8,
+        "ci_lower": 6.27,
+        "ci_upper": 7.37,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.51,
+        "eb05": 6.09,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Death",
+      "report_count": 8787,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.48,
+        "chi2": 1426.54,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.52,
+        "ci_lower": 1.48,
+        "ci_upper": 1.55,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.48,
+        "eb05": 1.45,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Completed suicide",
+      "report_count": 1663,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.04,
+        "chi2": 2244.28,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.07,
+        "ci_lower": 2.92,
+        "ci_upper": 3.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.0,
+        "eb05": 2.88,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 7329,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.75,
+        "chi2": 41192.33,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.13,
+        "ci_lower": 7.94,
+        "ci_upper": 8.33,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.41,
+        "eb05": 7.27,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 4873,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.27,
+        "chi2": 25210.3,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.5,
+        "ci_lower": 7.28,
+        "ci_upper": 7.72,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.97,
+        "eb05": 6.81,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Somnolence",
+      "report_count": 3072,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.33,
+        "chi2": 2328.88,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.37,
+        "ci_lower": 2.28,
+        "ci_upper": 2.45,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.31,
+        "eb05": 2.25,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Coma",
+      "report_count": 1150,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.97,
+        "chi2": 1475.45,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.99,
+        "ci_lower": 2.82,
+        "ci_upper": 3.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.93,
+        "eb05": 2.79,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Loss of consciousness",
+      "report_count": 1788,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.13,
+        "chi2": 1057.12,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.14,
+        "ci_lower": 2.04,
+        "ci_upper": 2.24,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.11,
+        "eb05": 2.03,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Constipation",
+      "report_count": 2616,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.87,
+        "chi2": 1052.25,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.88,
+        "ci_lower": 1.81,
+        "ci_upper": 1.96,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.86,
+        "eb05": 1.8,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "fentanyl",
+      "reaction": "Serotonin syndrome",
+      "report_count": 1576,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 13.64,
+        "chi2": 16877.64,
+        "signal": true
+      },
+      "ror": {
+        "value": 13.78,
+        "ci_lower": 13.09,
+        "ci_upper": 14.52,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.55,
+        "eb05": 12.04,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Respiratory depression",
+      "report_count": 1116,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 39.49,
+        "chi2": 38011.31,
+        "signal": true
+      },
+      "ror": {
+        "value": 40.34,
+        "ci_lower": 37.9,
+        "ci_upper": 42.93,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 35.92,
+        "eb05": 34.2,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Respiratory failure",
+      "report_count": 640,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.8,
+        "chi2": 737.6,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.82,
+        "ci_lower": 2.61,
+        "ci_upper": 3.05,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.79,
+        "eb05": 2.61,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Respiratory arrest",
+      "report_count": 2603,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.56,
+        "chi2": 34201.72,
+        "signal": true
+      },
+      "ror": {
+        "value": 16.33,
+        "ci_lower": 15.69,
+        "ci_upper": 17.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 14.99,
+        "eb05": 14.52,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Drug dependence",
+      "report_count": 5852,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 14.74,
+        "chi2": 72784.38,
+        "signal": true
+      },
+      "ror": {
+        "value": 16.5,
+        "ci_lower": 16.05,
+        "ci_upper": 16.96,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 14.24,
+        "eb05": 13.93,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Drug abuse",
+      "report_count": 5424,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 27.95,
+        "chi2": 131970.12,
+        "signal": true
+      },
+      "ror": {
+        "value": 31.12,
+        "ci_lower": 30.23,
+        "ci_upper": 32.03,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 26.13,
+        "eb05": 25.55,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Substance abuse",
+      "report_count": 485,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 25.11,
+        "chi2": 10546.73,
+        "signal": true
+      },
+      "ror": {
+        "value": 25.34,
+        "ci_lower": 23.1,
+        "ci_upper": 27.78,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 23.64,
+        "eb05": 21.94,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Overdose",
+      "report_count": 5853,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.01,
+        "chi2": 30113.87,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.78,
+        "ci_lower": 7.57,
+        "ci_upper": 8.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.9,
+        "eb05": 6.76,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Intentional overdose",
+      "report_count": 441,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.85,
+        "chi2": 527.42,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.87,
+        "ci_lower": 2.61,
+        "ci_upper": 3.15,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.84,
+        "eb05": 2.62,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Accidental overdose",
+      "report_count": 639,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.22,
+        "chi2": 3364.6,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.29,
+        "ci_lower": 6.74,
+        "ci_upper": 7.89,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.1,
+        "eb05": 6.65,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Drug toxicity",
+      "report_count": 525,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.52,
+        "chi2": 6860.75,
+        "signal": true
+      },
+      "ror": {
+        "value": 15.67,
+        "ci_lower": 14.35,
+        "ci_upper": 17.1,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 14.96,
+        "eb05": 13.92,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Death",
+      "report_count": 4375,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.97,
+        "chi2": 2177.1,
+        "signal": false
+      },
+      "ror": {
+        "value": 2.06,
+        "ci_lower": 2.0,
+        "ci_upper": 2.13,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.97,
+        "eb05": 1.92,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Completed suicide",
+      "report_count": 1723,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.47,
+        "chi2": 11159.02,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.73,
+        "ci_lower": 8.32,
+        "ci_upper": 9.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.31,
+        "eb05": 7.99,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 4754,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 13.25,
+        "chi2": 52427.72,
+        "signal": true
+      },
+      "ror": {
+        "value": 14.49,
+        "ci_lower": 14.06,
+        "ci_upper": 14.94,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.84,
+        "eb05": 12.54,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 3968,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.74,
+        "chi2": 52915.89,
+        "signal": true
+      },
+      "ror": {
+        "value": 16.97,
+        "ci_lower": 16.42,
+        "ci_upper": 17.54,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.17,
+        "eb05": 14.78,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Somnolence",
+      "report_count": 1569,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.18,
+        "chi2": 2342.86,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.24,
+        "ci_lower": 3.08,
+        "ci_upper": 3.41,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.16,
+        "eb05": 3.03,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Coma",
+      "report_count": 1126,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.8,
+        "chi2": 6563.07,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.95,
+        "ci_lower": 7.49,
+        "ci_upper": 8.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.67,
+        "eb05": 7.3,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Loss of consciousness",
+      "report_count": 749,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.37,
+        "chi2": 593.55,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.39,
+        "ci_lower": 2.22,
+        "ci_upper": 2.57,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.36,
+        "eb05": 2.22,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Constipation",
+      "report_count": 934,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.78,
+        "chi2": 318.31,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.79,
+        "ci_lower": 1.68,
+        "ci_upper": 1.91,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.77,
+        "eb05": 1.68,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "methadone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 372,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.06,
+        "chi2": 2255.69,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.11,
+        "ci_lower": 7.32,
+        "ci_upper": 8.99,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.92,
+        "eb05": 7.27,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Respiratory depression",
+      "report_count": 340,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 13.61,
+        "chi2": 3862.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 13.71,
+        "ci_lower": 12.3,
+        "ci_upper": 15.28,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 13.25,
+        "eb05": 12.12,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Respiratory failure",
+      "report_count": 154,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.81,
+        "chi2": 6.78,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.81,
+        "ci_lower": 0.69,
+        "ci_upper": 0.95,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.81,
+        "eb05": 0.71,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Respiratory arrest",
+      "report_count": 713,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.02,
+        "chi2": 2275.95,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.08,
+        "ci_lower": 4.72,
+        "ci_upper": 5.48,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.97,
+        "eb05": 4.68,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Drug dependence",
+      "report_count": 10040,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 31.49,
+        "chi2": 280024.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 40.91,
+        "ci_lower": 39.98,
+        "ci_upper": 41.86,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 29.58,
+        "eb05": 29.09,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Drug abuse",
+      "report_count": 2921,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.64,
+        "chi2": 44378.94,
+        "signal": true
+      },
+      "ror": {
+        "value": 18.87,
+        "ci_lower": 18.16,
+        "ci_upper": 19.61,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 17.04,
+        "eb05": 16.53,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Substance abuse",
+      "report_count": 666,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 42.8,
+        "chi2": 24926.25,
+        "signal": true
+      },
+      "ror": {
+        "value": 43.47,
+        "ci_lower": 40.13,
+        "ci_upper": 47.08,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 39.31,
+        "eb05": 36.88,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Overdose",
+      "report_count": 6624,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.63,
+        "chi2": 51057.01,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.22,
+        "ci_lower": 10.93,
+        "ci_upper": 11.52,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.46,
+        "eb05": 9.27,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Intentional overdose",
+      "report_count": 210,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.64,
+        "chi2": 52.16,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.64,
+        "ci_lower": 1.43,
+        "ci_upper": 1.88,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.64,
+        "eb05": 1.46,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Accidental overdose",
+      "report_count": 355,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.82,
+        "chi2": 1064.47,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.85,
+        "ci_lower": 4.37,
+        "ci_upper": 5.39,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.78,
+        "eb05": 4.38,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Drug toxicity",
+      "report_count": 35,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.21,
+        "chi2": 1.25,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.21,
+        "ci_lower": 0.87,
+        "ci_upper": 1.68,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.21,
+        "eb05": 0.91,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Death",
+      "report_count": 2554,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.39,
+        "chi2": 292.7,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.42,
+        "ci_lower": 1.36,
+        "ci_upper": 1.47,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.39,
+        "eb05": 1.35,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Completed suicide",
+      "report_count": 372,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.18,
+        "chi2": 237.14,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.19,
+        "ci_lower": 1.98,
+        "ci_upper": 2.43,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.17,
+        "eb05": 2.0,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 5435,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 18.44,
+        "chi2": 86872.79,
+        "signal": true
+      },
+      "ror": {
+        "value": 20.99,
+        "ci_lower": 20.39,
+        "ci_upper": 21.61,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 17.78,
+        "eb05": 17.39,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 4358,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 21.03,
+        "chi2": 79984.91,
+        "signal": true
+      },
+      "ror": {
+        "value": 23.32,
+        "ci_lower": 22.58,
+        "ci_upper": 24.07,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 20.17,
+        "eb05": 19.68,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Somnolence",
+      "report_count": 1120,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.74,
+        "chi2": 1242.51,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.79,
+        "ci_lower": 2.63,
+        "ci_upper": 2.96,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.73,
+        "eb05": 2.6,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Coma",
+      "report_count": 640,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.33,
+        "chi2": 2229.41,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.39,
+        "ci_lower": 4.98,
+        "ci_upper": 5.83,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.28,
+        "eb05": 4.94,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Loss of consciousness",
+      "report_count": 416,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.59,
+        "chi2": 91.5,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.6,
+        "ci_lower": 1.45,
+        "ci_upper": 1.76,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.59,
+        "eb05": 1.47,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Constipation",
+      "report_count": 685,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.58,
+        "chi2": 145.11,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.59,
+        "ci_lower": 1.47,
+        "ci_upper": 1.71,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.57,
+        "eb05": 1.48,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "buprenorphine",
+      "reaction": "Serotonin syndrome",
+      "report_count": 161,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.18,
+        "chi2": 385.92,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.19,
+        "ci_lower": 3.59,
+        "ci_upper": 4.89,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.15,
+        "eb05": 3.64,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Respiratory depression",
+      "report_count": 856,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.07,
+        "chi2": 4149.5,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.1,
+        "ci_lower": 6.62,
+        "ci_upper": 7.61,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.64,
+        "eb05": 6.28,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Respiratory failure",
+      "report_count": 1425,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.5,
+        "chi2": 237.14,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.51,
+        "ci_lower": 1.43,
+        "ci_upper": 1.59,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.5,
+        "eb05": 1.43,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Respiratory arrest",
+      "report_count": 2367,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.37,
+        "chi2": 3819.7,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.4,
+        "ci_lower": 3.26,
+        "ci_upper": 3.54,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.29,
+        "eb05": 3.18,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Drug dependence",
+      "report_count": 19996,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 13.26,
+        "chi2": 199903.74,
+        "signal": true
+      },
+      "ror": {
+        "value": 14.53,
+        "ci_lower": 14.3,
+        "ci_upper": 14.75,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 11.73,
+        "eb05": 11.59,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Drug abuse",
+      "report_count": 5526,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.82,
+        "chi2": 25650.14,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.97,
+        "ci_lower": 6.78,
+        "ci_upper": 7.17,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.42,
+        "eb05": 6.28,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Substance abuse",
+      "report_count": 368,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.48,
+        "chi2": 950.76,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.49,
+        "ci_lower": 4.04,
+        "ci_upper": 4.99,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.32,
+        "eb05": 3.97,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Overdose",
+      "report_count": 17292,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.13,
+        "chi2": 55431.93,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.5,
+        "ci_lower": 5.41,
+        "ci_upper": 5.58,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.92,
+        "eb05": 4.85,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Intentional overdose",
+      "report_count": 2459,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.93,
+        "chi2": 5173.78,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.97,
+        "ci_lower": 3.81,
+        "ci_upper": 4.13,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.81,
+        "eb05": 3.69,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Accidental overdose",
+      "report_count": 809,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.2,
+        "chi2": 515.09,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.2,
+        "ci_lower": 2.05,
+        "ci_upper": 2.36,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.17,
+        "eb05": 2.05,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Drug toxicity",
+      "report_count": 341,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.38,
+        "chi2": 265.27,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.38,
+        "ci_lower": 2.14,
+        "ci_upper": 2.65,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.34,
+        "eb05": 2.14,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Death",
+      "report_count": 9185,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.0,
+        "chi2": 0.23,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.99,
+        "ci_lower": 0.97,
+        "ci_upper": 1.02,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.0,
+        "eb05": 0.98,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Completed suicide",
+      "report_count": 3587,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.32,
+        "chi2": 8779.82,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.38,
+        "ci_lower": 4.23,
+        "ci_upper": 4.53,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.17,
+        "eb05": 4.06,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 6991,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.73,
+        "chi2": 19732.13,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.86,
+        "ci_lower": 4.74,
+        "ci_upper": 4.98,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.55,
+        "eb05": 4.46,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 4900,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.69,
+        "chi2": 13623.36,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.78,
+        "ci_lower": 4.64,
+        "ci_upper": 4.92,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.52,
+        "eb05": 4.41,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Somnolence",
+      "report_count": 5111,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.52,
+        "chi2": 4607.84,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.56,
+        "ci_lower": 2.49,
+        "ci_upper": 2.63,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.48,
+        "eb05": 2.42,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Coma",
+      "report_count": 2657,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.53,
+        "chi2": 6976.49,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.57,
+        "ci_lower": 4.39,
+        "ci_upper": 4.75,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.36,
+        "eb05": 4.22,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Loss of consciousness",
+      "report_count": 2604,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.0,
+        "chi2": 1284.03,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.01,
+        "ci_lower": 1.94,
+        "ci_upper": 2.09,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.98,
+        "eb05": 1.92,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Constipation",
+      "report_count": 4531,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.1,
+        "chi2": 2567.83,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.12,
+        "ci_lower": 2.06,
+        "ci_upper": 2.18,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.07,
+        "eb05": 2.02,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tramadol",
+      "reaction": "Serotonin syndrome",
+      "report_count": 2417,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 14.14,
+        "chi2": 25625.31,
+        "signal": true
+      },
+      "ror": {
+        "value": 14.29,
+        "ci_lower": 13.69,
+        "ci_upper": 14.92,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.4,
+        "eb05": 11.99,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Respiratory depression",
+      "report_count": 43,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.3,
+        "chi2": 658.3,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.47,
+        "ci_lower": 12.93,
+        "ci_upper": 23.6,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 17.24,
+        "eb05": 13.41,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Respiratory failure",
+      "report_count": 35,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.9,
+        "chi2": 14.92,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.91,
+        "ci_lower": 1.37,
+        "ci_upper": 2.66,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.9,
+        "eb05": 1.44,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Respiratory arrest",
+      "report_count": 52,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.73,
+        "chi2": 104.31,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.77,
+        "ci_lower": 2.87,
+        "ci_upper": 4.95,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.73,
+        "eb05": 2.97,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Drug dependence",
+      "report_count": 102,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.09,
+        "chi2": 145.41,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.14,
+        "ci_lower": 2.58,
+        "ci_upper": 3.83,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.09,
+        "eb05": 2.63,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Drug abuse",
+      "report_count": 185,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.12,
+        "chi2": 1707.51,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.6,
+        "ci_lower": 10.01,
+        "ci_upper": 13.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 11.1,
+        "eb05": 9.84,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Substance abuse",
+      "report_count": 5,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.04,
+        "chi2": 6.83,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.04,
+        "ci_lower": 1.26,
+        "ci_upper": 7.31,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.04,
+        "eb05": 1.45,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Overdose",
+      "report_count": 254,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.73,
+        "chi2": 516.26,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.91,
+        "ci_lower": 3.44,
+        "ci_upper": 4.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.73,
+        "eb05": 3.36,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Intentional overdose",
+      "report_count": 70,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.61,
+        "chi2": 265.9,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.69,
+        "ci_lower": 4.49,
+        "ci_upper": 7.21,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.61,
+        "eb05": 4.61,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Accidental overdose",
+      "report_count": 64,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.87,
+        "chi2": 447.06,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.0,
+        "ci_lower": 7.03,
+        "ci_upper": 11.52,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.86,
+        "eb05": 7.21,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Death",
+      "report_count": 197,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.1,
+        "chi2": 1.97,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.11,
+        "ci_lower": 0.96,
+        "ci_upper": 1.28,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.1,
+        "eb05": 0.98,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Completed suicide",
+      "report_count": 172,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.36,
+        "chi2": 1456.58,
+        "signal": true
+      },
+      "ror": {
+        "value": 10.76,
+        "ci_lower": 9.24,
+        "ci_upper": 12.54,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.34,
+        "eb05": 9.12,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 81,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.73,
+        "chi2": 89.13,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.76,
+        "ci_lower": 2.22,
+        "ci_upper": 3.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.73,
+        "eb05": 2.27,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 47,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.24,
+        "chi2": 32.34,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.25,
+        "ci_lower": 1.69,
+        "ci_upper": 3.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.24,
+        "eb05": 1.76,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Somnolence",
+      "report_count": 189,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.74,
+        "chi2": 562.98,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.92,
+        "ci_lower": 4.25,
+        "ci_upper": 5.69,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.74,
+        "eb05": 4.2,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Coma",
+      "report_count": 18,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.53,
+        "chi2": 3.28,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.53,
+        "ci_lower": 0.96,
+        "ci_upper": 2.43,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.53,
+        "eb05": 1.04,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Loss of consciousness",
+      "report_count": 54,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.12,
+        "chi2": 32.2,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.14,
+        "ci_lower": 1.63,
+        "ci_upper": 2.79,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.12,
+        "eb05": 1.7,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Constipation",
+      "report_count": 209,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.94,
+        "chi2": 663.46,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.15,
+        "ci_lower": 4.48,
+        "ci_upper": 5.92,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.94,
+        "eb05": 4.41,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "tapentadol",
+      "reaction": "Serotonin syndrome",
+      "report_count": 132,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 35.23,
+        "chi2": 4362.53,
+        "signal": true
+      },
+      "ror": {
+        "value": 36.36,
+        "ci_lower": 30.55,
+        "ci_upper": 43.27,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 34.98,
+        "eb05": 30.32,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Respiratory depression",
+      "report_count": 43,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 16.3,
+        "chi2": 615.88,
+        "signal": true
+      },
+      "ror": {
+        "value": 16.46,
+        "ci_lower": 12.18,
+        "ci_upper": 22.23,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 16.25,
+        "eb05": 12.64,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Respiratory failure",
+      "report_count": 55,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.81,
+        "chi2": 64.43,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.83,
+        "ci_lower": 2.17,
+        "ci_upper": 3.7,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.81,
+        "eb05": 2.25,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Respiratory arrest",
+      "report_count": 122,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.26,
+        "chi2": 780.12,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.47,
+        "ci_lower": 7.07,
+        "ci_upper": 10.14,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.25,
+        "eb05": 7.11,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Drug dependence",
+      "report_count": 240,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.86,
+        "chi2": 1209.91,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.2,
+        "ci_lower": 6.32,
+        "ci_upper": 8.2,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.85,
+        "eb05": 6.16,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Drug abuse",
+      "report_count": 50,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.83,
+        "chi2": 59.33,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.85,
+        "ci_lower": 2.16,
+        "ci_upper": 3.77,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.83,
+        "eb05": 2.24,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Substance abuse",
+      "report_count": 18,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.32,
+        "chi2": 151.23,
+        "signal": true
+      },
+      "ror": {
+        "value": 10.36,
+        "ci_lower": 6.52,
+        "ci_upper": 16.47,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.3,
+        "eb05": 6.99,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Overdose",
+      "report_count": 316,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.38,
+        "chi2": 836.62,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.64,
+        "ci_lower": 4.14,
+        "ci_upper": 5.2,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.37,
+        "eb05": 3.99,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Intentional overdose",
+      "report_count": 12,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.91,
+        "chi2": 0.12,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.91,
+        "ci_lower": 0.51,
+        "ci_upper": 1.6,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.91,
+        "eb05": 0.56,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Accidental overdose",
+      "report_count": 19,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.48,
+        "chi2": 16.8,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.49,
+        "ci_lower": 1.58,
+        "ci_upper": 3.9,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.48,
+        "eb05": 1.7,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Drug toxicity",
+      "report_count": 28,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.38,
+        "chi2": 209.42,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.44,
+        "ci_lower": 6.51,
+        "ci_upper": 13.69,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.37,
+        "eb05": 6.86,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Death",
+      "report_count": 179,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.94,
+        "chi2": 0.61,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.94,
+        "ci_lower": 0.81,
+        "ci_upper": 1.09,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.94,
+        "eb05": 0.84,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Completed suicide",
+      "report_count": 90,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.1,
+        "chi2": 297.73,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.19,
+        "ci_lower": 4.21,
+        "ci_upper": 6.39,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.1,
+        "eb05": 4.29,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 238,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.56,
+        "chi2": 1362.01,
+        "signal": true
+      },
+      "ror": {
+        "value": 7.93,
+        "ci_lower": 6.96,
+        "ci_upper": 9.04,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.55,
+        "eb05": 6.78,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 212,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.53,
+        "chi2": 1623.72,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.96,
+        "ci_lower": 8.68,
+        "ci_upper": 11.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.51,
+        "eb05": 8.5,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Somnolence",
+      "report_count": 61,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.44,
+        "chi2": 8.33,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.45,
+        "ci_lower": 1.12,
+        "ci_upper": 1.86,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.44,
+        "eb05": 1.17,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Coma",
+      "report_count": 27,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.16,
+        "chi2": 16.83,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.17,
+        "ci_lower": 1.48,
+        "ci_upper": 3.16,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.16,
+        "eb05": 1.57,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Loss of consciousness",
+      "report_count": 55,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.04,
+        "chi2": 29.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.05,
+        "ci_lower": 1.57,
+        "ci_upper": 2.67,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.04,
+        "eb05": 1.63,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Constipation",
+      "report_count": 87,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.94,
+        "chi2": 39.91,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.96,
+        "ci_lower": 1.58,
+        "ci_upper": 2.42,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.94,
+        "eb05": 1.62,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "meperidine",
+      "reaction": "Serotonin syndrome",
+      "report_count": 239,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 60.49,
+        "chi2": 13811.39,
+        "signal": true
+      },
+      "ror": {
+        "value": 63.91,
+        "ci_lower": 56.05,
+        "ci_upper": 72.87,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 59.71,
+        "eb05": 53.68,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Respiratory depression",
+      "report_count": 427,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.22,
+        "chi2": 3018.97,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.26,
+        "ci_lower": 8.41,
+        "ci_upper": 10.2,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.93,
+        "eb05": 8.24,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Respiratory failure",
+      "report_count": 647,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.83,
+        "chi2": 244.97,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.84,
+        "ci_lower": 1.7,
+        "ci_upper": 1.99,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.83,
+        "eb05": 1.71,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Respiratory arrest",
+      "report_count": 857,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.23,
+        "chi2": 1310.32,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.26,
+        "ci_lower": 3.05,
+        "ci_upper": 3.49,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.21,
+        "eb05": 3.03,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Drug dependence",
+      "report_count": 14270,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 24.66,
+        "chi2": 297325.32,
+        "signal": true
+      },
+      "ror": {
+        "value": 29.85,
+        "ci_lower": 29.29,
+        "ci_upper": 30.41,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 22.54,
+        "eb05": 22.23,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Drug abuse",
+      "report_count": 3319,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.79,
+        "chi2": 28372.11,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.21,
+        "ci_lower": 10.82,
+        "ci_upper": 11.62,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.38,
+        "eb05": 10.09,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Substance abuse",
+      "report_count": 384,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 12.72,
+        "chi2": 3947.91,
+        "signal": true
+      },
+      "ror": {
+        "value": 12.78,
+        "ci_lower": 11.53,
+        "ci_upper": 14.16,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.15,
+        "eb05": 11.18,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Overdose",
+      "report_count": 13861,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.04,
+        "chi2": 123226.05,
+        "signal": true
+      },
+      "ror": {
+        "value": 13.16,
+        "ci_lower": 12.92,
+        "ci_upper": 13.41,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.61,
+        "eb05": 10.47,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Intentional overdose",
+      "report_count": 126,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.53,
+        "chi2": 54.09,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.52,
+        "ci_lower": 0.44,
+        "ci_upper": 0.62,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.53,
+        "eb05": 0.45,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Accidental overdose",
+      "report_count": 802,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.9,
+        "chi2": 3194.94,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.95,
+        "ci_lower": 5.55,
+        "ci_upper": 6.38,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.79,
+        "eb05": 5.46,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Drug toxicity",
+      "report_count": 136,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.53,
+        "chi2": 124.85,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.53,
+        "ci_lower": 2.14,
+        "ci_upper": 3.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.52,
+        "eb05": 2.19,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Death",
+      "report_count": 15435,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.57,
+        "chi2": 44164.32,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.43,
+        "ci_lower": 5.34,
+        "ci_upper": 5.53,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.5,
+        "eb05": 4.45,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Completed suicide",
+      "report_count": 906,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.86,
+        "chi2": 1087.74,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.88,
+        "ci_lower": 2.7,
+        "ci_upper": 3.08,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.84,
+        "eb05": 2.69,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 4695,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.48,
+        "chi2": 30185.48,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.95,
+        "ci_lower": 8.69,
+        "ci_upper": 9.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.24,
+        "eb05": 8.04,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 4113,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.6,
+        "chi2": 34480.11,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.12,
+        "ci_lower": 10.77,
+        "ci_upper": 11.48,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.21,
+        "eb05": 9.95,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Somnolence",
+      "report_count": 1925,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.53,
+        "chi2": 1783.19,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.57,
+        "ci_lower": 2.46,
+        "ci_upper": 2.69,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.52,
+        "eb05": 2.42,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Coma",
+      "report_count": 801,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.58,
+        "chi2": 1470.99,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.6,
+        "ci_lower": 3.36,
+        "ci_upper": 3.87,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.54,
+        "eb05": 3.34,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Loss of consciousness",
+      "report_count": 630,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.29,
+        "chi2": 41.56,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.29,
+        "ci_lower": 1.2,
+        "ci_upper": 1.4,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.29,
+        "eb05": 1.21,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Constipation",
+      "report_count": 2413,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.0,
+        "chi2": 3205.13,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.06,
+        "ci_lower": 2.94,
+        "ci_upper": 3.19,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.97,
+        "eb05": 2.88,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "hydromorphone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 288,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.03,
+        "chi2": 645.71,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.04,
+        "ci_lower": 3.59,
+        "ci_upper": 4.54,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.98,
+        "eb05": 3.61,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Respiratory depression",
+      "report_count": 30,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.56,
+        "chi2": 6.08,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.56,
+        "ci_lower": 1.09,
+        "ci_upper": 2.24,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.56,
+        "eb05": 1.16,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Respiratory failure",
+      "report_count": 21,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.15,
+        "chi2": 103.76,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.15,
+        "ci_lower": 0.1,
+        "ci_upper": 0.23,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.15,
+        "eb05": 0.1,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Respiratory arrest",
+      "report_count": 240,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.24,
+        "chi2": 164.9,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.25,
+        "ci_lower": 1.98,
+        "ci_upper": 2.56,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.24,
+        "eb05": 2.01,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Drug dependence",
+      "report_count": 1951,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 7.76,
+        "chi2": 11441.47,
+        "signal": true
+      },
+      "ror": {
+        "value": 8.2,
+        "ci_lower": 7.83,
+        "ci_upper": 8.59,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 7.68,
+        "eb05": 7.4,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Drug abuse",
+      "report_count": 2027,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 16.18,
+        "chi2": 28256.35,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.21,
+        "ci_lower": 16.45,
+        "ci_upper": 18.01,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.8,
+        "eb05": 15.23,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Substance abuse",
+      "report_count": 67,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 5.32,
+        "chi2": 233.1,
+        "signal": true
+      },
+      "ror": {
+        "value": 5.33,
+        "ci_lower": 4.19,
+        "ci_upper": 6.78,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 5.28,
+        "eb05": 4.32,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Overdose",
+      "report_count": 8120,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.86,
+        "chi2": 112093.34,
+        "signal": true
+      },
+      "ror": {
+        "value": 20.94,
+        "ci_lower": 20.41,
+        "ci_upper": 21.48,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.49,
+        "eb05": 15.21,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Intentional overdose",
+      "report_count": 22,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.23,
+        "chi2": 57.4,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.23,
+        "ci_lower": 0.15,
+        "ci_upper": 0.35,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.23,
+        "eb05": 0.16,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Accidental overdose",
+      "report_count": 681,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 12.47,
+        "chi2": 7055.35,
+        "signal": true
+      },
+      "ror": {
+        "value": 12.72,
+        "ci_lower": 11.78,
+        "ci_upper": 13.73,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 12.24,
+        "eb05": 11.5,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Drug toxicity",
+      "report_count": 51,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.36,
+        "chi2": 39.67,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.36,
+        "ci_lower": 1.79,
+        "ci_upper": 3.1,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.35,
+        "eb05": 1.87,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Death",
+      "report_count": 12420,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 9.15,
+        "chi2": 92843.91,
+        "signal": true
+      },
+      "ror": {
+        "value": 14.35,
+        "ci_lower": 14.03,
+        "ci_upper": 14.68,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 9.03,
+        "eb05": 8.9,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Completed suicide",
+      "report_count": 287,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.24,
+        "chi2": 198.17,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.26,
+        "ci_lower": 2.01,
+        "ci_upper": 2.53,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.24,
+        "eb05": 2.03,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 2019,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.94,
+        "chi2": 14129.43,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.47,
+        "ci_lower": 9.05,
+        "ci_upper": 9.91,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.82,
+        "eb05": 8.51,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 1804,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.34,
+        "chi2": 16790.34,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.96,
+        "ci_lower": 11.4,
+        "ci_upper": 12.55,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 11.16,
+        "eb05": 10.73,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Somnolence",
+      "report_count": 79,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.26,
+        "chi2": 171.32,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.26,
+        "ci_lower": 0.2,
+        "ci_upper": 0.32,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.26,
+        "eb05": 0.21,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Coma",
+      "report_count": 24,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.26,
+        "chi2": 49.35,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.26,
+        "ci_lower": 0.18,
+        "ci_upper": 0.39,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.26,
+        "eb05": 0.19,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Loss of consciousness",
+      "report_count": 56,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.29,
+        "chi2": 100.78,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.28,
+        "ci_lower": 0.22,
+        "ci_upper": 0.37,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.29,
+        "eb05": 0.23,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Constipation",
+      "report_count": 79,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.24,
+        "chi2": 189.18,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.24,
+        "ci_lower": 0.19,
+        "ci_upper": 0.3,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.24,
+        "eb05": 0.2,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "oxymorphone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 3,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.1,
+        "chi2": 23.42,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.1,
+        "ci_lower": 0.03,
+        "ci_upper": 0.32,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.1,
+        "eb05": 0.04,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Respiratory depression",
+      "report_count": 210,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 19.25,
+        "chi2": 3572.18,
+        "signal": true
+      },
+      "ror": {
+        "value": 19.46,
+        "ci_lower": 16.96,
+        "ci_upper": 22.32,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 18.93,
+        "eb05": 16.9,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Respiratory failure",
+      "report_count": 288,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.52,
+        "chi2": 519.8,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.56,
+        "ci_lower": 3.17,
+        "ci_upper": 4.0,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.51,
+        "eb05": 3.19,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Respiratory arrest",
+      "report_count": 239,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.87,
+        "chi2": 507.68,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.9,
+        "ci_lower": 3.44,
+        "ci_upper": 4.44,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.86,
+        "eb05": 3.47,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Drug dependence",
+      "report_count": 1515,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.41,
+        "chi2": 12868.52,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.26,
+        "ci_lower": 10.68,
+        "ci_upper": 11.87,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.32,
+        "eb05": 9.89,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Drug abuse",
+      "report_count": 657,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 8.93,
+        "chi2": 4607.02,
+        "signal": true
+      },
+      "ror": {
+        "value": 9.22,
+        "ci_lower": 8.53,
+        "ci_upper": 9.97,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 8.86,
+        "eb05": 8.31,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Substance abuse",
+      "report_count": 140,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 19.43,
+        "chi2": 2405.89,
+        "signal": true
+      },
+      "ror": {
+        "value": 19.58,
+        "ci_lower": 16.55,
+        "ci_upper": 23.15,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 19.11,
+        "eb05": 16.63,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Overdose",
+      "report_count": 1009,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.34,
+        "chi2": 1676.31,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.48,
+        "ci_lower": 3.26,
+        "ci_upper": 3.7,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.33,
+        "eb05": 3.16,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Intentional overdose",
+      "report_count": 137,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.47,
+        "chi2": 120.1,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.48,
+        "ci_lower": 2.1,
+        "ci_upper": 2.94,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.47,
+        "eb05": 2.14,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Accidental overdose",
+      "report_count": 74,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.31,
+        "chi2": 54.72,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.31,
+        "ci_lower": 1.84,
+        "ci_upper": 2.9,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.3,
+        "eb05": 1.9,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Drug toxicity",
+      "report_count": 34,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.72,
+        "chi2": 36.83,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.72,
+        "ci_lower": 1.94,
+        "ci_upper": 3.81,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.71,
+        "eb05": 2.05,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Death",
+      "report_count": 531,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.67,
+        "chi2": 91.39,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.66,
+        "ci_lower": 0.6,
+        "ci_upper": 0.72,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.67,
+        "eb05": 0.62,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Completed suicide",
+      "report_count": 142,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.92,
+        "chi2": 62.79,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.93,
+        "ci_lower": 1.63,
+        "ci_upper": 2.27,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.92,
+        "eb05": 1.67,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 2031,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 15.57,
+        "chi2": 27500.95,
+        "signal": true
+      },
+      "ror": {
+        "value": 17.38,
+        "ci_lower": 16.59,
+        "ci_upper": 18.21,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 15.37,
+        "eb05": 14.82,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 1644,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 17.87,
+        "chi2": 25894.11,
+        "signal": true
+      },
+      "ror": {
+        "value": 19.53,
+        "ci_lower": 18.56,
+        "ci_upper": 20.55,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 17.6,
+        "eb05": 16.9,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Somnolence",
+      "report_count": 453,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.56,
+        "chi2": 432.82,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.6,
+        "ci_lower": 2.37,
+        "ci_upper": 2.85,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.55,
+        "eb05": 2.36,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Coma",
+      "report_count": 187,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.57,
+        "chi2": 346.55,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.6,
+        "ci_lower": 3.12,
+        "ci_upper": 4.16,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.57,
+        "eb05": 3.16,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Loss of consciousness",
+      "report_count": 184,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.63,
+        "chi2": 44.57,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.63,
+        "ci_lower": 1.41,
+        "ci_upper": 1.89,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.63,
+        "eb05": 1.44,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Constipation",
+      "report_count": 471,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.51,
+        "chi2": 429.79,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.55,
+        "ci_lower": 2.32,
+        "ci_upper": 2.79,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.5,
+        "eb05": 2.32,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naloxone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 107,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 6.41,
+        "chi2": 485.99,
+        "signal": true
+      },
+      "ror": {
+        "value": 6.44,
+        "ci_lower": 5.32,
+        "ci_upper": 7.79,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 6.38,
+        "eb05": 5.44,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Respiratory depression",
+      "report_count": 6,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.16,
+        "chi2": 0.13,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.16,
+        "ci_lower": 0.52,
+        "ci_upper": 2.59,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.16,
+        "eb05": 0.59,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Respiratory failure",
+      "report_count": 41,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.07,
+        "chi2": 0.2,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.07,
+        "ci_lower": 0.79,
+        "ci_upper": 1.46,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.07,
+        "eb05": 0.83,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Respiratory arrest",
+      "report_count": 33,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.14,
+        "chi2": 0.59,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.14,
+        "ci_lower": 0.81,
+        "ci_upper": 1.61,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 1.14,
+        "eb05": 0.86,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Drug dependence",
+      "report_count": 128,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.87,
+        "chi2": 52.46,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.89,
+        "ci_lower": 1.58,
+        "ci_upper": 2.25,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.87,
+        "eb05": 1.62,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Drug abuse",
+      "report_count": 87,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.52,
+        "chi2": 80.14,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.54,
+        "ci_lower": 2.05,
+        "ci_upper": 3.13,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.52,
+        "eb05": 2.11,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Substance abuse",
+      "report_count": 36,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 10.59,
+        "chi2": 311.48,
+        "signal": true
+      },
+      "ror": {
+        "value": 10.63,
+        "ci_lower": 7.66,
+        "ci_upper": 14.76,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 10.55,
+        "eb05": 8.02,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Overdose",
+      "report_count": 283,
+      "consensus_signal": true,
+      "methods_flagging": 2,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.01,
+        "chi2": 145.39,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.04,
+        "ci_lower": 1.81,
+        "ci_upper": 2.3,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.01,
+        "eb05": 1.82,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Intentional overdose",
+      "report_count": 113,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.38,
+        "chi2": 294.75,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.42,
+        "ci_lower": 3.67,
+        "ci_upper": 5.32,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.37,
+        "eb05": 3.74,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Accidental overdose",
+      "report_count": 12,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.8,
+        "chi2": 0.59,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.8,
+        "ci_lower": 0.45,
+        "ci_upper": 1.41,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.8,
+        "eb05": 0.5,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Drug toxicity",
+      "report_count": 11,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.89,
+        "chi2": 4.57,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.89,
+        "ci_lower": 1.04,
+        "ci_upper": 3.41,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.88,
+        "eb05": 1.15,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Death",
+      "report_count": 107,
+      "consensus_signal": false,
+      "methods_flagging": 0,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 0.29,
+        "chi2": 195.49,
+        "signal": false
+      },
+      "ror": {
+        "value": 0.28,
+        "ci_lower": 0.23,
+        "ci_upper": 0.34,
+        "signal": false
+      },
+      "mgps": {
+        "ebgm": 0.29,
+        "eb05": 0.25,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Completed suicide",
+      "report_count": 137,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.98,
+        "chi2": 306.36,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.03,
+        "ci_lower": 3.4,
+        "ci_upper": 4.77,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.97,
+        "eb05": 3.45,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Withdrawal syndrome",
+      "report_count": 251,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 4.08,
+        "chi2": 587.39,
+        "signal": true
+      },
+      "ror": {
+        "value": 4.18,
+        "ci_lower": 3.68,
+        "ci_upper": 4.73,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 4.08,
+        "eb05": 3.68,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Drug withdrawal syndrome",
+      "report_count": 131,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.01,
+        "chi2": 176.92,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.04,
+        "ci_lower": 2.56,
+        "ci_upper": 3.62,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.01,
+        "eb05": 2.61,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Somnolence",
+      "report_count": 257,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 3.11,
+        "chi2": 371.81,
+        "signal": true
+      },
+      "ror": {
+        "value": 3.18,
+        "ci_lower": 2.81,
+        "ci_upper": 3.6,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 3.11,
+        "eb05": 2.81,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Coma",
+      "report_count": 63,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 2.58,
+        "chi2": 61.12,
+        "signal": true
+      },
+      "ror": {
+        "value": 2.59,
+        "ci_lower": 2.02,
+        "ci_upper": 3.32,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 2.58,
+        "eb05": 2.1,
+        "signal": true
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Loss of consciousness",
+      "report_count": 95,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.8,
+        "chi2": 34.1,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.81,
+        "ci_lower": 1.48,
+        "ci_upper": 2.22,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.8,
+        "eb05": 1.52,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Constipation",
+      "report_count": 172,
+      "consensus_signal": false,
+      "methods_flagging": 1,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 1.96,
+        "chi2": 82.04,
+        "signal": false
+      },
+      "ror": {
+        "value": 1.98,
+        "ci_lower": 1.7,
+        "ci_upper": 2.31,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 1.96,
+        "eb05": 1.73,
+        "signal": false
+      }
+    },
+    {
+      "drug_name": "naltrexone",
+      "reaction": "Serotonin syndrome",
+      "report_count": 91,
+      "consensus_signal": true,
+      "methods_flagging": 3,
+      "source_library": "OpenFDA/Mathematical",
+      "prr": {
+        "value": 11.7,
+        "chi2": 886.59,
+        "signal": true
+      },
+      "ror": {
+        "value": 11.81,
+        "ci_lower": 9.6,
+        "ci_upper": 14.53,
+        "signal": true
+      },
+      "mgps": {
+        "ebgm": 11.64,
+        "eb05": 9.8,
+        "signal": true
+      }
+    }
+  ]
+}

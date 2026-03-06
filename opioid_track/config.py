@@ -154,3 +154,54 @@ OPENFDA_NDC_QUERY_OPIOID = 'pharm_class:"opioid"'
 OPENFDA_RECENT_YEAR_START = "20190101"
 OPENFDA_RECENT_YEAR_END = "20251231"
 
+# === TIER 2 ADDITIONS ===
+
+# CMS data
+CMS_PRESCRIBING_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_prescribing.json"
+CMS_GEO_URL = "https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-opioid-prescribing-rates/medicare-part-d-opioid-prescribing-rates-by-geography"
+CMS_PROVIDER_DRUG_URL = "https://data.cms.gov/provider-summary-by-type-of-service/medicare-part-d-prescribers/medicare-part-d-prescribers-by-provider-and-drug"
+MEDICAID_SDUD_BASE = "https://data.medicaid.gov/resource"
+
+# CDC mortality data
+CDC_MORTALITY_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_mortality.json"
+CDC_VSRR_ENDPOINT = "https://data.cdc.gov/resource/xkb8-kh2a.json"
+CDC_WONDER_BASE = "https://wonder.cdc.gov"
+# alipphardt/cdc-wonder-api clone path (cloned during Step 4 setup)
+CDC_WONDER_API_DIR = "opioid_track/vendor/cdc-wonder-api"
+VSRR_OPIOID_INDICATORS = [
+    "Opioids (T40.0-T40.4,T40.6)",
+    "Natural & semi-synthetic opioids (T40.2)",
+    "Methadone (T40.3)",
+    "Synthetic opioids, excl. methadone (T40.4)",
+    "Heroin (T40.1)",
+]
+ICD10_OPIOID_CODES = {
+    "T40.0": "Opium",
+    "T40.1": "Heroin",
+    "T40.2": "Natural/semi-synthetic opioids",
+    "T40.3": "Methadone",
+    "T40.4": "Synthetic opioids (primarily fentanyl)",
+    "T40.6": "Other/unspecified narcotics",
+}
+
+# =============================================================================
+# CMS MEDICAID OPIOID (SUPPLY CHAIN PROXY) SETTINGS
+# UUID for Medicaid Opioid Prescribing Rates - by Geography
+# =============================================================================
+
+CMS_MEDICAID_GEO_UUID = "c37ebe6d-f54f-4d7d-861f-fefe345554e6"
+MEDICAID_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_supply_chain.json"
+MEDICAID_DELAY_SECONDS = 0.5
+
+# Signal detection (uses ChapatiDB/faerslib)
+SIGNAL_RESULTS_OUTPUT = f"{OPIOID_DATA_DIR}/faers_signal_results.json"
+SIGNAL_CACHE_FILE = f"{OPIOID_DATA_DIR}/faers_signal_cache.json"
+# faerslib supports: "prr", "ror", "mgps" (EBGM-based)
+SIGNAL_METHODS = ["prr", "ror", "mgps"]
+SIGNAL_CONSENSUS_THRESHOLD = 2  # minimum methods that must flag for consensus signal
+
+# Geographic profiles
+GEO_PROFILES_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_geographic_profiles.json"
+CENSUS_API_BASE = "https://api.census.gov/data"
+CENSUS_API_KEY = "00ea40392d577c234f83e960a8ce07b5c0bab1b8"
+
