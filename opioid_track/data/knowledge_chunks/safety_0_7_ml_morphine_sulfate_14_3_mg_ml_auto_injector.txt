@@ -1,0 +1,19 @@
+DRUG SAFETY PROFILE: 0.7 ML morphine sulfate 14.3 MG/ML Auto-Injector
+
+RxCUI: 894911
+Category: natural/semi-synthetic
+Opioid ingredients: morphine
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, abuse, misuse
+Warning text: WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF MITIGO ® Risks with Neuraxial Administration Single-dose neuraxial administration may result in acute or delayed respiratory depression up to 24 hours. Because of the risk of severe adverse reactions when MITIGO ® is administered by the epidural or intrathecal route of administration, patients must be observed in a fully equipped and staffed 
+
+Starting dose: 200 mg
+Benzodiazepine co-administration warning: YES
+
+Overdose symptoms: respiratory depression, miosis, hypotension, bradycardia, pulmonary edema, skeletal muscle flaccidity, cold, clammy skin, coma, cardiac arrest, somnolence, stupor
+DEA Schedule: Schedule II
+
+Safety terms in label: Constipation, Death, Drug abuse, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Serotonin syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

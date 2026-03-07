@@ -1,0 +1,15 @@
+DRUG SAFETY PROFILE: 0.4 ML naloxone hydrochloride 25 MG/ML Auto-Injector
+
+RxCUI: 2596175
+Category: unclassified
+Opioid ingredients: naloxone
+
+Boxed Warning: None
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP3A4
+
+Overdose symptoms: respiratory depression, hypotension
+
+Safety terms in label: Neonatal opioid withdrawal syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

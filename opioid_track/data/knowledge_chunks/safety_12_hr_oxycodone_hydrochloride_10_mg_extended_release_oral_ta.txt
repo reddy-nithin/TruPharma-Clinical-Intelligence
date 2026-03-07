@@ -1,0 +1,19 @@
+DRUG SAFETY PROFILE: 12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet
+
+RxCUI: 1049502
+Category: natural/semi-synthetic
+Opioid ingredients: oxycodone
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Accidental overdose, Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, rems, abuse, misuse
+Warning text: Risk of Medication Errors Ensure accuracy when prescribing, dispensing, and administering Oxycodone Hydrochloride Oral Solution. Dosing errors due to confusion between mg and mL, and other oxycodone hydrochloride oral solutions of different concentrations can result in accidental overdose and death [see Dosage and Administration (2.1) , Warnings and Precautions (5.1) ]. Addiction, Abuse, and Misus
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP2D6, CYP3A4
+
+Overdose symptoms: respiratory depression, miosis, hypotension, bradycardia, pulmonary edema, skeletal muscle flaccidity, cold, clammy skin, coma, cardiac arrest, somnolence, stupor
+
+Safety terms in label: Constipation, Death, Drug abuse, Neonatal opioid withdrawal syndrome, Overdose, Respiratory arrest, Respiratory depression, Serotonin syndrome, Somnolence, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

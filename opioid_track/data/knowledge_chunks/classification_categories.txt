@@ -1,0 +1,12 @@
+OPIOID CLASSIFICATION CATEGORIES
+
+Opioids are classified by chemical origin into several categories. This classification matters for clinical pharmacology, regulation, and risk assessment.
+
+- Combination: codeine, hydrocodone, oxycodone, tramadol
+- Natural/Semi-Synthetic: hydromorphone, morphine, naloxone, naltrexone, oxycodone, oxymorphone
+- Semi-Synthetic: buprenorphine, butorphanol
+- Synthetic: fentanyl, meperidine, naloxone, pentazocine, tapentadol, tramadol
+- Treatment/Recovery: methadone
+- Unclassified: buprenorphine, butorphanol, codeine, hydrocodone, hydromorphone, levorphanol, morphine, naloxone
+
+Natural opioids (e.g., morphine, codeine) are derived from the opium poppy. Semi-synthetic opioids (e.g., oxycodone, hydrocodone) are chemically modified from natural precursors. Synthetic opioids (e.g., fentanyl, methadone, tramadol) are entirely laboratory-created. Combination products pair opioids with non-opioid analgesics (acetaminophen, ibuprofen) or antagonists (naloxone for abuse deterrence). Treatment/recovery agents (buprenorphine, methadone for MAT) leverage partial agonism or long half-lives to stabilize patients.

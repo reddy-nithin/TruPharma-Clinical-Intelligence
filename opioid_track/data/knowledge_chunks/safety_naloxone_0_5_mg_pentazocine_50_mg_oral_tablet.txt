@@ -1,0 +1,15 @@
+DRUG SAFETY PROFILE: naloxone 0.5 MG / pentazocine 50 MG Oral Tablet
+
+RxCUI: 312289
+Category: synthetic
+Opioid ingredients: naloxone, pentazocine
+
+Boxed Warning: None
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP3A4
+
+Overdose symptoms: respiratory depression, hypotension
+
+Safety terms in label: Neonatal opioid withdrawal syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

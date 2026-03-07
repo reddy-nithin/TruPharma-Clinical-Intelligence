@@ -1,0 +1,37 @@
+FAERS SAFETY SIGNALS: TAPENTADOL
+
+Total signal pairs tested: 18, Consensus signals (≥2 methods): 15
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Overdose: 254 reports, 3/3 methods flagging
+    Signal strength: PRR=3.73, ROR=3.91, EBGM=3.73
+  - Constipation: 209 reports, 3/3 methods flagging
+    Signal strength: PRR=4.94, ROR=5.15, EBGM=4.94
+  - Somnolence: 189 reports, 3/3 methods flagging
+    Signal strength: PRR=4.74, ROR=4.92, EBGM=4.74
+  - Drug abuse: 185 reports, 3/3 methods flagging
+    Signal strength: PRR=11.12, ROR=11.60, EBGM=11.10
+  - Completed suicide: 172 reports, 3/3 methods flagging
+    Signal strength: PRR=10.36, ROR=10.76, EBGM=10.34
+  - Serotonin syndrome: 132 reports, 3/3 methods flagging
+    Signal strength: PRR=35.23, ROR=36.36, EBGM=34.98
+  - Drug dependence: 102 reports, 3/3 methods flagging
+    Signal strength: PRR=3.09, ROR=3.14, EBGM=3.09
+  - Withdrawal syndrome: 81 reports, 3/3 methods flagging
+    Signal strength: PRR=2.73, ROR=2.76, EBGM=2.73
+  - Intentional overdose: 70 reports, 3/3 methods flagging
+    Signal strength: PRR=5.61, ROR=5.69, EBGM=5.61
+  - Accidental overdose: 64 reports, 3/3 methods flagging
+    Signal strength: PRR=8.87, ROR=9.00, EBGM=8.86
+  - Loss of consciousness: 54 reports, 2/3 methods flagging
+    Signal strength: PRR=2.12, ROR=2.14, EBGM=2.12
+  - Respiratory arrest: 52 reports, 3/3 methods flagging
+    Signal strength: PRR=3.73, ROR=3.77, EBGM=3.73
+  - Drug withdrawal syndrome: 47 reports, 2/3 methods flagging
+    Signal strength: PRR=2.24, ROR=2.25, EBGM=2.24
+  - Respiratory depression: 43 reports, 3/3 methods flagging
+    Signal strength: PRR=17.30, ROR=17.47, EBGM=17.24
+  - Substance abuse: 5 reports, 2/3 methods flagging
+    Signal strength: PRR=3.04, ROR=3.04, EBGM=3.04
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

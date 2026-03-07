@@ -1,0 +1,37 @@
+FAERS SAFETY SIGNALS: MEPERIDINE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 15
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Overdose: 316 reports, 3/3 methods flagging
+    Signal strength: PRR=4.38, ROR=4.64, EBGM=4.37
+  - Drug dependence: 240 reports, 3/3 methods flagging
+    Signal strength: PRR=6.86, ROR=7.20, EBGM=6.85
+  - Serotonin syndrome: 239 reports, 3/3 methods flagging
+    Signal strength: PRR=60.49, ROR=63.91, EBGM=59.71
+  - Withdrawal syndrome: 238 reports, 3/3 methods flagging
+    Signal strength: PRR=7.56, ROR=7.93, EBGM=7.55
+  - Drug withdrawal syndrome: 212 reports, 3/3 methods flagging
+    Signal strength: PRR=9.53, ROR=9.96, EBGM=9.51
+  - Respiratory arrest: 122 reports, 3/3 methods flagging
+    Signal strength: PRR=8.26, ROR=8.47, EBGM=8.25
+  - Completed suicide: 90 reports, 3/3 methods flagging
+    Signal strength: PRR=5.10, ROR=5.19, EBGM=5.10
+  - Respiratory failure: 55 reports, 3/3 methods flagging
+    Signal strength: PRR=2.81, ROR=2.83, EBGM=2.81
+  - Loss of consciousness: 55 reports, 2/3 methods flagging
+    Signal strength: PRR=2.04, ROR=2.05, EBGM=2.04
+  - Drug abuse: 50 reports, 3/3 methods flagging
+    Signal strength: PRR=2.83, ROR=2.85, EBGM=2.83
+  - Respiratory depression: 43 reports, 3/3 methods flagging
+    Signal strength: PRR=16.30, ROR=16.46, EBGM=16.25
+  - Drug toxicity: 28 reports, 3/3 methods flagging
+    Signal strength: PRR=9.38, ROR=9.44, EBGM=9.37
+  - Coma: 27 reports, 2/3 methods flagging
+    Signal strength: PRR=2.16, ROR=2.17, EBGM=2.16
+  - Accidental overdose: 19 reports, 2/3 methods flagging
+    Signal strength: PRR=2.48, ROR=2.49, EBGM=2.48
+  - Substance abuse: 18 reports, 3/3 methods flagging
+    Signal strength: PRR=10.32, ROR=10.36, EBGM=10.30
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

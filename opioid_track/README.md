@@ -115,6 +115,80 @@ opioid_track/
     └── TIER*_INSTRUCTIONS*.md         # Original instruction files
 ```
 
+## Tier 3: Deep Pharmacology, NLP, and Dashboards
+
+Tier 3 adds molecular-level pharmacology, NLP-mined drug label intelligence, a standalone Streamlit dashboard, an OpioidWatchdog agent, and RAG-ready knowledge chunks.
+
+### Pharmacology & Toxicology Data
+
+- **Receptor binding affinities** (Ki, IC50, EC50) at mu, kappa, delta, and NOP opioid receptors from ChEMBL and GtoPdb
+- **Toxicology**: LD50 data from PubChem with interspecies BSA scaling for estimated human lethal doses
+- **Per-ingredient profiles**: potency vs morphine, therapeutic index, danger ranking, metabolism, half-life
+
+### NLP Label Mining
+
+Adapts [CDCgov/Opioid_Involvement_NLP](https://github.com/CDCgov/Opioid_Involvement_NLP) for DailyMed SPL label analysis:
+- NegEx-based negation detection (distinguishes "respiratory depression" from "no respiratory depression")
+- Structured extraction from 9 SPL sections: boxed warnings, dosage, adverse reactions, drug interactions, abuse/dependence, overdosage, REMS
+- Comparison matrix across all mined labels
+
+### Standalone Dashboard
+
+Geographic charts adapted from [plotly/dash-opioid-epidemic-demo](https://github.com/plotly/dash-opioid-epidemic-demo).
+
+```bash
+streamlit run opioid_track/dashboard/opioid_app.py --server.port 8502
+```
+
+4 pages: Drug Explorer, Opioid Landscape, Geographic Intelligence, Signal Detection.
+
+### OpioidWatchdog Agent
+
+Importable into the main TruPharma app when ready:
+
+```python
+from opioid_track.agents.opioid_watchdog import OpioidWatchdog
+
+watchdog = OpioidWatchdog()  # auto-loads all data files
+watchdog.answer_why_opioid("fentanyl")
+watchdog.compare_danger("fentanyl", "morphine")
+watchdog.assess_dose_risk("oxycodone", 60)
+```
+
+### Knowledge Chunks for RAG
+
+55 text chunks in `data/knowledge_chunks/` with a `manifest.json`. Framework-agnostic — works with LangChain, LlamaIndex, or any custom RAG pipeline.
+
+### Clone Vendor Repos (Required for Tier 3)
+
+```bash
+git clone https://github.com/CDCgov/Opioid_Involvement_NLP.git opioid_track/vendor/Opioid_Involvement_NLP
+git clone https://github.com/plotly/dash-opioid-epidemic-demo.git opioid_track/vendor/dash-opioid-epidemic-demo
+git clone https://github.com/opioiddatalab/overdosedata.git opioid_track/vendor/overdosedata
+```
+
+### Run Tier 3 Pipelines
+
+```bash
+# Pharmacology (ChEMBL + GtoPdb + PubChem) — ~2 min
+python3 -m opioid_track.ingestion.pharmacology_fetcher
+
+# Toxicology (PubChem LD50 + interspecies scaling)
+python3 -m opioid_track.ingestion.toxicology_fetcher
+
+# NLP label mining (DailyMed + CDC NLP)
+python3 -m opioid_track.core.nlp_miner
+
+# Knowledge chunks for RAG
+python3 -m opioid_track.core.knowledge_indexer
+```
+
+### Run All Tests
+
+```bash
+pytest opioid_track/tests/ -v  # 38 tests across Tiers 1–3
+```
+
 ## Reproducing from Scratch
 
 If the `data/` directory is deleted, simply re-run the ingestion pipeline — all source data will be re-downloaded from GitHub and public APIs automatically.

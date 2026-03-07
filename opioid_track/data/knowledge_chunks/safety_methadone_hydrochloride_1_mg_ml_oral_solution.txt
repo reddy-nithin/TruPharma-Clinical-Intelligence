@@ -1,0 +1,19 @@
+DRUG SAFETY PROFILE: methadone hydrochloride 1 MG/ML Oral Solution
+
+RxCUI: 864761
+Category: treatment/recovery
+Opioid ingredients: methadone
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, rems, abuse, misuse
+Warning text: A ddiction, Abuse, and Misuse Because the use of methadone hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient’s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS AND PRECAUTIONS ( 5.1 )]. Life-Threatening 
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A4
+
+Overdose symptoms: respiratory depression, miosis, hypotension, bradycardia, pulmonary edema, cold, clammy skin, coma, apnea, cardiac arrest, circulatory collapse, somnolence, stupor
+
+Safety terms in label: Constipation, Death, Drug abuse, Neonatal opioid withdrawal syndrome, Overdose, Respiratory arrest, Respiratory depression, Serotonin syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

@@ -106,6 +106,7 @@ def render_sidebar():
                 "\U0001F30D Opioid Landscape",
                 "\U0001F5FA Geographic Intelligence",
                 "\U000026A0 Signal Detection",
+                "\U0001F6E1 Watchdog Tools",
             ],
             label_visibility="collapsed",
         )
@@ -151,6 +152,9 @@ def main():
         render(data)
     elif "\U000026A0" in page:
         from opioid_track.dashboard.pages.signals import render
+        render(data)
+    elif "\U0001F6E1" in page:
+        from opioid_track.dashboard.pages.watchdog import render
         render(data)
 
 

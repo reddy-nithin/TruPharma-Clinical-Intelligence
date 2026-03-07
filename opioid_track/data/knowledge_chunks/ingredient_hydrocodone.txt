@@ -1,0 +1,21 @@
+PHARMACOLOGY: HYDROCODONE
+
+Identifiers: RxCUI=5489, ChEMBL=CHEMBL1457, PubChem CID=5284569
+Molecular: C18H21NO3, MW=299.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 9.5 nM (source: ChEMBL)
+  - kappa: Ki = 260.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.03x
+
+Hydrocodone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 9.5 nM, showing 27-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 8.0 hours
+Metabolism: Hydrocodone undergoes oxidative O-demethylation to form [hydromorphone], a more potent active metabolite. Though hydromorphone is active it is not present in sufficient quantities to contribute significantly to hydrocodone's therapeutic effects. Both hydrocodone and hydromorphone form 6-α- and 6-β-h
+
+Toxicology:
+  LD50 (rat, oral): 150.0 mg/kg
+  LD50 (mouse, subcutaneous): 85.7 mg/kg
+  Estimated human lethal dose: 1759.5 mg
+  Danger level: Lower

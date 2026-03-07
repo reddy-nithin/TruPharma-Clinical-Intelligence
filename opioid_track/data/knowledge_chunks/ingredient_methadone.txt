@@ -1,0 +1,15 @@
+PHARMACOLOGY: METHADONE
+
+Identifiers: RxCUI=6813, ChEMBL=CHEMBL651, PubChem CID=4095
+Molecular: C21H27NO, MW=309.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 13.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.03x
+
+Methadone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 13.0 nM. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 111.0 hours
+Metabolism: Methadone undergoes fairly extensive first-pass metabolism. Cytochrome P450 enzymes, primarily CYP3A4, CYP2B6, and CYP2C19 and to a lesser extent CYP2C9, CYP2C8, and CYP2D6, are responsible for conversion of methadone to EDDP (2-ethyl-1,5-dimethyl-3,3-diphenylpyrrolidine) and other inactive metaboli
+  Danger level: Unknown

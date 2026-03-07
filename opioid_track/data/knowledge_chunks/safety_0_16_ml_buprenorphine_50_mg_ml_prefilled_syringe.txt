@@ -1,0 +1,15 @@
+DRUG SAFETY PROFILE: 0.16 ML buprenorphine 50 MG/ML Prefilled Syringe
+
+RxCUI: 2639021
+Category: semi-synthetic
+Opioid ingredients: buprenorphine
+
+Boxed Warning: None
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP3A4
+
+Overdose symptoms: respiratory depression, hypotension
+
+Safety terms in label: Neonatal opioid withdrawal syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

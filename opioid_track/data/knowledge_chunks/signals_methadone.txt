@@ -1,0 +1,41 @@
+FAERS SAFETY SIGNALS: METHADONE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 17
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Overdose: 5,853 reports, 3/3 methods flagging
+    Signal strength: PRR=7.01, ROR=7.78, EBGM=6.90
+  - Drug dependence: 5,852 reports, 3/3 methods flagging
+    Signal strength: PRR=14.74, ROR=16.50, EBGM=14.24
+  - Drug abuse: 5,424 reports, 3/3 methods flagging
+    Signal strength: PRR=27.95, ROR=31.12, EBGM=26.13
+  - Withdrawal syndrome: 4,754 reports, 3/3 methods flagging
+    Signal strength: PRR=13.25, ROR=14.49, EBGM=12.84
+  - Drug withdrawal syndrome: 3,968 reports, 3/3 methods flagging
+    Signal strength: PRR=15.74, ROR=16.97, EBGM=15.17
+  - Respiratory arrest: 2,603 reports, 3/3 methods flagging
+    Signal strength: PRR=15.56, ROR=16.33, EBGM=14.99
+  - Completed suicide: 1,723 reports, 3/3 methods flagging
+    Signal strength: PRR=8.47, ROR=8.73, EBGM=8.31
+  - Somnolence: 1,569 reports, 3/3 methods flagging
+    Signal strength: PRR=3.18, ROR=3.24, EBGM=3.16
+  - Coma: 1,126 reports, 3/3 methods flagging
+    Signal strength: PRR=7.80, ROR=7.95, EBGM=7.67
+  - Respiratory depression: 1,116 reports, 3/3 methods flagging
+    Signal strength: PRR=39.49, ROR=40.34, EBGM=35.92
+  - Loss of consciousness: 749 reports, 3/3 methods flagging
+    Signal strength: PRR=2.37, ROR=2.39, EBGM=2.36
+  - Respiratory failure: 640 reports, 3/3 methods flagging
+    Signal strength: PRR=2.80, ROR=2.82, EBGM=2.79
+  - Accidental overdose: 639 reports, 3/3 methods flagging
+    Signal strength: PRR=7.22, ROR=7.29, EBGM=7.10
+  - Drug toxicity: 525 reports, 3/3 methods flagging
+    Signal strength: PRR=15.52, ROR=15.67, EBGM=14.96
+  - Substance abuse: 485 reports, 3/3 methods flagging
+    Signal strength: PRR=25.11, ROR=25.34, EBGM=23.64
+  - Intentional overdose: 441 reports, 3/3 methods flagging
+    Signal strength: PRR=2.85, ROR=2.87, EBGM=2.84
+  - Serotonin syndrome: 372 reports, 3/3 methods flagging
+    Signal strength: PRR=8.06, ROR=8.11, EBGM=7.92
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

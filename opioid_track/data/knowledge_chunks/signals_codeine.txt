@@ -1,0 +1,39 @@
+FAERS SAFETY SIGNALS: CODEINE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 16
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Overdose: 7,688 reports, 3/3 methods flagging
+    Signal strength: PRR=4.83, ROR=5.16, EBGM=4.74
+  - Drug abuse: 3,094 reports, 3/3 methods flagging
+    Signal strength: PRR=8.07, ROR=8.30, EBGM=7.80
+  - Drug dependence: 2,543 reports, 3/3 methods flagging
+    Signal strength: PRR=3.27, ROR=3.33, EBGM=3.24
+  - Constipation: 2,437 reports, 3/3 methods flagging
+    Signal strength: PRR=2.44, ROR=2.47, EBGM=2.42
+  - Somnolence: 2,376 reports, 3/3 methods flagging
+    Signal strength: PRR=2.52, ROR=2.56, EBGM=2.50
+  - Withdrawal syndrome: 1,858 reports, 3/3 methods flagging
+    Signal strength: PRR=2.65, ROR=2.68, EBGM=2.63
+  - Completed suicide: 1,574 reports, 3/3 methods flagging
+    Signal strength: PRR=4.03, ROR=4.08, EBGM=3.97
+  - Drug withdrawal syndrome: 1,253 reports, 3/3 methods flagging
+    Signal strength: PRR=2.52, ROR=2.54, EBGM=2.51
+  - Respiratory arrest: 1,160 reports, 3/3 methods flagging
+    Signal strength: PRR=3.54, ROR=3.57, EBGM=3.50
+  - Coma: 1,088 reports, 3/3 methods flagging
+    Signal strength: PRR=3.93, ROR=3.96, EBGM=3.88
+  - Intentional overdose: 828 reports, 3/3 methods flagging
+    Signal strength: PRR=2.81, ROR=2.83, EBGM=2.79
+  - Substance abuse: 631 reports, 3/3 methods flagging
+    Signal strength: PRR=17.39, ROR=17.49, EBGM=16.09
+  - Accidental overdose: 500 reports, 3/3 methods flagging
+    Signal strength: PRR=2.93, ROR=2.94, EBGM=2.91
+  - Respiratory depression: 440 reports, 3/3 methods flagging
+    Signal strength: PRR=7.65, ROR=7.68, EBGM=7.41
+  - Serotonin syndrome: 402 reports, 3/3 methods flagging
+    Signal strength: PRR=4.55, ROR=4.57, EBGM=4.48
+  - Drug toxicity: 276 reports, 3/3 methods flagging
+    Signal strength: PRR=4.18, ROR=4.19, EBGM=4.11
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

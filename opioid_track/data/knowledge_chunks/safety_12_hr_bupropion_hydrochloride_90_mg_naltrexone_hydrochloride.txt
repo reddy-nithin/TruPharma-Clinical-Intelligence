@@ -1,0 +1,9 @@
+DRUG SAFETY PROFILE: 12 HR bupropion hydrochloride 90 MG / naltrexone hydrochloride 8 MG Extended Release Oral Tablet
+
+RxCUI: 1551468
+Category: unclassified
+Opioid ingredients: naltrexone
+
+Boxed Warning: None
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

@@ -1,0 +1,13 @@
+THE OPIOID RECEPTOR SYSTEM
+
+Opioids exert their effects through four G-protein coupled receptors:
+
+1. Mu receptor (OPRM1, MOR) — Primary mediator of analgesia, euphoria, respiratory depression, and physical dependence. Most clinically used opioids target mu. High mu affinity (low Ki value) correlates with potency.
+
+2. Kappa receptor (OPRK1, KOR) — Mediates spinal analgesia, sedation, and dysphoria. Kappa agonists (pentazocine, butorphanol) produce less euphoria and have lower abuse potential but cause dysphoric side effects.
+
+3. Delta receptor (OPRD1, DOR) — Modulates pain, mood, and cardioprotection. Few clinical drugs primarily target delta, though many mu agonists have secondary delta activity.
+
+4. Nociceptin/OFQ receptor (OPRL1, NOP) — Involved in pain modulation, anxiety, and feeding. The NOP receptor has complex, sometimes anti-opioid effects. Buprenorphine has notable NOP activity.
+
+Receptor affinity is measured as Ki (inhibition constant) in nanomolar (nM). Lower Ki = higher affinity = more potent binding. For example, fentanyl has a mu Ki of ~0.08 nM while morphine's is ~1.8 nM, making fentanyl roughly 20x more potent at the receptor level.

@@ -1,0 +1,19 @@
+DRUG SAFETY PROFILE: 1 ML meperidine hydrochloride 100 MG/ML Cartridge
+
+RxCUI: 861493
+Category: synthetic
+Opioid ingredients: meperidine
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, rems, abuse, misuse
+Warning text: Addiction, Abuse, and Misuse Because the use of Meperidine hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient's risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.2) ] . Life-Threatening 
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP2B6, CYP3A4
+
+Overdose symptoms: respiratory depression, miosis, hypotension, bradycardia, pulmonary edema, skeletal muscle flaccidity, cold, clammy skin, coma, cardiac arrest, somnolence, stupor
+
+Safety terms in label: Constipation, Death, Drug abuse, Neonatal opioid withdrawal syndrome, Overdose, Respiratory arrest, Respiratory depression, Serotonin syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

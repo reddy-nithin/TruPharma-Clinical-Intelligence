@@ -8,8 +8,8 @@
 
 ## Last Updated
 <!-- Update this timestamp when you complete or start a phase -->
-**Date:** 2026-03-06  
-**Session:** Session 2 (Phase 2 + Phase 3)
+**Date:** 2026-03-07  
+**Session:** Session 3 (Phase 4 + Phase 5) — TIER 3 COMPLETE
 
 ---
 
@@ -27,12 +27,12 @@
 | **Phase 3d** | landscape.py | ✅ Complete | Treemap, potency bar, danger matrix, 3 waves, schedule donut |
 | **Phase 3e** | geography.py | ✅ Complete | Choropleth, state comparison, county detail, mortality timeline |
 | **Phase 3f** | signals.py | ✅ Complete | Heatmap, signal detail (PRR/ROR/EBGM), top signals table |
-| **Phase 4a** | opioid_watchdog.py | ⬜ Not started | |
-| **Phase 4b** | knowledge_indexer.py | ⬜ Not started | |
-| **Phase 4c** | test_pharmacology.py | ⬜ Not started | |
-| **Phase 5a** | DEV_LOG_TIER3 + TECHNICAL_TIER3 | ⬜ Not started | |
-| **Phase 5b** | README update | ⬜ Not started | |
-| **Phase 5c** | Validation + git commit | ⬜ Not started | |
+| **Phase 4a** | opioid_watchdog.py | ✅ Complete | 8 methods, format_brief_text, precise is_opioid_query |
+| **Phase 4b** | knowledge_indexer.py | ✅ Complete | 55 chunks, ~16.5K tokens, manifest.json |
+| **Phase 4c** | test_pharmacology.py | ✅ Complete | 8/8 tests pass, 38 total across all tiers |
+| **Phase 5a** | DEV_LOG_TIER3 + TECHNICAL_TIER3 | ✅ Complete | Full dev log + technical architecture |
+| **Phase 5b** | README update | ✅ Complete | Tier 3 section with all capabilities |
+| **Phase 5c** | Validation + git commit | ✅ Complete | All 38 tests pass, dashboard verified |
 
 **Legend:** ⬜ Not started | 🔄 In progress | ✅ Complete | ⛔ Blocked
 
@@ -42,7 +42,7 @@
 
 When starting or resuming, do the next unchecked phase. If a phase is "In progress," finish it first.
 
-**Current next step:** Phase 4a — Build opioid_watchdog.py (OpioidWatchdog agent class)
+**Current next step:** ALL PHASES COMPLETE — Tier 3 build is finished.
 
 ---
 
@@ -53,6 +53,7 @@ When starting or resuming, do the next unchecked phase. If a phase is "In progre
 - **Session 3:** Phase 4 + Phase 5 (watchdog, indexer, tests, docs, validation)
 
 **After Session 2:** Start new chat, say: "Continue Tier 3 Opioid Intelligence build. Read opioid_track/TIER3_BUILD_TRACKER.md and pick up from the next step."
+- **Session 3:** Phase 4 + Phase 5 (watchdog, indexer, tests, docs, validation) — COMPLETE
 
 ---
 
@@ -86,3 +87,19 @@ When starting or resuming, do the next unchecked phase. If a phase is "In progre
 - Phase 3e: ✅ geography.py — State choropleth (adapted from dash-opioid-epidemic-demo), state comparison bar, mortality timeline, county detail panel
 - Phase 3f: ✅ signals.py — Signal heatmap, individual signal detail (PRR/ROR/EBGM), top signals table, per-drug summary
 - Dashboard verified: launches on port 8502, all 4 pages import and render
+
+### Session 3 Summary (2026-03-07)
+- Phase 4a: ✅ opioid_watchdog.py — OpioidWatchdog agent class
+  - 8 public methods: is_opioid_query, get_full_opioid_brief, answer_why_opioid, compare_danger, get_signals_summary, get_label_warnings, find_drugs_with_ingredient, assess_dose_risk
+  - format_brief_text for plain-text chat/LLM output
+  - Precise is_opioid_query (aspirin=False, morphine=True, codeine=True)
+  - All methods handle missing data gracefully
+- Phase 4b: ✅ knowledge_indexer.py — RAG-ready knowledge chunks
+  - 55 chunks generated across 5 categories (classification, pharmacology, safety, epidemiology, FAERS signals)
+  - ~16,500 estimated tokens total
+  - manifest.json with chunk metadata
+- Phase 4c: ✅ test_pharmacology.py — 8 test cases, all passing
+  - 38 total tests across all tiers (23 Tier 1 + 7 Tier 2 + 8 Tier 3)
+- Phase 5a: ✅ DEV_LOG_TIER3.md + TECHNICAL_TIER3.md
+- Phase 5b: ✅ README.md updated with Tier 3 section
+- Phase 5c: ✅ Full validation — all tests pass, dashboard verified, no Tier 1/2 files modified

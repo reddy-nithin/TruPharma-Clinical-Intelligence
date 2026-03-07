@@ -1,0 +1,17 @@
+PHARMACOLOGY: BUTORPHANOL
+
+Identifiers: RxCUI=1841, ChEMBL=CHEMBL33986, PubChem CID=5361092
+Molecular: C21H29NO2, MW=327.5
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.19 nM (source: ChEMBL)
+  - kappa: Ki = 0.12 nM (source: ChEMBL)
+  - delta: Ki = 12.0 nM (source: ChEMBL)
+
+Potency vs morphine: 1.68x
+
+Butorphanol is classified as an opioid because it acts as a full agonist at the kappa opioid receptor (OPRK1) with Ki = 0.1 nM. Its primary opioid effects — dysphoria, sedation, and spinal analgesia — are mediated through kappa receptor activation.
+
+Half-life: 18.0 hours
+Metabolism: Extensively metabolized in the liver. The pharmacological activity of butorphanol metabolites has not been studied in humans; in animal studies, butorphanol metabolites have demonstrated some analgesic activity.
+  Danger level: Unknown

@@ -1,0 +1,10 @@
+PHARMACOLOGY: MEPERIDINE
+
+Identifiers: RxCUI=6754, ChEMBL=CHEMBL607, PubChem CID=4058
+Molecular: C15H21NO2, MW=247.33
+
+Meperidine is classified as an opioid based on its pharmacologic class, but detailed receptor binding data is not available.
+
+Half-life: 0.11 hours
+Metabolism: Meperidine is metabolized in the liver by hydrolysis to meperidinic acid followed by partial conjugation with glucuronic acid. Meperidine also undergoes N-demethylation to normeperidine, which then undergoes hydrolysis and partial conjugation. Normeperidine is about half as potent as meperidine, but
+  Danger level: Unknown

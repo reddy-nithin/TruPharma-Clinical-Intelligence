@@ -1,0 +1,22 @@
+PHARMACOLOGY: NALTREXONE
+
+Identifiers: RxCUI=7243, ChEMBL=CHEMBL19019, PubChem CID=5360515
+Molecular: C20H23NO4, MW=341.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.33 nM (source: ChEMBL)
+  - kappa: Ki = 1.44 nM (source: ChEMBL)
+  - delta: Ki = 144.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.97x
+
+Naltrexone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 0.3 nM, with moderate selectivity over kappa (4.4-fold). Opioid receptors; mu/kappa/delta antagonist. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 4.0 hours
+Metabolism: Hepatic. When administered orally, naltrexone undergoes extensive biotransformation and is metabolized to 6 beta-naltrexol (which may contribute to the therapeutic effect) and other minor metabolites.
+
+Toxicology:
+  LD50 (rat, oral): 550.0 mg/kg
+  Estimated human lethal dose: 6451.4 mg
+  Therapeutic index: 576013750000.0
+  Danger level: Lower

@@ -1,0 +1,17 @@
+PHARMACOLOGY: NALOXONE
+
+Identifiers: RxCUI=7242, ChEMBL=CHEMBL80, PubChem CID=5284596
+Molecular: C19H21NO4, MW=327.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 1.0 nM (source: ChEMBL)
+  - kappa: Ki = 15.85 nM (source: ChEMBL)
+  - delta: Ki = 15.85 nM (source: ChEMBL)
+
+Potency vs morphine: 0.32x
+
+Naloxone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 1.0 nM, showing 16-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 2.25 hours
+Metabolism: Naloxone primarily undergoes glucuronidation to form naloxone-3-glucuronide. Naloxone is also N-dealkylated to noroxymorphone or undergoes 6-keto reduction to naloxol.
+  Danger level: Unknown

@@ -1,0 +1,22 @@
+PHARMACOLOGY: FENTANYL
+
+Identifiers: RxCUI=4337, ChEMBL=CHEMBL596, PubChem CID=3345
+Molecular: C22H28N2O, MW=336.5
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.083 nM (source: ChEMBL)
+  - kappa: Ki = 196.5 nM (source: ChEMBL)
+  - delta: Ki = 570.0 nM (source: ChEMBL)
+
+Potency vs morphine: 3.85x
+
+Fentanyl is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 0.1 nM, showing 2367-fold selectivity over kappa. Mu opioid receptor agonist. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 8.5 hours
+Metabolism: Fentanyl is metabolized to a number of inactive metabolites. Fentanyl is 99% N-dealkylated to norfentanyl by cytochrome P450. It can also be amide hydrolyzed to despropionylfentanyl, or alkyl hydroxylated to hydroxyfentanyl which is N-dealkylated to hydroxynorfentanyl.
+
+Toxicology:
+  LD50 (rat, unknown): 3.1 mg/kg
+  Estimated human lethal dose: 36.4 mg
+  Therapeutic index: 2473809523.8
+  Danger level: High

@@ -1,0 +1,15 @@
+PHARMACOLOGY: TAPENTADOL
+
+Identifiers: RxCUI=787390, ChEMBL=CHEMBL1201776, PubChem CID=9838022
+Molecular: C14H23NO, MW=221.34
+
+Receptor Binding Affinities:
+  - mu: Ki = 160.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.00x
+
+Tapentadol is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 160.0 nM. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 4.0 hours
+Metabolism: In humans, about 97% of the parent compound is metabolized. Tapentadol is mainly metabolized by Phase II pathways, and only a small amount is metabolized by Phase I oxidative pathways; thus, drug metabolism mediated by cytochrome P450 system is of less importance than phase II conjugation. The major
+  Danger level: Unknown

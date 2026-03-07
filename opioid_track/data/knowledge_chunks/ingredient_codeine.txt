@@ -1,0 +1,17 @@
+PHARMACOLOGY: CODEINE
+
+Identifiers: RxCUI=2670, ChEMBL=CHEMBL485, PubChem CID=5284371
+Molecular: C18H21NO3, MW=299.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 727.0 nM (source: ChEMBL)
+  - kappa: Ki = 25411.0 nM (source: ChEMBL)
+  - delta: Ki = 52207.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.00x
+
+Codeine is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 727.0 nM, showing 35-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 3.0 hours
+Metabolism: Approximately 70 to 80% of the ingested dose of codeine is metabolized in the liver by conjugation with glucuronic acid to _codeine-6­ glucuronide_ (C6G) and by O-demethylation to _morphine_ (about 5-10%) and N-demethylation to _norcodeine_ (about 10%) respectively. UDP-glucuronosyltransferase (UGT)
+  Danger level: Unknown

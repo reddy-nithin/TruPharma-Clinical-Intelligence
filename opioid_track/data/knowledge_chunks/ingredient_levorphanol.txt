@@ -1,0 +1,21 @@
+PHARMACOLOGY: LEVORPHANOL
+
+Identifiers: RxCUI=6378, ChEMBL=CHEMBL592, PubChem CID=5359272
+Molecular: C17H23NO, MW=257.37
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.21 nM (source: ChEMBL)
+  - kappa: Ki = 2.3 nM (source: ChEMBL)
+  - delta: Ki = 4.2 nM (source: ChEMBL)
+
+Potency vs morphine: 1.52x
+
+Levorphanol is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 0.2 nM, showing 11-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 13.5 hours
+Metabolism: Levorphanol is extensively metabolized in the liver and is eliminated as the glucuronide metabolite.
+
+Toxicology:
+  LD50 (rat, oral): 150.0 mg/kg
+  Estimated human lethal dose: 1759.5 mg
+  Danger level: Lower

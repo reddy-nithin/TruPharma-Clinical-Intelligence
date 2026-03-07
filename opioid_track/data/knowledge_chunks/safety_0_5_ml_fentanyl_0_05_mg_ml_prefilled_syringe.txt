@@ -1,0 +1,15 @@
+DRUG SAFETY PROFILE: 0.5 ML fentanyl 0.05 MG/ML Prefilled Syringe
+
+RxCUI: 2629337
+Category: synthetic
+Opioid ingredients: fentanyl
+
+Boxed Warning: None
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP3A4
+
+Safety terms in label: Neonatal opioid withdrawal syndrome, Respiratory depression, Serotonin syndrome, Withdrawal syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

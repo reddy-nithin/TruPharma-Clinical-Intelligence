@@ -1,0 +1,31 @@
+FAERS SAFETY SIGNALS: HYDROCODONE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 12
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Drug dependence: 40,492 reports, 3/3 methods flagging
+    Signal strength: PRR=31.06, ROR=37.97, EBGM=23.43
+  - Overdose: 35,187 reports, 3/3 methods flagging
+    Signal strength: PRR=10.93, ROR=12.86, EBGM=9.87
+  - Death: 22,402 reports, 3/3 methods flagging
+    Signal strength: PRR=2.43, ROR=2.60, EBGM=2.39
+  - Withdrawal syndrome: 16,853 reports, 3/3 methods flagging
+    Signal strength: PRR=12.14, ROR=13.07, EBGM=10.83
+  - Drug withdrawal syndrome: 13,874 reports, 3/3 methods flagging
+    Signal strength: PRR=14.45, ROR=15.37, EBGM=12.61
+  - Completed suicide: 8,640 reports, 3/3 methods flagging
+    Signal strength: PRR=10.99, ROR=11.40, EBGM=9.92
+  - Drug abuse: 6,996 reports, 3/3 methods flagging
+    Signal strength: PRR=8.68, ROR=8.94, EBGM=8.02
+  - Respiratory arrest: 4,266 reports, 3/3 methods flagging
+    Signal strength: PRR=6.17, ROR=6.28, EBGM=5.85
+  - Accidental overdose: 1,332 reports, 3/3 methods flagging
+    Signal strength: PRR=3.62, ROR=3.64, EBGM=3.52
+  - Drug toxicity: 501 reports, 3/3 methods flagging
+    Signal strength: PRR=3.49, ROR=3.49, EBGM=3.40
+  - Substance abuse: 407 reports, 3/3 methods flagging
+    Signal strength: PRR=4.92, ROR=4.93, EBGM=4.72
+  - Respiratory depression: 302 reports, 3/3 methods flagging
+    Signal strength: PRR=2.35, ROR=2.35, EBGM=2.31
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis
