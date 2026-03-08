@@ -335,7 +335,28 @@ def expand_drug_async(drug_name: str) -> Dict[str, Any]:
     """
     key = drug_name.strip().lower()
 
-    # Skip if already built or in progress
+    # ── Check the persistent backend first (survives process restarts) ──
+    try:
+        backend = _get_backend()
+        try:
+            node_id = backend.find_drug_node_id(drug_name)
+            if node_id:
+                node = backend.get_node(node_id)
+                # If it's a real Drug node (not a stub), skip the build
+                if node and node.get("type") == "Drug" and not node.get("stub"):
+                    _set_status(key, STATUS_PHASE2_COMPLETE, node_id=node_id)
+                    return {
+                        "node_id": node_id,
+                        "status": STATUS_PHASE2_COMPLETE,
+                        "skipped": True,
+                        "reason": "already_in_backend",
+                    }
+        finally:
+            backend.close()
+    except Exception:
+        pass  # If backend check fails, fall through to normal flow
+
+    # Skip if already built or in progress (in-memory check for current session)
     current_status = get_build_status(drug_name)
     if current_status in (
         STATUS_PHASE1_RUNNING,
