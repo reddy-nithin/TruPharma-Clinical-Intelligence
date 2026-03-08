@@ -32,7 +32,7 @@ from src.ingestion.openfda_client import (
     build_openfda_query,
     tokenize,
 )
-from src.kg.loader import load_kg
+from src.kg.loader import load_kg, reload_kg
 from src.rag.drug_profile import _extract_drug_name
 
 # ── Silence noisy libraries ──────────────────────────────────
@@ -134,6 +134,12 @@ def _drug_is_known(name: str) -> bool:
                 }
             except Exception:
                 pass  # Dynamic expansion is best-effort
+            # Reload the cached KG so the new drug is visible for
+            # KG enrichment within this same query.
+            try:
+                reload_kg()
+            except Exception:
+                pass
             return True
     except Exception:
         return True  # benefit of the doubt
@@ -356,11 +362,21 @@ def run_rag_query(
     """
     t0 = time.time()
 
-    # 1 ── Build openFDA search query from user text
-    search_q = build_openfda_query(query, fields=FIELD_ALLOWLIST)
+    # 1 ── Extract drug name and build a drug-scoped openFDA query
+    drug_name = _extract_drug_name(query)
+    if drug_name and len(drug_name) > 2:
+        # Scope the API search to the specific drug to avoid irrelevant
+        # labels (e.g. MEKINIST) dominating keyword-only searches.
+        # Use OR so both generic names (e.g. "tirzepatide") and brand
+        # names (e.g. "Zepbound") are matched.
+        search_q = (
+            f'openfda.generic_name:"{drug_name}"'
+            f'+OR+openfda.brand_name:"{drug_name}"'
+        )
+    else:
+        search_q = build_openfda_query(query, fields=FIELD_ALLOWLIST)
 
     # 1b ── Scope gate: reject queries that don't reference any drug
-    drug_name = _extract_drug_name(query)
     if not _drug_is_known(drug_name):
         lat = round((time.time() - t0) * 1000, 1)
         oos_answer = "Not enough evidence in the retrieved context."
@@ -522,19 +538,29 @@ def run_rag_query(
     try:
         kg = load_kg()
         if kg:
-            drug_name = _extract_drug_name(query)
+            # drug_name already extracted above — reuse it
 
             # Strategy 1: try the raw extracted name directly (uses alias table — fast, reliable)
-            if any([
-                kg.get_drug_identity(drug_name),
-            ]):
+            if kg.get_drug_identity(drug_name):
                 lookup = drug_name
             else:
-                # Strategy 2: RxNorm resolution as fallback (slower, network call)
+                # Strategy 2: RxNorm resolution as fallback
+                # Handles brand-name queries (e.g. "Zepbound" → rxcui for tirzepatide)
+                # where the KG stores the drug under its generic/rxcui ID.
                 try:
                     from src.ingestion.rxnorm import resolve_drug_name
                     rxnorm = resolve_drug_name(drug_name)
-                    lookup = rxnorm.get("rxcui") or rxnorm.get("generic_name") or drug_name
+                    # Try rxcui first, then generic name, then original
+                    for candidate in [
+                        rxnorm.get("rxcui"),
+                        rxnorm.get("generic_name"),
+                        drug_name,
+                    ]:
+                        if candidate and kg.get_drug_identity(candidate):
+                            lookup = candidate
+                            break
+                    else:
+                        lookup = rxnorm.get("rxcui") or rxnorm.get("generic_name") or drug_name
                 except Exception:
                     lookup = drug_name
 

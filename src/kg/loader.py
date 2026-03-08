@@ -295,13 +295,27 @@ def load_kg(path: str = _DEFAULT_KG_PATH) -> Optional[KnowledgeGraph]:
 
     Returns ``None`` when the backend is unavailable (graceful degradation).
     The result is cached: subsequent calls return the same instance.
+    A lightweight health check ensures stale connections are recycled.
     """
     global _KG_INSTANCE, _KG_LOADED
 
-    if _KG_LOADED:
-        return _KG_INSTANCE
+    # Fast path: return cached instance if it's still healthy
+    if _KG_LOADED and _KG_INSTANCE is not None:
+        try:
+            _KG_INSTANCE._b.count_nodes("Drug")  # health check
+            return _KG_INSTANCE
+        except Exception:
+            # Connection went stale — reset and re-load below
+            _KG_LOADED = False
+            try:
+                _KG_INSTANCE.close()
+            except Exception:
+                pass
+            _KG_INSTANCE = None
 
-    _KG_LOADED = True
+    # If we already tried and failed, don't retry every single call
+    if _KG_LOADED and _KG_INSTANCE is None:
+        return None
 
     try:
         if os.environ.get("NEO4J_URI"):
@@ -310,9 +324,29 @@ def load_kg(path: str = _DEFAULT_KG_PATH) -> Optional[KnowledgeGraph]:
             backend = create_backend("sqlite", sqlite_path=path, readonly=True)
         else:
             _KG_INSTANCE = None
+            _KG_LOADED = True
             return None
         _KG_INSTANCE = KnowledgeGraph(backend)
+        _KG_LOADED = True
     except Exception:
         _KG_INSTANCE = None
+        _KG_LOADED = True
 
     return _KG_INSTANCE
+
+
+def reload_kg(path: str = _DEFAULT_KG_PATH) -> Optional[KnowledgeGraph]:
+    """Force a fresh re-load of the Knowledge Graph.
+
+    Call after dynamic expansion so the cached read-only instance
+    picks up newly-added drug nodes.
+    """
+    global _KG_INSTANCE, _KG_LOADED
+    if _KG_INSTANCE is not None:
+        try:
+            _KG_INSTANCE.close()
+        except Exception:
+            pass
+    _KG_INSTANCE = None
+    _KG_LOADED = False
+    return load_kg(path)

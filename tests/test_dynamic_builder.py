@@ -138,6 +138,30 @@ class TestExpandDrugAsync(unittest.TestCase):
         mock_phase1.assert_not_called()
         mock_phase2.assert_not_called()
 
+    @patch("src.kg.dynamic_builder.expand_drug_phase2")
+    @patch("src.kg.dynamic_builder.expand_drug_phase1")
+    @patch("src.kg.dynamic_builder._get_backend")
+    def test_async_skips_when_drug_in_backend(self, mock_backend, mock_phase1, mock_phase2):
+        """expand_drug_async should skip if drug already exists in the persistent backend."""
+        from src.kg.dynamic_builder import expand_drug_async
+
+        # Mock a backend that finds the drug
+        backend = MagicMock()
+        backend.find_drug_node_id.return_value = "12345"
+        backend.get_node.return_value = {
+            "id": "12345",
+            "type": "Drug",
+            "generic_name": "aspirin",
+        }
+        mock_backend.return_value = backend
+
+        result = expand_drug_async("aspirin")
+
+        self.assertTrue(result.get("skipped", False))
+        self.assertEqual(result.get("reason"), "already_in_backend")
+        mock_phase1.assert_not_called()
+        mock_phase2.assert_not_called()
+
 
 class TestStatusConstants(unittest.TestCase):
     """Verify status constants are consistent."""
