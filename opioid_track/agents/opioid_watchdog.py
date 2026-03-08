@@ -451,6 +451,108 @@ class OpioidWatchdog:
                     break
         return results
 
+    def rank_ingredient_sensitivity(self, drug_name_or_rxcui: str) -> dict:
+        """Rank all active ingredients in a drug by sensitivity/danger.
+
+        Returns dict with: drug_name, ingredients (sorted most→least sensitive),
+        most_sensitive_ingredient, explanation.
+        """
+        drug = self._find_drug(drug_name_or_rxcui)
+        if not drug:
+            return {"error": f"'{drug_name_or_rxcui}' not found in registry."}
+
+        ingredients = drug.get("active_ingredients", [])
+        if not ingredients:
+            return {"error": f"No active ingredients found for '{drug['drug_name']}'."}
+
+        scored = []
+        for ing in ingredients:
+            name = ing.get("name", "").lower()
+            is_opioid = ing.get("is_opioid_component", False)
+            pharm = self._ingredient_pharm.get(name, {})
+
+            # --- Composite sensitivity score (0–100) ---
+            # Higher = more dangerous / more sensitive
+            score = 0.0
+            factors = []
+
+            # Factor 1: danger_rank (1=most dangerous → higher score)
+            danger_rank = pharm.get("danger_rank")
+            total_ranked = len(self._ingredient_pharm)
+            if danger_rank is not None and total_ranked > 0:
+                rank_score = max(0, (1 - (danger_rank - 1) / max(total_ranked, 1))) * 30
+                score += rank_score
+                factors.append(f"Danger rank #{danger_rank}/{total_ranked}")
+
+            # Factor 2: therapeutic index (lower = more dangerous)
+            ti = pharm.get("therapeutic_index")
+            if ti is not None and ti > 0:
+                ti_score = min(25, max(0, (1 - ti / 100) * 25))
+                score += ti_score
+                factors.append(f"Therapeutic index: {ti:.1f}")
+
+            # Factor 3: potency vs morphine (higher = more dangerous)
+            potency = pharm.get("potency_vs_morphine")
+            if potency is not None:
+                pot_score = min(25, (potency / 100) * 25)
+                score += pot_score
+                factors.append(f"Potency: {potency:.1f}x morphine")
+
+            # Factor 4: lethal dose (lower = more dangerous)
+            lethal = pharm.get("estimated_human_lethal_dose_mg")
+            if lethal is not None and lethal > 0:
+                ld_score = min(20, max(0, (1 - lethal / 2000) * 20))
+                score += ld_score
+                factors.append(f"Est. lethal dose: {lethal:.0f} mg")
+
+            # Opioid component bonus (opioids are inherently more concerning)
+            if is_opioid:
+                score += 5
+                factors.append("Opioid receptor ligand")
+
+            scored.append({
+                "name": ing.get("name", name),
+                "is_opioid_component": is_opioid,
+                "sensitivity_score": round(score, 1),
+                "danger_level": pharm.get("danger_level", "Unknown"),
+                "therapeutic_index": ti,
+                "potency_vs_morphine": potency,
+                "estimated_lethal_dose_mg": lethal,
+                "factors": factors,
+                "has_pharmacology_data": bool(pharm),
+            })
+
+        # Sort: highest score first
+        scored.sort(key=lambda x: x["sensitivity_score"], reverse=True)
+
+        most_sensitive = scored[0] if scored else None
+        explanation = ""
+        if most_sensitive:
+            name = most_sensitive["name"]
+            if most_sensitive["is_opioid_component"]:
+                explanation = (
+                    f"{name.title()} is the most sensitive ingredient because it is an "
+                    f"opioid receptor ligand"
+                )
+            else:
+                explanation = (
+                    f"{name.title()} is flagged as the most sensitive ingredient"
+                )
+            if most_sensitive["factors"]:
+                explanation += f" ({'; '.join(most_sensitive['factors'])})"
+            explanation += "."
+            dl = most_sensitive.get("danger_level", "Unknown")
+            if dl in ("Extreme", "Very High", "High"):
+                explanation += f" Its danger level is classified as {dl}."
+
+        return {
+            "drug_name": drug["drug_name"],
+            "rxcui": drug["rxcui"],
+            "ingredients": scored,
+            "most_sensitive_ingredient": most_sensitive["name"] if most_sensitive else None,
+            "explanation": explanation,
+        }
+
     def assess_dose_risk(self, drug_name: str, daily_dose_mg: float) -> dict:
         """Assess risk for a given daily dose of an opioid.
 

@@ -233,6 +233,9 @@ KM_SCALING = {
 
 # NLP — CDCgov/Opioid_Involvement_NLP vendor path
 NLP_INSIGHTS_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_nlp_insights.json"
+
+# Demographics data (CDC published summary tables)
+DEMOGRAPHICS_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_demographics.json"
 CDC_NLP_VENDOR_DIR = "opioid_track/vendor/Opioid_Involvement_NLP"
 SPL_OPIOID_SECTIONS = {
     "boxed_warning":       "34066-1",

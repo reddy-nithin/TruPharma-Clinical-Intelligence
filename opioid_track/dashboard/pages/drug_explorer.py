@@ -1,8 +1,5 @@
-"""
-Drug Explorer Page — Deep dive into individual opioid drugs.
-"""
-
 import streamlit as st
+from opioid_track.agents.opioid_watchdog import OpioidWatchdog
 from opioid_track.dashboard.components.charts import create_receptor_bar
 from opioid_track.dashboard.components.accessibility import (
     chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
@@ -33,6 +30,11 @@ def _get_nlp_data(nlp: dict, drug_name: str) -> dict | None:
         if drug_name.lower() in d.get("drug_name", "").lower():
             return d
     return None
+
+
+@st.cache_resource
+def _get_watchdog_explorer(key: str) -> OpioidWatchdog:
+    return OpioidWatchdog()
 
 
 def render(data: dict):
@@ -112,6 +114,60 @@ def render(data: dict):
         if non_opioid:
             ing_text += ", " + ", ".join(i["name"] for i in non_opioid)
         st.markdown(f"**Active Ingredients:** {ing_text}")
+
+    # --- Sensitivity Analysis Panel ---
+    watchdog = _get_watchdog_explorer("v1")
+    sensitivity = watchdog.rank_ingredient_sensitivity(drug["rxcui"])
+    if "error" not in sensitivity:
+        ranked = sensitivity.get("ingredients", [])
+        if ranked:
+            st.markdown("<h2 class='section-header'>Sensitivity Analysis</h2>",
+                        unsafe_allow_html=True)
+            st.caption(
+                "Ingredients ranked by composite sensitivity score "
+                "(danger rank, therapeutic index, potency, lethal dose)"
+            )
+
+            # Explanation callout
+            explanation = sensitivity.get("explanation", "")
+            if explanation:
+                st.info(f"🔬 {explanation}")
+
+            # Render scored ingredients
+            cols = st.columns(min(len(ranked), 4))
+            for idx, ing in enumerate(ranked):
+                with cols[idx % len(cols)]:
+                    badge = " 🔴" if idx == 0 else ""
+                    label_prefix = "MOST SENSITIVE — " if idx == 0 else ""
+                    score = ing["sensitivity_score"]
+                    css = ("danger-high" if score > 40
+                           else "danger-moderate" if score > 20
+                           else "danger-low")
+                    _metric_card(
+                        f"{label_prefix}{ing['name']}{badge}",
+                        f"{score:.0f}/100",
+                        css,
+                    )
+
+                    dl = ing.get("danger_level", "Unknown")
+                    ti = ing.get("therapeutic_index")
+                    pot = ing.get("potency_vs_morphine")
+                    ld = ing.get("estimated_lethal_dose_mg")
+
+                    details = []
+                    if dl != "Unknown":
+                        details.append(f"Danger: {dl}")
+                    if ti is not None:
+                        details.append(f"TI: {ti:.0f}")
+                    if pot is not None:
+                        details.append(f"Potency: {pot:.1f}x")
+                    if ld is not None:
+                        details.append(f"Lethal: {ld:.0f}mg")
+                    if ing.get("is_opioid_component"):
+                        details.append("⚠️ Opioid")
+
+                    if details:
+                        st.caption(" · ".join(details))
 
     # --- Pharmacology Panel ---
     if pharmacology and opioid_ings:

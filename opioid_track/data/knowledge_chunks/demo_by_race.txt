@@ -1,0 +1,10 @@
+OPIOID OVERDOSE DEATHS BY RACE/ETHNICITY (2022)
+
+  White (Non-Hispanic): 42,985 deaths (27.5/100K, 55.5% of total)
+  Black (Non-Hispanic): 17,541 deaths (40.8/100K, 22.7% of total)
+  Hispanic/Latino: 10,982 deaths (17.4/100K, 14.2% of total)
+  American Indian/Alaska Native: 1,474 deaths (44.3/100K, 1.9% of total)
+  Asian/Pacific Islander: 1,230 deaths (4.9/100K, 1.6% of total)
+  Other/Multiracial: 3,191 deaths (22.1/100K, 4.1% of total)
+
+American Indian/Alaska Native populations have the highest age-adjusted rate (44.3/100K) despite representing only 1.9% of total deaths. Black Non-Hispanic populations have the second-highest rate (40.8/100K). White Non-Hispanic populations have the highest absolute number of deaths due to larger population size. Racial disparities in opioid overdose deaths have widened significantly since 2015.

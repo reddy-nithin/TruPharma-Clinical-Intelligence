@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-07T19:27:01.197499+00:00",
-  "total_chunks": 55,
-  "total_tokens_estimate": 16527,
+  "generated_at": "2026-03-08T16:54:51.585751+00:00",
+  "total_chunks": 58,
+  "total_tokens_estimate": 16950,
   "chunks": [
     {
       "filename": "classification_categories.txt",
@@ -386,6 +386,27 @@
       "token_estimate": 345,
       "type": "faers_signals",
       "drug_name": "naltrexone",
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_age.txt",
+      "token_estimate": 142,
+      "type": "demographics",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_sex.txt",
+      "token_estimate": 71,
+      "type": "demographics",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_race.txt",
+      "token_estimate": 210,
+      "type": "demographics",
+      "drug_name": null,
       "rxcui": null
     }
   ]

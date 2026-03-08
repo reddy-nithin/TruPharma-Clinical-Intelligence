@@ -461,6 +461,74 @@ def generate_signal_chunks(signal_data: dict, chunks_dir: str, manifest: list):
 
 
 # ------------------------------------------------------------------
+# Demographic chunks
+# ------------------------------------------------------------------
+
+def generate_demographics_chunks(demographics_data: dict, chunks_dir: str, manifest: list):
+    """Generate knowledge chunks from demographics data."""
+    if not demographics_data:
+        return
+
+    meta = demographics_data.get("metadata", {})
+    by_age = demographics_data.get("by_age_group", [])
+    by_sex = demographics_data.get("by_sex", [])
+    by_race = demographics_data.get("by_race_ethnicity", [])
+
+    # --- Age breakdown chunk ---
+    if by_age:
+        text = f"OPIOID OVERDOSE DEATHS BY AGE GROUP ({meta.get('data_year', '?')})\n\n"
+        total = sum(d["deaths"] for d in by_age)
+        text += f"Total opioid-involved overdose deaths: {total:,}\n\n"
+        for d in by_age:
+            text += (
+                f"  {d['group']}: {d['deaths']:,} deaths "
+                f"({d['rate_per_100k']}/100K, {d['pct_of_total']}% of total)\n"
+            )
+        text += (
+            "\nAdults aged 25-44 account for nearly 47% of all opioid overdose deaths. "
+            "The 35-44 age group has the highest rate at 43.9 per 100K.\n"
+        )
+        _save_chunk(chunks_dir, "demo_by_age.txt", text, manifest,
+                    type="demographics", drug_name=None, rxcui=None)
+
+    # --- Sex breakdown chunk ---
+    if by_sex:
+        text = f"OPIOID OVERDOSE DEATHS BY SEX ({meta.get('data_year', '?')})\n\n"
+        for d in by_sex:
+            text += (
+                f"  {d['sex']}: {d['deaths']:,} deaths "
+                f"({d['rate_per_100k']}/100K, {d['pct_of_total']}% of total)\n"
+            )
+        text += (
+            "\nMales die from opioid overdoses at 2.3x the rate of females "
+            "(33.1 vs 14.2 per 100K). Males account for nearly 70% of all "
+            "opioid overdose deaths.\n"
+        )
+        _save_chunk(chunks_dir, "demo_by_sex.txt", text, manifest,
+                    type="demographics", drug_name=None, rxcui=None)
+
+    # --- Race/ethnicity breakdown chunk ---
+    if by_race:
+        text = f"OPIOID OVERDOSE DEATHS BY RACE/ETHNICITY ({meta.get('data_year', '?')})\n\n"
+        for d in by_race:
+            text += (
+                f"  {d['group']}: {d['deaths']:,} deaths "
+                f"({d['rate_per_100k']}/100K, {d['pct_of_total']}% of total)\n"
+            )
+        text += (
+            "\nAmerican Indian/Alaska Native populations have the highest "
+            "age-adjusted rate (44.3/100K) despite representing only 1.9% of "
+            "total deaths. Black Non-Hispanic populations have the second-highest "
+            "rate (40.8/100K). White Non-Hispanic populations have the highest "
+            "absolute number of deaths due to larger population size. Racial "
+            "disparities in opioid overdose deaths have widened significantly "
+            "since 2015.\n"
+        )
+        _save_chunk(chunks_dir, "demo_by_race.txt", text, manifest,
+                    type="demographics", drug_name=None, rxcui=None)
+
+
+# ------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------
 
@@ -493,6 +561,11 @@ def build_knowledge_chunks():
 
     print("Generating FAERS signal chunks...")
     generate_signal_chunks(signals, chunks_dir, manifest)
+
+    demographics = _load_json(config.DEMOGRAPHICS_OUTPUT)
+    if demographics:
+        print("Generating demographics chunks...")
+        generate_demographics_chunks(demographics, chunks_dir, manifest)
 
     manifest_path = os.path.join(chunks_dir, "manifest.json")
     with open(manifest_path, "w") as f:

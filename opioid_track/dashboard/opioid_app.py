@@ -713,6 +713,7 @@ def load_all_data():
         "prescribing": load_json_safe(config.CMS_PRESCRIBING_OUTPUT),
         "geographic":  load_json_safe(config.GEO_PROFILES_OUTPUT),
         "mme":         load_json_safe(config.MME_REFERENCE_OUTPUT),
+        "demographics":load_json_safe(config.DEMOGRAPHICS_OUTPUT),
     }
 
 
@@ -748,6 +749,7 @@ def render_sidebar():
                 "\U0001F50D Drug Explorer",
                 "\U0001F30D Opioid Landscape",
                 "\U0001F5FA Geographic Intelligence",
+                "\U0001F4CA Demographics",
                 "\U000026A0 Signal Detection",
                 "\U0001F6E1 Watchdog Tools",
             ],
@@ -764,6 +766,7 @@ def render_sidebar():
         sigs   = data.get("signals")
         nlp    = data.get("nlp_insights")
         geo    = data.get("geographic")
+        demo   = data.get("demographics")
 
         reg_meta   = reg.get("metadata", {})    if reg    else {}
         pharma_meta= pharma.get("metadata", {}) if pharma else {}
@@ -781,6 +784,7 @@ def render_sidebar():
             + _status_row("FAERS Signals", f"{cons} consensus", bool(sigs))
             + _status_row("NLP Labels", f"{nlp_n} drugs", bool(nlp))
             + _status_row("Geographic", "loaded" if geo else "missing", bool(geo))
+            + _status_row("Demographics", "loaded" if demo else "missing", bool(demo))
         )
 
         st.markdown(
@@ -842,6 +846,9 @@ def main():
         render(data)
     elif "\U0001F5FA" in page:
         from opioid_track.dashboard.pages.geography import render
+        render(data)
+    elif "\U0001F4CA" in page:
+        from opioid_track.dashboard.pages.demographics import render
         render(data)
     elif "\U000026A0" in page:
         from opioid_track.dashboard.pages.signals import render
