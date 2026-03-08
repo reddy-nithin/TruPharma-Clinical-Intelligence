@@ -1,6 +1,8 @@
 import streamlit as st
 from opioid_track.agents.opioid_watchdog import OpioidWatchdog
 from opioid_track.dashboard.components.charts import create_receptor_bar
+from opioid_track.dashboard.components.molecule_viewer import render_3d_molecule
+
 from opioid_track.dashboard.components.accessibility import (
     chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
 )
@@ -168,6 +170,11 @@ def render(data: dict):
 
                     if details:
                         st.caption(" · ".join(details))
+
+    # --- 3D Molecular Insight ---
+    if opioid_ings:
+        st.divider()
+        render_3d_molecule(opioid_ings[0]["name"].lower())
 
     # --- Pharmacology Panel ---
     if pharmacology and opioid_ings:
