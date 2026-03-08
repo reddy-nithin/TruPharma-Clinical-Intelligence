@@ -6,6 +6,9 @@ import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
 
+from opioid_track.dashboard.components.accessibility import (
+    chart_caption, section_banner, BANNERS, CHART_CAPTIONS,
+)
 from opioid_track.dashboard.components.charts import (
     create_potency_chart,
     create_danger_scatter,
@@ -129,8 +132,10 @@ def render(data: dict):
 
     # --- Classification Treemap ---
     st.markdown("### Classification Overview")
+    section_banner("Drug Classification", BANNERS["landscape_classification"])
     fig = _build_treemap(registry, signals)
     st.plotly_chart(fig, use_container_width=True)
+    chart_caption(CHART_CAPTIONS["treemap"])
 
     # --- Two-column: Potency + Schedule ---
     col1, col2 = st.columns([3, 2])
@@ -140,29 +145,36 @@ def render(data: dict):
             st.markdown("### Potency Comparison")
             fig = create_potency_chart(pharmacology)
             st.plotly_chart(fig, use_container_width=True)
+            chart_caption(CHART_CAPTIONS["potency_bar"])
 
     with col2:
         st.markdown("### Schedule Breakdown")
         fig = create_schedule_donut(registry)
         st.plotly_chart(fig, use_container_width=True)
+        chart_caption(CHART_CAPTIONS["schedule_donut"])
 
     # --- Danger Matrix ---
     if pharmacology:
         st.markdown("### Danger Matrix")
+        section_banner("Danger Matrix", BANNERS["danger_matrix"])
         fig = _build_danger_matrix(pharmacology)
         st.plotly_chart(fig, use_container_width=True)
+        chart_caption(CHART_CAPTIONS["danger_matrix"])
 
     # --- Danger Scatter (FAERS overlay) ---
     if pharmacology and signals:
         st.markdown("### Potency vs FAERS Safety Signals")
         fig = create_danger_scatter(pharmacology, signals.get("signals", []))
         st.plotly_chart(fig, use_container_width=True)
+        chart_caption(CHART_CAPTIONS["faers_scatter"])
 
     # --- Three Waves Timeline ---
     if mortality:
         st.markdown("### Three Waves of the Opioid Epidemic")
+        section_banner("The Three Waves", BANNERS["three_waves"])
         fig = create_timeline_chart(mortality)
         st.plotly_chart(fig, use_container_width=True)
+        chart_caption(CHART_CAPTIONS["three_waves"])
 
         # Summary stats
         annual = mortality.get("annual_national", [])

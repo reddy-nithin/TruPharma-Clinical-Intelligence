@@ -6,6 +6,9 @@ Choropleth logic adapted from plotly/dash-opioid-epidemic-demo.
 import streamlit as st
 import plotly.graph_objects as go
 
+from opioid_track.dashboard.components.accessibility import (
+    chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
+)
 from opioid_track.dashboard.components.charts import (
     create_state_choropleth,
     DARK_BG, CARD_BG, GRID_COLOR, TEXT_COLOR, TEAL, AMBER, RED,
@@ -33,15 +36,15 @@ def _build_state_bar(geo_data: dict, metric: str, top_n: int = 25) -> go.Figure:
             continue
 
         if metric == "risk_score":
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
         elif metric == "prescribing_rate":
-            val = c.get("cms_data", {}).get("prescribing_rate")
+            val = (c.get("cms_data") or {}).get("prescribing_rate")
         elif metric == "death_rate_per_100k":
-            val = c.get("cdc_state_data", {}).get("death_rate_per_100k")
+            val = (c.get("cdc_state_data") or {}).get("death_rate_per_100k")
         elif metric == "pills_per_capita":
-            val = c.get("medicaid_supply", {}).get("claims_per_capita_annual_avg")
+            val = (c.get("medicaid_supply") or {}).get("claims_per_capita_annual_avg")
         else:
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
 
         if val is not None:
             if state not in state_agg:
@@ -80,8 +83,13 @@ def _build_state_bar(geo_data: dict, metric: str, top_n: int = 25) -> go.Figure:
                        height=max(400, top_n * 25))
 
 
-def _build_county_table(geo_data: dict, state_filter: str, metric: str) -> list[dict]:
-    """Get county-level data for a selected state."""
+def _build_county_table(geo_data: dict, state_filter: str, metric: str,
+                        search: str = "", tiers: list | None = None,
+                        min_risk: float = 0.0, max_risk: float = 1.0,
+                        min_pop: int = 0, max_pop: int = 999_999_999,
+                        data_completeness: str = "All", sort_col: str = "",
+                        sort_desc: bool = True) -> list[dict]:
+    """Get filtered, sorted county-level data for a selected state."""
     counties = geo_data.get("counties", [])
     rows = []
 
@@ -89,34 +97,71 @@ def _build_county_table(geo_data: dict, state_filter: str, metric: str) -> list[
         if state_filter and c.get("state_abbr") != state_filter:
             continue
 
-        risk = c.get("derived_metrics", {}).get("risk_score", 0)
-        tier = c.get("derived_metrics", {}).get("risk_tier", "")
-        prescribing = c.get("cms_data", {}).get("prescribing_rate")
-        death_rate = c.get("cdc_state_data", {}).get("death_rate_per_100k")
-        claims = c.get("medicaid_supply", {}).get("claims_per_capita_annual_avg")
+        risk = (c.get("derived_metrics") or {}).get("risk_score", 0) or 0
+        tier = (c.get("derived_metrics") or {}).get("risk_tier", "") or ""
+        prescribing = (c.get("cms_data") or {}).get("prescribing_rate")
+        death_rate = (c.get("cdc_state_data") or {}).get("death_rate_per_100k")
+        claims = (c.get("medicaid_supply") or {}).get("claims_per_capita_annual_avg")
+        pop = c.get("population") or 0
+        county_name = c.get("county", "")
+
+        # --- Filters ---
+        if search and search.lower() not in county_name.lower():
+            continue
+        if tiers and tier not in tiers:
+            continue
+        if not (min_risk <= risk <= max_risk):
+            continue
+        if not (min_pop <= pop <= max_pop):
+            continue
+        if data_completeness == "Has Rx Rate" and prescribing is None:
+            continue
+        if data_completeness == "Has Death Rate" and death_rate is None:
+            continue
+        if data_completeness == "Complete (all 3)" and any(
+            v is None for v in (prescribing, death_rate, claims)
+        ):
+            continue
 
         rows.append({
-            "County": c.get("county", ""),
+            "County": county_name,
             "FIPS": c.get("fips_code", ""),
-            "Population": f"{c.get('population', 0):,}",
-            "Risk Score": f"{risk:.3f}",
+            "Population": pop,
+            "Risk Score": round(risk, 3),
             "Risk Tier": tier,
-            "Rx Rate": f"{prescribing:.1f}" if prescribing else "N/A",
-            "Death Rate /100K": f"{death_rate:.1f}" if death_rate else "N/A",
-            "Claims/Capita": f"{claims:.3f}" if claims else "N/A",
+            "Rx Rate": round(prescribing, 1) if prescribing is not None else None,
+            "Death Rate /100K": round(death_rate, 1) if death_rate is not None else None,
+            "Claims/Capita": round(claims, 3) if claims is not None else None,
         })
 
-    sort_key = {
+    # Sort
+    sort_key = sort_col or {
         "risk_score": "Risk Score",
         "prescribing_rate": "Rx Rate",
         "death_rate_per_100k": "Death Rate /100K",
         "pills_per_capita": "Claims/Capita",
     }.get(metric, "Risk Score")
 
-    rows.sort(key=lambda r: float(r[sort_key].replace(",", ""))
-              if r[sort_key] not in ("N/A", "") else 0, reverse=True)
+    rows.sort(
+        key=lambda r: (r[sort_key] is None, r[sort_key] or 0),
+        reverse=sort_desc,
+    )
 
-    return rows[:100]
+    # Format for display (after sorting on raw numbers)
+    display = []
+    for r in rows:
+        display.append({
+            "County": r["County"],
+            "FIPS": r["FIPS"],
+            "Population": f"{r['Population']:,}",
+            "Risk Score": f"{r['Risk Score']:.3f}",
+            "Risk Tier": r["Risk Tier"],
+            "Rx Rate": f"{r['Rx Rate']:.1f}" if r["Rx Rate"] is not None else "N/A",
+            "Death Rate /100K": f"{r['Death Rate /100K']:.1f}" if r["Death Rate /100K"] is not None else "N/A",
+            "Claims/Capita": f"{r['Claims/Capita']:.3f}" if r["Claims/Capita"] is not None else "N/A",
+        })
+
+    return display
 
 
 def render(data: dict):
@@ -143,15 +188,18 @@ def render(data: dict):
 
     # --- Metric selector ---
     st.markdown("### National Map")
+    section_banner("Reading the Geographic Map", BANNERS["geo_map"])
     metric = st.selectbox(
         "Select metric to visualize",
         list(METRIC_OPTIONS.keys()),
         format_func=lambda k: METRIC_OPTIONS[k],
+        help=WIDGET_HELP["metric_select"],
     )
 
     # --- Choropleth ---
     fig = create_state_choropleth(geo_data, metric)
     st.plotly_chart(fig, use_container_width=True)
+    chart_caption(CHART_CAPTIONS["choropleth"])
 
     # --- State comparison bar ---
     st.markdown("### State Comparison")
@@ -161,6 +209,7 @@ def render(data: dict):
     with col2:
         fig = _build_state_bar(geo_data, metric, top_n)
         st.plotly_chart(fig, use_container_width=True)
+    chart_caption(CHART_CAPTIONS["state_bar"])
 
     # --- Year timeline from mortality ---
     if mortality:
@@ -181,19 +230,99 @@ def render(data: dict):
                                      line=dict(color=RED, width=3)))
             fig.update_yaxes(title="Deaths")
             fig.update_xaxes(title="Year")
-            _apply_dark(fig, title="National Overdose Death Trends", height=400)
+            fig = _apply_dark(fig, title="National Overdose Death Trends", height=400)
             st.plotly_chart(fig, use_container_width=True)
+            chart_caption(CHART_CAPTIONS["overdose_timeline"])
 
     # --- County detail panel ---
     st.markdown("### County Detail")
+    section_banner("County-Level Data", BANNERS["geo_county"])
     counties = geo_data.get("counties", [])
     states = sorted(set(c.get("state_abbr", "") for c in counties if c.get("state_abbr")))
 
     selected_state = st.selectbox("Select a state", states)
+
     if selected_state:
-        county_rows = _build_county_table(geo_data, selected_state, metric)
+        # ── Filter controls ──────────────────────────────────────────────
+        with st.expander("Filters & Sort", expanded=True):
+            fc1, fc2, fc3 = st.columns(3)
+
+            with fc1:
+                county_search = st.text_input(
+                    "Search county name",
+                    placeholder="e.g. Douglas, St. Louis",
+                    key="county_search",
+                )
+                tier_filter = st.multiselect(
+                    "Risk Tier",
+                    options=["High", "Medium", "Low"],
+                    default=[],
+                    key="tier_filter",
+                    help=WIDGET_HELP["tier_filter"],
+                )
+
+            with fc2:
+                risk_range = st.slider(
+                    "Risk Score range",
+                    min_value=0.0, max_value=0.6,
+                    value=(0.0, 0.6),
+                    step=0.01,
+                    format="%.2f",
+                    key="risk_range",
+                    help=WIDGET_HELP["risk_range_slider"],
+                )
+                completeness = st.selectbox(
+                    "Data completeness",
+                    options=["All", "Has Rx Rate", "Has Death Rate", "Complete (all 3)"],
+                    key="completeness",
+                    help=WIDGET_HELP["completeness"],
+                )
+
+            with fc3:
+                pop_options = {
+                    "Any": (0, 999_999_999),
+                    "< 10K (rural)": (0, 10_000),
+                    "10K – 50K": (10_000, 50_000),
+                    "50K – 250K": (50_000, 250_000),
+                    "250K – 1M": (250_000, 1_000_000),
+                    "> 1M (urban)": (1_000_000, 999_999_999),
+                }
+                pop_label = st.selectbox(
+                    "Population range",
+                    options=list(pop_options.keys()),
+                    key="pop_filter",
+                )
+                sort_col = st.selectbox(
+                    "Sort by",
+                    options=["Risk Score", "Population", "Rx Rate",
+                             "Death Rate /100K", "Claims/Capita", "County"],
+                    key="sort_col",
+                )
+                sort_desc = st.checkbox("Descending", value=True, key="sort_desc")
+
+        min_pop, max_pop = pop_options[pop_label]
+
+        county_rows = _build_county_table(
+            geo_data,
+            state_filter=selected_state,
+            metric=metric,
+            search=county_search,
+            tiers=tier_filter if tier_filter else None,
+            min_risk=risk_range[0],
+            max_risk=risk_range[1],
+            min_pop=min_pop,
+            max_pop=max_pop,
+            data_completeness=completeness,
+            sort_col=sort_col,
+            sort_desc=sort_desc,
+        )
+
         if county_rows:
             st.dataframe(county_rows, use_container_width=True, hide_index=True)
-            st.caption(f"Showing top {len(county_rows)} counties in {selected_state}")
+            st.caption(
+                f"{len(county_rows)} counties in {selected_state} "
+                f"matching current filters — sorted by {sort_col} "
+                f"({'desc' if sort_desc else 'asc'})"
+            )
         else:
-            st.info(f"No county data for {selected_state}")
+            st.info("No counties match the current filters. Try widening your criteria.")

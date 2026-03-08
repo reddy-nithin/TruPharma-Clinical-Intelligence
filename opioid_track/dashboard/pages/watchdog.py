@@ -5,6 +5,9 @@ Watchdog Tools Page — Interactive opioid intelligence tools powered by OpioidW
 import streamlit as st
 
 from opioid_track.agents.opioid_watchdog import OpioidWatchdog
+from opioid_track.dashboard.components.accessibility import (
+    chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
+)
 
 
 def _metric_card(label: str, value, css_class: str = ""):
@@ -56,6 +59,7 @@ def render(data: dict):
     with tab1:
         st.markdown("<h2 class='section-header'>Dose Risk Calculator</h2>",
                     unsafe_allow_html=True)
+        section_banner("How the Dose Risk Calculator Works", BANNERS["dose_calc"])
         st.markdown(
             "Assess the risk of a specific daily opioid dose using MME calculations, "
             "lethal dose proximity, and CDC guidelines."
@@ -68,6 +72,7 @@ def render(data: dict):
                 ingredients,
                 format_func=str.title,
                 key="dose_drug",
+                help=WIDGET_HELP["dose_drug"],
             )
         with col_input2:
             daily_dose = st.number_input(
@@ -77,6 +82,7 @@ def render(data: dict):
                 value=30.0,
                 step=5.0,
                 key="dose_mg",
+                help=WIDGET_HELP["dose_mg"],
             )
 
         if st.button("Assess Risk", type="primary", key="assess_btn"):
@@ -117,20 +123,26 @@ def render(data: dict):
                     pct = lethal["daily_dose_as_pct_of_lethal"]
                     ld_mg = lethal["estimated_lethal_dose_mg"]
 
-                    bar_color = "#ef4444" if pct > 50 else "#f59e0b" if pct > 20 else "#22c55e"
+                    bar_color = "var(--signal-high)" if pct > 50 else "var(--signal-warn)" if pct > 20 else "var(--signal-ok)"
                     bar_width = min(pct, 100)
+                    label_color = "#fca5a5" if pct > 50 else "#fcd34d" if pct > 20 else "#86efac"
 
                     st.markdown(
-                        f"**Lethal Dose Proximity:** {pct:.1f}% of estimated lethal dose "
-                        f"({ld_mg:.0f} mg for a 70 kg adult)"
-                    )
-                    st.markdown(
-                        f'<div style="background:#1b2838; border-radius:8px; height:24px; '
-                        f'border:1px solid #2d4a5e; overflow:hidden;">'
-                        f'<div style="background:{bar_color}; width:{bar_width}%; height:100%; '
-                        f'border-radius:8px 0 0 8px; transition:width 0.5s;"></div></div>',
+                        f"<div style='font-family:var(--font-body); font-size:0.875rem; "
+                        f"color:var(--text-secondary); margin-bottom:0.35rem;'>"
+                        f"Lethal Dose Proximity: "
+                        f"<span style='font-family:var(--font-data); font-weight:700; color:{label_color};'>"
+                        f"{pct:.1f}%</span>"
+                        f" &nbsp;of estimated lethal dose ({ld_mg:.0f}&thinsp;mg / 70&thinsp;kg adult)</div>",
                         unsafe_allow_html=True,
                     )
+                    st.markdown(
+                        f'<div class="tp-dose-bar-wrap">'
+                        f'<div class="tp-dose-bar-fill" style="width:{bar_width}%; background:{bar_color};"></div>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+                    chart_caption(CHART_CAPTIONS["lethal_bar"])
 
                 risk_factors = result.get("risk_factors", [])
                 if risk_factors:
@@ -161,6 +173,7 @@ def render(data: dict):
     with tab2:
         st.markdown("<h2 class='section-header'>Danger Comparator</h2>",
                     unsafe_allow_html=True)
+        section_banner("How to Read the Comparator", BANNERS["comparator"])
         st.markdown(
             "Compare the danger profiles of two opioid ingredients side by side "
             "with receptor affinity, potency, lethality, and therapeutic index."
@@ -174,6 +187,7 @@ def render(data: dict):
                 index=ingredients.index("morphine") if "morphine" in ingredients else 0,
                 format_func=str.title,
                 key="cmp_a",
+                help=WIDGET_HELP["cmp_a"],
             )
         with col_b:
             default_b = ingredients.index("fentanyl") if "fentanyl" in ingredients else 1
@@ -183,6 +197,7 @@ def render(data: dict):
                 index=default_b,
                 format_func=str.title,
                 key="cmp_b",
+                help=WIDGET_HELP["cmp_b"],
             )
 
         if drug_a == drug_b:
@@ -247,6 +262,7 @@ def render(data: dict):
     with tab3:
         st.markdown("<h2 class='section-header'>Intelligence Brief</h2>",
                     unsafe_allow_html=True)
+        section_banner("What the Intelligence Brief Contains", BANNERS["brief"])
         st.markdown(
             "Generate a comprehensive opioid intelligence brief combining pharmacology, "
             "safety data, FAERS signals, and NLP-mined label warnings."
@@ -265,9 +281,7 @@ def render(data: dict):
         if rxcui:
             brief_text = watchdog.format_brief_text(rxcui)
             st.markdown(
-                f'<div style="background:#1b2838; border:1px solid #2d4a5e; '
-                f'border-radius:10px; padding:1.5rem; margin:1rem 0;">'
-                f'{_md_to_html(brief_text)}</div>',
+                f'<div class="tp-brief">{_md_to_html(brief_text)}</div>',
                 unsafe_allow_html=True,
             )
 
@@ -294,14 +308,36 @@ def _md_to_html(text: str) -> str:
     for line in lines:
         line = line.rstrip()
         if line.startswith("# "):
-            out.append(f"<h3 style='color:#5eead4; margin:0 0 0.3rem 0;'>{line[2:]}</h3>")
+            out.append(
+                f"<div style='font-family:var(--font-header); font-size:1.1rem; "
+                f"font-weight:800; color:var(--teal-bright); margin:0 0 0.4rem 0; "
+                f"letter-spacing:-0.01em;'>{line[2:]}</div>"
+            )
         elif line.startswith("## "):
-            out.append(f"<h4 style='color:#94a3b8; margin:1rem 0 0.3rem 0;'>{line[3:]}</h4>")
+            out.append(
+                f"<div style='font-family:var(--font-body); font-size:0.72rem; "
+                f"font-weight:600; letter-spacing:0.1em; text-transform:uppercase; "
+                f"color:var(--text-label); margin:1.2rem 0 0.3rem 0; "
+                f"border-top:1px solid var(--border-subtle); padding-top:0.6rem;'>"
+                f"{line[3:]}</div>"
+            )
         elif line.startswith("  - "):
-            out.append(f"<div style='margin-left:1rem; color:#e0e6ed;'>&bull; {line[4:]}</div>")
+            out.append(
+                f"<div style='margin-left:1rem; color:var(--text-secondary); "
+                f"font-size:0.85rem; padding:0.15rem 0;'>"
+                f"<span style='color:var(--teal-dim); margin-right:0.4rem;'>&rsaquo;</span>"
+                f"{line[4:]}</div>"
+            )
         elif line == "":
-            out.append("<br/>")
+            out.append("<div style='height:0.4rem;'></div>")
         else:
-            styled = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', line)
-            out.append(f"<div style='color:#e0e6ed;'>{styled}</div>")
+            styled = re.sub(
+                r'\*\*(.+?)\*\*',
+                r"<strong style='color:var(--text-primary);'>\1</strong>",
+                line,
+            )
+            out.append(
+                f"<div style='font-family:var(--font-body); color:var(--text-secondary); "
+                f"font-size:0.875rem; line-height:1.6;'>{styled}</div>"
+            )
     return "\n".join(out)

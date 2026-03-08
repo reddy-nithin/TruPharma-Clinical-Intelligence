@@ -5,6 +5,9 @@ Signal Detection Page — FAERS pharmacovigilance signal heatmap, detail, and ra
 import streamlit as st
 import plotly.graph_objects as go
 
+from opioid_track.dashboard.components.accessibility import (
+    chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
+)
 from opioid_track.dashboard.components.charts import (
     create_signal_heatmap,
     DARK_BG, CARD_BG, TEXT_COLOR, TEAL, AMBER, RED,
@@ -24,6 +27,7 @@ def _metric_card(label: str, value, css_class: str = ""):
 def render(data: dict):
     st.markdown("<h1 class='section-header'>Signal Detection</h1>",
                 unsafe_allow_html=True)
+    section_banner("How Signal Detection Works", BANNERS["signal_detection"])
 
     signals_data = data.get("signals")
     if not signals_data:
@@ -50,21 +54,24 @@ def render(data: dict):
     st.caption("Color intensity = number of methods flagging (PRR, ROR, MGPS)")
 
     # Allow filtering to consensus-only
-    show_consensus = st.checkbox("Show consensus signals only", value=True)
+    show_consensus = st.checkbox("Show consensus signals only", value=True,
+                                 help=WIDGET_HELP["show_consensus"])
     display_signals = consensus if show_consensus else all_signals
 
     if display_signals:
         fig = create_signal_heatmap(display_signals)
         st.plotly_chart(fig, use_container_width=True)
+        chart_caption(CHART_CAPTIONS["faers_heatmap"])
 
     # --- Signal Detail ---
     st.markdown("### Signal Detail")
+    section_banner("Reading the Signal Metrics", BANNERS["signal_detail"])
     drugs = sorted(set(s["drug_name"] for s in all_signals))
     reactions = sorted(set(s["reaction"] for s in all_signals))
 
     col1, col2 = st.columns(2)
     with col1:
-        selected_drug = st.selectbox("Select Drug", drugs)
+        selected_drug = st.selectbox("Select Drug", drugs, help=WIDGET_HELP["signal_drug"])
     with col2:
         drug_reactions = sorted(set(
             s["reaction"] for s in all_signals if s["drug_name"] == selected_drug
@@ -132,7 +139,7 @@ def render(data: dict):
     # --- Top Signals Table ---
     st.markdown("### Top Signals (Ranked)")
     sort_by = st.radio("Sort by", ["Methods Flagging", "Report Count"],
-                       horizontal=True)
+                       horizontal=True, help=WIDGET_HELP["sort_signals"])
 
     if sort_by == "Methods Flagging":
         sorted_signals = sorted(consensus, key=lambda s: (

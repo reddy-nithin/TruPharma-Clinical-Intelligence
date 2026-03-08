@@ -4,6 +4,9 @@ Drug Explorer Page — Deep dive into individual opioid drugs.
 
 import streamlit as st
 from opioid_track.dashboard.components.charts import create_receptor_bar
+from opioid_track.dashboard.components.accessibility import (
+    chart_caption, section_banner, BANNERS, CHART_CAPTIONS, WIDGET_HELP,
+)
 
 
 def _metric_card(label: str, value, css_class: str = ""):
@@ -57,7 +60,8 @@ def render(data: dict):
 
     # Search
     search = st.text_input("Search by drug name, ingredient, or RxCUI",
-                           placeholder="e.g. oxycodone, fentanyl, 7804")
+                           placeholder="e.g. oxycodone, fentanyl, 7804",
+                           help=WIDGET_HELP["drug_search"])
 
     matching = []
     if search:
@@ -80,13 +84,14 @@ def render(data: dict):
         st.info("No drugs match your search. Try a different term.")
         return
 
-    selected_name = st.selectbox("Select a drug", matching)
+    selected_name = st.selectbox("Select a drug", matching, help=WIDGET_HELP["drug_select"])
     drug = drug_index.get(selected_name)
     if not drug:
         return
 
     # --- Drug Identity Card ---
     st.markdown("<h2 class='section-header'>Identity</h2>", unsafe_allow_html=True)
+    section_banner("Drug Identity", BANNERS["drug_identity"])
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         _metric_card("Drug Name", drug["drug_name"][:40])
@@ -116,12 +121,14 @@ def render(data: dict):
         if ing_data:
             st.markdown("<h2 class='section-header'>Pharmacology</h2>",
                         unsafe_allow_html=True)
+            section_banner("Pharmacology", BANNERS["pharmacology"])
 
             col1, col2 = st.columns([2, 1])
             with col1:
                 affinities = ing_data.get("receptor_affinities", {})
                 fig = create_receptor_bar(affinities)
                 st.plotly_chart(fig, use_container_width=True)
+                chart_caption(CHART_CAPTIONS["receptor_bar"])
 
             with col2:
                 potency = ing_data.get("potency_vs_morphine")
@@ -153,6 +160,7 @@ def render(data: dict):
         if ing_data:
             st.markdown("<h2 class='section-header'>Safety Profile</h2>",
                         unsafe_allow_html=True)
+            section_banner("Safety Profile", BANNERS["safety_profile"])
 
             col1, col2, col3, col4 = st.columns(4)
             with col1:
@@ -175,6 +183,7 @@ def render(data: dict):
             ld50s = ing_data.get("ld50_data", [])
             if ld50s:
                 st.markdown("**LD50 Data:**")
+                chart_caption(CHART_CAPTIONS["ld50_note"])
                 rows = []
                 for entry in ld50s[:5]:
                     rows.append({
@@ -194,6 +203,7 @@ def render(data: dict):
         if drug_sigs:
             st.markdown("<h2 class='section-header'>FAERS Safety Signals</h2>",
                         unsafe_allow_html=True)
+            section_banner("FAERS Safety Signals", BANNERS["faers_signals"])
 
             consensus = [s for s in drug_sigs if s.get("consensus_signal")]
             partial = [s for s in drug_sigs if not s.get("consensus_signal")
@@ -223,20 +233,23 @@ def render(data: dict):
         if nlp_data:
             st.markdown("<h2 class='section-header'>Label Highlights (NLP)</h2>",
                         unsafe_allow_html=True)
+            section_banner("Label Highlights", BANNERS["label_highlights"])
             st.caption("Source: CDCgov/Opioid_Involvement_NLP adapted for DailyMed SPL labels")
 
             # Boxed warning
             bw = nlp_data.get("boxed_warning", {})
             if bw.get("present"):
-                with st.container():
-                    st.markdown(
-                        f"<div style='border: 2px solid {st.get_option('theme.primaryColor') or '#ef4444'}; "
-                        f"border-radius: 8px; padding: 1rem; background: rgba(239,68,68,0.08);'>"
-                        f"<strong>BOXED WARNING</strong> ({bw.get('paragraph_count', 0)} sections)<br>"
-                        f"Key warnings: {', '.join(bw.get('key_warnings', []))}"
-                        f"</div>",
-                        unsafe_allow_html=True,
-                    )
+                warnings_text = ", ".join(bw.get("key_warnings", []))
+                count = bw.get("paragraph_count", 0)
+                st.markdown(
+                    f"<div class='tp-boxed-warning'>"
+                    f"<div style='font-family:var(--font-data); font-size:0.75rem; "
+                    f"color:#fca5a5; margin-bottom:0.4rem;'>{count} warning section(s)</div>"
+                    f"<div style='font-family:var(--font-body); font-size:0.875rem; "
+                    f"color:var(--text-primary); line-height:1.5;'>{warnings_text}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
 
             col1, col2, col3 = st.columns(3)
             with col1:

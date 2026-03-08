@@ -26,13 +26,33 @@ CATEGORY_COLORS = {
     "treatment/recovery": "#3b82f6",
 }
 
+MONO_FONT = "JetBrains Mono, Courier New, monospace"
+HEADER_FONT = "Syne, sans-serif"
+BODY_FONT = "DM Sans, sans-serif"
+
 DARK_LAYOUT = dict(
     paper_bgcolor=DARK_BG,
     plot_bgcolor=CARD_BG,
-    font=dict(color=TEXT_COLOR, size=12),
-    margin=dict(l=40, r=20, t=50, b=40),
-    xaxis=dict(gridcolor=GRID_COLOR, zerolinecolor=GRID_COLOR),
-    yaxis=dict(gridcolor=GRID_COLOR, zerolinecolor=GRID_COLOR),
+    font=dict(color=TEXT_COLOR, size=11, family=BODY_FONT),
+    margin=dict(l=50, r=24, t=52, b=44),
+    xaxis=dict(
+        gridcolor=GRID_COLOR,
+        zerolinecolor=GRID_COLOR,
+        tickfont=dict(family=MONO_FONT, size=10, color="#5a8aaa"),
+        title_font=dict(family=BODY_FONT, size=11, color="#7a9bbf"),
+    ),
+    yaxis=dict(
+        gridcolor=GRID_COLOR,
+        zerolinecolor=GRID_COLOR,
+        tickfont=dict(family=MONO_FONT, size=10, color="#5a8aaa"),
+        title_font=dict(family=BODY_FONT, size=11, color="#7a9bbf"),
+    ),
+    hoverlabel=dict(
+        bgcolor="#182840",
+        bordercolor="#1f3d5a",
+        font=dict(family=BODY_FONT, size=12, color=TEXT_COLOR),
+    ),
+    title_font=dict(family=HEADER_FONT, size=14, color=TEXT_COLOR),
 )
 
 
@@ -75,15 +95,15 @@ def create_choropleth(geo_data: dict, metric: str = "risk_score") -> go.Figure:
             continue
 
         if metric == "risk_score":
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
         elif metric == "prescribing_rate":
-            val = c.get("cms_data", {}).get("prescribing_rate")
+            val = (c.get("cms_data") or {}).get("prescribing_rate")
         elif metric == "death_rate_per_100k":
-            val = c.get("cdc_state_data", {}).get("death_rate_per_100k")
+            val = (c.get("cdc_state_data") or {}).get("death_rate_per_100k")
         elif metric == "pills_per_capita":
-            val = c.get("medicaid_supply", {}).get("claims_per_capita_annual_avg")
+            val = (c.get("medicaid_supply") or {}).get("claims_per_capita_annual_avg")
         else:
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
 
         if val is None:
             continue
@@ -138,15 +158,15 @@ def create_state_choropleth(geo_data: dict, metric: str = "risk_score") -> go.Fi
             continue
 
         if metric == "risk_score":
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
         elif metric == "prescribing_rate":
-            val = c.get("cms_data", {}).get("prescribing_rate")
+            val = (c.get("cms_data") or {}).get("prescribing_rate")
         elif metric == "death_rate_per_100k":
-            val = c.get("cdc_state_data", {}).get("death_rate_per_100k")
+            val = (c.get("cdc_state_data") or {}).get("death_rate_per_100k")
         elif metric == "pills_per_capita":
-            val = c.get("medicaid_supply", {}).get("claims_per_capita_annual_avg")
+            val = (c.get("medicaid_supply") or {}).get("claims_per_capita_annual_avg")
         else:
-            val = c.get("derived_metrics", {}).get("risk_score")
+            val = (c.get("derived_metrics") or {}).get("risk_score")
 
         if val is not None:
             state_agg.setdefault(state, []).append(val)
@@ -306,9 +326,16 @@ def create_signal_heatmap(signal_data: list) -> go.Figure:
         z=z,
         hovertext=hover,
         hoverinfo="text",
-        colorscale=[[0, "#1b2838"], [0.33, "#22c55e"],
+        colorscale=[[0, "#111e2e"], [0.33, "#1ec9a0"],
                     [0.66, AMBER], [1.0, RED]],
-        colorbar=dict(title="Methods<br>Flagging", tickvals=[0, 1, 2, 3]),
+        colorbar=dict(
+            title=dict(text="Methods<br>Flagging", font=dict(family=BODY_FONT, size=11)),
+            tickvals=[0, 1, 2, 3],
+            ticktext=["0", "1", "2", "3"],
+            tickfont=dict(family=MONO_FONT, size=10),
+            thickness=12,
+            len=0.8,
+        ),
     ))
     fig.update_xaxes(tickangle=45)
     return _apply_dark(fig, title="FAERS Signal Heatmap (Drug x Reaction)",
