@@ -371,7 +371,7 @@ def run_rag_query(
         # names (e.g. "Zepbound") are matched.
         search_q = (
             f'openfda.generic_name:"{drug_name}"'
-            f'+OR+openfda.brand_name:"{drug_name}"'
+            f' OR openfda.brand_name:"{drug_name}"'
         )
     else:
         search_q = build_openfda_query(query, fields=FIELD_ALLOWLIST)
