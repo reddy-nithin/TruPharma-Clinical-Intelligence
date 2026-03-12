@@ -108,12 +108,17 @@ def _drug_is_known(name: str) -> bool:
     try:
         kg = load_kg()
         if kg:
-            if kg.get_drug_identity(name):
+            identity = kg.get_drug_identity(name)
+            if identity:
+                print(f"[DEBUG] KG: Found drug identity for '{name}': {identity.get('id')}")
                 return True
             if kg.get_ingredient_drugs(name):
+                print(f"[DEBUG] KG: Found ingredient match for '{name}'")
                 return True
-    except Exception:
-        pass
+        else:
+            print("[DEBUG] KG: load_kg() returned None")
+    except Exception as e:
+        print(f"[DEBUG] KG: Error in _drug_is_known: {e}")
 
     try:
         from src.ingestion.rxnorm import get_rxcui_by_name, get_drug_info

@@ -159,6 +159,7 @@ with st.sidebar:
         # Back button for results view
         if st.button("⬅ Back to Query", key="go_back_query", use_container_width=True):
             st.session_state.safety_view = "query"
+            st.session_state.submitted_query = ""
             st.rerun()
 
         st.markdown(
