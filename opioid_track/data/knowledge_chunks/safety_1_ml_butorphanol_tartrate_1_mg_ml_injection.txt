@@ -1,0 +1,14 @@
+DRUG SAFETY PROFILE: 1 ML butorphanol tartrate 1 MG/ML Injection
+
+RxCUI: 886627
+Category: semi-synthetic
+Opioid ingredients: butorphanol
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, rems, abuse, misuse
+Warning text: Addiction, Abuse, and Misuse Because the use of Butorphanol Tartrate Nasal Spray exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient’s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS ]. Life-Threatening Respiratory Depression 
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

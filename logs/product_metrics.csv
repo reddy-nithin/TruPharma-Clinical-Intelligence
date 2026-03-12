@@ -266,26 +266,46 @@ CONTRAINDICATIONS Gabapentin tablets USP are contraind"
 Revised: March 2025 Patient Information MEKINIST ® (MEK-in-ist) (trametinib) tab"
 2026-03-02T02:32:50Z,What are the drug interactions for ibuprofen?What aWhat are the side effects of Zepbound?re the side effects of Zepbound?,4879.3,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"11 DESCRIPTION Naproxen Tablets, USP and Naproxen Sodium Tablets, USP are nonsteroidal anti-inflammatory drugs available as follows: Naproxen Tablets,"
 2026-03-02T02:33:32Z,What are the side effects of Zepbound?,11749.5,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"11 DESCRIPTION Naproxen Tablets, USP and Naproxen Sodium Tablets, USP are nonsteroidal anti-inflammatory drugs available as follows: Naproxen Tablets,"
-2026-03-08T13:25:39Z,What is the recommended dosage for acetaminophen?,80048.0,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"Oxycodone and Acetaminophen Tablets, USP, 5 mg/325 mg; Oxycodone and Acetaminophen Tablets, USP, 7.5 mg/325 mg; Oxycodone and Acetaminophen Tablets, U"
-2026-03-08T13:29:33Z,What are the drug interactions for ibuprofen?,64396.1,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS See Table 3 for clinically significant drug interactions with ibuprofen. [Evidence 1]
+2026-03-09T02:07:37Z,What are the drug interactions for ibuprofen?,418.5,,0.0,0,0,hybrid,False,Error fetching data from openFDA: openFDA HTTP error 429: Too Many Requests
+2026-03-09T02:08:16Z,What are the drug interactions for ibuprofen?,285.7,,0.0,0,0,hybrid,False,Error fetching data from openFDA: openFDA HTTP error 429: Too Many Requests
+2026-03-09T02:10:30Z,Can I take aspirin with warfarin?,310.9,,0.0,0,0,hybrid,False,Error fetching data from openFDA: openFDA HTTP error 429: Too Many Requests
+2026-03-11T23:58:50Z,What are the drug interactions for ibuprofen?,2674.2,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Because many drugs are excreted in human-mi"
-2026-03-08T13:32:22Z,What is the recommended dosage for acetaminophen and are there any warnings?,62839.1,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"Monitor patients closely for respiratory depression, especially within the first 24–72 hours of initiating therapy and following dosage increases with"
-2026-03-08T13:38:41Z,What are the side effects of Zepbound?,104813.8,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,1,hybrid,False,"Both GIP receptors and GLP-1 receptors are found in areas of the brain involved in appetite regulation. [Evidence 5]
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-11T23:58:54Z,What are the drug interactions for ibuprofen?,5913.5,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Revised: 02/2026 Medication Guid"
-2026-03-08T13:40:16Z,What are the side effects of Zepbound?,405326.5,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,1,hybrid,False,"Both GIP receptors and GLP-1 receptors are found in areas of the brain involved in appetite regulation. [Evidence 5]
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-11T23:59:07Z,What drugs interact with metformin?,2778.4,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"The safety and efficacy of glimepiride in pediatric patients was evaluated in a single-blind, 24-week trial that randomized 272 patients (8 to 17 year"
+2026-03-12T00:33:55Z,Can I take aspirin with warfarin?,2595.3,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],1.0,5,20,hybrid,False,"Intervention: Monitor patients with concomitant use of naproxen tablets or naproxen sodium tablets with anticoagulants (e.g., warfarin), antiplatelet "
+2026-03-12T00:34:07Z,drug interactions and warnings for any medication,641.9,,0.0,0,0,hybrid,False,Not enough evidence in the retrieved context.
+2026-03-12T00:38:31Z,What are the drug interactions for ibuprofen?,2828.6,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Revised: 02/2026 Medication Guid"
-2026-03-08T14:01:05Z,What are the side effects of Zepbound?,76616.9,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,1,hybrid,False,"Both GIP receptors and GLP-1 receptors are found in areas of the brain involved in appetite regulation. [Evidence 5]
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-12T00:58:41Z,Can I take aspirin with warfarin?,2343.7,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],1.0,5,20,hybrid,False,"Intervention: Monitor patients with concomitant use of naproxen tablets or naproxen sodium tablets with anticoagulants (e.g., warfarin), antiplatelet "
+2026-03-12T01:00:26Z,Can I take aspirin with warfarin?,2470.2,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],1.0,5,20,hybrid,False,"Intervention: Monitor patients with concomitant use of naproxen tablets or naproxen sodium tablets with anticoagulants (e.g., warfarin), antiplatelet "
+2026-03-12T01:21:21Z,Can I take aspirin with warfarin?,2547.6,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],1.0,5,20,hybrid,False,"Intervention: Monitor patients with concomitant use of naproxen tablets or naproxen sodium tablets with anticoagulants (e.g., warfarin), antiplatelet "
+2026-03-12T22:45:57Z,What are the drug interactions for ibuprofen?,3096.1,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Revised: 02/2026 Medication Guid"
-2026-03-08T14:08:26Z,What are the warnings for metformin?,71597.4,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,PATIENT INFORMATION Metformin Hydrochloride (met for' min hye'' droe klor' ide) Extended-release Tablets USP This Patient Information has been approve
-2026-03-08T14:12:24Z,What are the drug interactions for lisinopril?,73353.3,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"If it is necessary to continue the diuretic, initiate therapy with lisinopril at a dose of 5 mg daily, and provide close medical supervision after the"
-2026-03-08T14:15:11Z,What are the drug interactions for lisinopril?,73351.4,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"If it is necessary to continue the diuretic, initiate therapy with lisinopril at a dose of 5 mg daily, and provide close medical supervision after the"
-2026-03-08T14:18:16Z,What are the side effects of Zepbound?,67617.6,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,1,hybrid,False,"Both GIP receptors and GLP-1 receptors are found in areas of the brain involved in appetite regulation. [Evidence 5]
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-12T22:46:43Z,What are the drug interactions for ibuprofen?,6462.7,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Revised: 02/2026 Medication Guid"
-2026-03-08T15:17:58Z,What are the side effects of Zepbound?,67779.6,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,1,hybrid,False,"Both GIP receptors and GLP-1 receptors are found in areas of the brain involved in appetite regulation. [Evidence 5]
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-12T22:47:12Z,What are the drug interactions for ibuprofen?,1900.4,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
 
-Revised: 02/2026 Medication Guid"
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-12T22:47:30Z,What drugs interact with metformin?,478.9,,0.0,0,0,hybrid,False,Not enough evidence in the retrieved context.
+2026-03-12T22:50:25Z,What are drug interactions for ibuprofen?,4438.1,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 1]
+
+Drug interactions See Warnings and Precautions for int"
+2026-03-12T22:51:01Z,"ibuprofen
+",3785.9,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.98,5,20,hybrid,False,"Active ingredient (in each tablet) Ibuprofen 200 mg (NSAID)* *nonsteroidal anti-inflammatory drug [Evidence 1]
+
+The chance is higher if you • are age "
+2026-03-12T22:54:33Z,metformin,6345.6,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"CLINICAL PHARMACOLOGY Mechanism of Action Metformin is an antihyperglycemic agent which improves glucose tolerance in patients with type 2 diabetes, l"
+2026-03-12T22:56:26Z,aspirin,5746.9,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],1.0,5,20,hybrid,False,"12.2 Pharmacodynamics In a healthy volunteer study, 10 days of concomitant administration of naproxen 220 mg once-daily with low-dose immediate-releas"
+2026-03-12T22:57:04Z,What are the drug interactions for ibuprofen?,2693.4,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"7 DRUG INTERACTIONS MEKINIST is indicated for use in combination with dabrafenib. [Evidence 3]
+
+CONTRAINDICATIONS Gabapentin tablets USP are contraind"
+2026-03-12T22:57:32Z,metformin,6455.2,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"CLINICAL PHARMACOLOGY Mechanism of Action Metformin is an antihyperglycemic agent which improves glucose tolerance in patients with type 2 diabetes, l"
+2026-03-12T22:59:18Z,What drugs interact with metformin?,2838.9,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,"The safety and efficacy of glimepiride in pediatric patients was evaluated in a single-blind, 24-week trial that randomized 272 patients (8 to 17 year"
+2026-03-12T22:59:49Z,gabapentin,3756.8,[Evidence 1]; [Evidence 2]; [Evidence 3]; [Evidence 4]; [Evidence 5],0.9,5,20,hybrid,False,12 CLINICAL PHARMACOLOGY 12.1 Mechanism of Action The precise mechanisms by which gabapentin produces its antiepileptic action is unknown. [Evidence 1

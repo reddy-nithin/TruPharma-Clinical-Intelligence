@@ -1,0 +1,39 @@
+FAERS SAFETY SIGNALS: FENTANYL
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 16
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Drug abuse: 12,500 reports, 3/3 methods flagging
+    Signal strength: PRR=26.48, ROR=29.02, EBGM=22.53
+  - Overdose: 10,763 reports, 3/3 methods flagging
+    Signal strength: PRR=4.87, ROR=5.20, EBGM=4.75
+  - Withdrawal syndrome: 7,329 reports, 3/3 methods flagging
+    Signal strength: PRR=7.75, ROR=8.13, EBGM=7.41
+  - Drug dependence: 6,603 reports, 3/3 methods flagging
+    Signal strength: PRR=6.23, ROR=6.49, EBGM=6.01
+  - Drug withdrawal syndrome: 4,873 reports, 3/3 methods flagging
+    Signal strength: PRR=7.27, ROR=7.50, EBGM=6.97
+  - Respiratory arrest: 4,197 reports, 3/3 methods flagging
+    Signal strength: PRR=9.58, ROR=9.85, EBGM=9.04
+  - Somnolence: 3,072 reports, 3/3 methods flagging
+    Signal strength: PRR=2.33, ROR=2.37, EBGM=2.31
+  - Respiratory failure: 1,995 reports, 3/3 methods flagging
+    Signal strength: PRR=3.30, ROR=3.33, EBGM=3.25
+  - Loss of consciousness: 1,788 reports, 3/3 methods flagging
+    Signal strength: PRR=2.13, ROR=2.14, EBGM=2.11
+  - Completed suicide: 1,663 reports, 3/3 methods flagging
+    Signal strength: PRR=3.04, ROR=3.07, EBGM=3.00
+  - Serotonin syndrome: 1,576 reports, 3/3 methods flagging
+    Signal strength: PRR=13.64, ROR=13.78, EBGM=12.55
+  - Respiratory depression: 1,316 reports, 3/3 methods flagging
+    Signal strength: PRR=17.67, ROR=17.83, EBGM=15.85
+  - Accidental overdose: 1,283 reports, 3/3 methods flagging
+    Signal strength: PRR=5.50, ROR=5.54, EBGM=5.33
+  - Coma: 1,150 reports, 3/3 methods flagging
+    Signal strength: PRR=2.97, ROR=2.99, EBGM=2.93
+  - Drug toxicity: 611 reports, 3/3 methods flagging
+    Signal strength: PRR=6.77, ROR=6.80, EBGM=6.51
+  - Substance abuse: 482 reports, 3/3 methods flagging
+    Signal strength: PRR=9.29, ROR=9.32, EBGM=8.79
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

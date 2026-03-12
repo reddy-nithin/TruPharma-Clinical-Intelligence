@@ -1,0 +1,27 @@
+FAERS SAFETY SIGNALS: NALTREXONE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 10
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Overdose: 283 reports, 2/3 methods flagging
+    Signal strength: PRR=2.01, ROR=2.04, EBGM=2.01
+  - Somnolence: 257 reports, 3/3 methods flagging
+    Signal strength: PRR=3.11, ROR=3.18, EBGM=3.11
+  - Withdrawal syndrome: 251 reports, 3/3 methods flagging
+    Signal strength: PRR=4.08, ROR=4.18, EBGM=4.08
+  - Completed suicide: 137 reports, 3/3 methods flagging
+    Signal strength: PRR=3.98, ROR=4.03, EBGM=3.97
+  - Drug withdrawal syndrome: 131 reports, 3/3 methods flagging
+    Signal strength: PRR=3.01, ROR=3.04, EBGM=3.01
+  - Intentional overdose: 113 reports, 3/3 methods flagging
+    Signal strength: PRR=4.38, ROR=4.42, EBGM=4.37
+  - Serotonin syndrome: 91 reports, 3/3 methods flagging
+    Signal strength: PRR=11.70, ROR=11.81, EBGM=11.64
+  - Drug abuse: 87 reports, 3/3 methods flagging
+    Signal strength: PRR=2.52, ROR=2.54, EBGM=2.52
+  - Coma: 63 reports, 3/3 methods flagging
+    Signal strength: PRR=2.58, ROR=2.59, EBGM=2.58
+  - Substance abuse: 36 reports, 3/3 methods flagging
+    Signal strength: PRR=10.59, ROR=10.63, EBGM=10.55
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

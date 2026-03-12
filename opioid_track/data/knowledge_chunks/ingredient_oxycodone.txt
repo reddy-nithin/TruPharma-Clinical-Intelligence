@@ -1,0 +1,15 @@
+PHARMACOLOGY: OXYCODONE
+
+Identifiers: RxCUI=7804, ChEMBL=CHEMBL656, PubChem CID=5284603
+Molecular: C18H21NO4, MW=315.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 12.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.03x
+
+Oxycodone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 12.0 nM. Mu opioid receptor agonist. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 3.2 hours
+Metabolism: Oxycodone's hepatic metabolism is extensive and completed by 4 main reactions. CYP3A4 and 3A5 perform N-demethylation, CYP2D6 performs O-demethylation, unknown enzymes perform 6-keto-reduction, and unknown enzymes perform conjugation.  Oxycodone is metabolized by CYP3A4 and CYP3A5 to noroxycodone an
+  Danger level: Unknown

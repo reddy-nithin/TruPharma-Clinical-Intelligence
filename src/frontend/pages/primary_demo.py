@@ -20,127 +20,52 @@ import time
 import base64
 
 from src.rag.engine import run_rag_query, read_logs
+from src.frontend.theme import inject_theme, render_topbar, render_brand
 
 # ─── Page config ──────────────────────────────────────────────
+# ─── Determine sidebar state based on view ────────────────────
+_initial_sidebar = "expanded" if st.session_state.get("safety_view", "query") == "results" else "collapsed"
+
 st.set_page_config(
     page_title="Safety Chat | TruPharma RAG",
     page_icon="🩺",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state=_initial_sidebar,
 )
 
-# ─── Force-expand sidebar on subpages after navigation ───────
-components.html("""
-<script>
-(function() {
-    const doc = window.parent.document;
-    const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-    if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
-        const btn = doc.querySelector('[data-testid="collapsedControl"]');
-        if (btn) btn.click();
-    }
-})();
-</script>
-""", height=0)
+# ─── Force sidebar state depending on current view ───────────
+_view = st.session_state.get("safety_view", "query")
+if _view == "results":
+    # Expand sidebar on results page
+    components.html("""
+    <script>
+    (function() {
+        const doc = window.parent.document;
+        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+        if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
+            const btn = doc.querySelector('[data-testid="collapsedControl"]');
+            if (btn) btn.click();
+        }
+    })();
+    </script>
+    """, height=0)
+else:
+    # Collapse sidebar on query page
+    components.html("""
+    <script>
+    (function() {
+        const doc = window.parent.document;
+        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+        if (sidebar && sidebar.getAttribute('aria-expanded') !== 'false') {
+            const btn = doc.querySelector('[data-testid="stSidebarCollapseButton"]');
+            if (btn) btn.click();
+        }
+    })();
+    </script>
+    """, height=0)
 
-# ─── Hide built-in page nav ──────────────────────────────────
-st.markdown("""
-<style>
-div[data-testid="stSidebarNav"] { display: none !important; }
-section[data-testid="stSidebar"] nav { display: none !important; }
-section[data-testid="stSidebar"] ul[role="list"] { display: none !important; }
-section[data-testid="stSidebar"] > div:first-child { padding-top: 0rem !important; }
-section[data-testid="stSidebar"] ul[data-testid="stSidebarNavItems"] { display: none !important; }
-</style>
-""", unsafe_allow_html=True)
-
-# ─── App styling ──────────────────────────────────────────────
-st.markdown("""<style>
-.main-header-bar {
-    background: linear-gradient(90deg, #F2994A, #EB5757);
-    color: white; padding: 12px 16px; border-radius: 10px;
-    font-weight: 600; margin-bottom: 14px;
-}
-.scenario-card {
-    padding: 10px 12px; border-radius: 10px;
-    margin-bottom: 8px; font-weight: 700; line-height: 1.2;
-}
-.primary-active {
-    background-color: #E8F5E9; border-left: 6px solid #2E7D32;
-}
-.card {
-    background: #FFFFFF; border: 1px solid #D1D5DB;
-    border-radius: 14px; padding: 14px 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 14px;
-}
-.card-title { font-weight: 800; font-size: 16px; margin-bottom: 8px; }
-.card-title.response { color: #1f7a8c; }
-.card-title.evidence { color: #d35400; }
-.card-title.metrics  { color: #2e7d32; }
-.card-title.logs     { color: #6b7280; }
-.card.card-response  { border-left: 4px solid #1f7a8c; }
-.card.card-evidence  { border-left: 4px solid #d35400; }
-.card.card-metrics   { border-left: 4px solid #2e7d32; }
-.card.card-logs      { border-left: 4px solid #6b7280; }
-.card.card-kg        { border-left: 4px solid #7c3aed; }
-.card.card-bodymap   { border-left: 4px solid #7c3aed; }
-.kg-pill {
-    display: inline-block; padding: 5px 14px; margin: 3px 4px;
-    border-radius: 20px; font-size: 13px; font-weight: 700;
-    line-height: 1.4;
-}
-.kg-pill.ingredient { background: #e0f2f1; color: #00695c; border: 1px solid #b2dfdb; }
-.kg-pill.interaction { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
-.kg-pill.co-reported { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
-.kg-pill.reaction { background: #fce4ec; color: #b71c1c; border: 1px solid #f8bbd0; }
-.kg-section-label {
-    font-weight: 800; font-size: 14px; margin: 12px 0 6px 0;
-    padding-bottom: 4px; border-bottom: 2px solid #ede9fe;
-    color: #5b21b6;
-}
-.kg-summary-card {
-    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
-    border: 1px solid #ede9fe; border-radius: 12px;
-    padding: 10px 14px; text-align: center;
-}
-.kg-summary-card .label { font-size: 11px; color: #6b7280; font-weight: 700; text-transform: uppercase; }
-.kg-summary-card .value { font-size: 18px; font-weight: 800; color: #1f2937; margin: 2px 0; }
-.kg-summary-card .sub { font-size: 11px; color: #9ca3af; }
-.kg-risk-badge {
-    display: inline-block; padding: 3px 10px; border-radius: 8px;
-    font-weight: 800; font-size: 13px;
-}
-.kg-risk-badge.low { background: #d1fae5; color: #065f46; }
-.kg-risk-badge.moderate { background: #fef3c7; color: #92400e; }
-.kg-risk-badge.high { background: #fee2e2; color: #991b1b; }
-.bullets { margin: 0; padding-left: 18px; }
-.bullets li { margin: 6px 0; }
-.pill-link {
-    flex: 1; text-align: center; padding: 14px;
-    border-radius: 14px; border: 1px solid #d1d5db;
-    background: #ffffff; font-weight: 800; color: #111827;
-    text-decoration: none !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-}
-/* Apply custom font but exclude Streamlit icon elements */
-html, body,
-p, h1, h2, h3, h4, h5, h6,
-span, div, li, td, th, label, a,
-input, textarea, select, button,
-.stMarkdown, .stText, .stCaption,
-[data-testid="stMetricValue"],
-[data-testid="stMetricLabel"] {
-    font-family: "Times New Roman", Times, serif !important;
-    line-height: 1.4;
-}
-/* Restore Streamlit's icon font for Material Icons */
-[data-testid="stIconMaterial"],
-.material-symbols-rounded,
-[data-testid="collapsedControl"] span,
-span[class*="icon"] {
-    font-family: "Material Symbols Rounded" !important;
-}
-</style>""", unsafe_allow_html=True)
+# ─── Inject dark theme ───────────────────────────────────────
+inject_theme()
 
 
 # ══════════════════════════════════════════════════════════════
@@ -154,6 +79,10 @@ if "logs" not in st.session_state:
     st.session_state.logs = []
 if "kg_poll_count" not in st.session_state:
     st.session_state.kg_poll_count = 0
+if "safety_view" not in st.session_state:
+    st.session_state.safety_view = "query"
+if "submitted_query" not in st.session_state:
+    st.session_state.submitted_query = ""
 
 def set_panel(name: str):
     st.session_state.active_panel = (
@@ -162,26 +91,8 @@ def set_panel(name: str):
 
 
 # ══════════════════════════════════════════════════════════════
-#  SIDEBAR
+#  EXAMPLE QUERIES (shared constant)
 # ══════════════════════════════════════════════════════════════
-if st.sidebar.button("⬅ Return to Home", key="go_home"):
-    for k in ["active_panel", "result", "logs", "show_risk_calc", "primary_last_run"]:
-        st.session_state.pop(k, None)
-    st.switch_page("app.py")
-
-st.sidebar.title("Scenario Mode")
-st.sidebar.markdown(
-    "<div class='scenario-card primary-active'>"
-    "🟢 Safety Chat<br><small>Normal user workflow</small></div>",
-    unsafe_allow_html=True,
-)
-if st.sidebar.button("⚠️ Go to Stress Test", key="go_stress"):
-    st.switch_page("pages/stress_test.py")
-
-st.sidebar.markdown("---")
-
-# Example queries for convenience
-st.sidebar.subheader("Example Queries")
 EXAMPLES = [
     "-- Select an example --",
     # Drug interactions
@@ -208,100 +119,107 @@ EXAMPLES = [
     # Out-of-scope (expected to fail gracefully)
     "What is the projected cost of antimicrobial resistance to GDP in 2050?",
 ]
-example = st.sidebar.selectbox("Pick a sample question:", EXAMPLES, index=0)
-
-st.sidebar.subheader("Query Input")
-default_q = "" if example == EXAMPLES[0] else example
-query_text = st.sidebar.text_area(
-    "Enter your drug-label question:",
-    value=default_q,
-    placeholder="e.g. What are the side effects of ibuprofen?",
-    height=100,
-)
-
-# ── Advanced settings (collapsible) ──
-with st.sidebar.expander("Advanced Settings"):
-    method = st.selectbox(
-        "Retrieval method",
-        ["hybrid", "dense", "sparse"],
-        index=0,
-    )
-    top_k = st.slider("Top-K evidence", 3, 10, 5)
-    gemini_key = st.text_input(
-        "Google Gemini API key (optional)",
-        type="password",
-        help="If provided, answers are generated by Gemini 2.0 Flash. "
-             "Otherwise, a rule-based extractive fallback is used.",
-    )
-
-run = st.sidebar.button("🔍 Run RAG Query", type="primary", width="stretch")
-
-st.sidebar.markdown("---")
-if st.sidebar.button("🔄 Reset Session"):
-    st.session_state.clear()
-    st.rerun()
 
 
 # ══════════════════════════════════════════════════════════════
-#  RUN LOGIC  (executes BEFORE rendering so state is updated)
+#  VIEW ROUTER — decides Query Page vs Results Dashboard
 # ══════════════════════════════════════════════════════════════
-if run and query_text:
-    with st.spinner("Fetching FDA drug labels and running RAG pipeline..."):
-        result = run_rag_query(
-            query_text,
-            gemini_key=gemini_key,
-            method=method,
-            top_k=top_k,
-            use_rerank=False,
+current_view = st.session_state.safety_view   # "query" or "results"
+
+
+# ──────────────────────────────────────────────────────────────
+#  SIDEBAR HELPERS
+# ──────────────────────────────────────────────────────────────
+def _status_row(label: str, value: str, loaded: bool) -> str:
+    dot_cls = "ok" if loaded else "miss"
+    return (
+        f"<div class='tp-status-row'>"
+        f"<span><span class='tp-status-dot {dot_cls}'></span>"
+        f"<span class='tp-status-label'>{label}</span></span>"
+        f"<span class='tp-status-value'>{value}</span>"
+        f"</div>"
+    )
+
+with st.sidebar:
+    # 1. Home button (prominent, at the top)
+    if st.sidebar.button("⬅ Return to Home", key="go_home", use_container_width=True):
+        for k in ["active_panel", "result", "logs", "show_risk_calc",
+                  "primary_last_run", "safety_view", "submitted_query"]:
+            st.session_state.pop(k, None)
+        st.switch_page("app.py")
+
+    st.divider()
+
+    # 2. Brand Block
+    render_brand()
+    st.divider()
+
+    # 3. View-dependent content
+    if current_view == "results":
+        # Back button for results view
+        if st.button("⬅ Back to Query", key="go_back_query", use_container_width=True):
+            st.session_state.safety_view = "query"
+            st.session_state.submitted_query = ""
+            st.rerun()
+
+        st.markdown(
+            "<div class='tp-status-label' style='font-size:0.72rem; margin-bottom:0.4rem; text-transform:uppercase; font-weight:600; color:var(--text-label);'>Current Query</div>",
+            unsafe_allow_html=True,
         )
-    st.session_state.result = result
+        st.markdown(
+            f"<div class='results-sidebar-query' style='margin-bottom:1rem;'>{st.session_state.submitted_query}</div>",
+            unsafe_allow_html=True,
+        )
+        st.divider()
 
-    # Store for stress-test comparison page
-    st.session_state.primary_last_run = {
-        "query": query_text,
-        "confidence": f"{result['confidence']:.0%}",
-        "evidence_count": len(result["evidence"]),
-    }
+    # 4. Scenario Selection
+    st.markdown(
+        "<div class='tp-section-header'>Scenario Mode</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='scenario-card primary-active'>"
+        "🟢 Safety Chat<br><small>Normal user workflow</small></div>",
+        unsafe_allow_html=True,
+    )
+    if st.button("⚠️ Go to Stress Test", key="go_stress", use_container_width=True):
+        st.switch_page("pages/stress_test.py")
 
-    st.session_state.logs.append(
-        f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  "
-        f"Query completed in {result['latency_ms']} ms  ·  "
-        f"Evidence: {len(result['evidence'])}  ·  "
-        f"Confidence: {result['confidence']:.0%}"
+    st.divider()
+
+    # 5. System Status (like Data Sources in opioid app)
+    has_results = st.session_state.result is not None
+    status_html = (
+        _status_row("RAG Engine", "Online", True)
+        + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
+        + _status_row("FAERS Data", "Connected", True)
+        + _status_row("Metrics", "Loaded" if has_results else "Standby", has_results)
+    )
+    st.markdown(
+        f"<div style='font-family:var(--font-body); font-size:0.72rem; "
+        f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+        f"color:var(--text-muted); margin-bottom:0.4rem;'>System Status</div>"
+        + status_html,
+        unsafe_allow_html=True,
     )
 
-elif run and not query_text:
-    st.sidebar.warning("Please enter a query first.")
+    st.divider()
 
+    # 6. Session Controls
+    if st.button("🔄 Reset Session", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
 
-# ══════════════════════════════════════════════════════════════
-#  MAIN HEADER
-# ══════════════════════════════════════════════════════════════
-st.markdown("## TruPharma GenAI Assistant")
-st.markdown(
-    "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
-    unsafe_allow_html=True,
-)
+    st.divider()
 
-# ── Pill row ──
-c1, c2, c3, c4, c5 = st.columns(5, gap="small")
-c1.button("Response", width="stretch",
-           type="primary" if st.session_state.active_panel == "Response" else "secondary",
-           key="pill_response", on_click=set_panel, args=("Response",))
-c2.button("Knowledge Graph", width="stretch",
-           type="primary" if st.session_state.active_panel == "KG" else "secondary",
-           key="pill_kg", on_click=set_panel, args=("KG",))
-c3.button("Evidence / Artifacts", width="stretch",
-           type="primary" if st.session_state.active_panel == "Evidence" else "secondary",
-           key="pill_evidence", on_click=set_panel, args=("Evidence",))
-c4.button("Metrics & Monitoring", width="stretch",
-           type="primary" if st.session_state.active_panel == "Metrics" else "secondary",
-           key="pill_metrics", on_click=set_panel, args=("Metrics",))
-c5.button("Logs", width="stretch",
-           type="primary" if st.session_state.active_panel == "Logs" else "secondary",
-           key="pill_logs", on_click=set_panel, args=("Logs",))
-
-st.caption("Click a pill to focus; click again to return to the full dashboard view.")
+    # 7. Footer
+    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    st.markdown(
+        f"<div style='font-family:var(--font-data); font-size:0.62rem; "
+        f"color:var(--text-muted); letter-spacing:0.04em;'>"
+        f"Session: {now}</div>",
+        unsafe_allow_html=True,
+    )
 
 
 # ══════════════════════════════════════════════════════════════
@@ -421,7 +339,7 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
         "x": 0, "y": 0, "fixed": {"x": True, "y": True},
         "color": {"background": "#7c3aed", "border": "#5b21b6",
                   "highlight": {"background": "#8b5cf6", "border": "#5b21b6"}},
-        "font": {"color": "#fff", "size": 16, "face": "Times New Roman", "bold": True},
+        "font": {"color": "#fff", "size": 16, "face": "Quicksand", "bold": True},
         "shape": "box", "borderWidth": 2,
         "margin": {"top": 10, "bottom": 10, "left": 14, "right": 14},
     })
@@ -502,7 +420,7 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
             nodes.append({
                 "id": nid, "label": label, "x": x, "y": y,
                 "color": {"background": bg, "border": border},
-                "font": {"size": font_sz, "face": "Times New Roman"},
+                "font": {"size": font_sz, "face": "Quicksand"},
                 "shape": "box", "borderWidth": bw,
                 "margin": {"top": margin_v, "bottom": margin_v,
                            "left": margin_h, "right": margin_h},
@@ -529,62 +447,62 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Times New Roman",serif}}
+body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
 #kg-root{{position:relative;width:100%}}
 
 /* ── toolbar ── */
 #kg-toolbar{{display:flex;gap:6px;align-items:center;padding:6px 8px;
-  background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px 10px 0 0}}
-#kg-search{{flex:1;max-width:220px;padding:5px 10px;border:1px solid #d1d5db;border-radius:7px;
-  font-size:12px;font-family:inherit;outline:none}}
+  background:#111e2e;border:1px solid #1f3d5a;border-radius:10px 10px 0 0}}
+#kg-search{{flex:1;max-width:220px;padding:5px 10px;border:1px solid #1f3d5a;border-radius:7px;
+  font-size:12px;font-family:inherit;outline:none;background:#182840;color:#e8f0f8}}
 #kg-search:focus{{border-color:#7c3aed;box-shadow:0 0 0 2px rgba(124,58,237,.15)}}
-.tb-btn{{padding:5px 11px;border:1px solid #d1d5db;border-radius:7px;background:#fff;
-  font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:#374151;
+.tb-btn{{padding:5px 11px;border:1px solid #1f3d5a;border-radius:7px;background:#182840;
+  font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:#7a9bbf;
   transition:background .12s,box-shadow .12s}}
-.tb-btn:hover{{background:#f3f4f6;box-shadow:0 1px 4px rgba(0,0,0,.08)}}
-.tb-btn.active{{background:#ede9fe;border-color:#7c3aed;color:#5b21b6}}
+.tb-btn:hover{{background:#1e3450;box-shadow:0 1px 4px rgba(0,0,0,.2)}}
+.tb-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
 
 /* ── graph canvas ── */
-#kg-net{{width:100%;height:470px;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;
-  background:#faf9fb}}
+#kg-net{{width:100%;height:470px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
+  background:#0b1622}}
 
 /* ── detail panel ── */
 #kg-detail{{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);
-  background:rgba(255,255,255,.97);border-left:2px solid #ede9fe;
+  background:rgba(17,30,46,.97);border-left:2px solid #2a5278;
   padding:14px;overflow-y:auto;transform:translateX(100%);
-  transition:transform .25s ease;z-index:20;font-size:13px}}
+  transition:transform .25s ease;z-index:20;font-size:13px;color:#e8f0f8}}
 #kg-detail.visible{{transform:translateX(0)}}
 #kg-detail h3{{margin:0 0 2px;font-size:15px}}
-.det-type{{font-size:11px;color:#6b7280;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e5e7eb}}
+.det-type{{font-size:11px;color:#7a9bbf;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #1f3d5a}}
 .det-row{{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;
-  border-bottom:1px solid #f3f4f6}}
-.det-label{{font-size:11px;color:#6b7280;font-weight:700;flex-shrink:0;margin-right:8px}}
-.det-value{{font-size:12px;color:#1f2937;text-align:right}}
+  border-bottom:1px solid #1a2f45}}
+.det-label{{font-size:11px;color:#7a9bbf;font-weight:700;flex-shrink:0;margin-right:8px}}
+.det-value{{font-size:12px;color:#e8f0f8;text-align:right}}
 .det-badge{{font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase}}
-.det-badge.severe{{background:#fee2e2;color:#991b1b}}
-.det-badge.moderate{{background:#fef3c7;color:#92400e}}
-.det-badge.mild{{background:#d1fae5;color:#065f46}}
+.det-badge.severe{{background:rgba(153,27,27,0.3);color:#fca5a5}}
+.det-badge.moderate{{background:rgba(146,64,14,0.3);color:#fcd34d}}
+.det-badge.mild{{background:rgba(6,95,70,0.3);color:#86efac}}
 #kg-detail-close{{position:absolute;top:8px;right:10px;background:none;border:none;
-  font-size:16px;cursor:pointer;color:#9ca3af;font-family:inherit}}
-#kg-detail-close:hover{{color:#374151}}
+  font-size:16px;cursor:pointer;color:#3d5a74;font-family:inherit}}
+#kg-detail-close:hover{{color:#e8f0f8}}
 
 /* ── hint ── */
 #kg-hint{{position:absolute;bottom:8px;left:8px;z-index:15;
-  background:rgba(255,255,255,.95);border:1px solid #e5e7eb;border-radius:10px;
-  padding:9px 14px;font-size:11.5px;color:#6b7280;line-height:1.45;
-  box-shadow:0 2px 8px rgba(0,0,0,.05);max-width:260px;transition:opacity .3s}}
-#kg-hint b{{color:#374151}}
+  background:rgba(17,30,46,.95);border:1px solid #1f3d5a;border-radius:10px;
+  padding:9px 14px;font-size:11.5px;color:#7a9bbf;line-height:1.45;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);max-width:260px;transition:opacity .3s}}
+#kg-hint b{{color:#e8f0f8}}
 #kg-hint-close{{position:absolute;top:3px;right:7px;cursor:pointer;font-size:13px;
-  color:#9ca3af;background:none;border:none;padding:0;font-family:inherit}}
-#kg-hint-close:hover{{color:#374151}}
+  color:#3d5a74;background:none;border:none;padding:0;font-family:inherit}}
+#kg-hint-close:hover{{color:#e8f0f8}}
 
 /* ── legend ── */
 .legend{{display:flex;gap:14px;flex-wrap:wrap;padding:6px 8px;font-size:11.5px;
-  background:#f9fafb;border:1px solid #e5e7eb;border-radius:0 0 10px 10px}}
+  background:#111e2e;border:1px solid #1f3d5a;border-radius:0 0 10px 10px;color:#7a9bbf}}
 .legend span{{display:inline-flex;align-items:center;gap:4px}}
 .dot{{width:11px;height:11px;border-radius:3px;display:inline-block}}
-.legend .sep{{border-left:1px solid #d1d5db;height:14px;margin:0 2px}}
-.legend .dash-label{{color:#9ca3af;font-style:italic}}
+.legend .sep{{border-left:1px solid #1f3d5a;height:14px;margin:0 2px}}
+.legend .dash-label{{color:#3d5a74;font-style:italic}}
 </style></head><body>
 <div id="kg-root">
   <div id="kg-toolbar">
@@ -674,12 +592,12 @@ function fadeExcept(keepIds){{
   var nu=[],eu=[];
   nodes.forEach(function(n){{
     if(keepIds.indexOf(n.id)===-1)
-      nu.push({{id:n.id,color:{{background:"#f3f4f6",border:"#e5e7eb"}},
-        font:{{color:"#d1d5db",size:10}}}});
+      nu.push({{id:n.id,color:{{background:"#182840",border:"#1a2f45"}},
+        font:{{color:"#3d5a74",size:10}}}});
   }});
   edges.forEach(function(e){{
     if(keepIds.indexOf(e.from)===-1||keepIds.indexOf(e.to)===-1)
-      eu.push({{id:e.id,color:{{color:"#f0f0f0"}},font:{{color:"#f0f0f0"}}}});
+      eu.push({{id:e.id,color:{{color:"#1a2f45"}},font:{{color:"#1a2f45"}}}});
   }});
   nodes.update(nu);edges.update(eu);
 }}
@@ -885,17 +803,17 @@ def _build_risk_gauge_html(score):
     <div style="text-align:center;padding:8px 0">
       <svg viewBox="0 0 200 115" width="220" height="130">
         <path d="M 20 100 A 80 80 0 0 1 180 100"
-              stroke="#e5e7eb" stroke-width="16" fill="none" stroke-linecap="round"/>
+              stroke="#1f3d5a" stroke-width="16" fill="none" stroke-linecap="round"/>
         <path d="M 20 100 A 80 80 0 0 1 180 100"
               stroke="{color}" stroke-width="16" fill="none" stroke-linecap="round"
               stroke-dasharray="{fill} {arc_len}"
               style="transition:stroke-dasharray .6s ease"/>
         <text x="100" y="80" text-anchor="middle"
               font-size="28" font-weight="800" fill="{color}"
-              font-family="Times New Roman,serif">{score:.1f}</text>
+              font-family="'Quicksand',serif">{score:.1f}</text>
         <text x="100" y="98" text-anchor="middle"
-              font-size="11" fill="#6b7280"
-              font-family="Times New Roman,serif">{label}</text>
+              font-size="11" fill="#7a9bbf"
+              font-family="'Quicksand',serif">{label}</text>
       </svg>
     </div>"""
 
@@ -1012,13 +930,13 @@ def _render_risk_calculator(enriched, drug_name):
             st.markdown(
                 f"<div style='margin:5px 0 1px'>"
                 f"<div style='display:flex;align-items:center;gap:8px;font-size:12px'>"
-                f"<span style='flex:1;color:#374151;font-weight:700'>{label}</span>"
+                f"<span style='flex:1;color:#7a9bbf;font-weight:700'>{label}</span>"
                 f"<span style='width:50px;text-align:right;font-weight:800;"
                 f"color:{bar_color}'>{sign}{val}</span>"
-                f"<div style='width:70px;height:6px;background:#f3f4f6;border-radius:3px'>"
+                f"<div style='width:70px;height:6px;background:#1a2f45;border-radius:3px'>"
                 f"<div style='width:{bar_w}%;height:100%;background:{bar_color};"
                 f"border-radius:3px'></div></div></div>"
-                f"<div style='font-size:11px;color:#9ca3af;margin:1px 0 0 4px;'>"
+                f"<div style='font-size:11px;color:#3d5a74;margin:1px 0 0 4px;'>"
                 f"{justification}</div></div>",
                 unsafe_allow_html=True,
             )
@@ -1028,8 +946,8 @@ def _render_risk_calculator(enriched, drug_name):
     for w in warns:
         icon = "&#9888;" if "risk" in w.lower() or "severe" in w.lower() else "&#9432;"
         st.markdown(
-            f"<div style='padding:6px 10px;margin:4px 0;background:#fefce8;"
-            f"border-left:4px solid #d97706;border-radius:6px;font-size:13px'>"
+            f"<div style='padding:6px 10px;margin:4px 0;background:rgba(245,158,11,0.08);"
+            f"border-left:4px solid #d97706;border-radius:6px;font-size:13px;color:#fcd34d'>"
             f"{icon}&nbsp; {w}</div>",
             unsafe_allow_html=True,
         )
@@ -1061,7 +979,7 @@ def render_kg():
         if is_dynamic:
             if build_status in ("PHASE1_COMPLETE", "PHASE2_RUNNING"):
                 st.markdown(
-                    "<div style='padding:10px 14px;background:#dbeafe;"
+                    "<div style='padding:10px 14px;background:rgba(37,99,235,0.08);"
                     "border-left:4px solid #2563eb;border-radius:6px;"
                     "margin-bottom:12px;font-size:14px;'>"
                     "🔄 <b>Building full drug profile...</b> "
@@ -1078,7 +996,7 @@ def render_kg():
             elif build_status == "PHASE2_COMPLETE":
                 st.session_state.kg_poll_count = 0  # reset counter
                 st.markdown(
-                    "<div style='padding:10px 14px;background:#d1fae5;"
+                    "<div style='padding:10px 14px;background:rgba(5,150,105,0.08);"
                     "border-left:4px solid #059669;border-radius:6px;"
                     "margin-bottom:12px;font-size:14px;'>"
                     "✅ <b>Full drug profile built!</b> "
@@ -1099,10 +1017,10 @@ def render_kg():
             drugs = ing_match["drugs"]
             st.markdown(
                 f"<div style='margin-bottom:0.75rem;padding:0.6rem 1rem;"
-                f"background:#fefce8;border-left:4px solid #ca8a04;border-radius:6px;'>"
-                f"<span style='font-size:1.05rem;'><b>{ing_name}</b> is an "
+                f"background:rgba(202,138,4,0.08);border-left:4px solid #ca8a04;border-radius:6px;'>"
+                f"<span style='font-size:1.05rem;color:#fcd34d'><b>{ing_name}</b> is an "
                 f"<b>ingredient</b>, not a standalone drug in the Knowledge Graph.</span><br/>"
-                f"<span style='color:#6b7280;font-size:0.88rem;'>"
+                f"<span style='color:#7a9bbf;font-size:0.88rem;'>"
                 f"Found in {len(drugs)} drug(s):</span></div>",
                 unsafe_allow_html=True,
             )
@@ -1125,10 +1043,10 @@ def render_kg():
             # ── Partial KG Data badge ──
             if is_dynamic and build_status in ("PHASE1_COMPLETE", "PHASE2_RUNNING"):
                 st.markdown(
-                    "<div style='display:inline-block;padding:3px 12px;"
-                    "background:#fef3c7;border:1px solid #f59e0b;"
+                    f"<div style='display:inline-block;padding:3px 12px;"
+                    "background:rgba(245,158,11,0.12);border:1px solid #f59e0b;"
                     "border-radius:20px;font-size:12px;font-weight:700;"
-                    "color:#92400e;margin-bottom:10px;'>"
+                    "color:#fcd34d;margin-bottom:10px;'>"
                     "⏳ Partial KG Data</div>",
                     unsafe_allow_html=True,
                 )
@@ -1144,9 +1062,9 @@ def render_kg():
                     resolved_line = f"<b>{generic.title()}</b> (searched: <i>{queried_name}</i>)"
                 st.markdown(
                     f"<div style='margin-bottom:0.75rem;padding:0.6rem 1rem;"
-                    f"background:#f5f3ff;border-left:4px solid #7c3aed;border-radius:6px;'>"
-                    f"<span style='font-size:1.05rem;'>{resolved_line}</span><br/>"
-                    f"<span style='color:#6b7280;font-size:0.88rem;'>"
+                    f"background:rgba(124,58,237,0.08);border-left:4px solid #7c3aed;border-radius:6px;'>"
+                    f"<span style='font-size:1.05rem;color:#c4b5fd'>{resolved_line}</span><br/>"
+                    f"<span style='color:#7a9bbf;font-size:0.88rem;'>"
                     f"Brand names: {brand_str}"
                     f"{'&hellip;' if len(brands) > 5 else ''}</span></div>",
                     unsafe_allow_html=True,
@@ -1344,8 +1262,8 @@ def render_metrics():
         total_n = r.get("total_chunks", 0)
         if enriched_n > 0:
             st.markdown(
-                f"<div style='padding:8px 12px;margin:8px 0;background:#f0fdf4;"
-                f"border-left:4px solid #16a34a;border-radius:6px;font-size:13px'>"
+                f"<div style='padding:8px 12px;margin:8px 0;background:rgba(22,163,106,0.08);"
+                f"border-left:4px solid #16a34a;border-radius:6px;font-size:13px;color:#86efac'>"
                 f"<b>Graph Enrichment Active</b> — "
                 f"{enriched_n}/{total_n} chunks enriched with KG context "
                 f"(interactions, reactions, ingredients, FAERS signals)</div>",
@@ -1353,8 +1271,8 @@ def render_metrics():
             )
         elif r.get("kg_available"):
             st.markdown(
-                f"<div style='padding:8px 12px;margin:8px 0;background:#fefce8;"
-                f"border-left:4px solid #ca8a04;border-radius:6px;font-size:13px'>"
+                f"<div style='padding:8px 12px;margin:8px 0;background:rgba(202,138,4,0.08);"
+                f"border-left:4px solid #ca8a04;border-radius:6px;font-size:13px;color:#fcd34d'>"
                 f"<b>Graph Enrichment</b> — KG available but no chunks matched "
                 f"graph data for this drug</div>",
                 unsafe_allow_html=True,
@@ -1542,38 +1460,38 @@ def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str])
 
     return f"""<html><head><style>
 *{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Times New Roman",serif}}
+body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
 .bm-wrap{{text-align:center;padding:4px 0}}
-.bm-title{{font-size:13px;font-weight:800;color:#374151;margin-bottom:2px}}
-.bm-sub{{font-size:11px;color:#9ca3af;margin-bottom:6px}}
+.bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
+.bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
 .body-ctr{{position:relative;display:inline-block;width:220px;overflow:hidden;cursor:zoom-in}}
 .body-img{{display:block;width:192%;max-width:none;opacity:0.82}}
 .heat-dot{{position:absolute;border-radius:50%;transform:translate(-50%,-50%);
   display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}}
 .cnt{{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)}}
-.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#6b7280;
-  background:rgba(255,255,255,0.85);padding:2px 7px;border-radius:8px;z-index:3;
+.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#7a9bbf;
+  background:rgba(17,30,46,0.85);padding:2px 7px;border-radius:8px;z-index:3;
   display:flex;align-items:center;gap:3px;pointer-events:none}}
-.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#6b7280}}
+.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf}}
 .legend span{{display:inline-flex;align-items:center;gap:3px}}
 .ldot{{width:10px;height:10px;border-radius:50%;display:inline-block}}
-.how-to{{font-size:10px;color:#9ca3af;margin-top:6px;font-style:italic;line-height:1.4}}
+.how-to{{font-size:10px;color:#3d5a74;margin-top:6px;font-style:italic;line-height:1.4}}
 #zoom-overlay{{display:none;position:fixed;inset:0;z-index:9999;
   background:rgba(0,0,0,0.82);flex-direction:column;
   align-items:center;justify-content:center;cursor:pointer;
   backdrop-filter:blur(6px)}}
-#zoom-inner{{background:#fff;border-radius:14px;padding:16px 20px 12px;
-  box-shadow:0 12px 48px rgba(0,0,0,0.45);position:relative;cursor:default;
+#zoom-inner{{background:#111e2e;border-radius:14px;padding:16px 20px 12px;
+  box-shadow:0 12px 48px rgba(0,0,0,0.6);position:relative;cursor:default;
   max-width:90vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}}
 #zoom-inner .body-ctr{{width:min(420px,38vh)!important;cursor:default;overflow:hidden}}
 #zoom-inner .body-img{{opacity:1!important}}
 #zoom-inner .zoom-hint{{display:none}}
 #zoom-inner .cnt{{font-size:13px}}
 .zoom-x{{position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
-  background:rgba(0,0,0,0.08);border:none;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;font-size:20px;color:#6b7280;
+  background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;font-size:20px;color:#7a9bbf;
   transition:background 0.2s,color 0.2s;z-index:10000}}
-.zoom-x:hover{{background:rgba(0,0,0,0.16);color:#1f2937}}
+.zoom-x:hover{{background:rgba(255,255,255,0.16);color:#e8f0f8}}
 </style></head><body>
 <div class="bm-wrap">
   <div class="bm-title">Symptom Body Map</div>
@@ -1691,7 +1609,7 @@ def render_body_heatmap():
     st.markdown(
         "<div class='card card-bodymap'><div class='card-title' style='color:#7c3aed;'>"
         "Adverse-Event Body Map</div>"
-        "<p style='font-size:12px;color:#9ca3af;margin:-4px 0 6px;'>"
+        "<p style='font-size:12px;color:#3d5a74;margin:-4px 0 6px;'>"
         "Visual overlay of reported adverse events on anatomical regions</p>",
         unsafe_allow_html=True,
     )
@@ -1702,7 +1620,7 @@ def render_body_heatmap():
     sys_count = region_counts.get("systemic", 0)
     if sys_count:
         st.markdown(
-            f"<div style='text-align:center;font-size:12px;color:#6b7280;margin-top:-8px'>"
+            f"<div style='text-align:center;font-size:12px;color:#7a9bbf;margin-top:-8px'>"
             f"<b>Systemic</b> (whole-body): {sys_count} symptom(s)</div>",
             unsafe_allow_html=True,
         )
@@ -1722,23 +1640,155 @@ def render_overall():
 
 
 # ══════════════════════════════════════════════════════════════
-#  CONDITIONAL VIEWS
+#  PAGE RENDERING — Query Page or Results Dashboard
 # ══════════════════════════════════════════════════════════════
-active = st.session_state.active_panel
 
-if active == "ALL":
-    render_overall()
-elif active == "Response":
-    _resp_l, _resp_r = st.columns([2, 1], gap="large")
-    with _resp_l:
-        render_response()
-    with _resp_r:
-        render_body_heatmap()
-elif active == "KG":
-    render_kg()
-elif active == "Evidence":
-    render_evidence()
-elif active == "Metrics":
-    render_metrics()
-elif active == "Logs":
-    render_logs()
+if current_view == "query":
+    # ── QUERY PAGE ─────────────────────────────────────────────
+    render_topbar("Safety Chat")
+
+    st.markdown(
+        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
+        unsafe_allow_html=True,
+    )
+
+    # Centered query card
+    _pad_l, _card, _pad_r = st.columns([1, 3, 1])
+    with _card:
+        st.markdown(
+            "<div class='query-page-title'>Safety Chat</div>"
+            "<div class='query-page-subtitle'>"
+            "Enter a drug-label question below to retrieve FDA evidence, "
+            "build a knowledge graph, and generate a grounded answer."
+            "</div>",
+            unsafe_allow_html=True,
+        )
+
+        # Example queries
+        example = st.selectbox(
+            "Example Queries",
+            EXAMPLES,
+            index=0,
+            help="Pick a sample question to pre-fill the query field.",
+        )
+        default_q = st.session_state.submitted_query or \
+                     ("" if example == EXAMPLES[0] else example)
+        query_text = st.text_area(
+            "Enter your drug-label question:",
+            value=default_q,
+            placeholder="e.g. What are the side effects of ibuprofen?",
+            height=120,
+        )
+
+        # Advanced settings
+        with st.expander("⚙️ Advanced Settings"):
+            method = st.selectbox(
+                "Retrieval method",
+                ["hybrid", "dense", "sparse"],
+                index=0,
+            )
+            top_k = st.slider("Top-K evidence", 3, 10, 5)
+            gemini_key = st.text_input(
+                "Google Gemini API key (optional)",
+                type="password",
+                help="If provided, answers are generated by Gemini 2.0 Flash. "
+                     "Otherwise, a rule-based extractive fallback is used.",
+            )
+
+        st.markdown("")  # spacer
+        run = st.button(
+            "🔍 Run RAG Query",
+            type="primary",
+            use_container_width=True,
+        )
+
+        if run and query_text:
+            with st.spinner("Fetching FDA drug labels and running RAG pipeline..."):
+                result = run_rag_query(
+                    query_text,
+                    gemini_key=gemini_key,
+                    method=method,
+                    top_k=top_k,
+                    use_rerank=False,
+                )
+            st.session_state.result = result
+            st.session_state.submitted_query = query_text
+
+            # Store for stress-test comparison page
+            st.session_state.primary_last_run = {
+                "query": query_text,
+                "confidence": f"{result['confidence']:.0%}",
+                "evidence_count": len(result["evidence"]),
+            }
+
+            st.session_state.logs.append(
+                f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  "
+                f"Query completed in {result['latency_ms']} ms  ·  "
+                f"Evidence: {len(result['evidence'])}  ·  "
+                f"Confidence: {result['confidence']:.0%}"
+            )
+
+            # Navigate to results
+            st.session_state.safety_view = "results"
+            st.rerun()
+
+        elif run and not query_text:
+            st.warning("Please enter a query first.")
+
+
+else:
+    # ── RESULTS DASHBOARD ──────────────────────────────────────
+    render_topbar("Safety Chat")
+
+    st.markdown(
+        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
+        unsafe_allow_html=True,
+    )
+
+    # ── Pill row ──
+    c1, c2, c3, c4, c5 = st.columns(5, gap="small")
+    c1.button("Response", width="stretch",
+               type="primary" if st.session_state.active_panel == "Response" else "secondary",
+               key="pill_response", on_click=set_panel, args=("Response",))
+    c2.button("Knowledge Graph", width="stretch",
+               type="primary" if st.session_state.active_panel == "KG" else "secondary",
+               key="pill_kg", on_click=set_panel, args=("KG",))
+    c3.button("Evidence / Artifacts", width="stretch",
+               type="primary" if st.session_state.active_panel == "Evidence" else "secondary",
+               key="pill_evidence", on_click=set_panel, args=("Evidence",))
+    c4.button("Metrics & Monitoring", width="stretch",
+               type="primary" if st.session_state.active_panel == "Metrics" else "secondary",
+               key="pill_metrics", on_click=set_panel, args=("Metrics",))
+    c5.button("Logs", width="stretch",
+               type="primary" if st.session_state.active_panel == "Logs" else "secondary",
+               key="pill_logs", on_click=set_panel, args=("Logs",))
+
+    st.caption("Click a pill to focus; click again to return to the full dashboard view.")
+
+    # ── Panel rendering ──
+    active = st.session_state.active_panel
+
+    if active == "ALL":
+        render_overall()
+    elif active == "Response":
+        _resp_l, _resp_r = st.columns([2, 1], gap="large")
+        with _resp_l:
+            render_response()
+        with _resp_r:
+            render_body_heatmap()
+    elif active == "KG":
+        render_kg()
+    elif active == "Evidence":
+        render_evidence()
+    elif active == "Metrics":
+        render_metrics()
+    elif active == "Logs":
+        render_logs()

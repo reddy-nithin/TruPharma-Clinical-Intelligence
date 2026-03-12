@@ -1,0 +1,29 @@
+FAERS SAFETY SIGNALS: OXYMORPHONE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 11
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Death: 12,420 reports, 3/3 methods flagging
+    Signal strength: PRR=9.15, ROR=14.35, EBGM=9.03
+  - Overdose: 8,120 reports, 3/3 methods flagging
+    Signal strength: PRR=15.86, ROR=20.94, EBGM=15.49
+  - Drug abuse: 2,027 reports, 3/3 methods flagging
+    Signal strength: PRR=16.18, ROR=17.21, EBGM=15.80
+  - Withdrawal syndrome: 2,019 reports, 3/3 methods flagging
+    Signal strength: PRR=8.94, ROR=9.47, EBGM=8.82
+  - Drug dependence: 1,951 reports, 3/3 methods flagging
+    Signal strength: PRR=7.76, ROR=8.20, EBGM=7.68
+  - Drug withdrawal syndrome: 1,804 reports, 3/3 methods flagging
+    Signal strength: PRR=11.34, ROR=11.96, EBGM=11.16
+  - Accidental overdose: 681 reports, 3/3 methods flagging
+    Signal strength: PRR=12.47, ROR=12.72, EBGM=12.24
+  - Completed suicide: 287 reports, 3/3 methods flagging
+    Signal strength: PRR=2.24, ROR=2.26, EBGM=2.24
+  - Respiratory arrest: 240 reports, 3/3 methods flagging
+    Signal strength: PRR=2.24, ROR=2.25, EBGM=2.24
+  - Substance abuse: 67 reports, 3/3 methods flagging
+    Signal strength: PRR=5.32, ROR=5.33, EBGM=5.28
+  - Drug toxicity: 51 reports, 2/3 methods flagging
+    Signal strength: PRR=2.36, ROR=2.36, EBGM=2.35
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

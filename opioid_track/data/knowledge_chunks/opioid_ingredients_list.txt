@@ -1,0 +1,44 @@
+COMPLETE OPIOID INGREDIENT LIST BY CATEGORY
+
+### Combination (4 ingredients)
+  - codeine
+  - hydrocodone
+  - oxycodone
+  - tramadol
+
+### Natural/Semi-Synthetic (6 ingredients)
+  - hydromorphone
+  - morphine
+  - naloxone
+  - naltrexone
+  - oxycodone
+  - oxymorphone
+
+### Semi-Synthetic (2 ingredients)
+  - buprenorphine
+  - butorphanol
+
+### Synthetic (6 ingredients)
+  - fentanyl
+  - meperidine
+  - naloxone
+  - pentazocine
+  - tapentadol
+  - tramadol
+
+### Treatment/Recovery (1 ingredients)
+  - methadone
+
+### Unclassified (11 ingredients)
+  - buprenorphine
+  - butorphanol
+  - codeine
+  - hydrocodone
+  - hydromorphone
+  - levorphanol
+  - morphine
+  - naloxone
+  - naltrexone
+  - oxymorphone
+  - pentazocine
+

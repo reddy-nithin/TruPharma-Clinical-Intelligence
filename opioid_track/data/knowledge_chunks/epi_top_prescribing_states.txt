@@ -1,0 +1,25 @@
+TOP STATES BY OPIOID PRESCRIBING RATE (2023, CMS Medicare Part D)
+
+  1. Alabama: 5.64 prescriptions per enrollee
+  2. Utah: 5.61 prescriptions per enrollee
+  3. Oklahoma: 5.49 prescriptions per enrollee
+  4. Idaho: 5.40 prescriptions per enrollee
+  5. Arkansas: 5.17 prescriptions per enrollee
+  6. Wyoming: 4.96 prescriptions per enrollee
+  7. Kentucky: 4.93 prescriptions per enrollee
+  8. Oregon: 4.93 prescriptions per enrollee
+  9. Colorado: 4.87 prescriptions per enrollee
+  10. Nevada: 4.87 prescriptions per enrollee
+  11. Georgia: 4.68 prescriptions per enrollee
+  12. California: 4.66 prescriptions per enrollee
+  13. Tennessee: 4.66 prescriptions per enrollee
+  14. Alaska: 4.62 prescriptions per enrollee
+  15. Indiana: 4.60 prescriptions per enrollee
+  16. Montana: 4.60 prescriptions per enrollee
+  17. Washington: 4.60 prescriptions per enrollee
+  18. Louisiana: 4.51 prescriptions per enrollee
+  19. North Carolina: 4.43 prescriptions per enrollee
+  20. Kansas: 4.41 prescriptions per enrollee
+
+Lowest: American Samoa (0.00)
+National context: Higher prescribing rates correlate with greater opioid exposure and overdose risk at the population level.

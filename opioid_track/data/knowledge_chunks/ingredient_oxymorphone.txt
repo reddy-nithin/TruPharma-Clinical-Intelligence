@@ -1,0 +1,15 @@
+PHARMACOLOGY: OXYMORPHONE
+
+Identifiers: RxCUI=7814, ChEMBL=CHEMBL963, PubChem CID=5284604
+Molecular: C17H19NO4, MW=301.34
+
+Receptor Binding Affinities:
+  - mu: Ki = 1.79 nM (source: ChEMBL)
+  - kappa: Ki = 25.3 nM (source: ChEMBL)
+  - delta: Ki = 70.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.18x
+
+Oxymorphone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 1.8 nM, showing 14-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+Metabolism: Oxymorphone undergoes extensive hepatic metabolism in humans. After a 10 mg oral dose, 49% was excreted over a five-day period in the urine. Of this, 82% was excreted in the first 24 hours after administration. The recovered drug-related products contained the oxymorphone (1.9%), the conjugate of ox
+  Danger level: Unknown

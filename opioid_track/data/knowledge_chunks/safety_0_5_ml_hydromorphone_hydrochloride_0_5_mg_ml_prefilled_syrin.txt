@@ -1,0 +1,13 @@
+DRUG SAFETY PROFILE: 0.5 ML hydromorphone hydrochloride 0.5 MG/ML Prefilled Syringe
+
+RxCUI: 2675350
+Category: natural/semi-synthetic
+Opioid ingredients: hydromorphone
+
+Boxed Warning: None
+
+Starting dose: 2 mg
+
+Safety terms in label: Respiratory arrest, Respiratory depression
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

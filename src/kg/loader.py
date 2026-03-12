@@ -318,19 +318,27 @@ def load_kg(path: str = _DEFAULT_KG_PATH) -> Optional[KnowledgeGraph]:
         return None
 
     try:
+        log_file = "/tmp/kg_debug.log"
+        with open(log_file, "a") as f:
+            f.write(f"[{os.getpid()}] load_kg called with path: {path}\n")
+            f.write(f"[{os.getpid()}] os.path.exists(path): {os.path.exists(path)}\n")
+
         if os.environ.get("NEO4J_URI"):
             backend = create_backend("neo4j")
         elif os.path.exists(path):
             backend = create_backend("sqlite", sqlite_path=path, readonly=True)
         else:
             _KG_INSTANCE = None
-            _KG_LOADED = True
+            with open(log_file, "a") as f:
+                f.write(f"[{os.getpid()}] KG path not found: {path}\n")
             return None
         _KG_INSTANCE = KnowledgeGraph(backend)
-        _KG_LOADED = True
-    except Exception:
+        with open(log_file, "a") as f:
+            f.write(f"[{os.getpid()}] KG loaded successfully from {path}\n")
+    except Exception as e:
         _KG_INSTANCE = None
-        _KG_LOADED = True
+        with open(log_file, "a") as f:
+            f.write(f"[{os.getpid()}] Error loading KG: {e}\n")
 
     return _KG_INSTANCE
 

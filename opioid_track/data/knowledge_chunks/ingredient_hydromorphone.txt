@@ -1,0 +1,17 @@
+PHARMACOLOGY: HYDROMORPHONE
+
+Identifiers: RxCUI=3423, ChEMBL=CHEMBL398707, PubChem CID=5284570
+Molecular: C17H19NO3, MW=285.34
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.28 nM (source: ChEMBL)
+  - kappa: Ki = 2.8 nM (source: ChEMBL)
+  - delta: Ki = 38.0 nM (source: ChEMBL)
+
+Potency vs morphine: 1.14x
+
+Hydromorphone is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 0.3 nM, with moderate selectivity over kappa (10.0-fold). Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 2.5 hours
+Metabolism: The metabolism of hydromorphone is mainly hepatic and it is represented by the generation of hydromorphone-3-glucuronide through glucuronidation reactions. This primary metabolic pathway is done by the activity of the UDP-glucuronosyltransferase-2B7. The first-pass hepatic metabolism is so large tha
+  Danger level: Unknown

@@ -19,6 +19,7 @@ import time
 from datetime import datetime
 
 from src.rag.engine import run_rag_query, read_logs
+from src.frontend.theme import inject_theme, render_topbar, render_brand
 
 # ─── Page config ──────────────────────────────────────────────
 st.set_page_config(
@@ -42,82 +43,21 @@ components.html("""
 </script>
 """, height=0)
 
-# ─── Hide built-in nav ───────────────────────────────────────
-st.markdown("""
-<style>
-div[data-testid="stSidebarNav"] { display: none !important; }
-section[data-testid="stSidebar"] nav { display: none !important; }
-section[data-testid="stSidebar"] ul[role="list"] { display: none !important; }
-section[data-testid="stSidebar"] > div:first-child { padding-top: 0rem !important; }
-section[data-testid="stSidebar"] ul[data-testid="stSidebarNavItems"] { display: none !important; }
-</style>
-""", unsafe_allow_html=True)
-
-# ─── Styling ──────────────────────────────────────────────────
-st.markdown("""<style>
-.main-header-bar {
-    background: linear-gradient(90deg, #F2994A, #EB5757);
-    color: white; padding: 12px 16px; border-radius: 10px;
-    font-weight: 600; margin-bottom: 14px;
-}
-.page-title  { font-size: 34px; font-weight: 800; margin-bottom: 4px; }
-.page-subtitle { color: #6b7280; font-weight: 600; margin-bottom: 14px; }
-.panel {
-    border-radius: 16px; padding: 0; border: 1px solid #E5E7EB;
-    overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.06); background: #fff;
-}
-.panel-header { padding: 12px 18px; font-weight: 900; font-size: 18px; color: #111827; }
-.panel-subheader { padding: 0 18px 12px 18px; font-weight: 700; color: #4b5563; }
-.panel-header.primary { background: #CFE7C8; }
-.panel-header.stress  { background: #F7C08A; }
-.panel-header.primary, .panel-header.stress {
-    border-radius: 16px !important; margin: 14px 14px 6px 14px !important;
-    width: calc(100% - 28px) !important;
-}
-.section-pill {
-    display: inline-block; background: #F3F4F6; border: 1px solid #E5E7EB;
-    color: #111827; border-radius: 16px; padding: 8px 14px;
-    font-weight: 900; font-size: 15px; margin: 10px 0 8px 0;
-}
-.inner-card { margin: 10px 18px; border: none; background: transparent; padding: 0; }
-.mini { color: #4b5563; font-weight: 600; }
-.bullets { margin: 0; padding-left: 18px; }
-.bullets li { margin: 6px 0; }
-.criteria {
-    border-radius: 16px; border: 1px solid #E5E7EB;
-    overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.06); background: #fff;
-}
-.criteria-header { padding: 10px 14px; font-weight: 900; font-size: 18px; color: #111827; }
-.criteria-header.success { background: #CFE7C8; }
-.criteria-header.pass    { background: #F7C08A; }
-.criteria-body { padding: 12px 14px; background: #F9FAFB; font-weight: 600; color: #374151; }
-.scenario-card { padding: 10px 12px; border-radius: 10px; margin-bottom: 8px; font-weight: 700; line-height: 1.2; }
-.stress-active { background-color: #FFF3E0; border-left: 6px solid #EF6C00; }
-/* Apply custom font but exclude Streamlit icon elements */
-html, body,
-p, h1, h2, h3, h4, h5, h6,
-span, div, li, td, th, label, a,
-input, textarea, select, button,
-.stMarkdown, .stText, .stCaption,
-[data-testid="stMetricValue"],
-[data-testid="stMetricLabel"] {
-    font-family: "Times New Roman", Times, serif !important;
-    line-height: 1.4;
-}
-/* Restore Streamlit's icon font for Material Icons */
-[data-testid="stIconMaterial"],
-.material-symbols-rounded,
-[data-testid="collapsedControl"] span,
-span[class*="icon"] {
-    font-family: "Material Symbols Rounded" !important;
-}
-</style>""", unsafe_allow_html=True)
+# ─── Inject theme ────────────────────────────────────────────
+inject_theme()
 
 
 # ══════════════════════════════════════════════════════════════
 #  SIDEBAR
 # ══════════════════════════════════════════════════════════════
-st.sidebar.markdown("<div style='font-size:15px;font-weight:800;margin:10px 0 8px;'>Scenario Mode</div>", unsafe_allow_html=True)
+with st.sidebar:
+    render_brand()
+    st.divider()
+
+st.sidebar.markdown(
+    "<div class='tp-section-header'>Scenario Mode</div>",
+    unsafe_allow_html=True,
+)
 if st.sidebar.button("⬅ Return to Safety Chat", key="go_safety_chat"):
     st.switch_page("pages/primary_demo.py")
 
@@ -188,7 +128,12 @@ if run:
 # ══════════════════════════════════════════════════════════════
 #  PAGE HEADER
 # ══════════════════════════════════════════════════════════════
-st.markdown("<div class='page-title'>Scenario Validation View</div>", unsafe_allow_html=True)
+render_topbar("Scenario Validation")
+
+st.markdown(
+    "<div class='tp-page-header'>Scenario <span>Validation</span> View</div>",
+    unsafe_allow_html=True,
+)
 st.markdown(
     "<div class='main-header-bar'>Stress Test: TruPharma RAG vs Edge Case Scenarios</div>",
     unsafe_allow_html=True,

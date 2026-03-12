@@ -1,0 +1,22 @@
+PHARMACOLOGY: TRAMADOL
+
+Identifiers: RxCUI=10689, ChEMBL=CHEMBL1237044, PubChem CID=33741
+Molecular: C16H25NO2, MW=263.37
+
+Receptor Binding Affinities:
+  - mu: Ki = 1600.0 nM (source: ChEMBL)
+  - kappa: Ki = 14.0 nM (source: ChEMBL)
+  - delta: Ki = 9.4 nM (source: ChEMBL)
+
+Potency vs morphine: 0.00x
+
+Tramadol is classified as an opioid because it acts as a full agonist at the delta opioid receptor (OPRD1) with Ki = 9.4 nM. Its primary opioid effects — anxiolysis, mild analgesia, and convulsant activity — are mediated through delta receptor activation.
+
+Half-life: 5.5 hours
+Metabolism: Tramadol undergoes extensive first-pass metabolism in the liver by N- and O- demethylation and conjugation. From the extensive metabolism, there have been identified at least 23 metabolites. There are two main metabolic pathways: the O-demethylation of tramadol to produce O-desmethyl-tramadol (M1) c
+
+Toxicology:
+  LD50 (rat, oral): 350.0 mg/kg
+  Estimated human lethal dose: 4105.4 mg
+  Therapeutic index: 45114307.7
+  Danger level: Lower

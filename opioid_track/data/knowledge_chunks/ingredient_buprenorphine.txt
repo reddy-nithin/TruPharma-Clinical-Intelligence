@@ -1,0 +1,17 @@
+PHARMACOLOGY: BUPRENORPHINE
+
+Identifiers: RxCUI=1819, ChEMBL=CHEMBL511142, PubChem CID=644073
+Molecular: C29H41NO4, MW=467.6
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.41 nM (source: ChEMBL)
+  - kappa: Ki = 0.04 nM (source: ChEMBL)
+  - delta: Ki = 1.15 nM (source: ChEMBL)
+
+Potency vs morphine: 0.78x
+
+Buprenorphine is classified as an opioid because it acts as a full agonist at the kappa opioid receptor (OPRK1) with Ki = 0.0 nM. Mu opioid receptor agonist. Its primary opioid effects — dysphoria, sedation, and spinal analgesia — are mediated through kappa receptor activation.
+
+Half-life: 2.77 hours
+Metabolism: Buprenorphine is metabolized to norbuprenorphine via Cytochrome P450 3A4/3A5-mediated N-dealkylation. Buprenorphine and norbuprenorphine both also undergo glucuronidation to the inactive metabolites buprenorphine-3-glucuronide and norbuprenorphine-3-glucuronide, respectively.  While norbuprenorphine
+  Danger level: Unknown

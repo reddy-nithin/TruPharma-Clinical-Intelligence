@@ -1,0 +1,3242 @@
+{
+  "metadata": {
+    "nlp_source": "CDCgov/Opioid_Involvement_NLP",
+    "data_source": "DailyMed SPL XML Labels",
+    "generated_at": "2026-03-06T20:31:36.268263+00:00",
+    "tier": 3,
+    "step": 6,
+    "total_drugs_processed": 18,
+    "total_drugs_attempted": 18,
+    "sections_targeted": [
+      "boxed_warning",
+      "indications",
+      "dosage_admin",
+      "warnings_precautions",
+      "adverse_reactions",
+      "drug_interactions",
+      "abuse_dependence",
+      "overdosage",
+      "clinical_pharmacology"
+    ]
+  },
+  "drug_label_insights": [
+    {
+      "drug_name": "0.16 ML buprenorphine 50 MG/ML Prefilled Syringe",
+      "rxcui": "2639021",
+      "spl_set_id": "99a5b62f-bc08-44f4-abb8-300520d2162a",
+      "opioid_ingredients": [
+        "buprenorphine"
+      ],
+      "opioid_category": "semi-synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "indications": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "naloxone",
+            "norbuprenorphine",
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "naloxone"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 0,
+        "key_warnings": [],
+        "full_text": null
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "hypotension"
+        ]
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    },
+    {
+      "drug_name": "0.4 ML naloxone hydrochloride 25 MG/ML Auto-Injector",
+      "rxcui": "2596175",
+      "spl_set_id": "99a5b62f-bc08-44f4-abb8-300520d2162a",
+      "opioid_ingredients": [
+        "naloxone"
+      ],
+      "opioid_category": "unclassified",
+      "schedule": null,
+      "sections_parsed": [
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "indications": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "naloxone",
+            "norbuprenorphine",
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "naloxone"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 0,
+        "key_warnings": [],
+        "full_text": null
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "hypotension"
+        ]
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    },
+    {
+      "drug_name": "0.5 ML fentanyl 0.05 MG/ML Prefilled Syringe",
+      "rxcui": "2629337",
+      "spl_set_id": "242759ef-cb6d-4e3e-9f8d-5e31efa1f289",
+      "opioid_ingredients": [
+        "fentanyl"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "warnings_precautions",
+        "adverse_reactions",
+        "drug_interactions",
+        "abuse_dependence",
+        "overdosage",
+        "clinical_pharmacology"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "indications": {
+          "opioid_mentions": [
+            "fentanyl",
+            "hydrocodone",
+            "hydromorphone",
+            "morphine",
+            "opioid",
+            "oxycodone",
+            "oxymorphone"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "warnings_precautions": {
+          "opioid_mentions": [],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "fentanyl",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "abuse_dependence": {
+          "opioid_mentions": [],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "overdosage": {
+          "opioid_mentions": [],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "clinical_pharmacology": {
+          "opioid_mentions": [],
+          "negated_mentions": [],
+          "safety_flags": []
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 1,
+        "key_warnings": [],
+        "full_text": "."
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": []
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "0.5 ML hydromorphone hydrochloride 0.5 MG/ML Prefilled Syringe",
+      "rxcui": "2675350",
+      "spl_set_id": "b325028e-0722-4c8c-9fdb-ab6fb0dc460c",
+      "opioid_ingredients": [
+        "hydromorphone"
+      ],
+      "opioid_category": "natural/semi-synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "clinical_pharmacology",
+        "indications",
+        "drug_interactions",
+        "adverse_reactions",
+        "dosage_admin"
+      ],
+      "section_annotations": {
+        "clinical_pharmacology": {
+          "opioid_mentions": [
+            "hydromorphone",
+            "morphine",
+            "narcotic",
+            "narcotics",
+            "opiate",
+            "opiates"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "indications": {
+          "opioid_mentions": [
+            "hydromorphone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "hydromorphone",
+            "narcotic"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "hydromorphone",
+            "narcotic",
+            "opium"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Respiratory arrest",
+            "Respiratory depression"
+          ]
+        },
+        "dosage_admin": {
+          "opioid_mentions": [
+            "narcotic"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 0,
+        "key_warnings": [],
+        "full_text": null
+      },
+      "dosage": {
+        "starting_dose": "2 mg",
+        "max_daily_dose_mg": null,
+        "doses_found": [
+          "2 mg",
+          "4 mg"
+        ]
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Respiratory arrest",
+          "Respiratory depression"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": false,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": []
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    },
+    {
+      "drug_name": "0.7 ML morphine sulfate 14.3 MG/ML Auto-Injector",
+      "rxcui": "894911",
+      "spl_set_id": "728f3d83-9a63-0c1f-e053-2a91aa0ac7db",
+      "opioid_ingredients": [
+        "morphine"
+      ],
+      "opioid_category": "natural/semi-synthetic",
+      "schedule": "Schedule II",
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "dosage_admin",
+        "warnings_precautions",
+        "adverse_reactions",
+        "drug_interactions",
+        "abuse_dependence",
+        "overdosage",
+        "clinical_pharmacology"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "dosage_admin": {
+          "opioid_mentions": [
+            "morphine",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "opioids"
+          ],
+          "safety_flags": [
+            "Overdose",
+            "Respiratory depression"
+          ]
+        },
+        "warnings_precautions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "morphine",
+            "nalbuphine",
+            "naloxone",
+            "naltrexone",
+            "narcotic",
+            "narcotics",
+            "opiate",
+            "opioid",
+            "opioids",
+            "pentazocine"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Drug abuse",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory arrest",
+            "Respiratory depression",
+            "Substance abuse",
+            "Withdrawal syndrome"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "morphine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "hydrocodone",
+            "hydromorphone",
+            "morphine",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "oxycodone",
+            "oxymorphone",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "abuse_dependence": {
+          "opioid_mentions": [
+            "butorphanol",
+            "morphine",
+            "nalbuphine",
+            "naloxone",
+            "opioid",
+            "opioids",
+            "pentazocine"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Drug abuse",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "morphine",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        },
+        "clinical_pharmacology": {
+          "opioid_mentions": [
+            "morphine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "morphine",
+            "opioid"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF MITIGO \u00ae Risks with Neuraxial Administration Single-dose neuraxial administration may result in acute or delayed respiratory depression up to 24 hours. Because of the risk of severe adverse reactions when MITIGO \u00ae is administered by the epidural or intrathecal route of administration, patients must be observed in a fully equipped and staffed environment for at least 24 hours after the initial dose [see Warnings and Precautions ( 5.1 ) ] . Addiction, Abuse, and Misuse Because the use of MITIGO \u00ae exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions ( 5.2 )] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of MITIGO \u00ae , especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of MITIGO \u00ae are essential [see Warnings and Precautions ( 5.3 ) ] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of MITIGO \u00ae and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see Warnings and Precautions ( 5.4 ), Drug Interactions ( 7 )] . Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk Neonatal Opioid Withdrawal Syndrome, which may be life threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings an"
+      },
+      "dosage": {
+        "starting_dose": "200 mg",
+        "max_daily_dose_mg": null,
+        "doses_found": [
+          "200 mg",
+          "500 mg",
+          "25 mg",
+          "200 mg",
+          "500 mg",
+          "25 mg",
+          "1 mg",
+          "0.5 mg",
+          "1 mg",
+          "7.5 mg",
+          "10 mg",
+          "30 mg",
+          "1 mg",
+          "10 mg",
+          "20 mg"
+        ]
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": "Schedule II",
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    },
+    {
+      "drug_name": "1 ML butorphanol tartrate 1 MG/ML Injection",
+      "rxcui": "886627",
+      "spl_set_id": "5a50d22e-acbe-4b15-9ed6-70713378408a",
+      "opioid_ingredients": [
+        "butorphanol"
+      ],
+      "opioid_category": "semi-synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "drug_interactions",
+        "indications"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "butorphanol",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "butorphanol"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "butorphanol",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Addiction, Abuse, and Misuse Because the use of Butorphanol Tartrate Nasal Spray exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS ]. Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of Butorphanol Tartrate Nasal Spray, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of Butorphanol Tartrate Nasal Spray are essential [see WARNINGS ] . Accidental Exposure Accidental exposure of even one dose of Butorphanol Tartrate Nasal Spray, especially in children, can result in a fatal overdose of butorphanol [see WARNINGS ]. Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of Butorphanol Tartrate Nasal Spray and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see WARNINGS , PRECAUTIONS; Drug Interactions ] . Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see WARNINGS ]. Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and caregivers on serious risks, safe use, and the importance of reading the Medication Guide with eac"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": []
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": []
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "1 ML meperidine hydrochloride 100 MG/ML Cartridge",
+      "rxcui": "861493",
+      "spl_set_id": "792fefda-6cc4-4709-b902-fd9787fc310a",
+      "opioid_ingredients": [
+        "meperidine"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "meperidine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "meperidine",
+            "normeperidine",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "meperidine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory arrest",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "meperidine",
+            "nalbuphine",
+            "narcotic",
+            "normeperidine",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "meperidine"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "meperidine",
+            "naloxone",
+            "normeperidine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Addiction, Abuse, and Misuse Because the use of Meperidine hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient's risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.2) ] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of Meperidine hydrochloride tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of meperidine hydrochloride tablets are essential [see Warnings and Precautions (5.3) ]. Accidental Ingestion Accidental ingestion of Meperidine hydrochloride tablets, especially by children, can result in a fatal overdose of meperidine [see Warnings and Precautions (5.3) ] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of Meperidine Hydrochloride Tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [ see Warnings and Precautions (5.4) , Drug Interactions (7) ]. Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings and Precautions (5.5) ] . Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and caregivers "
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory arrest",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2B6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": [
+          "agitation, hyperthermia, diarrhea, tachycardia, sweating, tremors and impaired consciousness may als"
+        ]
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "12 HR bupropion hydrochloride 90 MG / naltrexone hydrochloride 8 MG Extended Release Oral Tablet",
+      "rxcui": "1551468",
+      "spl_set_id": "f821dd49-3fa7-4d33-99de-19023ff1ae65",
+      "opioid_ingredients": [
+        "naltrexone"
+      ],
+      "opioid_category": "unclassified",
+      "schedule": null,
+      "sections_parsed": [
+        "indications",
+        "drug_interactions",
+        "adverse_reactions",
+        "abuse_dependence",
+        "overdosage",
+        "dosage_admin"
+      ],
+      "section_annotations": {
+        "indications": {
+          "opioid_mentions": [
+            "naltrexone",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "naltrexone",
+            "opiates",
+            "opioid"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Respiratory depression",
+            "Somnolence"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "naltrexone",
+            "opiate",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "naltrexone",
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": []
+        },
+        "abuse_dependence": {
+          "opioid_mentions": [
+            "naltrexone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naltrexone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Overdose",
+            "Respiratory failure"
+          ]
+        },
+        "dosage_admin": {
+          "opioid_mentions": [
+            "naltrexone",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": []
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 0,
+        "key_warnings": [],
+        "full_text": null
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": []
+      },
+      "drug_interactions": {
+        "benzo_warning": false,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": []
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    },
+    {
+      "drug_name": "12 HR chlorpheniramine polistirex 1.6 MG/ML / hydrocodone polistirex 2 MG/ML Extended Release Suspension",
+      "rxcui": "1087459",
+      "spl_set_id": "46c13d54-b181-4da2-e063-6294a90ab5c5",
+      "opioid_ingredients": [
+        "hydrocodone"
+      ],
+      "opioid_category": "unclassified",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "clinical_pharmacology",
+        "indications",
+        "drug_interactions",
+        "adverse_reactions",
+        "overdosage",
+        "dosage_admin"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "hydrcodone",
+            "hydrocodone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "clinical_pharmacology": {
+          "opioid_mentions": [
+            "hydrocodone",
+            "hydromorphone",
+            "norhydrocodone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "hydrocodone",
+            "opioid"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "hydrocodone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "hydrocodone",
+            "opioid"
+          ],
+          "safety_flags": []
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "hydrocodone",
+            "nalbuphine",
+            "naloxone",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "hydrocodone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Constipation",
+            "Overdose",
+            "Serotonin syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "hydrocodone",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        },
+        "dosage_admin": {
+          "opioid_mentions": [
+            "heroin",
+            "hydrocodone",
+            "naloxone",
+            "opiod",
+            "opiods",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "hydrocodone",
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Drug abuse",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "WARNING:\u00a0SERIOUS AND LIFE-THREATENING RISKS FROM USE OF HYDRCODONE BITARTRATE AND ACETAMINOPHEN TABLETS Addiction, Abuse, and Misuse Because the use of Hydrocodone Bitartrate and Acetaminophen Tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions\u00a0[see WARNINGS ]. Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of Hydrocodone Bitartrate and Acetaminophen Tablets especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of Hydrocodone Bitartrate and Acetaminophen Tablets are essential\u00a0[see WARNINGS ]. Accidental Ingestion Accidental ingestion of even one dose of Hydrocodone Bitartrate and Acetaminophen Tablets especially by children, can result in a fatal overdose of Hydrocodone [see WARNINGS ]. Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of Hydrocodone Bitartrate and Acetaminophen Tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [See WARNINGS , PRECAUTIONS; DRUG INTERACTIONS ]. Neonatal Opioid Withdrawal Syndrome (NOWS) If opioid use is required for an extended period of time in a pregnant woman, advise the patient of the risk of NOWS, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see WARNINGS ]. Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly enc"
+      },
+      "dosage": {
+        "starting_dose": "5 mg",
+        "max_daily_dose_mg": null,
+        "doses_found": [
+          "5 mg",
+          "325 mg",
+          "7.5 mg",
+          "325 mg",
+          "10 mg",
+          "325 mg"
+        ]
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Overdose",
+          "Serotonin syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2D6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "1049502",
+      "spl_set_id": "c801963d-f54d-4ed5-82c4-8b278528d3dc",
+      "opioid_ingredients": [
+        "oxycodone"
+      ],
+      "opioid_category": "natural/semi-synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "oxycodone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Accidental overdose",
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "oxycodone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "oxycodone"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory arrest",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "oxycodone",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "opioids",
+            "oxycodone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Accidental overdose",
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Risk of Medication Errors Ensure accuracy when prescribing, dispensing, and administering Oxycodone Hydrochloride Oral Solution. Dosing errors due to confusion between mg and mL, and other oxycodone hydrochloride oral solutions of different concentrations can result in accidental overdose and death [see Dosage and Administration (2.1) , Warnings and Precautions (5.1) ]. Addiction, Abuse, and Misuse Because the use of Oxycodone Hydrochloride Oral Solution exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.2) ]. Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of Oxycodone Hydrochloride Oral Solution, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, especially during initiation or following a dose increase. To reduce the risk of respiratory depression, proper dosing and titration of Oxycodone Hydrochloride Oral Solution are essential [see Warnings and Precautions (5.3) ]. Accidental Ingestion Accidental ingestion of even one dose of Oxycodone Hydrochloride Oral Solution, especially by children, can result in a fatal overdose of oxycodone [see Warnings and Precautions (5.3) ]. Risks From Concomitant Use with Benzodiazepines or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of Oxycodone Hydrochloride Oral Solution and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see Warnings\u00a0and Precautions (5.4) ,\u00a0Drug Interactions (7) ] . Neonatal Opioid W"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory arrest",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Somnolence",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2D6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "12 HR oxymorphone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "977874",
+      "spl_set_id": "dcb5b5d2-7d0a-497a-8f1e-3b96fd43320b",
+      "opioid_ingredients": [
+        "oxymorphone"
+      ],
+      "opioid_category": "natural/semi-synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "oxymorphone"
+          ],
+          "negated_mentions": [
+            "oxymorphone"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "opioid",
+            "oxymorphone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "oxymorphone",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "oxymorphone"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "opioids",
+            "oxymorphone"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF OXYMORPHONE HYDROCHLORIDE TABLETS Addiction, Abuse, and Misuse Because the use of oxymorphone hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and deathassess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.1)]. Life-threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of oxymorphone hydrochloride tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of oxymorphone hydrochloride tablets are essential [see Warnings and Precautions (5.2)]. Accidental Ingestion Accidental ingestion of even one dose of oxymorphone hydrochloride tablets, especially by children, can result in a fatal overdose of oxymorphone [see Warnings and Precautions (5.2)]. Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of oxymorphone hydrochloride tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see Warnings and Precautions (5.3), Drug Interactions (7)]. Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be lifethreatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings and Precautions (5.4)]. O pioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are stron"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Respiratory depression",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "12 HR tapentadol 100 MG Extended Release Oral Tablet",
+      "rxcui": "1148797",
+      "spl_set_id": "863f3fd3-1e8d-41b0-855f-8f9a29237cda",
+      "opioid_ingredients": [
+        "tapentadol"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "tapentadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "tapentadol"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "hydrocodone",
+            "nalbuphine",
+            "naloxone",
+            "opioid",
+            "opioids",
+            "oxycodone",
+            "oxymorphone",
+            "pentazocine",
+            "tapentadol",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioids",
+            "tapentadol"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "opioids",
+            "tapentadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Addiction, Abuse, and Misuse Because the use of tapentadol tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient's risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.1) ] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of tapentadol tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of tapentadol tablets are essential [see Warnings and Precautions (5.2) ] . Accidental Ingestion Accidental ingestion of even one dose of tapentadol tablets, especially by children, can result in a fatal overdose of tapentadol [see Warnings and Precautions (5.2) ] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of tapentadol tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [ see Warnings and Precautions (5.3) , Drug Interactions (7) ] . Neonatal Opioid Withdrawal Syndrome (NOWS) If opioid use is required for an extended period of time in a pregnant woman, advise the patient of the risk of NOWS, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings and Precautions (5.4) ]. Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and caregivers on serious risks, safe use, and the importance of rea"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "12 HR tramadol hydrochloride 150 MG Extended Release Oral Tablet",
+      "rxcui": "849561",
+      "spl_set_id": "24aea499-c6f1-9200-e063-6394a90a9db6",
+      "opioid_ingredients": [
+        "tramadol"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "opioid",
+            "tramadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid",
+            "tramadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "tramadol"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "tramadol"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Drug abuse",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Addiction, Abuse, and Misuse Because the use of tramadol hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions ( 5.1 )] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of tramadol hydrochloride tablets , especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of tramadol hydrochloride tablets are essential [see Warnings and Precautions ( 5.2 )] . Accidental Ingestion Accidental ingestion of even one dose of tramadol hydrochloride tablets , especially by children, can result in a fatal overdose of tramadol [see Warnings and Precautions ( 5.2 )] . Risks From Concomitant Use with Benzodiazepines or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of tramadol hydrochloride tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see Warnings and Precautions ( 5.3 ), Drug Interactions ( 7 )] . Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome,\u00a0which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings and Precautions ( 5.4 )] . Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients a"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2D6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "acetaminophen 24 MG/ML / codeine phosphate 2.4 MG/ML Oral Solution",
+      "rxcui": "993755",
+      "spl_set_id": "243a6aea-0f48-42a9-a85e-ff247ab94336",
+      "opioid_ingredients": [
+        "codeine"
+      ],
+      "opioid_category": "combination",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "codeine",
+            "morphine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "codeine",
+            "opioid"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "codeine",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "codeine",
+            "hydrocodone",
+            "morphine",
+            "nalbuphine",
+            "norcodeine",
+            "opioid",
+            "opioids",
+            "oxycodone",
+            "oxymorphone",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "codeine",
+            "opioid"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "codeine",
+            "naloxone",
+            "narcotic",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "Addiction, Abuse, and Misuse Because the use of ASCOMP with Codeine exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient's risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see Warnings and Precautions (5.1) ] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of ASCOMP with Codeine, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of ASCOMP with Codeine are essential [see Warnings and Precautions (5.2) ] . Accidental Ingestion Accidental ingestion of even one dose of ASCOMP with Codeine, especially by children, can result in a fatal overdose of aspirin, butalbital, caffeine, and codeine phosphate [see Warnings and Precautions (5.2) ] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of ASCOMP with Codeine and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see Warnings and Precautions (5.3) , Drug Interactions (7) ] . Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see Warnings and Precautions (5.4) ] . Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and caregivers on se"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Respiratory depression",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2D6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "acetaminophen 650 MG / pentazocine 25 MG Oral Tablet",
+      "rxcui": "312288",
+      "spl_set_id": "a28450a0-ac93-4235-b9a6-58cdf24773cb",
+      "opioid_ingredients": [
+        "pentazocine"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "drug_interactions",
+        "adverse_reactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "opioids",
+            "pentazocine"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid",
+            "pentazocine"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "naloxone",
+            "naltrexone",
+            "opioid",
+            "opioids",
+            "pentazocine"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "nalorphine",
+            "naloxone",
+            "opioid",
+            "opioids",
+            "pentazocine"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF PENTAZOCINE AND NALOXONE TABLETS Addiction, Abuse, and Misuse Because the use of Pentazocine and Naloxone Tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS ] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of Pentazocine and Naloxone Tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of Pentazocine and Naloxone Tablets are essential [see WARNINGS ] . Accidental Ingestion Accidental ingestion of even one dose of Pentazocine and Naloxone Tablets, especially by children, can result in a fatal overdose of Pentazocine [see WARNINGS] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of Pentazocine and Naloxone Tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see WARNINGS , PRECAUTIONS ; Drug Interactions] . Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see WARNINGS ] . Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and careg"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Overdose",
+          "Respiratory depression",
+          "Serotonin syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "levorphanol tartrate 2 MG Oral Tablet",
+      "rxcui": "197873",
+      "spl_set_id": "438cf3ea-04fe-4626-9f0f-adcda7633651",
+      "opioid_ingredients": [
+        "levorphanol"
+      ],
+      "opioid_category": "unclassified",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "clinical_pharmacology",
+        "indications",
+        "drug_interactions",
+        "adverse_reactions",
+        "overdosage",
+        "dosage_admin"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "levorphanol",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "clinical_pharmacology": {
+          "opioid_mentions": [
+            "fentanyl",
+            "levorphanol",
+            "meperidine",
+            "methadone",
+            "morphine",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "levorphanol",
+            "meperidine",
+            "morphine",
+            "opioid"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "levorphanol",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "levorphanol",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "levorphanol",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "levorphanol",
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Overdose",
+            "Serotonin syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "levorphanol",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        },
+        "dosage_admin": {
+          "opioid_mentions": [
+            "heroin",
+            "levorphanol",
+            "morphine",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "levorphanol",
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Drug abuse",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF LEVORPHANOL TARTRATE TABLETS Addiction, Abuse, and Misuse Because the use of levorphanol tartrate tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS ] . Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of levorphanol tartrate tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of levorphanol tartrate tablets are essential [see WARNINGS ] . Accidental Ingestion Accidental ingestion of even one dose of levorphanol tartrate tablets, especially by children, can result in a fatal overdose of levorphanol [see WARNINGS ] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of levorphanol tartrate tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see WARNINGS ]. Neonatal Opioid Withdrawal Syndrome (NOWS) Advise pregnant women using opioids for an extended period of time of the risk of Neonatal Opioid Withdrawal Syndrome, which may be life-threatening if not recognized and treated. Ensure that management by neonatology experts will be available at delivery [see WARNINGS ]. Opioid Analgesic Risk Evaluation and Mitigation Strategy (REMS) Healthcare providers are strongly encouraged to complete a REMS-compliant education program and to counsel patients and caregivers on serious risks, safe use, and the importance of re"
+      },
+      "dosage": {
+        "starting_dose": "2 mg",
+        "max_daily_dose_mg": null,
+        "doses_found": [
+          "2 mg",
+          "3 mg"
+        ]
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Coma",
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Overdose",
+          "Serotonin syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "skeletal muscle flaccidity",
+          "cold",
+          "clammy skin",
+          "coma",
+          "cardiac arrest",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "methadone hydrochloride 1 MG/ML Oral Solution",
+      "rxcui": "864761",
+      "spl_set_id": "4a44bde6-c348-4316-b0e0-c24b407cb823",
+      "opioid_ingredients": [
+        "methadone"
+      ],
+      "opioid_category": "treatment/recovery",
+      "schedule": null,
+      "sections_parsed": [
+        "boxed_warning",
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "boxed_warning": {
+          "opioid_mentions": [
+            "methadone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory depression",
+            "Withdrawal syndrome"
+          ]
+        },
+        "indications": {
+          "opioid_mentions": [
+            "heroin",
+            "methadone",
+            "morphine",
+            "opioid"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Death",
+            "Overdose"
+          ]
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "methadone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [
+            "opioid",
+            "opioids"
+          ],
+          "safety_flags": [
+            "Constipation",
+            "Death",
+            "Drug abuse",
+            "Neonatal opioid withdrawal syndrome",
+            "Overdose",
+            "Respiratory arrest",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "butorphanol",
+            "methadone",
+            "nalbuphine",
+            "opioid",
+            "opioids",
+            "pentazocine",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "opioid"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "methadone",
+            "naloxone",
+            "opioid",
+            "opioids"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Coma",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Somnolence",
+            "Withdrawal syndrome"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": true,
+        "paragraph_count": 1,
+        "key_warnings": [
+          "Coma",
+          "Death",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory depression",
+          "Withdrawal syndrome",
+          "addiction",
+          "neonatal",
+          "fatal",
+          "rems",
+          "abuse",
+          "misuse"
+        ],
+        "full_text": "A ddiction, Abuse, and Misuse Because the use of methadone hydrochloride tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient\u2019s risk prior to prescribing and reassess all patients regularly for the development of these behaviors and conditions [see WARNINGS AND PRECAUTIONS ( 5.1 )]. Life-Threatening Respiratory Depression Serious, life-threatening, or fatal respiratory depression may occur with use of methadone hydrochloride tablets, especially during initiation or following a dosage increase. To reduce the risk of respiratory depression, proper dosing and titration of methadone hydrochloride tablets are essential [see WARNINGS AND PRECAUTIONS ( 5.2 )]. Accidental Ingestion Accidental ingestion of even one dose of methadone hydrochloride tablets, especially by children, can result in a fatal overdose of methadone [see Warnings and Precautions ( 5.2 )] . Risks From Concomitant Use With Benzodiazepines Or Other CNS Depressants Concomitant use of opioids with benzodiazepines or other central nervous system (CNS) depressants, including alcohol, may result in profound sedation, respiratory depression, coma, and death. Reserve concomitant prescribing of methadone hydrochloride tablets and benzodiazepines or other CNS depressants for use in patients for whom alternative treatment options are inadequate [see WARNINGS AND PRECAUTIONS ( 5.3 ), DRUG INTERACTIONS ( 7 )]. Neonatal Opioid Withdrawal Syndrome (NOWS) Neonatal opioid withdrawal syndrome (NOWS) is an\u00a0expected and treatable outcome of use of methadone\u00a0hydrochloride tablets during pregnancy. NOWS may be life-threatening\u00a0if not recognized and treated in the neonate. The\u00a0balance between the risks of NOWS and the benefits of\u00a0maternal methadone hydrochloride tablets use may differ\u00a0based on the risks associated with the mother\u2019s underlying\u00a0condition, pain, or addiction. Advise the patient of the risk of\u00a0NOWS so that appropriat"
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": true,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Constipation",
+          "Death",
+          "Drug abuse",
+          "Neonatal opioid withdrawal syndrome",
+          "Overdose",
+          "Respiratory arrest",
+          "Respiratory depression",
+          "Serotonin syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP2B6",
+          "CYP2C19",
+          "CYP2C9",
+          "CYP2D6",
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "miosis",
+          "hypotension",
+          "bradycardia",
+          "pulmonary edema",
+          "cold",
+          "clammy skin",
+          "coma",
+          "apnea",
+          "cardiac arrest",
+          "circulatory collapse",
+          "somnolence",
+          "stupor"
+        ]
+      },
+      "rems": {
+        "rems_required": true,
+        "rems_type": "Medication Guide"
+      }
+    },
+    {
+      "drug_name": "naloxone 0.5 MG / pentazocine 50 MG Oral Tablet",
+      "rxcui": "312289",
+      "spl_set_id": "99a5b62f-bc08-44f4-abb8-300520d2162a",
+      "opioid_ingredients": [
+        "naloxone",
+        "pentazocine"
+      ],
+      "opioid_category": "synthetic",
+      "schedule": null,
+      "sections_parsed": [
+        "indications",
+        "adverse_reactions",
+        "drug_interactions",
+        "overdosage"
+      ],
+      "section_annotations": {
+        "indications": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": []
+        },
+        "adverse_reactions": {
+          "opioid_mentions": [
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Neonatal opioid withdrawal syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "drug_interactions": {
+          "opioid_mentions": [
+            "naloxone",
+            "norbuprenorphine",
+            "opioid",
+            "opioids",
+            "tramadol"
+          ],
+          "negated_mentions": [
+            "naloxone"
+          ],
+          "safety_flags": [
+            "Coma",
+            "Constipation",
+            "Death",
+            "Overdose",
+            "Respiratory depression",
+            "Serotonin syndrome",
+            "Withdrawal syndrome"
+          ]
+        },
+        "overdosage": {
+          "opioid_mentions": [
+            "naloxone",
+            "opioid"
+          ],
+          "negated_mentions": [],
+          "safety_flags": [
+            "Death",
+            "Overdose",
+            "Respiratory depression"
+          ]
+        }
+      },
+      "boxed_warning": {
+        "present": false,
+        "paragraph_count": 0,
+        "key_warnings": [],
+        "full_text": null
+      },
+      "dosage": {
+        "starting_dose": null,
+        "max_daily_dose_mg": null,
+        "doses_found": []
+      },
+      "max_daily_mme": null,
+      "adverse_reactions": {
+        "resp_depression_mentioned": false,
+        "reaction_frequencies": [],
+        "safety_terms_detected": [
+          "Neonatal opioid withdrawal syndrome",
+          "Withdrawal syndrome"
+        ]
+      },
+      "drug_interactions": {
+        "benzo_warning": true,
+        "cyp_interactions": [
+          "CYP3A4"
+        ],
+        "contraindicated_classes": []
+      },
+      "abuse_dependence": {
+        "schedule": null,
+        "abuse_potential": null
+      },
+      "overdosage": {
+        "naloxone_rescue_dose": null,
+        "symptoms": [
+          "respiratory depression",
+          "hypotension"
+        ]
+      },
+      "rems": {
+        "rems_required": false,
+        "rems_type": null
+      }
+    }
+  ],
+  "comparison_matrix": [
+    {
+      "drug_name": "0.16 ML buprenorphine 50 MG/ML Prefilled Syringe",
+      "rxcui": "2639021",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 0,
+      "benzo_warning": true,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "0.4 ML naloxone hydrochloride 25 MG/ML Auto-Injector",
+      "rxcui": "2596175",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 0,
+      "benzo_warning": true,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "0.5 ML fentanyl 0.05 MG/ML Prefilled Syringe",
+      "rxcui": "2629337",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "0.5 ML hydromorphone hydrochloride 0.5 MG/ML Prefilled Syringe",
+      "rxcui": "2675350",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 0,
+      "benzo_warning": false,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "0.7 ML morphine sulfate 14.3 MG/ML Auto-Injector",
+      "rxcui": "894911",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": "Schedule II",
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "1 ML butorphanol tartrate 1 MG/ML Injection",
+      "rxcui": "886627",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "1 ML meperidine hydrochloride 100 MG/ML Cartridge",
+      "rxcui": "861493",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2B6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR bupropion hydrochloride 90 MG / naltrexone hydrochloride 8 MG Extended Release Oral Tablet",
+      "rxcui": "1551468",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 0,
+      "benzo_warning": false,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR chlorpheniramine polistirex 1.6 MG/ML / hydrocodone polistirex 2 MG/ML Extended Release Suspension",
+      "rxcui": "1087459",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2D6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "1049502",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2D6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR oxymorphone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "977874",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR tapentadol 100 MG Extended Release Oral Tablet",
+      "rxcui": "1148797",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "12 HR tramadol hydrochloride 150 MG Extended Release Oral Tablet",
+      "rxcui": "849561",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2D6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "acetaminophen 24 MG/ML / codeine phosphate 2.4 MG/ML Oral Solution",
+      "rxcui": "993755",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2D6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "acetaminophen 650 MG / pentazocine 25 MG Oral Tablet",
+      "rxcui": "312288",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "levorphanol tartrate 2 MG Oral Tablet",
+      "rxcui": "197873",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "methadone hydrochloride 1 MG/ML Oral Solution",
+      "rxcui": "864761",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": true,
+      "boxed_warning_count": 1,
+      "benzo_warning": true,
+      "rems_required": true,
+      "rems_type": "Medication Guide",
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP2B6",
+        "CYP2C19",
+        "CYP2C9",
+        "CYP2D6",
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    },
+    {
+      "drug_name": "naloxone 0.5 MG / pentazocine 50 MG Oral Tablet",
+      "rxcui": "312289",
+      "max_daily_dose_mg": null,
+      "max_daily_mme": null,
+      "resp_depression_in_label": false,
+      "boxed_warning_count": 0,
+      "benzo_warning": true,
+      "rems_required": false,
+      "rems_type": null,
+      "schedule": null,
+      "naloxone_rescue_dose": null,
+      "cyp_interactions": [
+        "CYP3A4"
+      ],
+      "nlp_source": "CDCgov/Opioid_Involvement_NLP"
+    }
+  ]
+}

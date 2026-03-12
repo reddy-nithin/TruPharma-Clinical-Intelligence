@@ -1,0 +1,22 @@
+PHARMACOLOGY: MORPHINE
+
+Identifiers: RxCUI=7052, ChEMBL=CHEMBL70, PubChem CID=5288826
+Molecular: C17H19NO3, MW=285.34
+
+Receptor Binding Affinities:
+  - mu: Ki = 0.32 nM (source: ChEMBL)
+  - kappa: Ki = 76.9 nM (source: ChEMBL)
+  - delta: Ki = 116.8 nM (source: ChEMBL)
+
+Potency vs morphine: 1.00x
+
+Morphine is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 0.3 nM, showing 240-fold selectivity over kappa. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 2.5 hours
+Metabolism: Morphine is 90% metabolized by glucuronidation by UGT2B7 and sulfation at positions 3 and 6. Morphine can also be metabolized to codeine, normorphine, and morphine ethereal sulfate.
+
+Toxicology:
+  LD50 (rat, oral): 461.0 mg/kg
+  Estimated human lethal dose: 5407.4 mg
+  Therapeutic index: 20878000000.0
+  Danger level: Lower

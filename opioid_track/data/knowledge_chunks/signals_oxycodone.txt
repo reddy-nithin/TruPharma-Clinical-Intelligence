@@ -1,0 +1,35 @@
+FAERS SAFETY SIGNALS: OXYCODONE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 14
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Drug dependence: 65,099 reports, 3/3 methods flagging
+    Signal strength: PRR=46.51, ROR=59.56, EBGM=27.94
+  - Overdose: 46,720 reports, 3/3 methods flagging
+    Signal strength: PRR=11.16, ROR=13.10, EBGM=9.72
+  - Death: 28,513 reports, 3/3 methods flagging
+    Signal strength: PRR=2.30, ROR=2.45, EBGM=2.26
+  - Withdrawal syndrome: 27,404 reports, 3/3 methods flagging
+    Signal strength: PRR=15.90, ROR=17.45, EBGM=13.06
+  - Drug withdrawal syndrome: 24,056 reports, 3/3 methods flagging
+    Signal strength: PRR=20.95, ROR=22.74, EBGM=16.23
+  - Drug abuse: 11,588 reports, 3/3 methods flagging
+    Signal strength: PRR=11.34, ROR=11.76, EBGM=9.85
+  - Completed suicide: 6,631 reports, 3/3 methods flagging
+    Signal strength: PRR=6.06, ROR=6.18, EBGM=5.65
+  - Constipation: 6,344 reports, 3/3 methods flagging
+    Signal strength: PRR=2.16, ROR=2.19, EBGM=2.12
+  - Respiratory arrest: 5,030 reports, 3/3 methods flagging
+    Signal strength: PRR=5.44, ROR=5.52, EBGM=5.11
+  - Accidental overdose: 2,329 reports, 3/3 methods flagging
+    Signal strength: PRR=4.82, ROR=4.85, EBGM=4.57
+  - Substance abuse: 1,363 reports, 3/3 methods flagging
+    Signal strength: PRR=13.94, ROR=14.00, EBGM=11.72
+  - Respiratory depression: 885 reports, 3/3 methods flagging
+    Signal strength: PRR=5.35, ROR=5.36, EBGM=5.03
+  - Serotonin syndrome: 775 reports, 3/3 methods flagging
+    Signal strength: PRR=2.99, ROR=3.00, EBGM=2.91
+  - Drug toxicity: 649 reports, 3/3 methods flagging
+    Signal strength: PRR=3.38, ROR=3.38, EBGM=3.26
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

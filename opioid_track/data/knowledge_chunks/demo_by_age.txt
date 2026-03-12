@@ -1,0 +1,13 @@
+OPIOID OVERDOSE DEATHS BY AGE GROUP (2022)
+
+Total opioid-involved overdose deaths: 77,403
+
+  0-14: 259 deaths (0.4/100K, 0.3% of total)
+  15-24: 5,813 deaths (13.9/100K, 7.5% of total)
+  25-34: 17,629 deaths (38.2/100K, 22.8% of total)
+  35-44: 18,490 deaths (43.9/100K, 23.9% of total)
+  45-54: 14,121 deaths (34.8/100K, 18.2% of total)
+  55-64: 12,873 deaths (30.1/100K, 16.6% of total)
+  65+: 8,218 deaths (14.7/100K, 10.6% of total)
+
+Adults aged 25-44 account for nearly 47% of all opioid overdose deaths. The 35-44 age group has the highest rate at 43.9 per 100K.

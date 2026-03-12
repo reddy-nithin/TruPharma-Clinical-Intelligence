@@ -1,0 +1,413 @@
+{
+  "generated_at": "2026-03-08T16:54:51.585751+00:00",
+  "total_chunks": 58,
+  "total_tokens_estimate": 16950,
+  "chunks": [
+    {
+      "filename": "classification_categories.txt",
+      "token_estimate": 286,
+      "type": "classification",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "receptor_system.txt",
+      "token_estimate": 292,
+      "type": "classification",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "dea_scheduling.txt",
+      "token_estimate": 178,
+      "type": "classification",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "opioid_ingredients_list.txt",
+      "token_estimate": 177,
+      "type": "classification",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "ingredient_naloxone.txt",
+      "token_estimate": 207,
+      "type": "pharmacology",
+      "drug_name": "naloxone",
+      "rxcui": "7242"
+    },
+    {
+      "filename": "ingredient_tramadol.txt",
+      "token_estimate": 258,
+      "type": "pharmacology",
+      "drug_name": "tramadol",
+      "rxcui": "10689"
+    },
+    {
+      "filename": "ingredient_codeine.txt",
+      "token_estimate": 242,
+      "type": "pharmacology",
+      "drug_name": "codeine",
+      "rxcui": "2670"
+    },
+    {
+      "filename": "ingredient_oxycodone.txt",
+      "token_estimate": 217,
+      "type": "pharmacology",
+      "drug_name": "oxycodone",
+      "rxcui": "7804"
+    },
+    {
+      "filename": "ingredient_naltrexone.txt",
+      "token_estimate": 260,
+      "type": "pharmacology",
+      "drug_name": "naltrexone",
+      "rxcui": "7243"
+    },
+    {
+      "filename": "ingredient_buprenorphine.txt",
+      "token_estimate": 235,
+      "type": "pharmacology",
+      "drug_name": "buprenorphine",
+      "rxcui": "1819"
+    },
+    {
+      "filename": "ingredient_butorphanol.txt",
+      "token_estimate": 205,
+      "type": "pharmacology",
+      "drug_name": "butorphanol",
+      "rxcui": "1841"
+    },
+    {
+      "filename": "ingredient_hydrocodone.txt",
+      "token_estimate": 263,
+      "type": "pharmacology",
+      "drug_name": "hydrocodone",
+      "rxcui": "5489"
+    },
+    {
+      "filename": "ingredient_pentazocine.txt",
+      "token_estimate": 158,
+      "type": "pharmacology",
+      "drug_name": "pentazocine",
+      "rxcui": "8001"
+    },
+    {
+      "filename": "ingredient_hydromorphone.txt",
+      "token_estimate": 246,
+      "type": "pharmacology",
+      "drug_name": "hydromorphone",
+      "rxcui": "3423"
+    },
+    {
+      "filename": "ingredient_fentanyl.txt",
+      "token_estimate": 269,
+      "type": "pharmacology",
+      "drug_name": "fentanyl",
+      "rxcui": "4337"
+    },
+    {
+      "filename": "ingredient_meperidine.txt",
+      "token_estimate": 150,
+      "type": "pharmacology",
+      "drug_name": "meperidine",
+      "rxcui": "6754"
+    },
+    {
+      "filename": "ingredient_morphine.txt",
+      "token_estimate": 241,
+      "type": "pharmacology",
+      "drug_name": "morphine",
+      "rxcui": "7052"
+    },
+    {
+      "filename": "ingredient_oxymorphone.txt",
+      "token_estimate": 236,
+      "type": "pharmacology",
+      "drug_name": "oxymorphone",
+      "rxcui": "7814"
+    },
+    {
+      "filename": "ingredient_tapentadol.txt",
+      "token_estimate": 213,
+      "type": "pharmacology",
+      "drug_name": "tapentadol",
+      "rxcui": "787390"
+    },
+    {
+      "filename": "ingredient_methadone.txt",
+      "token_estimate": 210,
+      "type": "pharmacology",
+      "drug_name": "methadone",
+      "rxcui": "6813"
+    },
+    {
+      "filename": "ingredient_levorphanol.txt",
+      "token_estimate": 212,
+      "type": "pharmacology",
+      "drug_name": "levorphanol",
+      "rxcui": "6378"
+    },
+    {
+      "filename": "safety_0_16_ml_buprenorphine_50_mg_ml_prefilled_syringe.txt",
+      "token_estimate": 111,
+      "type": "safety",
+      "drug_name": "0.16 ML buprenorphine 50 MG/ML Prefilled Syringe",
+      "rxcui": "2639021"
+    },
+    {
+      "filename": "safety_0_4_ml_naloxone_hydrochloride_25_mg_ml_auto_injector.txt",
+      "token_estimate": 111,
+      "type": "safety",
+      "drug_name": "0.4 ML naloxone hydrochloride 25 MG/ML Auto-Injector",
+      "rxcui": "2596175"
+    },
+    {
+      "filename": "safety_0_5_ml_fentanyl_0_05_mg_ml_prefilled_syringe.txt",
+      "token_estimate": 113,
+      "type": "safety",
+      "drug_name": "0.5 ML fentanyl 0.05 MG/ML Prefilled Syringe",
+      "rxcui": "2629337"
+    },
+    {
+      "filename": "safety_0_5_ml_hydromorphone_hydrochloride_0_5_mg_ml_prefilled_syrin.txt",
+      "token_estimate": 85,
+      "type": "safety",
+      "drug_name": "0.5 ML hydromorphone hydrochloride 0.5 MG/ML Prefilled Syringe",
+      "rxcui": "2675350"
+    },
+    {
+      "filename": "safety_0_7_ml_morphine_sulfate_14_3_mg_ml_auto_injector.txt",
+      "token_estimate": 316,
+      "type": "safety",
+      "drug_name": "0.7 ML morphine sulfate 14.3 MG/ML Auto-Injector",
+      "rxcui": "894911"
+    },
+    {
+      "filename": "safety_1_ml_butorphanol_tartrate_1_mg_ml_injection.txt",
+      "token_estimate": 224,
+      "type": "safety",
+      "drug_name": "1 ML butorphanol tartrate 1 MG/ML Injection",
+      "rxcui": "886627"
+    },
+    {
+      "filename": "safety_1_ml_meperidine_hydrochloride_100_mg_ml_cartridge.txt",
+      "token_estimate": 326,
+      "type": "safety",
+      "drug_name": "1 ML meperidine hydrochloride 100 MG/ML Cartridge",
+      "rxcui": "861493"
+    },
+    {
+      "filename": "safety_12_hr_bupropion_hydrochloride_90_mg_naltrexone_hydrochloride.txt",
+      "token_estimate": 68,
+      "type": "safety",
+      "drug_name": "12 HR bupropion hydrochloride 90 MG / naltrexone hydrochloride 8 MG Extended Release Oral Tablet",
+      "rxcui": "1551468"
+    },
+    {
+      "filename": "safety_12_hr_chlorpheniramine_polistirex_1_6_mg_ml_hydrocodone_poli.txt",
+      "token_estimate": 316,
+      "type": "safety",
+      "drug_name": "12 HR chlorpheniramine polistirex 1.6 MG/ML / hydrocodone polistirex 2 MG/ML Extended Release Suspension",
+      "rxcui": "1087459"
+    },
+    {
+      "filename": "safety_12_hr_oxycodone_hydrochloride_10_mg_extended_release_oral_ta.txt",
+      "token_estimate": 342,
+      "type": "safety",
+      "drug_name": "12 HR oxycodone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "1049502"
+    },
+    {
+      "filename": "safety_12_hr_oxymorphone_hydrochloride_10_mg_extended_release_oral_.txt",
+      "token_estimate": 303,
+      "type": "safety",
+      "drug_name": "12 HR oxymorphone hydrochloride 10 MG Extended Release Oral Tablet",
+      "rxcui": "977874"
+    },
+    {
+      "filename": "safety_12_hr_tapentadol_100_mg_extended_release_oral_tablet.txt",
+      "token_estimate": 302,
+      "type": "safety",
+      "drug_name": "12 HR tapentadol 100 MG Extended Release Oral Tablet",
+      "rxcui": "1148797"
+    },
+    {
+      "filename": "safety_12_hr_tramadol_hydrochloride_150_mg_extended_release_oral_ta.txt",
+      "token_estimate": 314,
+      "type": "safety",
+      "drug_name": "12 HR tramadol hydrochloride 150 MG Extended Release Oral Tablet",
+      "rxcui": "849561"
+    },
+    {
+      "filename": "safety_acetaminophen_24_mg_ml_codeine_phosphate_2_4_mg_ml_oral_solu.txt",
+      "token_estimate": 310,
+      "type": "safety",
+      "drug_name": "acetaminophen 24 MG/ML / codeine phosphate 2.4 MG/ML Oral Solution",
+      "rxcui": "993755"
+    },
+    {
+      "filename": "safety_acetaminophen_650_mg_pentazocine_25_mg_oral_tablet.txt",
+      "token_estimate": 298,
+      "type": "safety",
+      "drug_name": "acetaminophen 650 MG / pentazocine 25 MG Oral Tablet",
+      "rxcui": "312288"
+    },
+    {
+      "filename": "safety_levorphanol_tartrate_2_mg_oral_tablet.txt",
+      "token_estimate": 296,
+      "type": "safety",
+      "drug_name": "levorphanol tartrate 2 MG Oral Tablet",
+      "rxcui": "197873"
+    },
+    {
+      "filename": "safety_methadone_hydrochloride_1_mg_ml_oral_solution.txt",
+      "token_estimate": 334,
+      "type": "safety",
+      "drug_name": "methadone hydrochloride 1 MG/ML Oral Solution",
+      "rxcui": "864761"
+    },
+    {
+      "filename": "safety_naloxone_0_5_mg_pentazocine_50_mg_oral_tablet.txt",
+      "token_estimate": 112,
+      "type": "safety",
+      "drug_name": "naloxone 0.5 MG / pentazocine 50 MG Oral Tablet",
+      "rxcui": "312289"
+    },
+    {
+      "filename": "epi_three_waves.txt",
+      "token_estimate": 549,
+      "type": "epidemiology",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "epi_top_prescribing_states.txt",
+      "token_estimate": 291,
+      "type": "epidemiology",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "signals_morphine.txt",
+      "token_estimate": 515,
+      "type": "faers_signals",
+      "drug_name": "morphine",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_codeine.txt",
+      "token_estimate": 511,
+      "type": "faers_signals",
+      "drug_name": "codeine",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_oxycodone.txt",
+      "token_estimate": 464,
+      "type": "faers_signals",
+      "drug_name": "oxycodone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_hydrocodone.txt",
+      "token_estimate": 409,
+      "type": "faers_signals",
+      "drug_name": "hydrocodone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_fentanyl.txt",
+      "token_estimate": 517,
+      "type": "faers_signals",
+      "drug_name": "fentanyl",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_methadone.txt",
+      "token_estimate": 546,
+      "type": "faers_signals",
+      "drug_name": "methadone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_buprenorphine.txt",
+      "token_estimate": 435,
+      "type": "faers_signals",
+      "drug_name": "buprenorphine",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_tramadol.txt",
+      "token_estimate": 542,
+      "type": "faers_signals",
+      "drug_name": "tramadol",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_tapentadol.txt",
+      "token_estimate": 485,
+      "type": "faers_signals",
+      "drug_name": "tapentadol",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_meperidine.txt",
+      "token_estimate": 482,
+      "type": "faers_signals",
+      "drug_name": "meperidine",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_hydromorphone.txt",
+      "token_estimate": 511,
+      "type": "faers_signals",
+      "drug_name": "hydromorphone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_oxymorphone.txt",
+      "token_estimate": 378,
+      "type": "faers_signals",
+      "drug_name": "oxymorphone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_naloxone.txt",
+      "token_estimate": 511,
+      "type": "faers_signals",
+      "drug_name": "naloxone",
+      "rxcui": null
+    },
+    {
+      "filename": "signals_naltrexone.txt",
+      "token_estimate": 345,
+      "type": "faers_signals",
+      "drug_name": "naltrexone",
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_age.txt",
+      "token_estimate": 142,
+      "type": "demographics",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_sex.txt",
+      "token_estimate": 71,
+      "type": "demographics",
+      "drug_name": null,
+      "rxcui": null
+    },
+    {
+      "filename": "demo_by_race.txt",
+      "token_estimate": 210,
+      "type": "demographics",
+      "drug_name": null,
+      "rxcui": null
+    }
+  ]
+}

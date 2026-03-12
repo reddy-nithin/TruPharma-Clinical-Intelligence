@@ -1,0 +1,21 @@
+DRUG SAFETY PROFILE: 12 HR chlorpheniramine polistirex 1.6 MG/ML / hydrocodone polistirex 2 MG/ML Extended Release Suspension
+
+RxCUI: 1087459
+Category: unclassified
+Opioid ingredients: hydrocodone
+
+BOXED WARNING (Black Box): Yes
+Key warnings: Coma, Death, Neonatal opioid withdrawal syndrome, Overdose, Respiratory depression, Withdrawal syndrome, addiction, neonatal, fatal, rems, abuse, misuse
+Warning text: WARNING: SERIOUS AND LIFE-THREATENING RISKS FROM USE OF HYDRCODONE BITARTRATE AND ACETAMINOPHEN TABLETS Addiction, Abuse, and Misuse Because the use of Hydrocodone Bitartrate and Acetaminophen Tablets exposes patients and other users to the risks of opioid addiction, abuse, and misuse, which can lead to overdose and death, assess each patient’s risk prior to prescribing and reassess all patients r
+
+Starting dose: 5 mg
+
+REMS Required: Medication Guide
+Benzodiazepine co-administration warning: YES
+CYP enzyme interactions: CYP2D6, CYP3A4
+
+Overdose symptoms: respiratory depression, miosis, hypotension, bradycardia, pulmonary edema, skeletal muscle flaccidity, cold, clammy skin, coma, cardiac arrest, somnolence, stupor
+
+Safety terms in label: Constipation, Overdose, Serotonin syndrome
+
+Source: DailyMed SPL label, NLP via CDCgov/Opioid_Involvement_NLP

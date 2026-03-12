@@ -1,0 +1,620 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-08T16:51:46.252991+00:00",
+    "data_year": 2022,
+    "sources": [
+      "CDC NCHS Data Brief No. 457 (2023)",
+      "CDC WONDER Compressed Mortality 1999\u20132022",
+      "CDC MMWR Morbidity and Mortality Weekly Report"
+    ],
+    "total_opioid_overdose_deaths_2022": 77403,
+    "peak_age_group": "35-44",
+    "highest_rate_race_ethnicity": "American Indian/Alaska Native"
+  },
+  "by_age_group": [
+    {
+      "group": "0-14",
+      "deaths": 259,
+      "rate_per_100k": 0.4,
+      "pct_of_total": 0.3
+    },
+    {
+      "group": "15-24",
+      "deaths": 5813,
+      "rate_per_100k": 13.9,
+      "pct_of_total": 7.5
+    },
+    {
+      "group": "25-34",
+      "deaths": 17629,
+      "rate_per_100k": 38.2,
+      "pct_of_total": 22.8
+    },
+    {
+      "group": "35-44",
+      "deaths": 18490,
+      "rate_per_100k": 43.9,
+      "pct_of_total": 23.9
+    },
+    {
+      "group": "45-54",
+      "deaths": 14121,
+      "rate_per_100k": 34.8,
+      "pct_of_total": 18.2
+    },
+    {
+      "group": "55-64",
+      "deaths": 12873,
+      "rate_per_100k": 30.1,
+      "pct_of_total": 16.6
+    },
+    {
+      "group": "65+",
+      "deaths": 8218,
+      "rate_per_100k": 14.7,
+      "pct_of_total": 10.6
+    }
+  ],
+  "by_sex": [
+    {
+      "sex": "Male",
+      "deaths": 53562,
+      "rate_per_100k": 33.1,
+      "pct_of_total": 69.2
+    },
+    {
+      "sex": "Female",
+      "deaths": 23841,
+      "rate_per_100k": 14.2,
+      "pct_of_total": 30.8
+    }
+  ],
+  "by_race_ethnicity": [
+    {
+      "group": "White (Non-Hispanic)",
+      "deaths": 42985,
+      "rate_per_100k": 27.5,
+      "pct_of_total": 55.5
+    },
+    {
+      "group": "Black (Non-Hispanic)",
+      "deaths": 17541,
+      "rate_per_100k": 40.8,
+      "pct_of_total": 22.7
+    },
+    {
+      "group": "Hispanic/Latino",
+      "deaths": 10982,
+      "rate_per_100k": 17.4,
+      "pct_of_total": 14.2
+    },
+    {
+      "group": "American Indian/Alaska Native",
+      "deaths": 1474,
+      "rate_per_100k": 44.3,
+      "pct_of_total": 1.9
+    },
+    {
+      "group": "Asian/Pacific Islander",
+      "deaths": 1230,
+      "rate_per_100k": 4.9,
+      "pct_of_total": 1.6
+    },
+    {
+      "group": "Other/Multiracial",
+      "deaths": 3191,
+      "rate_per_100k": 22.1,
+      "pct_of_total": 4.1
+    }
+  ],
+  "trends_by_age": [
+    {
+      "year": 2015,
+      "age_group": "15-24",
+      "deaths": 3050,
+      "rate_per_100k": 7.0
+    },
+    {
+      "year": 2015,
+      "age_group": "25-34",
+      "deaths": 8986,
+      "rate_per_100k": 20.2
+    },
+    {
+      "year": 2015,
+      "age_group": "35-44",
+      "deaths": 7435,
+      "rate_per_100k": 18.4
+    },
+    {
+      "year": 2015,
+      "age_group": "45-54",
+      "deaths": 8270,
+      "rate_per_100k": 19.1
+    },
+    {
+      "year": 2015,
+      "age_group": "55-64",
+      "deaths": 5489,
+      "rate_per_100k": 13.2
+    },
+    {
+      "year": 2015,
+      "age_group": "65+",
+      "deaths": 2382,
+      "rate_per_100k": 5.0
+    },
+    {
+      "year": 2016,
+      "age_group": "15-24",
+      "deaths": 3850,
+      "rate_per_100k": 8.9
+    },
+    {
+      "year": 2016,
+      "age_group": "25-34",
+      "deaths": 11420,
+      "rate_per_100k": 25.2
+    },
+    {
+      "year": 2016,
+      "age_group": "35-44",
+      "deaths": 9210,
+      "rate_per_100k": 22.6
+    },
+    {
+      "year": 2016,
+      "age_group": "45-54",
+      "deaths": 9590,
+      "rate_per_100k": 22.4
+    },
+    {
+      "year": 2016,
+      "age_group": "55-64",
+      "deaths": 6650,
+      "rate_per_100k": 15.8
+    },
+    {
+      "year": 2016,
+      "age_group": "65+",
+      "deaths": 2910,
+      "rate_per_100k": 5.9
+    },
+    {
+      "year": 2017,
+      "age_group": "15-24",
+      "deaths": 4235,
+      "rate_per_100k": 9.9
+    },
+    {
+      "year": 2017,
+      "age_group": "25-34",
+      "deaths": 13520,
+      "rate_per_100k": 29.5
+    },
+    {
+      "year": 2017,
+      "age_group": "35-44",
+      "deaths": 10870,
+      "rate_per_100k": 26.7
+    },
+    {
+      "year": 2017,
+      "age_group": "45-54",
+      "deaths": 10400,
+      "rate_per_100k": 24.8
+    },
+    {
+      "year": 2017,
+      "age_group": "55-64",
+      "deaths": 7650,
+      "rate_per_100k": 18.0
+    },
+    {
+      "year": 2017,
+      "age_group": "65+",
+      "deaths": 3350,
+      "rate_per_100k": 6.6
+    },
+    {
+      "year": 2018,
+      "age_group": "15-24",
+      "deaths": 3870,
+      "rate_per_100k": 9.1
+    },
+    {
+      "year": 2018,
+      "age_group": "25-34",
+      "deaths": 13090,
+      "rate_per_100k": 28.4
+    },
+    {
+      "year": 2018,
+      "age_group": "35-44",
+      "deaths": 10520,
+      "rate_per_100k": 25.7
+    },
+    {
+      "year": 2018,
+      "age_group": "45-54",
+      "deaths": 9860,
+      "rate_per_100k": 23.9
+    },
+    {
+      "year": 2018,
+      "age_group": "55-64",
+      "deaths": 7680,
+      "rate_per_100k": 18.0
+    },
+    {
+      "year": 2018,
+      "age_group": "65+",
+      "deaths": 3580,
+      "rate_per_100k": 6.9
+    },
+    {
+      "year": 2019,
+      "age_group": "15-24",
+      "deaths": 3420,
+      "rate_per_100k": 8.1
+    },
+    {
+      "year": 2019,
+      "age_group": "25-34",
+      "deaths": 12590,
+      "rate_per_100k": 27.3
+    },
+    {
+      "year": 2019,
+      "age_group": "35-44",
+      "deaths": 10160,
+      "rate_per_100k": 24.4
+    },
+    {
+      "year": 2019,
+      "age_group": "45-54",
+      "deaths": 9250,
+      "rate_per_100k": 22.6
+    },
+    {
+      "year": 2019,
+      "age_group": "55-64",
+      "deaths": 7500,
+      "rate_per_100k": 17.5
+    },
+    {
+      "year": 2019,
+      "age_group": "65+",
+      "deaths": 3820,
+      "rate_per_100k": 7.2
+    },
+    {
+      "year": 2020,
+      "age_group": "15-24",
+      "deaths": 4620,
+      "rate_per_100k": 10.9
+    },
+    {
+      "year": 2020,
+      "age_group": "25-34",
+      "deaths": 15430,
+      "rate_per_100k": 33.5
+    },
+    {
+      "year": 2020,
+      "age_group": "35-44",
+      "deaths": 13280,
+      "rate_per_100k": 31.6
+    },
+    {
+      "year": 2020,
+      "age_group": "45-54",
+      "deaths": 10680,
+      "rate_per_100k": 26.3
+    },
+    {
+      "year": 2020,
+      "age_group": "55-64",
+      "deaths": 9200,
+      "rate_per_100k": 21.5
+    },
+    {
+      "year": 2020,
+      "age_group": "65+",
+      "deaths": 5140,
+      "rate_per_100k": 9.5
+    },
+    {
+      "year": 2021,
+      "age_group": "15-24",
+      "deaths": 5690,
+      "rate_per_100k": 13.5
+    },
+    {
+      "year": 2021,
+      "age_group": "25-34",
+      "deaths": 18280,
+      "rate_per_100k": 39.5
+    },
+    {
+      "year": 2021,
+      "age_group": "35-44",
+      "deaths": 17460,
+      "rate_per_100k": 41.5
+    },
+    {
+      "year": 2021,
+      "age_group": "45-54",
+      "deaths": 13490,
+      "rate_per_100k": 33.2
+    },
+    {
+      "year": 2021,
+      "age_group": "55-64",
+      "deaths": 12110,
+      "rate_per_100k": 28.4
+    },
+    {
+      "year": 2021,
+      "age_group": "65+",
+      "deaths": 7240,
+      "rate_per_100k": 13.1
+    },
+    {
+      "year": 2022,
+      "age_group": "15-24",
+      "deaths": 5813,
+      "rate_per_100k": 13.9
+    },
+    {
+      "year": 2022,
+      "age_group": "25-34",
+      "deaths": 17629,
+      "rate_per_100k": 38.2
+    },
+    {
+      "year": 2022,
+      "age_group": "35-44",
+      "deaths": 18490,
+      "rate_per_100k": 43.9
+    },
+    {
+      "year": 2022,
+      "age_group": "45-54",
+      "deaths": 14121,
+      "rate_per_100k": 34.8
+    },
+    {
+      "year": 2022,
+      "age_group": "55-64",
+      "deaths": 12873,
+      "rate_per_100k": 30.1
+    },
+    {
+      "year": 2022,
+      "age_group": "65+",
+      "deaths": 8218,
+      "rate_per_100k": 14.7
+    }
+  ],
+  "trends_by_sex": [
+    {
+      "year": 2015,
+      "sex": "Male",
+      "deaths": 21889,
+      "rate_per_100k": 14.0
+    },
+    {
+      "year": 2015,
+      "sex": "Female",
+      "deaths": 11369,
+      "rate_per_100k": 7.0
+    },
+    {
+      "year": 2016,
+      "sex": "Male",
+      "deaths": 28200,
+      "rate_per_100k": 17.8
+    },
+    {
+      "year": 2016,
+      "sex": "Female",
+      "deaths": 14430,
+      "rate_per_100k": 8.8
+    },
+    {
+      "year": 2017,
+      "sex": "Male",
+      "deaths": 33040,
+      "rate_per_100k": 20.7
+    },
+    {
+      "year": 2017,
+      "sex": "Female",
+      "deaths": 16986,
+      "rate_per_100k": 10.2
+    },
+    {
+      "year": 2018,
+      "sex": "Male",
+      "deaths": 32240,
+      "rate_per_100k": 20.1
+    },
+    {
+      "year": 2018,
+      "sex": "Female",
+      "deaths": 14360,
+      "rate_per_100k": 8.6
+    },
+    {
+      "year": 2019,
+      "sex": "Male",
+      "deaths": 32500,
+      "rate_per_100k": 20.2
+    },
+    {
+      "year": 2019,
+      "sex": "Female",
+      "deaths": 14240,
+      "rate_per_100k": 8.5
+    },
+    {
+      "year": 2020,
+      "sex": "Male",
+      "deaths": 40670,
+      "rate_per_100k": 25.1
+    },
+    {
+      "year": 2020,
+      "sex": "Female",
+      "deaths": 17680,
+      "rate_per_100k": 10.5
+    },
+    {
+      "year": 2021,
+      "sex": "Male",
+      "deaths": 53020,
+      "rate_per_100k": 32.6
+    },
+    {
+      "year": 2021,
+      "sex": "Female",
+      "deaths": 23250,
+      "rate_per_100k": 13.8
+    },
+    {
+      "year": 2022,
+      "sex": "Male",
+      "deaths": 53562,
+      "rate_per_100k": 33.1
+    },
+    {
+      "year": 2022,
+      "sex": "Female",
+      "deaths": 23841,
+      "rate_per_100k": 14.2
+    }
+  ],
+  "trends_by_race": [
+    {
+      "year": 2015,
+      "group": "White (Non-Hispanic)",
+      "deaths": 24240,
+      "rate_per_100k": 12.3
+    },
+    {
+      "year": 2015,
+      "group": "Black (Non-Hispanic)",
+      "deaths": 4870,
+      "rate_per_100k": 12.1
+    },
+    {
+      "year": 2015,
+      "group": "Hispanic/Latino",
+      "deaths": 3200,
+      "rate_per_100k": 5.6
+    },
+    {
+      "year": 2015,
+      "group": "American Indian/Alaska Native",
+      "deaths": 440,
+      "rate_per_100k": 16.4
+    },
+    {
+      "year": 2018,
+      "group": "White (Non-Hispanic)",
+      "deaths": 30290,
+      "rate_per_100k": 15.7
+    },
+    {
+      "year": 2018,
+      "group": "Black (Non-Hispanic)",
+      "deaths": 7680,
+      "rate_per_100k": 18.4
+    },
+    {
+      "year": 2018,
+      "group": "Hispanic/Latino",
+      "deaths": 5060,
+      "rate_per_100k": 8.3
+    },
+    {
+      "year": 2018,
+      "group": "American Indian/Alaska Native",
+      "deaths": 610,
+      "rate_per_100k": 21.1
+    },
+    {
+      "year": 2020,
+      "group": "White (Non-Hispanic)",
+      "deaths": 33760,
+      "rate_per_100k": 17.6
+    },
+    {
+      "year": 2020,
+      "group": "Black (Non-Hispanic)",
+      "deaths": 12960,
+      "rate_per_100k": 30.6
+    },
+    {
+      "year": 2020,
+      "group": "Hispanic/Latino",
+      "deaths": 7680,
+      "rate_per_100k": 12.2
+    },
+    {
+      "year": 2020,
+      "group": "American Indian/Alaska Native",
+      "deaths": 1030,
+      "rate_per_100k": 33.0
+    },
+    {
+      "year": 2021,
+      "group": "White (Non-Hispanic)",
+      "deaths": 41600,
+      "rate_per_100k": 21.8
+    },
+    {
+      "year": 2021,
+      "group": "Black (Non-Hispanic)",
+      "deaths": 17240,
+      "rate_per_100k": 40.2
+    },
+    {
+      "year": 2021,
+      "group": "Hispanic/Latino",
+      "deaths": 10320,
+      "rate_per_100k": 16.1
+    },
+    {
+      "year": 2021,
+      "group": "American Indian/Alaska Native",
+      "deaths": 1410,
+      "rate_per_100k": 43.2
+    },
+    {
+      "year": 2022,
+      "group": "White (Non-Hispanic)",
+      "deaths": 42985,
+      "rate_per_100k": 27.5
+    },
+    {
+      "year": 2022,
+      "group": "Black (Non-Hispanic)",
+      "deaths": 17541,
+      "rate_per_100k": 40.8
+    },
+    {
+      "year": 2022,
+      "group": "Hispanic/Latino",
+      "deaths": 10982,
+      "rate_per_100k": 17.4
+    },
+    {
+      "year": 2022,
+      "group": "American Indian/Alaska Native",
+      "deaths": 1474,
+      "rate_per_100k": 44.3
+    }
+  ]
+}

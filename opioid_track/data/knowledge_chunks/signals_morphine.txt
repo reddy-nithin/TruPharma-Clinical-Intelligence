@@ -1,0 +1,39 @@
+FAERS SAFETY SIGNALS: MORPHINE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 16
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Drug dependence: 21,827 reports, 3/3 methods flagging
+    Signal strength: PRR=19.38, ROR=22.24, EBGM=16.87
+  - Overdose: 17,693 reports, 3/3 methods flagging
+    Signal strength: PRR=6.95, ROR=7.68, EBGM=6.63
+  - Withdrawal syndrome: 8,821 reports, 3/3 methods flagging
+    Signal strength: PRR=8.00, ROR=8.40, EBGM=7.57
+  - Drug withdrawal syndrome: 7,277 reports, 3/3 methods flagging
+    Signal strength: PRR=9.44, ROR=9.84, EBGM=8.84
+  - Drug abuse: 5,985 reports, 3/3 methods flagging
+    Signal strength: PRR=9.82, ROR=10.15, EBGM=9.16
+  - Constipation: 5,167 reports, 3/3 methods flagging
+    Signal strength: PRR=3.17, ROR=3.24, EBGM=3.11
+  - Somnolence: 4,138 reports, 3/3 methods flagging
+    Signal strength: PRR=2.68, ROR=2.73, EBGM=2.65
+  - Respiratory arrest: 2,786 reports, 3/3 methods flagging
+    Signal strength: PRR=5.28, ROR=5.35, EBGM=5.10
+  - Completed suicide: 2,456 reports, 3/3 methods flagging
+    Signal strength: PRR=3.85, ROR=3.90, EBGM=3.76
+  - Respiratory failure: 2,297 reports, 3/3 methods flagging
+    Signal strength: PRR=3.23, ROR=3.27, EBGM=3.18
+  - Coma: 1,719 reports, 3/3 methods flagging
+    Signal strength: PRR=3.80, ROR=3.83, EBGM=3.72
+  - Respiratory depression: 1,491 reports, 3/3 methods flagging
+    Signal strength: PRR=17.26, ROR=17.41, EBGM=15.25
+  - Accidental overdose: 1,338 reports, 3/3 methods flagging
+    Signal strength: PRR=4.87, ROR=4.91, EBGM=4.72
+  - Substance abuse: 1,128 reports, 3/3 methods flagging
+    Signal strength: PRR=20.18, ROR=20.32, EBGM=17.47
+  - Drug toxicity: 625 reports, 3/3 methods flagging
+    Signal strength: PRR=5.88, ROR=5.90, EBGM=5.66
+  - Serotonin syndrome: 479 reports, 3/3 methods flagging
+    Signal strength: PRR=3.30, ROR=3.31, EBGM=3.24
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

@@ -1,0 +1,33 @@
+FAERS SAFETY SIGNALS: BUPRENORPHINE
+
+Total signal pairs tested: 19, Consensus signals (≥2 methods): 13
+Methods: PRR (Proportional Reporting Ratio), ROR (Reporting Odds Ratio), MGPS/EBGM (Multi-item Gamma Poisson Shrinker)
+
+  - Drug dependence: 10,040 reports, 3/3 methods flagging
+    Signal strength: PRR=31.49, ROR=40.91, EBGM=29.58
+  - Overdose: 6,624 reports, 3/3 methods flagging
+    Signal strength: PRR=9.63, ROR=11.22, EBGM=9.46
+  - Withdrawal syndrome: 5,435 reports, 3/3 methods flagging
+    Signal strength: PRR=18.44, ROR=20.99, EBGM=17.78
+  - Drug withdrawal syndrome: 4,358 reports, 3/3 methods flagging
+    Signal strength: PRR=21.03, ROR=23.32, EBGM=20.17
+  - Drug abuse: 2,921 reports, 3/3 methods flagging
+    Signal strength: PRR=17.64, ROR=18.87, EBGM=17.04
+  - Somnolence: 1,120 reports, 3/3 methods flagging
+    Signal strength: PRR=2.74, ROR=2.79, EBGM=2.73
+  - Respiratory arrest: 713 reports, 3/3 methods flagging
+    Signal strength: PRR=5.02, ROR=5.08, EBGM=4.97
+  - Substance abuse: 666 reports, 3/3 methods flagging
+    Signal strength: PRR=42.80, ROR=43.47, EBGM=39.31
+  - Coma: 640 reports, 3/3 methods flagging
+    Signal strength: PRR=5.33, ROR=5.39, EBGM=5.28
+  - Completed suicide: 372 reports, 2/3 methods flagging
+    Signal strength: PRR=2.18, ROR=2.19, EBGM=2.17
+  - Accidental overdose: 355 reports, 3/3 methods flagging
+    Signal strength: PRR=4.82, ROR=4.85, EBGM=4.78
+  - Respiratory depression: 340 reports, 3/3 methods flagging
+    Signal strength: PRR=13.61, ROR=13.71, EBGM=13.25
+  - Serotonin syndrome: 161 reports, 3/3 methods flagging
+    Signal strength: PRR=4.18, ROR=4.19, EBGM=4.15
+
+Source: FDA FAERS via OpenFDA, signal detection per PharmacologicallyActive disproportionality analysis

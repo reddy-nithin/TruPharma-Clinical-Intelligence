@@ -1,0 +1,6 @@
+OPIOID OVERDOSE DEATHS BY SEX (2022)
+
+  Male: 53,562 deaths (33.1/100K, 69.2% of total)
+  Female: 23,841 deaths (14.2/100K, 30.8% of total)
+
+Males die from opioid overdoses at 2.3x the rate of females (33.1 vs 14.2 per 100K). Males account for nearly 70% of all opioid overdose deaths.

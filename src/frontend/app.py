@@ -15,10 +15,12 @@ if str(_PROJECT_ROOT) not in sys.path:
 import streamlit as st
 import streamlit.components.v1 as components
 
+from src.frontend.theme import inject_theme, render_topbar, render_brand
+
 # ─── Page config (sidebar starts collapsed on homepage) ────────
 st.set_page_config(
     page_title="TruPharma | Clinical Intelligence",
-    page_icon="🩺",
+    page_icon="🧪",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -37,89 +39,17 @@ components.html("""
 </script>
 """, height=0)
 
-# ─── Hide built-in page nav ──────────────────────────────────
-st.markdown("""
-<style>
-div[data-testid="stSidebarNav"] { display: none !important; }
-section[data-testid="stSidebar"] nav { display: none !important; }
-section[data-testid="stSidebar"] ul[role="list"] { display: none !important; }
-section[data-testid="stSidebar"] > div:first-child { padding-top: 0rem !important; }
-section[data-testid="stSidebar"] ul[data-testid="stSidebarNavItems"] { display: none !important; }
-</style>
-""", unsafe_allow_html=True)
-
-# ─── Landing page styling ────────────────────────────────────
-st.markdown("""<style>
-.landing-title {
-    font-size: 3.2rem;
-    font-weight: 800;
-    text-align: center;
-    margin: 2rem 0 0.5rem 0;
-    color: #111827;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-}
-.landing-subtitle {
-    font-size: 1.25rem;
-    color: #6b7280;
-    text-align: center;
-    margin-bottom: 3rem;
-    font-weight: 600;
-}
-.nav-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    max-width: 420px;
-    margin: 0 auto;
-}
-.nav-btn-block {
-    width: 100%;
-    padding: 1.25rem 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 14px;
-    border: 2px solid #E5E7EB;
-    background: #ffffff;
-    color: #111827;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-.nav-btn-block:hover {
-    border-color: #F2994A;
-    box-shadow: 0 4px 12px rgba(242, 153, 74, 0.2);
-}
-.nav-btn-block.primary-demo {
-    border-left: 6px solid #2E7D32;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-}
-.nav-btn-block.heatmap {
-    border-left: 6px solid #6366f1;
-    background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
-}
-html, body,
-p, h1, h2, h3, h4, h5, h6,
-span, div, li, td, th, label, a,
-input, textarea, select, button,
-.stMarkdown, .stText, .stCaption {
-    font-family: "Times New Roman", Times, serif !important;
-    line-height: 1.4;
-}
-[data-testid="stIconMaterial"],
-.material-symbols-rounded,
-[data-testid="collapsedControl"] span,
-span[class*="icon"] {
-    font-family: "Material Symbols Rounded" !important;
-}
-</style>""", unsafe_allow_html=True)
+# ─── Inject dark theme ───────────────────────────────────────
+inject_theme()
 
 
 # ══════════════════════════════════════════════════════════════
 #  MAIN LANDING
 # ══════════════════════════════════════════════════════════════
+render_topbar("Home", badge_text="CLINICAL INTELLIGENCE")
+
 st.markdown(
-    "<div class='landing-title'>TruPharma GenAI Assistant</div>",
+    "<div class='landing-title'><span>TruPharma</span> GenAI Assistant</div>",
     unsafe_allow_html=True,
 )
 st.markdown(
@@ -145,5 +75,12 @@ with col2:
         use_container_width=True,
     ):
         st.switch_page("pages/signal_heatmap.py")
+
+    if st.button(
+        "💊 **Opioid Intelligence Dashboard**  \n*Pharmacology, FAERS signals, epidemiology*",
+        key="nav_opioid",
+        use_container_width=True,
+    ):
+        st.switch_page("pages/opioid_dashboard.py")
 
     st.markdown("</div>", unsafe_allow_html=True)

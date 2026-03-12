@@ -1,0 +1,6178 @@
+{
+  "metadata": {
+    "source": "CDC VSRR + CDC WONDER (alipphardt/cdc-wonder-api)",
+    "wonder_available": false,
+    "generated_at": "2026-03-06T18:15:16.792105+00:00",
+    "latest_year": 2025,
+    "total_vsrr_records": 81270,
+    "opioid_records": 33550,
+    "states_covered": 51,
+    "years_covered": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "notes": "VSRR data is provisional and subject to revision"
+  },
+  "annual_national": [
+    {
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 52623,
+      "by_opioid_type": {
+        "methadone_T40.3": 3421,
+        "synthetic_fentanyl_T40.4": 9610,
+        "heroin_T40.1": 13051,
+        "all_opioids": 33203,
+        "natural_semisynthetic_T40.2": 12773
+      }
+    },
+    {
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 63938,
+      "by_opioid_type": {
+        "heroin_T40.1": 15551,
+        "methadone_T40.3": 3393,
+        "natural_semisynthetic_T40.2": 14534,
+        "synthetic_fentanyl_T40.4": 19500,
+        "all_opioids": 42435
+      }
+    },
+    {
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 70699,
+      "by_opioid_type": {
+        "all_opioids": 47889,
+        "heroin_T40.1": 16168,
+        "methadone_T40.3": 3388,
+        "synthetic_fentanyl_T40.4": 28659,
+        "natural_semisynthetic_T40.2": 15003
+      }
+    },
+    {
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 67850,
+      "by_opioid_type": {
+        "all_opioids": 47549,
+        "synthetic_fentanyl_T40.4": 31525,
+        "natural_semisynthetic_T40.2": 14435,
+        "methadone_T40.3": 3189,
+        "heroin_T40.1": 15310
+      }
+    },
+    {
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 71130,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 36603,
+        "all_opioids": 50178,
+        "natural_semisynthetic_T40.2": 12455,
+        "methadone_T40.3": 3027,
+        "heroin_T40.1": 15089
+      }
+    },
+    {
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 92478,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 56894,
+        "all_opioids": 69061,
+        "natural_semisynthetic_T40.2": 13518,
+        "methadone_T40.3": 3561,
+        "heroin_T40.1": 14413
+      }
+    },
+    {
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 107573,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 71143,
+        "all_opioids": 80997,
+        "natural_semisynthetic_T40.2": 13922,
+        "methadone_T40.3": 3815,
+        "heroin_T40.1": 13091
+      }
+    },
+    {
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 109413,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 74829,
+        "all_opioids": 82851,
+        "natural_semisynthetic_T40.2": 13544,
+        "methadone_T40.3": 3670,
+        "heroin_T40.1": 8933
+      }
+    },
+    {
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 106881,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 77695,
+        "all_opioids": 84972,
+        "natural_semisynthetic_T40.2": 11782,
+        "methadone_T40.3": 3463,
+        "heroin_T40.1": 5710
+      }
+    },
+    {
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": 80856,
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 72718,
+        "all_opioids": 79377,
+        "natural_semisynthetic_T40.2": 10122,
+        "methadone_T40.3": 3423,
+        "heroin_T40.1": 3940
+      }
+    },
+    {
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "total_overdose_deaths": null,
+      "by_opioid_type": {
+        "methadone_T40.3": 3357,
+        "synthetic_fentanyl_T40.4": 46975,
+        "all_opioids": 53314,
+        "natural_semisynthetic_T40.2": 7854,
+        "heroin_T40.1": 2746
+      }
+    }
+  ],
+  "by_state": [
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 1472,
+        "all_opioids": 2733,
+        "synthetic_fentanyl_T40.4": 1244,
+        "methadone_T40.3": 107,
+        "natural_semisynthetic_T40.2": 693
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 3627,
+        "synthetic_fentanyl_T40.4": 2305,
+        "natural_semisynthetic_T40.2": 786,
+        "heroin_T40.1": 1469,
+        "methadone_T40.3": 98
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 109,
+        "natural_semisynthetic_T40.2": 857,
+        "synthetic_fentanyl_T40.4": 3550,
+        "all_opioids": 4327,
+        "heroin_T40.1": 1016
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2818,
+        "all_opioids": 3259,
+        "natural_semisynthetic_T40.2": 493,
+        "methadone_T40.3": 71,
+        "heroin_T40.1": 712
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 3484,
+        "natural_semisynthetic_T40.2": 405,
+        "methadone_T40.3": 71,
+        "heroin_T40.1": 536,
+        "synthetic_fentanyl_T40.4": 3150
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 4397,
+        "natural_semisynthetic_T40.2": 440,
+        "methadone_T40.3": 81,
+        "heroin_T40.1": 293,
+        "synthetic_fentanyl_T40.4": 4126
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 4479,
+        "natural_semisynthetic_T40.2": 412,
+        "methadone_T40.3": 100,
+        "heroin_T40.1": 157,
+        "synthetic_fentanyl_T40.4": 4209
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 4237,
+        "natural_semisynthetic_T40.2": 371,
+        "methadone_T40.3": 110,
+        "heroin_T40.1": 86,
+        "synthetic_fentanyl_T40.4": 3997
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 3810,
+        "natural_semisynthetic_T40.2": 329,
+        "methadone_T40.3": 112,
+        "heroin_T40.1": 79,
+        "synthetic_fentanyl_T40.4": 3600
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2276,
+        "natural_semisynthetic_T40.2": 247,
+        "methadone_T40.3": 118,
+        "heroin_T40.1": 48,
+        "synthetic_fentanyl_T40.4": 2084
+      }
+    },
+    {
+      "state": "OH",
+      "state_name": "Ohio",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1445,
+        "heroin_T40.1": 48,
+        "methadone_T40.3": 122,
+        "natural_semisynthetic_T40.2": 211,
+        "all_opioids": 1627
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 136,
+        "all_opioids": 726,
+        "methadone_T40.3": 126,
+        "natural_semisynthetic_T40.2": 223,
+        "heroin_T40.1": 408
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1136,
+        "methadone_T40.3": 177,
+        "natural_semisynthetic_T40.2": 324,
+        "heroin_T40.1": 574,
+        "synthetic_fentanyl_T40.4": 579
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 805,
+        "all_opioids": 1201,
+        "heroin_T40.1": 643,
+        "methadone_T40.3": 165,
+        "natural_semisynthetic_T40.2": 300
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1155,
+        "natural_semisynthetic_T40.2": 261,
+        "synthetic_fentanyl_T40.4": 845,
+        "methadone_T40.3": 174,
+        "heroin_T40.1": 605
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1253,
+        "synthetic_fentanyl_T40.4": 1004,
+        "natural_semisynthetic_T40.2": 280,
+        "methadone_T40.3": 181,
+        "heroin_T40.1": 651
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1839,
+        "synthetic_fentanyl_T40.4": 1626,
+        "natural_semisynthetic_T40.2": 463,
+        "methadone_T40.3": 285,
+        "heroin_T40.1": 805
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2346,
+        "synthetic_fentanyl_T40.4": 2160,
+        "natural_semisynthetic_T40.2": 505,
+        "methadone_T40.3": 344,
+        "heroin_T40.1": 801
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2691,
+        "synthetic_fentanyl_T40.4": 2514,
+        "natural_semisynthetic_T40.2": 468,
+        "methadone_T40.3": 343,
+        "heroin_T40.1": 806
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2635,
+        "synthetic_fentanyl_T40.4": 2464,
+        "natural_semisynthetic_T40.2": 405,
+        "methadone_T40.3": 344,
+        "heroin_T40.1": 672
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1775,
+        "synthetic_fentanyl_T40.4": 1619,
+        "natural_semisynthetic_T40.2": 196,
+        "methadone_T40.3": 241,
+        "heroin_T40.1": 372
+      }
+    },
+    {
+      "state": "YC",
+      "state_name": "New York City",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1204,
+        "all_opioids": 1318,
+        "natural_semisynthetic_T40.2": 192,
+        "methadone_T40.3": 263,
+        "heroin_T40.1": 341
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 15,
+        "all_opioids": 27
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 41,
+        "synthetic_fentanyl_T40.4": 11,
+        "natural_semisynthetic_T40.2": 27
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 13,
+        "natural_semisynthetic_T40.2": 15,
+        "all_opioids": 37,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 27,
+        "synthetic_fentanyl_T40.4": 14,
+        "natural_semisynthetic_T40.2": 11,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 25,
+        "all_opioids": 38,
+        "natural_semisynthetic_T40.2": 13,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 25,
+        "all_opioids": 36,
+        "natural_semisynthetic_T40.2": 11,
+        "methadone_T40.3": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 32,
+        "all_opioids": 43,
+        "natural_semisynthetic_T40.2": 14,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 28,
+        "all_opioids": 36,
+        "natural_semisynthetic_T40.2": 11,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 32,
+        "all_opioids": 37,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 24,
+        "all_opioids": 38,
+        "natural_semisynthetic_T40.2": 15,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "SD",
+      "state_name": "South Dakota",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 0,
+        "natural_semisynthetic_T40.2": 13,
+        "synthetic_fentanyl_T40.4": 25,
+        "all_opioids": 37
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 263,
+        "heroin_T40.1": 341,
+        "all_opioids": 936,
+        "methadone_T40.3": 85,
+        "natural_semisynthetic_T40.2": 350
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 527,
+        "all_opioids": 1134,
+        "natural_semisynthetic_T40.2": 313,
+        "methadone_T40.3": 65,
+        "heroin_T40.1": 368
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 282,
+        "methadone_T40.3": 73,
+        "natural_semisynthetic_T40.2": 309,
+        "all_opioids": 1326,
+        "synthetic_fentanyl_T40.4": 824
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 219,
+        "methadone_T40.3": 77,
+        "natural_semisynthetic_T40.2": 318,
+        "all_opioids": 1928,
+        "synthetic_fentanyl_T40.4": 1519
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 105,
+        "methadone_T40.3": 78,
+        "natural_semisynthetic_T40.2": 257,
+        "all_opioids": 2034,
+        "synthetic_fentanyl_T40.4": 1792
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 50,
+        "methadone_T40.3": 83,
+        "natural_semisynthetic_T40.2": 211,
+        "all_opioids": 1965,
+        "synthetic_fentanyl_T40.4": 1776
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 46,
+        "methadone_T40.3": 86,
+        "natural_semisynthetic_T40.2": 200,
+        "all_opioids": 2009,
+        "synthetic_fentanyl_T40.4": 1836
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 35,
+        "methadone_T40.3": 119,
+        "natural_semisynthetic_T40.2": 205,
+        "all_opioids": 1727,
+        "synthetic_fentanyl_T40.4": 1525
+      }
+    },
+    {
+      "state": "AZ",
+      "state_name": "Arizona",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1953,
+        "heroin_T40.1": 47,
+        "methadone_T40.3": 135,
+        "natural_semisynthetic_T40.2": 216,
+        "all_opioids": 2176
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 537,
+        "synthetic_fentanyl_T40.4": 153,
+        "heroin_T40.1": 93,
+        "methadone_T40.3": 55,
+        "natural_semisynthetic_T40.2": 321
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 108,
+        "synthetic_fentanyl_T40.4": 234,
+        "methadone_T40.3": 53,
+        "natural_semisynthetic_T40.2": 341,
+        "all_opioids": 613
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 748,
+        "synthetic_fentanyl_T40.4": 397,
+        "methadone_T40.3": 45,
+        "natural_semisynthetic_T40.2": 315,
+        "heroin_T40.1": 144
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 497,
+        "natural_semisynthetic_T40.2": 332,
+        "methadone_T40.3": 57,
+        "all_opioids": 818,
+        "heroin_T40.1": 168
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 575,
+        "all_opioids": 876,
+        "natural_semisynthetic_T40.2": 349,
+        "methadone_T40.3": 28,
+        "heroin_T40.1": 196
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1133,
+        "all_opioids": 1396,
+        "natural_semisynthetic_T40.2": 418,
+        "methadone_T40.3": 46,
+        "heroin_T40.1": 244
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1528,
+        "all_opioids": 1732,
+        "natural_semisynthetic_T40.2": 373,
+        "methadone_T40.3": 69,
+        "heroin_T40.1": 136
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1667,
+        "all_opioids": 1861,
+        "natural_semisynthetic_T40.2": 362,
+        "methadone_T40.3": 58,
+        "heroin_T40.1": 54
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1552,
+        "all_opioids": 1703,
+        "natural_semisynthetic_T40.2": 272,
+        "methadone_T40.3": 53,
+        "heroin_T40.1": 24
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 930,
+        "all_opioids": 1047,
+        "natural_semisynthetic_T40.2": 187,
+        "methadone_T40.3": 43,
+        "heroin_T40.1": 18
+      }
+    },
+    {
+      "state": "SC",
+      "state_name": "South Carolina",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 732,
+        "all_opioids": 871,
+        "natural_semisynthetic_T40.2": 167,
+        "methadone_T40.3": 48,
+        "heroin_T40.1": 19
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 1004,
+        "methadone_T40.3": 207,
+        "natural_semisynthetic_T40.2": 935,
+        "all_opioids": 3324,
+        "synthetic_fentanyl_T40.4": 1727
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 1021,
+        "methadone_T40.3": 259,
+        "natural_semisynthetic_T40.2": 1005,
+        "all_opioids": 5707,
+        "synthetic_fentanyl_T40.4": 4195
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 798,
+        "methadone_T40.3": 273,
+        "natural_semisynthetic_T40.2": 1044,
+        "all_opioids": 7538,
+        "synthetic_fentanyl_T40.4": 6411
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 524,
+        "methadone_T40.3": 220,
+        "natural_semisynthetic_T40.2": 955,
+        "all_opioids": 7929,
+        "synthetic_fentanyl_T40.4": 7045
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 341,
+        "methadone_T40.3": 250,
+        "natural_semisynthetic_T40.2": 827,
+        "all_opioids": 8653,
+        "synthetic_fentanyl_T40.4": 7954
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 259,
+        "methadone_T40.3": 189,
+        "natural_semisynthetic_T40.2": 695,
+        "all_opioids": 5929,
+        "synthetic_fentanyl_T40.4": 5265
+      }
+    },
+    {
+      "state": "CA",
+      "state_name": "California",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 221,
+        "methadone_T40.3": 207,
+        "natural_semisynthetic_T40.2": 654,
+        "all_opioids": 5336,
+        "synthetic_fentanyl_T40.4": 4667
+      }
+    },
+    {
+      "state": "PR",
+      "state_name": "Puerto Rico",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 532,
+        "all_opioids": 547,
+        "natural_semisynthetic_T40.2": 26,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "PR",
+      "state_name": "Puerto Rico",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 686,
+        "all_opioids": 692,
+        "natural_semisynthetic_T40.2": 16,
+        "methadone_T40.3": 0,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "PR",
+      "state_name": "Puerto Rico",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 621,
+        "all_opioids": 628,
+        "natural_semisynthetic_T40.2": 14,
+        "heroin_T40.1": 10,
+        "methadone_T40.3": 0
+      }
+    },
+    {
+      "state": "PR",
+      "state_name": "Puerto Rico",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 468,
+        "all_opioids": 476,
+        "natural_semisynthetic_T40.2": 17
+      }
+    },
+    {
+      "state": "PR",
+      "state_name": "Puerto Rico",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 13,
+        "all_opioids": 299,
+        "synthetic_fentanyl_T40.4": 294
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 144,
+        "natural_semisynthetic_T40.2": 104,
+        "all_opioids": 268,
+        "heroin_T40.1": 51,
+        "methadone_T40.3": 31
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 297,
+        "heroin_T40.1": 25,
+        "synthetic_fentanyl_T40.4": 197,
+        "natural_semisynthetic_T40.2": 94,
+        "methadone_T40.3": 31
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 208,
+        "heroin_T40.1": 12,
+        "methadone_T40.3": 30,
+        "natural_semisynthetic_T40.2": 79,
+        "all_opioids": 284
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 226,
+        "natural_semisynthetic_T40.2": 61,
+        "heroin_T40.1": 20,
+        "methadone_T40.3": 33,
+        "all_opioids": 280
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 213,
+        "all_opioids": 252,
+        "natural_semisynthetic_T40.2": 41,
+        "methadone_T40.3": 27,
+        "heroin_T40.1": 18
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 291,
+        "all_opioids": 330,
+        "natural_semisynthetic_T40.2": 44,
+        "methadone_T40.3": 50,
+        "heroin_T40.1": 13
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 346,
+        "all_opioids": 387,
+        "natural_semisynthetic_T40.2": 40,
+        "methadone_T40.3": 45
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 330,
+        "all_opioids": 357,
+        "natural_semisynthetic_T40.2": 45,
+        "methadone_T40.3": 34
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 315,
+        "all_opioids": 345,
+        "natural_semisynthetic_T40.2": 44,
+        "methadone_T40.3": 39
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 202,
+        "all_opioids": 232,
+        "natural_semisynthetic_T40.2": 30,
+        "methadone_T40.3": 38,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "RI",
+      "state_name": "Rhode Island",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 0,
+        "methadone_T40.3": 31,
+        "natural_semisynthetic_T40.2": 29,
+        "synthetic_fentanyl_T40.4": 137,
+        "all_opioids": 162
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 30,
+        "all_opioids": 44,
+        "synthetic_fentanyl_T40.4": 14
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 13,
+        "all_opioids": 41,
+        "natural_semisynthetic_T40.2": 28
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 26,
+        "synthetic_fentanyl_T40.4": 16,
+        "all_opioids": 43,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 29,
+        "heroin_T40.1": 12,
+        "synthetic_fentanyl_T40.4": 27,
+        "all_opioids": 60
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 24,
+        "heroin_T40.1": 12,
+        "synthetic_fentanyl_T40.4": 36,
+        "all_opioids": 62
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 28,
+        "synthetic_fentanyl_T40.4": 58,
+        "all_opioids": 79,
+        "heroin_T40.1": 12
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 35,
+        "methadone_T40.3": 0,
+        "synthetic_fentanyl_T40.4": 54,
+        "all_opioids": 84
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 26,
+        "synthetic_fentanyl_T40.4": 32,
+        "all_opioids": 58
+      }
+    },
+    {
+      "state": "WY",
+      "state_name": "Wyoming",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 20,
+        "synthetic_fentanyl_T40.4": 22,
+        "all_opioids": 40,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 234,
+        "methadone_T40.3": 57,
+        "natural_semisynthetic_T40.2": 224,
+        "all_opioids": 568,
+        "synthetic_fentanyl_T40.4": 130
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 251,
+        "all_opioids": 644,
+        "natural_semisynthetic_T40.2": 238,
+        "methadone_T40.3": 37,
+        "heroin_T40.1": 218
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 228,
+        "methadone_T40.3": 66,
+        "natural_semisynthetic_T40.2": 270,
+        "all_opioids": 987,
+        "synthetic_fentanyl_T40.4": 586
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 190,
+        "methadone_T40.3": 57,
+        "natural_semisynthetic_T40.2": 290,
+        "all_opioids": 1300,
+        "synthetic_fentanyl_T40.4": 987
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 64,
+        "methadone_T40.3": 64,
+        "natural_semisynthetic_T40.2": 221,
+        "all_opioids": 1207,
+        "synthetic_fentanyl_T40.4": 992
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 35,
+        "methadone_T40.3": 43,
+        "natural_semisynthetic_T40.2": 199,
+        "all_opioids": 1348,
+        "synthetic_fentanyl_T40.4": 1184
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 32,
+        "methadone_T40.3": 78,
+        "natural_semisynthetic_T40.2": 193,
+        "all_opioids": 1016,
+        "synthetic_fentanyl_T40.4": 817
+      }
+    },
+    {
+      "state": "CO",
+      "state_name": "Colorado",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 29,
+        "methadone_T40.3": 90,
+        "natural_semisynthetic_T40.2": 160,
+        "all_opioids": 1154,
+        "synthetic_fentanyl_T40.4": 982
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 200,
+        "synthetic_fentanyl_T40.4": 224,
+        "methadone_T40.3": 31,
+        "all_opioids": 636,
+        "natural_semisynthetic_T40.2": 360
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 432,
+        "all_opioids": 734,
+        "natural_semisynthetic_T40.2": 325,
+        "methadone_T40.3": 28,
+        "heroin_T40.1": 241
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 259,
+        "synthetic_fentanyl_T40.4": 644,
+        "natural_semisynthetic_T40.2": 284,
+        "all_opioids": 860,
+        "methadone_T40.3": 36
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 574,
+        "heroin_T40.1": 202,
+        "methadone_T40.3": 28,
+        "natural_semisynthetic_T40.2": 216,
+        "all_opioids": 730
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 567,
+        "all_opioids": 665,
+        "natural_semisynthetic_T40.2": 168,
+        "methadone_T40.3": 12,
+        "heroin_T40.1": 146
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1052,
+        "all_opioids": 1137,
+        "natural_semisynthetic_T40.2": 283,
+        "methadone_T40.3": 36,
+        "heroin_T40.1": 144
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1193,
+        "all_opioids": 1250,
+        "natural_semisynthetic_T40.2": 212,
+        "methadone_T40.3": 27,
+        "heroin_T40.1": 45
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1074,
+        "all_opioids": 1139,
+        "natural_semisynthetic_T40.2": 160,
+        "methadone_T40.3": 28,
+        "heroin_T40.1": 25
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1158,
+        "all_opioids": 1205,
+        "natural_semisynthetic_T40.2": 142,
+        "methadone_T40.3": 36,
+        "heroin_T40.1": 11
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 586,
+        "all_opioids": 636,
+        "natural_semisynthetic_T40.2": 85,
+        "methadone_T40.3": 44
+      }
+    },
+    {
+      "state": "WV",
+      "state_name": "West Virginia",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 441,
+        "all_opioids": 491,
+        "natural_semisynthetic_T40.2": 74,
+        "methadone_T40.3": 54,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 394,
+        "methadone_T40.3": 73,
+        "synthetic_fentanyl_T40.4": 214,
+        "natural_semisynthetic_T40.2": 182,
+        "all_opioids": 686
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 214,
+        "methadone_T40.3": 71,
+        "heroin_T40.1": 459,
+        "synthetic_fentanyl_T40.4": 508,
+        "all_opioids": 869
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 696,
+        "all_opioids": 967,
+        "natural_semisynthetic_T40.2": 186,
+        "methadone_T40.3": 95,
+        "heroin_T40.1": 428
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 158,
+        "synthetic_fentanyl_T40.4": 779,
+        "heroin_T40.1": 342,
+        "methadone_T40.3": 78,
+        "all_opioids": 957
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 346,
+        "methadone_T40.3": 85,
+        "natural_semisynthetic_T40.2": 209,
+        "all_opioids": 1119,
+        "synthetic_fentanyl_T40.4": 974
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 203,
+        "methadone_T40.3": 112,
+        "natural_semisynthetic_T40.2": 217,
+        "all_opioids": 1258,
+        "synthetic_fentanyl_T40.4": 1150
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 114,
+        "methadone_T40.3": 124,
+        "natural_semisynthetic_T40.2": 189,
+        "all_opioids": 1411,
+        "synthetic_fentanyl_T40.4": 1303
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 96,
+        "methadone_T40.3": 123,
+        "natural_semisynthetic_T40.2": 191,
+        "all_opioids": 1345,
+        "synthetic_fentanyl_T40.4": 1253
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 86,
+        "methadone_T40.3": 133,
+        "natural_semisynthetic_T40.2": 151,
+        "all_opioids": 1202,
+        "synthetic_fentanyl_T40.4": 1121
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 50,
+        "methadone_T40.3": 112,
+        "natural_semisynthetic_T40.2": 119,
+        "all_opioids": 858,
+        "synthetic_fentanyl_T40.4": 766
+      }
+    },
+    {
+      "state": "CT",
+      "state_name": "Connecticut",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 41,
+        "methadone_T40.3": 118,
+        "natural_semisynthetic_T40.2": 112,
+        "all_opioids": 718,
+        "synthetic_fentanyl_T40.4": 620
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 49,
+        "all_opioids": 86,
+        "synthetic_fentanyl_T40.4": 17,
+        "heroin_T40.1": 39,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 10,
+        "natural_semisynthetic_T40.2": 46,
+        "methadone_T40.3": 14,
+        "all_opioids": 96,
+        "heroin_T40.1": 49
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 100,
+        "synthetic_fentanyl_T40.4": 37,
+        "natural_semisynthetic_T40.2": 46,
+        "heroin_T40.1": 36,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 28,
+        "all_opioids": 65,
+        "synthetic_fentanyl_T40.4": 16,
+        "natural_semisynthetic_T40.2": 33,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 45,
+        "natural_semisynthetic_T40.2": 41,
+        "all_opioids": 83,
+        "synthetic_fentanyl_T40.4": 23,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 31,
+        "natural_semisynthetic_T40.2": 37,
+        "all_opioids": 102,
+        "synthetic_fentanyl_T40.4": 61,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 66,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 74,
+        "all_opioids": 198,
+        "synthetic_fentanyl_T40.4": 150
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 40,
+        "natural_semisynthetic_T40.2": 49,
+        "all_opioids": 185,
+        "synthetic_fentanyl_T40.4": 156,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 16,
+        "methadone_T40.3": 14,
+        "natural_semisynthetic_T40.2": 34,
+        "all_opioids": 286,
+        "synthetic_fentanyl_T40.4": 270
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 14,
+        "natural_semisynthetic_T40.2": 28,
+        "all_opioids": 276,
+        "synthetic_fentanyl_T40.4": 255,
+        "heroin_T40.1": 12
+      }
+    },
+    {
+      "state": "AK",
+      "state_name": "Alaska",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 17,
+        "natural_semisynthetic_T40.2": 38,
+        "all_opioids": 241,
+        "synthetic_fentanyl_T40.4": 217
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 28,
+        "natural_semisynthetic_T40.2": 21,
+        "all_opioids": 112,
+        "heroin_T40.1": 83,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 42,
+        "synthetic_fentanyl_T40.4": 147,
+        "all_opioids": 230,
+        "heroin_T40.1": 146,
+        "methadone_T40.3": 21
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 271,
+        "heroin_T40.1": 144,
+        "methadone_T40.3": 27,
+        "natural_semisynthetic_T40.2": 37,
+        "synthetic_fentanyl_T40.4": 203
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 182,
+        "all_opioids": 213,
+        "natural_semisynthetic_T40.2": 28,
+        "methadone_T40.3": 11,
+        "heroin_T40.1": 93
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 98,
+        "methadone_T40.3": 17,
+        "natural_semisynthetic_T40.2": 24,
+        "all_opioids": 281,
+        "synthetic_fentanyl_T40.4": 255
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 106,
+        "methadone_T40.3": 31,
+        "natural_semisynthetic_T40.2": 38,
+        "all_opioids": 409,
+        "synthetic_fentanyl_T40.4": 384
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 66,
+        "methadone_T40.3": 24,
+        "natural_semisynthetic_T40.2": 32,
+        "all_opioids": 418,
+        "synthetic_fentanyl_T40.4": 397
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 49,
+        "methadone_T40.3": 22,
+        "natural_semisynthetic_T40.2": 41,
+        "all_opioids": 452,
+        "synthetic_fentanyl_T40.4": 433
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 56,
+        "methadone_T40.3": 20,
+        "natural_semisynthetic_T40.2": 35,
+        "all_opioids": 507,
+        "synthetic_fentanyl_T40.4": 493
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 26,
+        "methadone_T40.3": 17,
+        "natural_semisynthetic_T40.2": 25,
+        "all_opioids": 328,
+        "synthetic_fentanyl_T40.4": 315
+      }
+    },
+    {
+      "state": "DC",
+      "state_name": "District of Columbia",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 20,
+        "methadone_T40.3": 19,
+        "natural_semisynthetic_T40.2": 14,
+        "all_opioids": 205,
+        "synthetic_fentanyl_T40.4": 199
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 65,
+        "methadone_T40.3": 24,
+        "heroin_T40.1": 147,
+        "all_opioids": 361,
+        "synthetic_fentanyl_T40.4": 300
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 109,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 50,
+        "all_opioids": 382,
+        "synthetic_fentanyl_T40.4": 336
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 92,
+        "methadone_T40.3": 37,
+        "natural_semisynthetic_T40.2": 50,
+        "all_opioids": 411,
+        "synthetic_fentanyl_T40.4": 367
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 67,
+        "methadone_T40.3": 37,
+        "natural_semisynthetic_T40.2": 47,
+        "all_opioids": 447,
+        "synthetic_fentanyl_T40.4": 409
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 56,
+        "methadone_T40.3": 32,
+        "natural_semisynthetic_T40.2": 34,
+        "all_opioids": 485,
+        "synthetic_fentanyl_T40.4": 450
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 27,
+        "methadone_T40.3": 38,
+        "natural_semisynthetic_T40.2": 29,
+        "all_opioids": 466,
+        "synthetic_fentanyl_T40.4": 442
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 21,
+        "methadone_T40.3": 35,
+        "natural_semisynthetic_T40.2": 29,
+        "all_opioids": 299,
+        "synthetic_fentanyl_T40.4": 269
+      }
+    },
+    {
+      "state": "DE",
+      "state_name": "Delaware",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 11,
+        "methadone_T40.3": 39,
+        "natural_semisynthetic_T40.2": 35,
+        "all_opioids": 270,
+        "synthetic_fentanyl_T40.4": 246
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 266,
+        "methadone_T40.3": 83,
+        "synthetic_fentanyl_T40.4": 103,
+        "all_opioids": 643,
+        "heroin_T40.1": 287
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 866,
+        "natural_semisynthetic_T40.2": 325,
+        "heroin_T40.1": 388,
+        "methadone_T40.3": 69,
+        "synthetic_fentanyl_T40.4": 287
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 464,
+        "methadone_T40.3": 63,
+        "natural_semisynthetic_T40.2": 322,
+        "all_opioids": 934,
+        "heroin_T40.1": 413
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 254,
+        "all_opioids": 850,
+        "heroin_T40.1": 331,
+        "synthetic_fentanyl_T40.4": 501,
+        "methadone_T40.3": 55
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 657,
+        "all_opioids": 929,
+        "natural_semisynthetic_T40.2": 238,
+        "methadone_T40.3": 54,
+        "heroin_T40.1": 293
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1076,
+        "all_opioids": 1257,
+        "natural_semisynthetic_T40.2": 284,
+        "methadone_T40.3": 71,
+        "heroin_T40.1": 267
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1293,
+        "all_opioids": 1427,
+        "natural_semisynthetic_T40.2": 300,
+        "methadone_T40.3": 60,
+        "heroin_T40.1": 162
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1296,
+        "all_opioids": 1421,
+        "natural_semisynthetic_T40.2": 253,
+        "methadone_T40.3": 46,
+        "heroin_T40.1": 128
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1297,
+        "all_opioids": 1406,
+        "natural_semisynthetic_T40.2": 249,
+        "methadone_T40.3": 44,
+        "heroin_T40.1": 179
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 708,
+        "all_opioids": 808,
+        "natural_semisynthetic_T40.2": 190,
+        "methadone_T40.3": 39,
+        "heroin_T40.1": 140
+      }
+    },
+    {
+      "state": "WI",
+      "state_name": "Wisconsin",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 471,
+        "all_opioids": 568,
+        "natural_semisynthetic_T40.2": 139,
+        "methadone_T40.3": 31,
+        "heroin_T40.1": 92
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 714,
+        "methadone_T40.3": 144,
+        "natural_semisynthetic_T40.2": 1113,
+        "all_opioids": 3981,
+        "synthetic_fentanyl_T40.4": 3039
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 704,
+        "methadone_T40.3": 189,
+        "natural_semisynthetic_T40.2": 1174,
+        "all_opioids": 5577,
+        "synthetic_fentanyl_T40.4": 4752
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 365,
+        "methadone_T40.3": 169,
+        "natural_semisynthetic_T40.2": 1046,
+        "all_opioids": 6196,
+        "synthetic_fentanyl_T40.4": 5602
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 160,
+        "methadone_T40.3": 151,
+        "natural_semisynthetic_T40.2": 920,
+        "all_opioids": 5833,
+        "synthetic_fentanyl_T40.4": 5326
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 68,
+        "methadone_T40.3": 136,
+        "natural_semisynthetic_T40.2": 816,
+        "all_opioids": 5260,
+        "synthetic_fentanyl_T40.4": 4801
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 49,
+        "methadone_T40.3": 152,
+        "natural_semisynthetic_T40.2": 650,
+        "all_opioids": 4017,
+        "synthetic_fentanyl_T40.4": 3592
+      }
+    },
+    {
+      "state": "FL",
+      "state_name": "Florida",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 38,
+        "methadone_T40.3": 123,
+        "natural_semisynthetic_T40.2": 455,
+        "all_opioids": 2337,
+        "synthetic_fentanyl_T40.4": 1975
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 228,
+        "methadone_T40.3": 115,
+        "natural_semisynthetic_T40.2": 444,
+        "synthetic_fentanyl_T40.4": 293,
+        "all_opioids": 868
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 215,
+        "synthetic_fentanyl_T40.4": 271,
+        "all_opioids": 911,
+        "natural_semisynthetic_T40.2": 455,
+        "methadone_T40.3": 113
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 512,
+        "methadone_T40.3": 83,
+        "heroin_T40.1": 262,
+        "synthetic_fentanyl_T40.4": 406,
+        "all_opioids": 1003
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 330,
+        "heroin_T40.1": 312,
+        "all_opioids": 853,
+        "methadone_T40.3": 85,
+        "natural_semisynthetic_T40.2": 388
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 307,
+        "methadone_T40.3": 57,
+        "natural_semisynthetic_T40.2": 367,
+        "all_opioids": 837,
+        "synthetic_fentanyl_T40.4": 383
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 394,
+        "methadone_T40.3": 73,
+        "natural_semisynthetic_T40.2": 439,
+        "all_opioids": 1259,
+        "synthetic_fentanyl_T40.4": 856
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 325,
+        "methadone_T40.3": 66,
+        "natural_semisynthetic_T40.2": 494,
+        "all_opioids": 1734,
+        "synthetic_fentanyl_T40.4": 1379
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 157,
+        "methadone_T40.3": 56,
+        "natural_semisynthetic_T40.2": 467,
+        "all_opioids": 1917,
+        "synthetic_fentanyl_T40.4": 1657
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 104,
+        "methadone_T40.3": 56,
+        "natural_semisynthetic_T40.2": 376,
+        "all_opioids": 1843,
+        "synthetic_fentanyl_T40.4": 1642
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 53,
+        "methadone_T40.3": 47,
+        "natural_semisynthetic_T40.2": 308,
+        "all_opioids": 1265,
+        "synthetic_fentanyl_T40.4": 1074
+      }
+    },
+    {
+      "state": "GA",
+      "state_name": "Georgia",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 33,
+        "methadone_T40.3": 33,
+        "natural_semisynthetic_T40.2": 256,
+        "all_opioids": 954,
+        "synthetic_fentanyl_T40.4": 784
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 11,
+        "natural_semisynthetic_T40.2": 46,
+        "methadone_T40.3": 15,
+        "heroin_T40.1": 20,
+        "all_opioids": 82
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 67,
+        "natural_semisynthetic_T40.2": 32,
+        "methadone_T40.3": 13,
+        "heroin_T40.1": 17,
+        "synthetic_fentanyl_T40.4": 12
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 28,
+        "all_opioids": 58,
+        "methadone_T40.3": 10,
+        "heroin_T40.1": 15,
+        "synthetic_fentanyl_T40.4": 15
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 19,
+        "natural_semisynthetic_T40.2": 25,
+        "all_opioids": 56,
+        "synthetic_fentanyl_T40.4": 19
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 24,
+        "natural_semisynthetic_T40.2": 26,
+        "all_opioids": 73,
+        "synthetic_fentanyl_T40.4": 34
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 18,
+        "natural_semisynthetic_T40.2": 32,
+        "all_opioids": 88,
+        "synthetic_fentanyl_T40.4": 48,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 12,
+        "natural_semisynthetic_T40.2": 22,
+        "all_opioids": 103,
+        "synthetic_fentanyl_T40.4": 75
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 14,
+        "methadone_T40.3": 10,
+        "natural_semisynthetic_T40.2": 21,
+        "all_opioids": 130,
+        "synthetic_fentanyl_T40.4": 110
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 26,
+        "all_opioids": 127,
+        "synthetic_fentanyl_T40.4": 108,
+        "methadone_T40.3": 10,
+        "heroin_T40.1": 12
+      }
+    },
+    {
+      "state": "HI",
+      "state_name": "Hawaii",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 16,
+        "all_opioids": 96,
+        "synthetic_fentanyl_T40.4": 82
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 702,
+        "methadone_T40.3": 115,
+        "natural_semisynthetic_T40.2": 264,
+        "synthetic_fentanyl_T40.4": 65,
+        "heroin_T40.1": 306
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 721,
+        "synthetic_fentanyl_T40.4": 94,
+        "heroin_T40.1": 294,
+        "methadone_T40.3": 129,
+        "natural_semisynthetic_T40.2": 293
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 317,
+        "methadone_T40.3": 123,
+        "natural_semisynthetic_T40.2": 248,
+        "synthetic_fentanyl_T40.4": 136,
+        "all_opioids": 744
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 732,
+        "natural_semisynthetic_T40.2": 209,
+        "methadone_T40.3": 92,
+        "heroin_T40.1": 328,
+        "synthetic_fentanyl_T40.4": 219
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 328,
+        "all_opioids": 815,
+        "natural_semisynthetic_T40.2": 198,
+        "methadone_T40.3": 73,
+        "heroin_T40.1": 344
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 661,
+        "all_opioids": 1188,
+        "natural_semisynthetic_T40.2": 235,
+        "methadone_T40.3": 108,
+        "heroin_T40.1": 385
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1215,
+        "all_opioids": 1625,
+        "natural_semisynthetic_T40.2": 303,
+        "methadone_T40.3": 119,
+        "heroin_T40.1": 342
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1899,
+        "all_opioids": 2101,
+        "natural_semisynthetic_T40.2": 232,
+        "methadone_T40.3": 90,
+        "heroin_T40.1": 157
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2687,
+        "all_opioids": 2865,
+        "natural_semisynthetic_T40.2": 252,
+        "methadone_T40.3": 144,
+        "heroin_T40.1": 67
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2342,
+        "all_opioids": 2537,
+        "natural_semisynthetic_T40.2": 214,
+        "methadone_T40.3": 155,
+        "heroin_T40.1": 37
+      }
+    },
+    {
+      "state": "WA",
+      "state_name": "Washington",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2317,
+        "all_opioids": 2517,
+        "natural_semisynthetic_T40.2": 197,
+        "methadone_T40.3": 172,
+        "heroin_T40.1": 24
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 44,
+        "natural_semisynthetic_T40.2": 75,
+        "heroin_T40.1": 43,
+        "all_opioids": 164,
+        "methadone_T40.3": 24
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 55,
+        "all_opioids": 180,
+        "heroin_T40.1": 44,
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 85
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 64,
+        "synthetic_fentanyl_T40.4": 97,
+        "all_opioids": 206,
+        "methadone_T40.3": 17,
+        "natural_semisynthetic_T40.2": 91
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 53,
+        "synthetic_fentanyl_T40.4": 78,
+        "heroin_T40.1": 36,
+        "all_opioids": 138,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 40,
+        "methadone_T40.3": 11,
+        "natural_semisynthetic_T40.2": 53,
+        "all_opioids": 157,
+        "synthetic_fentanyl_T40.4": 101
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 52,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 54,
+        "all_opioids": 213,
+        "synthetic_fentanyl_T40.4": 162
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 35,
+        "methadone_T40.3": 16,
+        "natural_semisynthetic_T40.2": 67,
+        "all_opioids": 258,
+        "synthetic_fentanyl_T40.4": 213
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 25,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 55,
+        "all_opioids": 237,
+        "synthetic_fentanyl_T40.4": 203
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 10,
+        "natural_semisynthetic_T40.2": 65,
+        "all_opioids": 238,
+        "synthetic_fentanyl_T40.4": 194
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 54,
+        "all_opioids": 172,
+        "synthetic_fentanyl_T40.4": 125,
+        "methadone_T40.3": 15,
+        "heroin_T40.1": 11
+      }
+    },
+    {
+      "state": "IA",
+      "state_name": "Iowa",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 10,
+        "methadone_T40.3": 10,
+        "natural_semisynthetic_T40.2": 53,
+        "all_opioids": 148,
+        "synthetic_fentanyl_T40.4": 100
+      }
+    },
+    {
+      "state": "AL",
+      "state_name": "Alabama",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 46,
+        "methadone_T40.3": 30,
+        "natural_semisynthetic_T40.2": 143,
+        "all_opioids": 1076,
+        "synthetic_fentanyl_T40.4": 971
+      }
+    },
+    {
+      "state": "AL",
+      "state_name": "Alabama",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 40,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 153,
+        "all_opioids": 1196,
+        "synthetic_fentanyl_T40.4": 1099
+      }
+    },
+    {
+      "state": "AL",
+      "state_name": "Alabama",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 17,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 104,
+        "all_opioids": 797,
+        "synthetic_fentanyl_T40.4": 714
+      }
+    },
+    {
+      "state": "AL",
+      "state_name": "Alabama",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 10,
+        "methadone_T40.3": 24,
+        "natural_semisynthetic_T40.2": 81,
+        "all_opioids": 557,
+        "synthetic_fentanyl_T40.4": 484
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 39,
+        "all_opioids": 132,
+        "natural_semisynthetic_T40.2": 79,
+        "heroin_T40.1": 34
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 19,
+        "methadone_T40.3": 11,
+        "natural_semisynthetic_T40.2": 85,
+        "all_opioids": 226,
+        "synthetic_fentanyl_T40.4": 150
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 69,
+        "all_opioids": 251,
+        "synthetic_fentanyl_T40.4": 186,
+        "methadone_T40.3": 13,
+        "heroin_T40.1": 13
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 65,
+        "all_opioids": 251,
+        "synthetic_fentanyl_T40.4": 200,
+        "methadone_T40.3": 11
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 79,
+        "all_opioids": 196,
+        "synthetic_fentanyl_T40.4": 125,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "ID",
+      "state_name": "Idaho",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 78,
+        "all_opioids": 180,
+        "synthetic_fentanyl_T40.4": 116,
+        "methadone_T40.3": 11
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 263,
+        "methadone_T40.3": 100,
+        "synthetic_fentanyl_T40.4": 277,
+        "heroin_T40.1": 876,
+        "all_opioids": 1419
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 123,
+        "all_opioids": 1985,
+        "natural_semisynthetic_T40.2": 378,
+        "heroin_T40.1": 1069,
+        "synthetic_fentanyl_T40.4": 927
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2214,
+        "natural_semisynthetic_T40.2": 484,
+        "synthetic_fentanyl_T40.4": 1260,
+        "heroin_T40.1": 1215,
+        "methadone_T40.3": 154
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1593,
+        "heroin_T40.1": 1090,
+        "methadone_T40.3": 159,
+        "natural_semisynthetic_T40.2": 404,
+        "all_opioids": 2193
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 1001,
+        "methadone_T40.3": 142,
+        "natural_semisynthetic_T40.2": 413,
+        "all_opioids": 2232,
+        "synthetic_fentanyl_T40.4": 1714
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 1080,
+        "methadone_T40.3": 219,
+        "natural_semisynthetic_T40.2": 513,
+        "all_opioids": 2953,
+        "synthetic_fentanyl_T40.4": 2478
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 801,
+        "methadone_T40.3": 167,
+        "natural_semisynthetic_T40.2": 512,
+        "all_opioids": 3102,
+        "synthetic_fentanyl_T40.4": 2758
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 546,
+        "methadone_T40.3": 152,
+        "natural_semisynthetic_T40.2": 425,
+        "all_opioids": 3213,
+        "synthetic_fentanyl_T40.4": 2946
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 436,
+        "methadone_T40.3": 154,
+        "natural_semisynthetic_T40.2": 361,
+        "all_opioids": 2907,
+        "synthetic_fentanyl_T40.4": 2654
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 345,
+        "methadone_T40.3": 124,
+        "natural_semisynthetic_T40.2": 267,
+        "all_opioids": 1873,
+        "synthetic_fentanyl_T40.4": 1668
+      }
+    },
+    {
+      "state": "IL",
+      "state_name": "Illinois",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 273,
+        "methadone_T40.3": 136,
+        "natural_semisynthetic_T40.2": 227,
+        "all_opioids": 1375,
+        "synthetic_fentanyl_T40.4": 1175
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 77,
+        "heroin_T40.1": 31,
+        "natural_semisynthetic_T40.2": 23,
+        "synthetic_fentanyl_T40.4": 33
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 50,
+        "all_opioids": 107,
+        "methadone_T40.3": 12,
+        "synthetic_fentanyl_T40.4": 56,
+        "natural_semisynthetic_T40.2": 24
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 73,
+        "methadone_T40.3": 15,
+        "natural_semisynthetic_T40.2": 27,
+        "heroin_T40.1": 40,
+        "all_opioids": 110
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 63,
+        "methadone_T40.3": 11,
+        "natural_semisynthetic_T40.2": 18,
+        "synthetic_fentanyl_T40.4": 96,
+        "all_opioids": 116
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 88,
+        "all_opioids": 102,
+        "natural_semisynthetic_T40.2": 21,
+        "heroin_T40.1": 38
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 133,
+        "all_opioids": 154,
+        "natural_semisynthetic_T40.2": 28,
+        "methadone_T40.3": 13,
+        "heroin_T40.1": 41
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 207,
+        "all_opioids": 221,
+        "natural_semisynthetic_T40.2": 31,
+        "methadone_T40.3": 17,
+        "heroin_T40.1": 27
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 218,
+        "all_opioids": 232,
+        "natural_semisynthetic_T40.2": 24,
+        "methadone_T40.3": 25,
+        "heroin_T40.1": 23
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 211,
+        "all_opioids": 221,
+        "natural_semisynthetic_T40.2": 16,
+        "methadone_T40.3": 16,
+        "heroin_T40.1": 11
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 165,
+        "all_opioids": 175,
+        "natural_semisynthetic_T40.2": 15,
+        "methadone_T40.3": 20,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "VT",
+      "state_name": "Vermont",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 92,
+        "all_opioids": 107,
+        "natural_semisynthetic_T40.2": 11,
+        "methadone_T40.3": 15
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 303,
+        "methadone_T40.3": 52,
+        "natural_semisynthetic_T40.2": 358,
+        "all_opioids": 1256,
+        "synthetic_fentanyl_T40.4": 908
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 201,
+        "methadone_T40.3": 47,
+        "natural_semisynthetic_T40.2": 405,
+        "all_opioids": 1828,
+        "synthetic_fentanyl_T40.4": 1600
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 78,
+        "methadone_T40.3": 60,
+        "natural_semisynthetic_T40.2": 447,
+        "all_opioids": 2181,
+        "synthetic_fentanyl_T40.4": 1985
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 61,
+        "methadone_T40.3": 46,
+        "natural_semisynthetic_T40.2": 328,
+        "all_opioids": 2051,
+        "synthetic_fentanyl_T40.4": 1898
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 23,
+        "methadone_T40.3": 48,
+        "natural_semisynthetic_T40.2": 205,
+        "all_opioids": 1663,
+        "synthetic_fentanyl_T40.4": 1550
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 23,
+        "methadone_T40.3": 47,
+        "natural_semisynthetic_T40.2": 164,
+        "all_opioids": 1151,
+        "synthetic_fentanyl_T40.4": 1044
+      }
+    },
+    {
+      "state": "IN",
+      "state_name": "Indiana",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 16,
+        "methadone_T40.3": 48,
+        "natural_semisynthetic_T40.2": 147,
+        "all_opioids": 912,
+        "synthetic_fentanyl_T40.4": 795
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 38,
+        "methadone_T40.3": 17,
+        "natural_semisynthetic_T40.2": 65,
+        "all_opioids": 171,
+        "synthetic_fentanyl_T40.4": 68
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 31,
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 72,
+        "all_opioids": 252,
+        "synthetic_fentanyl_T40.4": 159
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 38,
+        "natural_semisynthetic_T40.2": 109,
+        "all_opioids": 432,
+        "synthetic_fentanyl_T40.4": 344
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 18,
+        "methadone_T40.3": 18,
+        "natural_semisynthetic_T40.2": 127,
+        "all_opioids": 509,
+        "synthetic_fentanyl_T40.4": 421
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 19,
+        "natural_semisynthetic_T40.2": 86,
+        "all_opioids": 414,
+        "synthetic_fentanyl_T40.4": 347,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 73,
+        "all_opioids": 346,
+        "synthetic_fentanyl_T40.4": 286
+      }
+    },
+    {
+      "state": "KS",
+      "state_name": "Kansas",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 0,
+        "natural_semisynthetic_T40.2": 64,
+        "all_opioids": 312,
+        "synthetic_fentanyl_T40.4": 254,
+        "methadone_T40.3": 11
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1001,
+        "synthetic_fentanyl_T40.4": 743,
+        "natural_semisynthetic_T40.2": 292,
+        "methadone_T40.3": 40,
+        "heroin_T40.1": 144
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 148,
+        "methadone_T40.3": 30,
+        "natural_semisynthetic_T40.2": 321,
+        "all_opioids": 1024,
+        "synthetic_fentanyl_T40.4": 815
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 118,
+        "methadone_T40.3": 44,
+        "natural_semisynthetic_T40.2": 436,
+        "all_opioids": 1709,
+        "synthetic_fentanyl_T40.4": 1522
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 58,
+        "methadone_T40.3": 41,
+        "natural_semisynthetic_T40.2": 409,
+        "all_opioids": 1912,
+        "synthetic_fentanyl_T40.4": 1731
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 31,
+        "methadone_T40.3": 28,
+        "natural_semisynthetic_T40.2": 328,
+        "all_opioids": 1803,
+        "synthetic_fentanyl_T40.4": 1650
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 24,
+        "methadone_T40.3": 61,
+        "natural_semisynthetic_T40.2": 270,
+        "all_opioids": 1662,
+        "synthetic_fentanyl_T40.4": 1509
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 17,
+        "methadone_T40.3": 41,
+        "natural_semisynthetic_T40.2": 204,
+        "all_opioids": 1063,
+        "synthetic_fentanyl_T40.4": 934
+      }
+    },
+    {
+      "state": "KY",
+      "state_name": "Kentucky",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 23,
+        "methadone_T40.3": 70,
+        "natural_semisynthetic_T40.2": 216,
+        "all_opioids": 808,
+        "synthetic_fentanyl_T40.4": 639
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 338,
+        "synthetic_fentanyl_T40.4": 261,
+        "methadone_T40.3": 69,
+        "all_opioids": 802,
+        "natural_semisynthetic_T40.2": 274
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 650,
+        "heroin_T40.1": 439,
+        "methadone_T40.3": 77,
+        "natural_semisynthetic_T40.2": 342,
+        "all_opioids": 1117
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1198,
+        "methadone_T40.3": 79,
+        "heroin_T40.1": 539,
+        "synthetic_fentanyl_T40.4": 797,
+        "natural_semisynthetic_T40.2": 334
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 551,
+        "methadone_T40.3": 96,
+        "natural_semisynthetic_T40.2": 254,
+        "all_opioids": 1193,
+        "synthetic_fentanyl_T40.4": 845
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 970,
+        "all_opioids": 1252,
+        "natural_semisynthetic_T40.2": 251,
+        "methadone_T40.3": 79,
+        "heroin_T40.1": 537
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1640,
+        "all_opioids": 1863,
+        "natural_semisynthetic_T40.2": 277,
+        "methadone_T40.3": 89,
+        "heroin_T40.1": 503
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2047,
+        "all_opioids": 2208,
+        "natural_semisynthetic_T40.2": 278,
+        "methadone_T40.3": 103,
+        "heroin_T40.1": 407
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1972,
+        "all_opioids": 2108,
+        "natural_semisynthetic_T40.2": 221,
+        "methadone_T40.3": 74,
+        "heroin_T40.1": 246
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1926,
+        "all_opioids": 2054,
+        "natural_semisynthetic_T40.2": 158,
+        "methadone_T40.3": 89,
+        "heroin_T40.1": 150
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1064,
+        "all_opioids": 1175,
+        "natural_semisynthetic_T40.2": 131,
+        "methadone_T40.3": 71,
+        "heroin_T40.1": 109
+      }
+    },
+    {
+      "state": "VA",
+      "state_name": "Virginia",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 766,
+        "all_opioids": 883,
+        "natural_semisynthetic_T40.2": 118,
+        "methadone_T40.3": 69,
+        "heroin_T40.1": 84
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 624,
+        "methadone_T40.3": 81,
+        "natural_semisynthetic_T40.2": 217,
+        "all_opioids": 1549,
+        "synthetic_fentanyl_T40.4": 957
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 93,
+        "heroin_T40.1": 620,
+        "synthetic_fentanyl_T40.4": 1552,
+        "all_opioids": 1978,
+        "natural_semisynthetic_T40.2": 261
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1896,
+        "methadone_T40.3": 80,
+        "synthetic_fentanyl_T40.4": 1645,
+        "heroin_T40.1": 460,
+        "natural_semisynthetic_T40.2": 240
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1996,
+        "synthetic_fentanyl_T40.4": 1813,
+        "methadone_T40.3": 86,
+        "natural_semisynthetic_T40.2": 256,
+        "heroin_T40.1": 484
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 377,
+        "methadone_T40.3": 60,
+        "natural_semisynthetic_T40.2": 232,
+        "all_opioids": 1977,
+        "synthetic_fentanyl_T40.4": 1876
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 219,
+        "methadone_T40.3": 112,
+        "natural_semisynthetic_T40.2": 266,
+        "all_opioids": 2059,
+        "synthetic_fentanyl_T40.4": 1942
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 147,
+        "methadone_T40.3": 111,
+        "natural_semisynthetic_T40.2": 200,
+        "all_opioids": 2238,
+        "synthetic_fentanyl_T40.4": 2150
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 111,
+        "methadone_T40.3": 144,
+        "natural_semisynthetic_T40.2": 226,
+        "all_opioids": 2334,
+        "synthetic_fentanyl_T40.4": 2230
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 75,
+        "methadone_T40.3": 166,
+        "natural_semisynthetic_T40.2": 152,
+        "all_opioids": 2104,
+        "synthetic_fentanyl_T40.4": 2008
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 48,
+        "methadone_T40.3": 136,
+        "natural_semisynthetic_T40.2": 122,
+        "all_opioids": 1341,
+        "synthetic_fentanyl_T40.4": 1257
+      }
+    },
+    {
+      "state": "MA",
+      "state_name": "Massachusetts",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 57,
+        "methadone_T40.3": 146,
+        "natural_semisynthetic_T40.2": 104,
+        "all_opioids": 1016,
+        "synthetic_fentanyl_T40.4": 913
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 422,
+        "methadone_T40.3": 188,
+        "synthetic_fentanyl_T40.4": 373,
+        "natural_semisynthetic_T40.2": 408,
+        "all_opioids": 1130
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 694,
+        "methadone_T40.3": 194,
+        "heroin_T40.1": 656,
+        "synthetic_fentanyl_T40.4": 1122,
+        "all_opioids": 1866
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1598,
+        "heroin_T40.1": 516,
+        "all_opioids": 2037,
+        "methadone_T40.3": 241,
+        "natural_semisynthetic_T40.2": 541
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 359,
+        "methadone_T40.3": 189,
+        "natural_semisynthetic_T40.2": 437,
+        "all_opioids": 2150,
+        "synthetic_fentanyl_T40.4": 1890
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 200,
+        "methadone_T40.3": 189,
+        "natural_semisynthetic_T40.2": 439,
+        "all_opioids": 2117,
+        "synthetic_fentanyl_T40.4": 1926
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 116,
+        "methadone_T40.3": 263,
+        "natural_semisynthetic_T40.2": 373,
+        "all_opioids": 2509,
+        "synthetic_fentanyl_T40.4": 2335
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 53,
+        "methadone_T40.3": 268,
+        "natural_semisynthetic_T40.2": 280,
+        "all_opioids": 2457,
+        "synthetic_fentanyl_T40.4": 2297
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 23,
+        "methadone_T40.3": 212,
+        "natural_semisynthetic_T40.2": 223,
+        "all_opioids": 2212,
+        "synthetic_fentanyl_T40.4": 2047
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 24,
+        "methadone_T40.3": 208,
+        "natural_semisynthetic_T40.2": 185,
+        "all_opioids": 2176,
+        "synthetic_fentanyl_T40.4": 2034
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 44,
+        "methadone_T40.3": 217,
+        "natural_semisynthetic_T40.2": 188,
+        "all_opioids": 1457,
+        "synthetic_fentanyl_T40.4": 1309
+      }
+    },
+    {
+      "state": "MD",
+      "state_name": "Maryland",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 27,
+        "methadone_T40.3": 186,
+        "natural_semisynthetic_T40.2": 129,
+        "all_opioids": 1102,
+        "synthetic_fentanyl_T40.4": 961
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 110,
+        "methadone_T40.3": 37,
+        "all_opioids": 235,
+        "natural_semisynthetic_T40.2": 105,
+        "heroin_T40.1": 53
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 306,
+        "methadone_T40.3": 39,
+        "synthetic_fentanyl_T40.4": 204,
+        "natural_semisynthetic_T40.2": 132,
+        "heroin_T40.1": 54
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 32,
+        "heroin_T40.1": 75,
+        "all_opioids": 348,
+        "synthetic_fentanyl_T40.4": 262,
+        "natural_semisynthetic_T40.2": 78
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 226,
+        "all_opioids": 277,
+        "heroin_T40.1": 67,
+        "methadone_T40.3": 18,
+        "natural_semisynthetic_T40.2": 55
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 55,
+        "methadone_T40.3": 25,
+        "natural_semisynthetic_T40.2": 48,
+        "all_opioids": 317,
+        "synthetic_fentanyl_T40.4": 278
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 49,
+        "methadone_T40.3": 27,
+        "natural_semisynthetic_T40.2": 70,
+        "all_opioids": 415,
+        "synthetic_fentanyl_T40.4": 359
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 22,
+        "methadone_T40.3": 37,
+        "natural_semisynthetic_T40.2": 75,
+        "all_opioids": 552,
+        "synthetic_fentanyl_T40.4": 501
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 19,
+        "methadone_T40.3": 43,
+        "natural_semisynthetic_T40.2": 82,
+        "all_opioids": 622,
+        "synthetic_fentanyl_T40.4": 573
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 13,
+        "methadone_T40.3": 30,
+        "natural_semisynthetic_T40.2": 62,
+        "all_opioids": 512,
+        "synthetic_fentanyl_T40.4": 487
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 12,
+        "methadone_T40.3": 34,
+        "natural_semisynthetic_T40.2": 47,
+        "all_opioids": 385,
+        "synthetic_fentanyl_T40.4": 346
+      }
+    },
+    {
+      "state": "ME",
+      "state_name": "Maine",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 36,
+        "natural_semisynthetic_T40.2": 37,
+        "all_opioids": 286,
+        "synthetic_fentanyl_T40.4": 248,
+        "heroin_T40.1": 11
+      }
+    },
+    {
+      "state": "AR",
+      "state_name": "Arkansas",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 338,
+        "synthetic_fentanyl_T40.4": 269,
+        "heroin_T40.1": 11,
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 97
+      }
+    },
+    {
+      "state": "AR",
+      "state_name": "Arkansas",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 359,
+        "synthetic_fentanyl_T40.4": 292,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 96,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "AR",
+      "state_name": "Arkansas",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 312,
+        "synthetic_fentanyl_T40.4": 269,
+        "methadone_T40.3": 11,
+        "natural_semisynthetic_T40.2": 77
+      }
+    },
+    {
+      "state": "AR",
+      "state_name": "Arkansas",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 163,
+        "synthetic_fentanyl_T40.4": 125,
+        "heroin_T40.1": 0,
+        "natural_semisynthetic_T40.2": 47
+      }
+    },
+    {
+      "state": "AR",
+      "state_name": "Arkansas",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 48,
+        "all_opioids": 152,
+        "synthetic_fentanyl_T40.4": 117
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 63,
+        "natural_semisynthetic_T40.2": 364,
+        "all_opioids": 451,
+        "methadone_T40.3": 44,
+        "heroin_T40.1": 128
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 43,
+        "heroin_T40.1": 166,
+        "synthetic_fentanyl_T40.4": 77,
+        "all_opioids": 475,
+        "natural_semisynthetic_T40.2": 330
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 456,
+        "synthetic_fentanyl_T40.4": 88,
+        "heroin_T40.1": 148,
+        "natural_semisynthetic_T40.2": 295,
+        "methadone_T40.3": 47
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 439,
+        "heroin_T40.1": 156,
+        "synthetic_fentanyl_T40.4": 84,
+        "methadone_T40.3": 38,
+        "natural_semisynthetic_T40.2": 283
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 93,
+        "all_opioids": 399,
+        "natural_semisynthetic_T40.2": 260,
+        "methadone_T40.3": 30,
+        "heroin_T40.1": 141
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 154,
+        "all_opioids": 443,
+        "natural_semisynthetic_T40.2": 225,
+        "methadone_T40.3": 20,
+        "heroin_T40.1": 142
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 198,
+        "all_opioids": 453,
+        "natural_semisynthetic_T40.2": 190,
+        "methadone_T40.3": 36,
+        "heroin_T40.1": 147
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 213,
+        "all_opioids": 436,
+        "natural_semisynthetic_T40.2": 181,
+        "methadone_T40.3": 22,
+        "heroin_T40.1": 124
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 335,
+        "all_opioids": 497,
+        "natural_semisynthetic_T40.2": 187,
+        "methadone_T40.3": 28,
+        "heroin_T40.1": 62
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 303,
+        "all_opioids": 451,
+        "natural_semisynthetic_T40.2": 155,
+        "methadone_T40.3": 39,
+        "heroin_T40.1": 48
+      }
+    },
+    {
+      "state": "UT",
+      "state_name": "Utah",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 260,
+        "all_opioids": 425,
+        "natural_semisynthetic_T40.2": 156,
+        "methadone_T40.3": 37,
+        "heroin_T40.1": 44
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1535,
+        "natural_semisynthetic_T40.2": 442,
+        "methadone_T40.3": 133,
+        "heroin_T40.1": 637,
+        "all_opioids": 2009
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 572,
+        "methadone_T40.3": 117,
+        "natural_semisynthetic_T40.2": 416,
+        "all_opioids": 1898,
+        "synthetic_fentanyl_T40.4": 1478
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 454,
+        "methadone_T40.3": 123,
+        "natural_semisynthetic_T40.2": 386,
+        "all_opioids": 2185,
+        "synthetic_fentanyl_T40.4": 1929
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 208,
+        "methadone_T40.3": 114,
+        "natural_semisynthetic_T40.2": 415,
+        "all_opioids": 2546,
+        "synthetic_fentanyl_T40.4": 2295
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 156,
+        "methadone_T40.3": 74,
+        "natural_semisynthetic_T40.2": 293,
+        "all_opioids": 2409,
+        "synthetic_fentanyl_T40.4": 2215
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 85,
+        "methadone_T40.3": 61,
+        "natural_semisynthetic_T40.2": 230,
+        "all_opioids": 2306,
+        "synthetic_fentanyl_T40.4": 2148
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 71,
+        "methadone_T40.3": 68,
+        "natural_semisynthetic_T40.2": 227,
+        "all_opioids": 1355,
+        "synthetic_fentanyl_T40.4": 1181
+      }
+    },
+    {
+      "state": "MI",
+      "state_name": "Michigan",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 50,
+        "methadone_T40.3": 64,
+        "natural_semisynthetic_T40.2": 214,
+        "all_opioids": 1059,
+        "synthetic_fentanyl_T40.4": 882
+      }
+    },
+    {
+      "state": "MN",
+      "state_name": "Minnesota",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 103,
+        "methadone_T40.3": 50,
+        "natural_semisynthetic_T40.2": 164,
+        "all_opioids": 964,
+        "synthetic_fentanyl_T40.4": 868
+      }
+    },
+    {
+      "state": "MN",
+      "state_name": "Minnesota",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 47,
+        "methadone_T40.3": 49,
+        "natural_semisynthetic_T40.2": 140,
+        "all_opioids": 1039,
+        "synthetic_fentanyl_T40.4": 958
+      }
+    },
+    {
+      "state": "MN",
+      "state_name": "Minnesota",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 29,
+        "methadone_T40.3": 46,
+        "natural_semisynthetic_T40.2": 97,
+        "all_opioids": 1003,
+        "synthetic_fentanyl_T40.4": 944
+      }
+    },
+    {
+      "state": "MN",
+      "state_name": "Minnesota",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 16,
+        "methadone_T40.3": 40,
+        "natural_semisynthetic_T40.2": 95,
+        "all_opioids": 678,
+        "synthetic_fentanyl_T40.4": 610
+      }
+    },
+    {
+      "state": "MN",
+      "state_name": "Minnesota",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 46,
+        "natural_semisynthetic_T40.2": 85,
+        "all_opioids": 660,
+        "synthetic_fentanyl_T40.4": 570,
+        "heroin_T40.1": 12
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 312,
+        "methadone_T40.3": 32,
+        "natural_semisynthetic_T40.2": 226,
+        "all_opioids": 993,
+        "synthetic_fentanyl_T40.4": 640
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 360,
+        "natural_semisynthetic_T40.2": 238,
+        "synthetic_fentanyl_T40.4": 881,
+        "methadone_T40.3": 40,
+        "all_opioids": 1153
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 229,
+        "methadone_T40.3": 30,
+        "natural_semisynthetic_T40.2": 220,
+        "all_opioids": 1105,
+        "synthetic_fentanyl_T40.4": 897
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 150,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 214,
+        "all_opioids": 1411,
+        "synthetic_fentanyl_T40.4": 1236
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 92,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 187,
+        "all_opioids": 1614,
+        "synthetic_fentanyl_T40.4": 1477
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 42,
+        "methadone_T40.3": 28,
+        "natural_semisynthetic_T40.2": 187,
+        "all_opioids": 1605,
+        "synthetic_fentanyl_T40.4": 1486
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 25,
+        "methadone_T40.3": 26,
+        "natural_semisynthetic_T40.2": 138,
+        "all_opioids": 1476,
+        "synthetic_fentanyl_T40.4": 1381
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 27,
+        "methadone_T40.3": 34,
+        "natural_semisynthetic_T40.2": 125,
+        "all_opioids": 934,
+        "synthetic_fentanyl_T40.4": 839
+      }
+    },
+    {
+      "state": "MO",
+      "state_name": "Missouri",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 22,
+        "methadone_T40.3": 21,
+        "natural_semisynthetic_T40.2": 143,
+        "all_opioids": 757,
+        "synthetic_fentanyl_T40.4": 674
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 67,
+        "natural_semisynthetic_T40.2": 94,
+        "all_opioids": 231,
+        "synthetic_fentanyl_T40.4": 130,
+        "methadone_T40.3": 15
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 63,
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 114,
+        "all_opioids": 369,
+        "synthetic_fentanyl_T40.4": 280
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 42,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 135,
+        "all_opioids": 531,
+        "synthetic_fentanyl_T40.4": 453
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 22,
+        "natural_semisynthetic_T40.2": 89,
+        "all_opioids": 497,
+        "synthetic_fentanyl_T40.4": 435,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 18,
+        "natural_semisynthetic_T40.2": 73,
+        "all_opioids": 446,
+        "synthetic_fentanyl_T40.4": 400
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 48,
+        "all_opioids": 287,
+        "synthetic_fentanyl_T40.4": 250,
+        "heroin_T40.1": 12
+      }
+    },
+    {
+      "state": "MS",
+      "state_name": "Mississippi",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 57,
+        "all_opioids": 258,
+        "synthetic_fentanyl_T40.4": 213
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 29,
+        "natural_semisynthetic_T40.2": 35,
+        "all_opioids": 85,
+        "synthetic_fentanyl_T40.4": 30
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 21,
+        "natural_semisynthetic_T40.2": 28,
+        "all_opioids": 108,
+        "synthetic_fentanyl_T40.4": 64
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 10,
+        "natural_semisynthetic_T40.2": 31,
+        "all_opioids": 116,
+        "synthetic_fentanyl_T40.4": 89,
+        "heroin_T40.1": 16
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 26,
+        "all_opioids": 126,
+        "synthetic_fentanyl_T40.4": 95,
+        "methadone_T40.3": 11,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 0,
+        "natural_semisynthetic_T40.2": 27,
+        "all_opioids": 96,
+        "synthetic_fentanyl_T40.4": 73,
+        "methadone_T40.3": 11
+      }
+    },
+    {
+      "state": "MT",
+      "state_name": "Montana",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 10,
+        "natural_semisynthetic_T40.2": 28,
+        "all_opioids": 115,
+        "synthetic_fentanyl_T40.4": 87
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 655,
+        "methadone_T40.3": 128,
+        "natural_semisynthetic_T40.2": 471,
+        "synthetic_fentanyl_T40.4": 345,
+        "all_opioids": 1416
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 375,
+        "all_opioids": 1452,
+        "natural_semisynthetic_T40.2": 439,
+        "methadone_T40.3": 102,
+        "heroin_T40.1": 731
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1012,
+        "all_opioids": 2095,
+        "natural_semisynthetic_T40.2": 535,
+        "methadone_T40.3": 121,
+        "heroin_T40.1": 791
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1788,
+        "all_opioids": 2697,
+        "natural_semisynthetic_T40.2": 607,
+        "methadone_T40.3": 114,
+        "heroin_T40.1": 734
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2387,
+        "all_opioids": 3101,
+        "natural_semisynthetic_T40.2": 667,
+        "methadone_T40.3": 129,
+        "heroin_T40.1": 589
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2550,
+        "all_opioids": 3133,
+        "natural_semisynthetic_T40.2": 596,
+        "methadone_T40.3": 102,
+        "heroin_T40.1": 444
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1870,
+        "all_opioids": 2415,
+        "natural_semisynthetic_T40.2": 534,
+        "methadone_T40.3": 102,
+        "heroin_T40.1": 288
+      }
+    },
+    {
+      "state": "TX",
+      "state_name": "Texas",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1374,
+        "all_opioids": 1871,
+        "natural_semisynthetic_T40.2": 413,
+        "methadone_T40.3": 90,
+        "heroin_T40.1": 234
+      }
+    },
+    {
+      "state": "NE",
+      "state_name": "Nebraska",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 37,
+        "all_opioids": 116,
+        "synthetic_fentanyl_T40.4": 92,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "NE",
+      "state_name": "Nebraska",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 35,
+        "synthetic_fentanyl_T40.4": 94,
+        "all_opioids": 116
+      }
+    },
+    {
+      "state": "NE",
+      "state_name": "Nebraska",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 25,
+        "all_opioids": 80,
+        "synthetic_fentanyl_T40.4": 62
+      }
+    },
+    {
+      "state": "NE",
+      "state_name": "Nebraska",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 59,
+        "all_opioids": 74,
+        "natural_semisynthetic_T40.2": 21
+      }
+    },
+    {
+      "state": "NE",
+      "state_name": "Nebraska",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 22,
+        "all_opioids": 51,
+        "synthetic_fentanyl_T40.4": 25
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 285,
+        "heroin_T40.1": 79,
+        "methadone_T40.3": 23,
+        "natural_semisynthetic_T40.2": 63,
+        "all_opioids": 378
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 415,
+        "natural_semisynthetic_T40.2": 68,
+        "synthetic_fentanyl_T40.4": 347,
+        "heroin_T40.1": 26,
+        "methadone_T40.3": 28
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 434,
+        "synthetic_fentanyl_T40.4": 387,
+        "heroin_T40.1": 24,
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 51
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 406,
+        "synthetic_fentanyl_T40.4": 379,
+        "methadone_T40.3": 10,
+        "natural_semisynthetic_T40.2": 34,
+        "heroin_T40.1": 14
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 33,
+        "all_opioids": 354,
+        "synthetic_fentanyl_T40.4": 334,
+        "methadone_T40.3": 10
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 18,
+        "natural_semisynthetic_T40.2": 29,
+        "all_opioids": 347,
+        "synthetic_fentanyl_T40.4": 324
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 37,
+        "all_opioids": 377,
+        "synthetic_fentanyl_T40.4": 345
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 12,
+        "natural_semisynthetic_T40.2": 13,
+        "all_opioids": 428,
+        "synthetic_fentanyl_T40.4": 413
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 24,
+        "all_opioids": 389,
+        "synthetic_fentanyl_T40.4": 369,
+        "methadone_T40.3": 10,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 13,
+        "natural_semisynthetic_T40.2": 17,
+        "all_opioids": 246,
+        "synthetic_fentanyl_T40.4": 222
+      }
+    },
+    {
+      "state": "NH",
+      "state_name": "New Hampshire",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 14,
+        "all_opioids": 199,
+        "synthetic_fentanyl_T40.4": 178,
+        "methadone_T40.3": 12
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 652,
+        "all_opioids": 1040,
+        "heroin_T40.1": 199,
+        "methadone_T40.3": 66,
+        "synthetic_fentanyl_T40.4": 248
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 691,
+        "heroin_T40.1": 261,
+        "synthetic_fentanyl_T40.4": 394,
+        "all_opioids": 1200,
+        "methadone_T40.3": 83
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 600,
+        "heroin_T40.1": 304,
+        "all_opioids": 1275,
+        "natural_semisynthetic_T40.2": 605,
+        "methadone_T40.3": 68
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 367,
+        "all_opioids": 1309,
+        "synthetic_fentanyl_T40.4": 824,
+        "natural_semisynthetic_T40.2": 504,
+        "methadone_T40.3": 67
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1168,
+        "all_opioids": 1566,
+        "natural_semisynthetic_T40.2": 476,
+        "methadone_T40.3": 52,
+        "heroin_T40.1": 378
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2129,
+        "all_opioids": 2442,
+        "natural_semisynthetic_T40.2": 574,
+        "methadone_T40.3": 50,
+        "heroin_T40.1": 331
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2850,
+        "all_opioids": 3094,
+        "natural_semisynthetic_T40.2": 605,
+        "methadone_T40.3": 76,
+        "heroin_T40.1": 164
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2863,
+        "all_opioids": 3084,
+        "natural_semisynthetic_T40.2": 462,
+        "methadone_T40.3": 60,
+        "heroin_T40.1": 86
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2840,
+        "all_opioids": 2997,
+        "natural_semisynthetic_T40.2": 383,
+        "methadone_T40.3": 45,
+        "heroin_T40.1": 31
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1696,
+        "all_opioids": 1850,
+        "natural_semisynthetic_T40.2": 285,
+        "methadone_T40.3": 43,
+        "heroin_T40.1": 34
+      }
+    },
+    {
+      "state": "TN",
+      "state_name": "Tennessee",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1351,
+        "all_opioids": 1495,
+        "natural_semisynthetic_T40.2": 213,
+        "methadone_T40.3": 48,
+        "heroin_T40.1": 26
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2213,
+        "all_opioids": 2564,
+        "natural_semisynthetic_T40.2": 411,
+        "methadone_T40.3": 121,
+        "heroin_T40.1": 1287
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2487,
+        "synthetic_fentanyl_T40.4": 2213,
+        "heroin_T40.1": 1017,
+        "methadone_T40.3": 107,
+        "natural_semisynthetic_T40.2": 353
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2532,
+        "synthetic_fentanyl_T40.4": 2324,
+        "heroin_T40.1": 690,
+        "methadone_T40.3": 133,
+        "natural_semisynthetic_T40.2": 331
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2638,
+        "synthetic_fentanyl_T40.4": 2466,
+        "heroin_T40.1": 423,
+        "methadone_T40.3": 132,
+        "natural_semisynthetic_T40.2": 327
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2606,
+        "synthetic_fentanyl_T40.4": 2462,
+        "heroin_T40.1": 300,
+        "methadone_T40.3": 108,
+        "natural_semisynthetic_T40.2": 250
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2321,
+        "synthetic_fentanyl_T40.4": 2172,
+        "heroin_T40.1": 151,
+        "methadone_T40.3": 102,
+        "natural_semisynthetic_T40.2": 266
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1598,
+        "synthetic_fentanyl_T40.4": 1479,
+        "heroin_T40.1": 132,
+        "methadone_T40.3": 99,
+        "natural_semisynthetic_T40.2": 190
+      }
+    },
+    {
+      "state": "NJ",
+      "state_name": "New Jersey",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 87,
+        "methadone_T40.3": 103,
+        "natural_semisynthetic_T40.2": 149,
+        "all_opioids": 1234,
+        "synthetic_fentanyl_T40.4": 1111
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 168,
+        "methadone_T40.3": 34,
+        "heroin_T40.1": 153,
+        "synthetic_fentanyl_T40.4": 41,
+        "all_opioids": 353
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 158,
+        "all_opioids": 356,
+        "synthetic_fentanyl_T40.4": 78,
+        "heroin_T40.1": 164,
+        "methadone_T40.3": 44
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 336,
+        "natural_semisynthetic_T40.2": 147,
+        "methadone_T40.3": 32,
+        "synthetic_fentanyl_T40.4": 75,
+        "heroin_T40.1": 145
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 334,
+        "natural_semisynthetic_T40.2": 133,
+        "methadone_T40.3": 51,
+        "heroin_T40.1": 130,
+        "synthetic_fentanyl_T40.4": 103
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 184,
+        "methadone_T40.3": 52,
+        "natural_semisynthetic_T40.2": 145,
+        "all_opioids": 405,
+        "synthetic_fentanyl_T40.4": 156
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 187,
+        "methadone_T40.3": 59,
+        "natural_semisynthetic_T40.2": 160,
+        "all_opioids": 532,
+        "synthetic_fentanyl_T40.4": 315
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 166,
+        "methadone_T40.3": 66,
+        "natural_semisynthetic_T40.2": 149,
+        "all_opioids": 746,
+        "synthetic_fentanyl_T40.4": 595
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 40,
+        "methadone_T40.3": 50,
+        "natural_semisynthetic_T40.2": 97,
+        "all_opioids": 722,
+        "synthetic_fentanyl_T40.4": 640
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 30,
+        "methadone_T40.3": 59,
+        "natural_semisynthetic_T40.2": 91,
+        "all_opioids": 719,
+        "synthetic_fentanyl_T40.4": 655
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 43,
+        "methadone_T40.3": 74,
+        "natural_semisynthetic_T40.2": 63,
+        "all_opioids": 502,
+        "synthetic_fentanyl_T40.4": 428
+      }
+    },
+    {
+      "state": "NM",
+      "state_name": "New Mexico",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 59,
+        "methadone_T40.3": 90,
+        "natural_semisynthetic_T40.2": 75,
+        "all_opioids": 623,
+        "synthetic_fentanyl_T40.4": 542
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1452,
+        "synthetic_fentanyl_T40.4": 532,
+        "heroin_T40.1": 660,
+        "methadone_T40.3": 122,
+        "natural_semisynthetic_T40.2": 479
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1095,
+        "all_opioids": 1928,
+        "natural_semisynthetic_T40.2": 586,
+        "methadone_T40.3": 123,
+        "heroin_T40.1": 770
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 125,
+        "heroin_T40.1": 748,
+        "all_opioids": 2063,
+        "synthetic_fentanyl_T40.4": 1455,
+        "natural_semisynthetic_T40.2": 538
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 1856,
+        "heroin_T40.1": 662,
+        "methadone_T40.3": 101,
+        "natural_semisynthetic_T40.2": 520,
+        "synthetic_fentanyl_T40.4": 1364
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1344,
+        "all_opioids": 1700,
+        "natural_semisynthetic_T40.2": 436,
+        "methadone_T40.3": 109,
+        "heroin_T40.1": 503
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2142,
+        "all_opioids": 2451,
+        "natural_semisynthetic_T40.2": 492,
+        "methadone_T40.3": 155,
+        "heroin_T40.1": 526
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2432,
+        "all_opioids": 2678,
+        "natural_semisynthetic_T40.2": 489,
+        "methadone_T40.3": 156,
+        "heroin_T40.1": 291
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2592,
+        "all_opioids": 2841,
+        "natural_semisynthetic_T40.2": 442,
+        "methadone_T40.3": 150,
+        "heroin_T40.1": 193
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 2656,
+        "all_opioids": 2870,
+        "natural_semisynthetic_T40.2": 394,
+        "methadone_T40.3": 124,
+        "heroin_T40.1": 124
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1554,
+        "all_opioids": 1749,
+        "natural_semisynthetic_T40.2": 266,
+        "methadone_T40.3": 141,
+        "heroin_T40.1": 87
+      }
+    },
+    {
+      "state": "NY",
+      "state_name": "New York",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 66,
+        "methadone_T40.3": 97,
+        "natural_semisynthetic_T40.2": 202,
+        "all_opioids": 1074,
+        "synthetic_fentanyl_T40.4": 902
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 381,
+        "synthetic_fentanyl_T40.4": 301,
+        "natural_semisynthetic_T40.2": 555,
+        "methadone_T40.3": 106,
+        "all_opioids": 1159
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 117,
+        "natural_semisynthetic_T40.2": 597,
+        "synthetic_fentanyl_T40.4": 591,
+        "all_opioids": 1497,
+        "heroin_T40.1": 547
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 556,
+        "all_opioids": 1921,
+        "synthetic_fentanyl_T40.4": 1270,
+        "heroin_T40.1": 519,
+        "methadone_T40.3": 104
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1280,
+        "all_opioids": 1781,
+        "natural_semisynthetic_T40.2": 420,
+        "methadone_T40.3": 73,
+        "heroin_T40.1": 616
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 588,
+        "methadone_T40.3": 79,
+        "natural_semisynthetic_T40.2": 340,
+        "all_opioids": 1793,
+        "synthetic_fentanyl_T40.4": 1344
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 525,
+        "methadone_T40.3": 100,
+        "natural_semisynthetic_T40.2": 373,
+        "all_opioids": 2602,
+        "synthetic_fentanyl_T40.4": 2252
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 239,
+        "methadone_T40.3": 101,
+        "natural_semisynthetic_T40.2": 463,
+        "all_opioids": 3285,
+        "synthetic_fentanyl_T40.4": 3008
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 119,
+        "methadone_T40.3": 106,
+        "natural_semisynthetic_T40.2": 459,
+        "all_opioids": 3602,
+        "synthetic_fentanyl_T40.4": 3339
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 51,
+        "methadone_T40.3": 83,
+        "natural_semisynthetic_T40.2": 421,
+        "all_opioids": 3391,
+        "synthetic_fentanyl_T40.4": 3188
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 2132,
+        "synthetic_fentanyl_T40.4": 1951,
+        "heroin_T40.1": 36,
+        "methadone_T40.3": 78,
+        "natural_semisynthetic_T40.2": 287
+      }
+    },
+    {
+      "state": "NC",
+      "state_name": "North Carolina",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 25,
+        "methadone_T40.3": 74,
+        "natural_semisynthetic_T40.2": 228,
+        "all_opioids": 1623,
+        "synthetic_fentanyl_T40.4": 1456
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 328,
+        "methadone_T40.3": 69,
+        "heroin_T40.1": 106,
+        "natural_semisynthetic_T40.2": 147,
+        "synthetic_fentanyl_T40.4": 33
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 41,
+        "heroin_T40.1": 113,
+        "methadone_T40.3": 41,
+        "natural_semisynthetic_T40.2": 130,
+        "all_opioids": 306
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "methadone_T40.3": 38,
+        "natural_semisynthetic_T40.2": 125,
+        "all_opioids": 344,
+        "synthetic_fentanyl_T40.4": 86,
+        "heroin_T40.1": 119
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 128,
+        "methadone_T40.3": 37,
+        "all_opioids": 346,
+        "heroin_T40.1": 158,
+        "synthetic_fentanyl_T40.4": 96
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 83,
+        "all_opioids": 326,
+        "natural_semisynthetic_T40.2": 109,
+        "methadone_T40.3": 29,
+        "heroin_T40.1": 147
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 239,
+        "all_opioids": 495,
+        "natural_semisynthetic_T40.2": 107,
+        "methadone_T40.3": 33,
+        "heroin_T40.1": 198
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 532,
+        "all_opioids": 783,
+        "natural_semisynthetic_T40.2": 174,
+        "methadone_T40.3": 40,
+        "heroin_T40.1": 234
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 859,
+        "all_opioids": 991,
+        "natural_semisynthetic_T40.2": 131,
+        "methadone_T40.3": 32,
+        "heroin_T40.1": 119
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 1338,
+        "all_opioids": 1454,
+        "natural_semisynthetic_T40.2": 130,
+        "methadone_T40.3": 32,
+        "heroin_T40.1": 47
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 998,
+        "all_opioids": 1106,
+        "natural_semisynthetic_T40.2": 122,
+        "methadone_T40.3": 59,
+        "heroin_T40.1": 20
+      }
+    },
+    {
+      "state": "OR",
+      "state_name": "Oregon",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 19,
+        "methadone_T40.3": 66,
+        "natural_semisynthetic_T40.2": 116,
+        "all_opioids": 989,
+        "synthetic_fentanyl_T40.4": 878
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 271,
+        "all_opioids": 446,
+        "heroin_T40.1": 91,
+        "synthetic_fentanyl_T40.4": 36,
+        "methadone_T40.3": 59
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 240,
+        "heroin_T40.1": 92,
+        "methadone_T40.3": 54,
+        "synthetic_fentanyl_T40.4": 50,
+        "all_opioids": 423
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 74,
+        "all_opioids": 438,
+        "heroin_T40.1": 104,
+        "methadone_T40.3": 49,
+        "natural_semisynthetic_T40.2": 253
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 118,
+        "methadone_T40.3": 35,
+        "natural_semisynthetic_T40.2": 221,
+        "all_opioids": 396,
+        "synthetic_fentanyl_T40.4": 86
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 136,
+        "methadone_T40.3": 32,
+        "natural_semisynthetic_T40.2": 185,
+        "all_opioids": 411,
+        "synthetic_fentanyl_T40.4": 123
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 145,
+        "methadone_T40.3": 32,
+        "natural_semisynthetic_T40.2": 235,
+        "all_opioids": 597,
+        "synthetic_fentanyl_T40.4": 300
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 132,
+        "methadone_T40.3": 24,
+        "natural_semisynthetic_T40.2": 234,
+        "all_opioids": 622,
+        "synthetic_fentanyl_T40.4": 364
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 95,
+        "methadone_T40.3": 33,
+        "natural_semisynthetic_T40.2": 190,
+        "all_opioids": 694,
+        "synthetic_fentanyl_T40.4": 491
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 67,
+        "methadone_T40.3": 37,
+        "natural_semisynthetic_T40.2": 172,
+        "all_opioids": 935,
+        "synthetic_fentanyl_T40.4": 772
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "heroin_T40.1": 34,
+        "methadone_T40.3": 32,
+        "natural_semisynthetic_T40.2": 150,
+        "all_opioids": 937,
+        "synthetic_fentanyl_T40.4": 799
+      }
+    },
+    {
+      "state": "NV",
+      "state_name": "Nevada",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 879,
+        "synthetic_fentanyl_T40.4": 745,
+        "heroin_T40.1": 30,
+        "methadone_T40.3": 27,
+        "natural_semisynthetic_T40.2": 138
+      }
+    },
+    {
+      "state": "ND",
+      "state_name": "North Dakota",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 19,
+        "synthetic_fentanyl_T40.4": 14,
+        "all_opioids": 51,
+        "heroin_T40.1": 10
+      }
+    },
+    {
+      "state": "ND",
+      "state_name": "North Dakota",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 61,
+        "natural_semisynthetic_T40.2": 16,
+        "all_opioids": 75
+      }
+    },
+    {
+      "state": "ND",
+      "state_name": "North Dakota",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 94,
+        "synthetic_fentanyl_T40.4": 83,
+        "heroin_T40.1": 0,
+        "natural_semisynthetic_T40.2": 11
+      }
+    },
+    {
+      "state": "ND",
+      "state_name": "North Dakota",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 28,
+        "all_opioids": 84,
+        "synthetic_fentanyl_T40.4": 54
+      }
+    },
+    {
+      "state": "ND",
+      "state_name": "North Dakota",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 41,
+        "all_opioids": 70,
+        "natural_semisynthetic_T40.2": 27,
+        "heroin_T40.1": 0
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2015,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "natural_semisynthetic_T40.2": 282,
+        "methadone_T40.3": 62,
+        "heroin_T40.1": 32,
+        "synthetic_fentanyl_T40.4": 92,
+        "all_opioids": 427
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2016,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 95,
+        "heroin_T40.1": 48,
+        "methadone_T40.3": 44,
+        "natural_semisynthetic_T40.2": 282,
+        "all_opioids": 432
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2017,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 97,
+        "heroin_T40.1": 60,
+        "natural_semisynthetic_T40.2": 230,
+        "methadone_T40.3": 30,
+        "all_opioids": 387
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2018,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "all_opioids": 300,
+        "synthetic_fentanyl_T40.4": 71,
+        "natural_semisynthetic_T40.2": 156,
+        "methadone_T40.3": 21,
+        "heroin_T40.1": 81
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2019,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 70,
+        "all_opioids": 249,
+        "natural_semisynthetic_T40.2": 108,
+        "methadone_T40.3": 21,
+        "heroin_T40.1": 70
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2020,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 138,
+        "all_opioids": 305,
+        "natural_semisynthetic_T40.2": 97,
+        "methadone_T40.3": 19,
+        "heroin_T40.1": 83
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2021,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 318,
+        "all_opioids": 444,
+        "natural_semisynthetic_T40.2": 108,
+        "methadone_T40.3": 27,
+        "heroin_T40.1": 45
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2022,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 626,
+        "all_opioids": 740,
+        "natural_semisynthetic_T40.2": 118,
+        "methadone_T40.3": 21,
+        "heroin_T40.1": 38
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2023,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 745,
+        "all_opioids": 826,
+        "natural_semisynthetic_T40.2": 109,
+        "methadone_T40.3": 17,
+        "heroin_T40.1": 15
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2024,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 515,
+        "all_opioids": 595,
+        "natural_semisynthetic_T40.2": 75,
+        "methadone_T40.3": 24
+      }
+    },
+    {
+      "state": "OK",
+      "state_name": "Oklahoma",
+      "year": 2025,
+      "opioid_wave": "Wave 3 \u2014 Synthetic/fentanyl",
+      "by_opioid_type": {
+        "synthetic_fentanyl_T40.4": 466,
+        "all_opioids": 545,
+        "natural_semisynthetic_T40.2": 72,
+        "methadone_T40.3": 24
+      }
+    }
+  ],
+  "by_county": [],
+  "by_demographics": []
+}

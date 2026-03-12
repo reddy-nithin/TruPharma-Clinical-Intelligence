@@ -1,0 +1,17 @@
+PHARMACOLOGY: PENTAZOCINE
+
+Identifiers: RxCUI=8001, ChEMBL=CHEMBL100116, PubChem CID=441278
+Molecular: C19H27NO, MW=285.4
+
+Receptor Binding Affinities:
+  - mu: Ki = 2.7 nM (source: ChEMBL)
+  - kappa: Ki = 7.6 nM (source: ChEMBL)
+  - delta: Ki = 62.0 nM (source: ChEMBL)
+
+Potency vs morphine: 0.12x
+
+Pentazocine is classified as an opioid because it acts as a full agonist at the mu opioid receptor (OPRM1) with Ki = 2.7 nM. Its primary opioid effects — analgesia, euphoria, respiratory depression, and physical dependence — are mediated through mu receptor activation.
+
+Half-life: 2.5 hours
+Metabolism: Hepatic
+  Danger level: Unknown

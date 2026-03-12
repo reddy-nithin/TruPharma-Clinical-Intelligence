@@ -15,6 +15,8 @@ if str(_PROJECT_ROOT) not in sys.path:
 import streamlit as st
 import streamlit.components.v1 as components
 
+from src.frontend.theme import inject_theme, render_topbar, render_brand
+
 # ─── Page config ──────────────────────────────────────────────
 st.set_page_config(
     page_title="Signal Heatmap | TruPharma",
@@ -37,64 +39,30 @@ components.html("""
 </script>
 """, height=0)
 
-# ─── Hide built-in nav ───────────────────────────────────────
-st.markdown("""
-<style>
-div[data-testid="stSidebarNav"] { display: none !important; }
-section[data-testid="stSidebar"] nav { display: none !important; }
-section[data-testid="stSidebar"] ul[role="list"] { display: none !important; }
-section[data-testid="stSidebar"] > div:first-child { padding-top: 0rem !important; }
-section[data-testid="stSidebar"] ul[data-testid="stSidebarNavItems"] { display: none !important; }
-</style>
-""", unsafe_allow_html=True)
-
-# ─── Styling ──────────────────────────────────────────────────
-st.markdown("""<style>
-.main-header-bar {
-    background: linear-gradient(90deg, #F2994A, #EB5757);
-    color: white; padding: 12px 16px; border-radius: 10px;
-    font-weight: 600; margin-bottom: 14px;
-}
-.page-title  { font-size: 34px; font-weight: 800; margin-bottom: 4px; }
-.page-subtitle { color: #6b7280; font-weight: 600; margin-bottom: 14px; }
-html, body,
-p, h1, h2, h3, h4, h5, h6,
-span, div, li, td, th, label, a,
-input, textarea, select, button,
-.stMarkdown, .stText, .stCaption,
-[data-testid="stMetricValue"],
-[data-testid="stMetricLabel"] {
-    font-family: "Times New Roman", Times, serif !important;
-    line-height: 1.4;
-}
-[data-testid="stIconMaterial"],
-.material-symbols-rounded,
-[data-testid="collapsedControl"] span,
-span[class*="icon"] {
-    font-family: "Material Symbols Rounded" !important;
-}
-</style>""", unsafe_allow_html=True)
+# ─── Inject theme ────────────────────────────────────────────
+inject_theme()
 
 
 # ══════════════════════════════════════════════════════════════
 #  SIDEBAR
 # ══════════════════════════════════════════════════════════════
+with st.sidebar:
+    render_brand()
+    st.divider()
+
 if st.sidebar.button("⬅ Return to Home", key="go_home"):
     st.switch_page("app.py")
 
-st.sidebar.markdown(
-    "<div style='font-size:15px;font-weight:800;margin:10px 0 8px;'>Signal Heatmap Dashboard</div>",
-    unsafe_allow_html=True,
-)
 st.sidebar.caption("Analyst disparity and signal visualization.")
 
 
 # ══════════════════════════════════════════════════════════════
 #  MAIN CONTENT
 # ══════════════════════════════════════════════════════════════
-st.markdown("<div class='page-title'>Signal Heatmap Dashboard</div>", unsafe_allow_html=True)
+render_topbar("Signal Heatmap Dashboard")
+
 st.markdown(
-    "<div class='page-subtitle'>Analyst disparity and signal visualization</div>",
+    "<div class='tp-page-header'>Signal Heatmap <span>Dashboard</span></div>",
     unsafe_allow_html=True,
 )
 st.markdown(

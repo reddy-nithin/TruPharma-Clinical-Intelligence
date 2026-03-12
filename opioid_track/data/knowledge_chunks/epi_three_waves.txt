@@ -1,0 +1,22 @@
+THE THREE WAVES OF THE OPIOID EPIDEMIC
+
+The U.S. opioid crisis has unfolded in three overlapping waves:
+
+Wave 1 (1990s–2010): Prescription opioid overdoses. Driven by aggressive marketing of OxyContin and liberal prescribing. Deaths from natural and semi-synthetic opioids (T40.2) — oxycodone, hydrocodone — dominated.
+
+Wave 2 (2010–2013): Heroin overdoses. As prescription opioids became harder to obtain, users transitioned to cheaper heroin. Heroin deaths (T40.1) surged.
+
+Wave 3 (2013–present): Synthetic opioid overdoses. Illicitly manufactured fentanyl and its analogues drove unprecedented death tolls. Synthetic opioid deaths (T40.4) now account for the majority of overdose fatalities.
+
+CDC VSRR National Data:
+  2015: 52,623 total overdose deaths, 33,203 opioid (synthetic=9,610, heroin=13,051, Rx opioids=12,773) — Wave 3 — Synthetic/fentanyl
+  2016: 63,938 total overdose deaths, 42,435 opioid (synthetic=19,500, heroin=15,551, Rx opioids=14,534) — Wave 3 — Synthetic/fentanyl
+  2017: 70,699 total overdose deaths, 47,889 opioid (synthetic=28,659, heroin=16,168, Rx opioids=15,003) — Wave 3 — Synthetic/fentanyl
+  2018: 67,850 total overdose deaths, 47,549 opioid (synthetic=31,525, heroin=15,310, Rx opioids=14,435) — Wave 3 — Synthetic/fentanyl
+  2019: 71,130 total overdose deaths, 50,178 opioid (synthetic=36,603, heroin=15,089, Rx opioids=12,455) — Wave 3 — Synthetic/fentanyl
+  2020: 92,478 total overdose deaths, 69,061 opioid (synthetic=56,894, heroin=14,413, Rx opioids=13,518) — Wave 3 — Synthetic/fentanyl
+  2021: 107,573 total overdose deaths, 80,997 opioid (synthetic=71,143, heroin=13,091, Rx opioids=13,922) — Wave 3 — Synthetic/fentanyl
+  2022: 109,413 total overdose deaths, 82,851 opioid (synthetic=74,829, heroin=8,933, Rx opioids=13,544) — Wave 3 — Synthetic/fentanyl
+  2023: 106,881 total overdose deaths, 84,972 opioid (synthetic=77,695, heroin=5,710, Rx opioids=11,782) — Wave 3 — Synthetic/fentanyl
+  2024: 80,856 total overdose deaths, 79,377 opioid (synthetic=72,718, heroin=3,940, Rx opioids=10,122) — Wave 3 — Synthetic/fentanyl
+  2025: 0 total overdose deaths, 53,314 opioid (synthetic=46,975, heroin=2,746, Rx opioids=7,854) — Wave 3 — Synthetic/fentanyl
