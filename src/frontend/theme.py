@@ -1,36 +1,15 @@
 """
-TruPharma Opioid Intelligence Dashboard — Main Entry Point
-==========================================================
-Standalone Streamlit app for opioid pharmacology, signals, and epidemiology.
-
-Usage:
-    streamlit run opioid_track/dashboard/opioid_app.py --server.port 8502
+TruPharma — Shared Design System (Clinical Intelligence Terminal)
+=================================================================
+Dark-theme CSS design system extracted from opioid_app.py.
+Import `inject_theme()` / `render_topbar()` / `render_brand()` in every page.
 """
 
-import json
-import os
-import sys
+import streamlit as st
 from datetime import datetime
 
-import streamlit as st
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-
-from opioid_track import config
-
 # ---------------------------------------------------------------------------
-# Page config (must be first Streamlit call)
-# ---------------------------------------------------------------------------
-st.set_page_config(
-    page_title=config.DASHBOARD_TITLE,
-    page_icon="\U0001F9EA",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-# ---------------------------------------------------------------------------
-# Design system — Clinical Intelligence Terminal aesthetic
-# Fonts: JetBrains Mono (data), Syne (headers), DM Sans (body)
+# Design tokens + Global CSS
 # ---------------------------------------------------------------------------
 GLOBAL_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -77,7 +56,11 @@ GLOBAL_CSS = """
 /* ── Hide Streamlit auto-generated page navigation ──────────────────────── */
 section[data-testid="stSidebarNav"],
 [data-testid="stSidebarNavItems"],
-[data-testid="stSidebarNavLink"] {
+[data-testid="stSidebarNavLink"],
+div[data-testid="stSidebarNav"],
+section[data-testid="stSidebar"] nav,
+section[data-testid="stSidebar"] ul[role="list"],
+section[data-testid="stSidebar"] ul[data-testid="stSidebarNavItems"] {
     display: none !important;
 }
 
@@ -91,14 +74,11 @@ section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] span[aria-hidden=
 }
 
 /* ── Base overrides ─────────────────────────────────────────────────────── */
-/* NOTE: do NOT use [class*="css"] here — it overrides Material Icons font
-   and causes icon ligatures (keyboard_double_arrow_down etc.) to render as text */
 html, body {
     font-family: var(--font-body) !important;
     color: var(--text-primary);
 }
 
-/* Apply body font to text containers only — never span (breaks Material Icons ligatures) */
 .stApp p, .stApp label, .stApp li, .stApp td, .stApp th {
     font-family: var(--font-body);
 }
@@ -111,11 +91,27 @@ html, body {
         url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle fill='%231a2f45' cx='20' cy='20' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* ── Hide / blend the Streamlit top toolbar ─────────────────────────────── */
+header[data-testid="stHeader"],
+.stAppHeader {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+[data-testid="stDecoration"] {
+    display: none !important;
+}
+
 .block-container {
     padding-top: 1rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
     max-width: 100% !important;
+}
+
+section[data-testid="stSidebar"] > div:first-child {
+    padding-top: 0rem !important;
 }
 
 /* ── Sidebar ────────────────────────────────────────────────────────────── */
@@ -162,7 +158,7 @@ section[data-testid="stSidebar"] .stRadio input:checked + div {
     color: var(--teal-bright) !important;
 }
 
-/* Shrink radio circles to invisible — keep input in DOM so clicks register */
+/* Shrink radio circles to invisible */
 section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child {
     width: 0 !important;
     height: 0 !important;
@@ -263,7 +259,7 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     padding: 1rem 1.2rem;
     margin-bottom: 0.5rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible !important;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
     box-shadow: var(--shadow-card);
 }
@@ -312,26 +308,261 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     border-left: 3px solid var(--signal-high) !important;
     background: linear-gradient(90deg, rgba(239,68,68,0.06) 0%, var(--bg-surface) 40%) !important;
 }
-
 .danger-high:hover {
     box-shadow: var(--shadow-card), var(--shadow-danger) !important;
 }
-
 .danger-high .value { color: #fca5a5 !important; }
 
 .danger-moderate {
     border-left: 3px solid var(--signal-warn) !important;
     background: linear-gradient(90deg, rgba(245,158,11,0.06) 0%, var(--bg-surface) 40%) !important;
 }
-
 .danger-moderate .value { color: #fcd34d !important; }
 
 .danger-low {
     border-left: 3px solid var(--signal-ok) !important;
     background: linear-gradient(90deg, rgba(34,197,94,0.05) 0%, var(--bg-surface) 40%) !important;
 }
-
 .danger-low .value { color: #86efac !important; }
+
+/* ── Dark-themed content cards (used by Safety Chat, Stress Test, etc.) ── */
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 14px;
+}
+
+.card-title {
+    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-family: var(--font-header);
+}
+.card-title.response { color: var(--teal-bright); }
+.card-title.evidence { color: var(--signal-warn); }
+.card-title.metrics  { color: var(--signal-ok); }
+.card-title.logs     { color: var(--text-secondary); }
+.card.card-response  { border-left: 4px solid var(--teal-mid); }
+.card.card-evidence  { border-left: 4px solid var(--signal-warn); }
+.card.card-metrics   { border-left: 4px solid var(--signal-ok); }
+.card.card-logs      { border-left: 4px solid var(--text-muted); }
+.card.card-kg        { border-left: 4px solid #7c3aed; }
+.card.card-bodymap   { border-left: 4px solid #7c3aed; }
+
+/* KG pills */
+.kg-pill {
+    display: inline-block; padding: 5px 14px; margin: 3px 4px;
+    border-radius: 20px; font-size: 13px; font-weight: 700;
+    line-height: 1.4; font-family: var(--font-body);
+}
+.kg-pill.ingredient  { background: rgba(0,137,123,0.15); color: #5eead4; border: 1px solid rgba(0,137,123,0.3); }
+.kg-pill.interaction { background: rgba(245,124,0,0.15); color: #fcd34d; border: 1px solid rgba(245,124,0,0.3); }
+.kg-pill.co-reported { background: rgba(25,118,210,0.15); color: #93c5fd; border: 1px solid rgba(25,118,210,0.3); }
+.kg-pill.reaction    { background: rgba(198,40,40,0.15); color: #fca5a5; border: 1px solid rgba(198,40,40,0.3); }
+
+.kg-section-label {
+    font-weight: 800; font-size: 14px; margin: 12px 0 6px 0;
+    padding-bottom: 4px; border-bottom: 2px solid var(--border-default);
+    color: #c4b5fd; font-family: var(--font-header);
+}
+
+.kg-summary-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--border-default); border-radius: 12px;
+    padding: 10px 14px; text-align: center;
+}
+.kg-summary-card .label { font-size: 11px; color: var(--text-label); font-weight: 700; text-transform: uppercase; }
+.kg-summary-card .value { font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 2px 0; }
+.kg-summary-card .sub   { font-size: 11px; color: var(--text-muted); }
+
+.kg-risk-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 8px;
+    font-weight: 800; font-size: 13px;
+}
+.kg-risk-badge.low      { background: rgba(6,95,70,0.3); color: #86efac; }
+.kg-risk-badge.moderate { background: rgba(146,64,14,0.3); color: #fcd34d; }
+.kg-risk-badge.high     { background: rgba(153,27,27,0.3); color: #fca5a5; }
+
+.bullets { margin: 0; padding-left: 18px; color: var(--text-secondary); }
+.bullets li { margin: 6px 0; }
+
+/* ── Scenario / panel styles (Stress Test, etc.) ────────────────────────── */
+.scenario-card {
+    padding: 10px 12px; border-radius: var(--radius-md);
+    margin-bottom: 8px; font-weight: 700; line-height: 1.2;
+}
+.primary-active {
+    background: rgba(61,245,200,0.08); border-left: 6px solid var(--teal-mid);
+    color: var(--text-primary);
+}
+.stress-active {
+    background: rgba(245,158,11,0.08); border-left: 6px solid var(--signal-warn);
+    color: var(--text-primary);
+}
+
+.panel {
+    border-radius: var(--radius-lg); padding: 0;
+    border: 1px solid var(--border-default);
+    overflow: hidden; box-shadow: var(--shadow-card);
+    background: var(--bg-surface);
+}
+.panel-header {
+    padding: 12px 18px; font-weight: 900; font-size: 18px;
+    color: var(--text-primary); font-family: var(--font-header);
+}
+.panel-subheader {
+    padding: 0 18px 12px 18px; font-weight: 700;
+    color: var(--text-secondary);
+}
+.panel-header.primary {
+    background: linear-gradient(90deg, rgba(61,245,200,0.12), rgba(61,245,200,0.04));
+    border-radius: var(--radius-lg) !important;
+    margin: 14px 14px 6px 14px !important;
+    width: calc(100% - 28px) !important;
+}
+.panel-header.stress {
+    background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+    border-radius: var(--radius-lg) !important;
+    margin: 14px 14px 6px 14px !important;
+    width: calc(100% - 28px) !important;
+}
+
+.section-pill {
+    display: inline-block;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    border-radius: 16px; padding: 8px 14px;
+    font-weight: 900; font-size: 15px;
+    margin: 10px 0 8px 0;
+    font-family: var(--font-header);
+}
+.inner-card { margin: 10px 18px; border: none; background: transparent; padding: 0; }
+.mini { color: var(--text-secondary); font-weight: 600; }
+
+.criteria {
+    border-radius: var(--radius-lg); border: 1px solid var(--border-default);
+    overflow: hidden; box-shadow: var(--shadow-card);
+    background: var(--bg-surface);
+}
+.criteria-header {
+    padding: 10px 14px; font-weight: 900; font-size: 18px;
+    color: var(--text-primary); font-family: var(--font-header);
+}
+.criteria-header.success {
+    background: linear-gradient(90deg, rgba(61,245,200,0.12), rgba(61,245,200,0.04));
+}
+.criteria-header.pass {
+    background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+}
+.criteria-body {
+    padding: 12px 14px;
+    background: var(--bg-raised);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ── Main header bar ────────────────────────────────────────────────────── */
+.main-header-bar {
+    background: linear-gradient(90deg, var(--teal-dim), var(--teal-mid));
+    color: var(--bg-void);
+    padding: 12px 16px; border-radius: var(--radius-md);
+    font-weight: 700; margin-bottom: 14px;
+    font-family: var(--font-header);
+    letter-spacing: 0.02em;
+}
+
+/* ── Landing page ───────────────────────────────────────────────────────── */
+.landing-title {
+    font-family: var(--font-header);
+    font-size: 3.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin: 2rem 0 0.5rem 0;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.landing-title span {
+    color: var(--teal-bright);
+}
+
+.landing-subtitle {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 600;
+}
+
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.nav-btn-block {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.nav-btn-block:hover {
+    border-color: var(--teal-mid);
+    box-shadow: var(--shadow-card), var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.nav-btn-block.primary-demo {
+    border-left: 6px solid var(--teal-mid);
+    background: linear-gradient(135deg, rgba(61,245,200,0.06) 0%, var(--bg-surface) 100%);
+}
+
+.nav-btn-block.heatmap {
+    border-left: 6px solid #818cf8;
+    background: linear-gradient(135deg, rgba(129,140,248,0.06) 0%, var(--bg-surface) 100%);
+}
+
+/* page-title / page-subtitle (Signal Heatmap, Stress Test, etc.) */
+.page-title {
+    font-family: var(--font-header);
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+.page-subtitle {
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+/* ── Pill link (used by Safety Chat header navigation) ──────────────────── */
+.pill-link {
+    flex: 1; text-align: center; padding: 14px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-default);
+    background: var(--bg-surface);
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none !important;
+    box-shadow: var(--shadow-card);
+}
 
 /* ── Status badges (sidebar data sources) ───────────────────────────────── */
 .tp-status-row {
@@ -341,27 +572,19 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     padding: 0.3rem 0;
     font-size: 0.75rem;
 }
-
 .tp-status-label {
     color: var(--text-secondary);
     font-family: var(--font-body);
 }
-
 .tp-status-value {
     font-family: var(--font-data);
     font-size: 0.72rem;
     color: var(--teal-mid);
 }
-
 .tp-status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 6px;
-    flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 50%;
+    display: inline-block; margin-right: 6px; flex-shrink: 0;
 }
-
 .tp-status-dot.ok   { background: var(--signal-ok); box-shadow: 0 0 4px var(--signal-ok); }
 .tp-status-dot.miss { background: var(--signal-high); }
 
@@ -374,35 +597,16 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     margin: 0.75rem 0;
     position: relative;
 }
-
 .tp-boxed-warning::before {
     content: 'BOXED WARNING';
     position: absolute;
-    top: -0.6rem;
-    left: 1rem;
+    top: -0.6rem; left: 1rem;
     background: var(--bg-base);
     padding: 0 0.5rem;
     font-family: var(--font-data);
-    font-size: 0.65rem;
-    font-weight: 700;
+    font-size: 0.65rem; font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--signal-high);
-}
-
-/* ── Progress / lethal dose bar ─────────────────────────────────────────── */
-.tp-dose-bar-wrap {
-    background: var(--bg-raised);
-    border-radius: var(--radius-sm);
-    height: 20px;
-    border: 1px solid var(--border-default);
-    overflow: hidden;
-    margin: 0.5rem 0;
-}
-
-.tp-dose-bar-fill {
-    height: 100%;
-    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ── Dataframe/table overrides ──────────────────────────────────────────── */
@@ -411,18 +615,14 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     border-radius: var(--radius-md) !important;
     overflow: hidden !important;
 }
-
 .stDataFrame thead th {
     background: var(--bg-raised) !important;
     color: var(--text-label) !important;
     font-family: var(--font-body) !important;
-    font-size: 0.72rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.06em !important;
-    text-transform: uppercase !important;
+    font-size: 0.72rem !important; font-weight: 600 !important;
+    letter-spacing: 0.06em !important; text-transform: uppercase !important;
     border-bottom: 1px solid var(--border-default) !important;
 }
-
 .stDataFrame tbody tr:hover td {
     background: var(--bg-hover) !important;
 }
@@ -433,26 +633,28 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     border-color: var(--border-default) !important;
     font-family: var(--font-body) !important;
 }
-
 .stTextInput > div > div {
     background: var(--bg-surface) !important;
     border-color: var(--border-default) !important;
     font-family: var(--font-body) !important;
 }
-
+.stTextArea textarea {
+    background: var(--bg-surface) !important;
+    border-color: var(--border-default) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-body) !important;
+}
 .stButton > button {
     font-family: var(--font-body) !important;
     font-weight: 600 !important;
     letter-spacing: 0.04em !important;
 }
-
 .stButton > button[kind="primary"] {
     background: linear-gradient(135deg, var(--teal-dim), var(--teal-mid)) !important;
     border: none !important;
     color: var(--bg-void) !important;
     transition: box-shadow 0.2s ease !important;
 }
-
 .stButton > button[kind="primary"]:hover {
     box-shadow: var(--shadow-glow) !important;
 }
@@ -460,21 +662,17 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
 .stTabs [data-baseweb="tab-list"] {
     background: var(--bg-surface) !important;
     border-radius: var(--radius-md) !important;
-    padding: 4px !important;
-    gap: 4px !important;
+    padding: 4px !important; gap: 4px !important;
     border: 1px solid var(--border-subtle) !important;
 }
-
 .stTabs [data-baseweb="tab"] {
     background: transparent !important;
     border-radius: var(--radius-sm) !important;
     color: var(--text-secondary) !important;
     font-family: var(--font-body) !important;
-    font-size: 0.85rem !important;
-    font-weight: 500 !important;
+    font-size: 0.85rem !important; font-weight: 500 !important;
     transition: background 0.15s ease !important;
 }
-
 .stTabs [aria-selected="true"] {
     background: var(--bg-raised) !important;
     color: var(--teal-bright) !important;
@@ -487,19 +685,25 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     border-radius: var(--radius-md) !important;
     padding: 0.8rem 1rem !important;
 }
-
 [data-testid="metric-container"] label {
     font-family: var(--font-body) !important;
-    font-size: 0.72rem !important;
-    text-transform: uppercase !important;
+    font-size: 0.72rem !important; text-transform: uppercase !important;
     letter-spacing: 0.08em !important;
     color: var(--text-label) !important;
 }
-
 [data-testid="metric-container"] [data-testid="stMetricValue"] {
     font-family: var(--font-data) !important;
     font-size: 1.6rem !important;
     color: var(--text-primary) !important;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    background: var(--bg-raised) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-body) !important;
 }
 
 /* Info/warning/error boxes */
@@ -532,139 +736,16 @@ hr {
     font-family: var(--font-body) !important;
 }
 
-/* ── Accessibility Layer — Tier 1: Inline Tooltips ──────────────────────── */
-.tp-tooltip-wrap {
-    position: relative;
-    display: inline-block;
-    cursor: help;
-    border-bottom: 1px dashed var(--text-muted);
-    padding-bottom: 1px;
-}
-
-.tp-tooltip-term {
-    color: var(--teal-mid);
-    font-family: var(--font-body);
-    font-size: inherit;
-}
-
-.tp-tooltip-box {
-    visibility: hidden;
-    opacity: 0;
-    width: 280px;
-    background: var(--bg-raised);
-    border: 1px solid var(--border-accent);
-    border-radius: var(--radius-md);
-    padding: 0.6rem 0.8rem;
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    line-height: 1.55;
-    color: var(--text-primary);
-    position: absolute;
-    z-index: 9999;
-    bottom: 130%;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    transition: opacity 0.15s ease, visibility 0.15s ease;
-    pointer-events: none;
-    word-wrap: break-word;
-}
-
-.tp-tooltip-wrap:hover .tp-tooltip-box {
-    visibility: visible;
-    opacity: 1;
-}
-
-.metric-card { overflow: visible !important; }
-
-/* ── Accessibility Layer — Tier 2: Chart Interpretation Captions ─────────── */
-.tp-chart-caption {
-    background: rgba(61,245,200,0.04);
-    border-left: 3px solid var(--teal-dim);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: 0.6rem 1rem;
-    margin: 0.4rem 0 1.2rem 0;
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-
-.tp-chart-caption-icon {
-    margin-right: 0.4rem;
-    opacity: 0.7;
-}
-
-/* ── Accessibility Layer — Tier 3: Section Context Banners ───────────────── */
-.tp-section-banner {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    padding: 0.25rem 0;
-}
-
-.tp-section-banner strong {
-    color: var(--teal-mid);
-    font-weight: 600;
-}
-
-/* ── Accessibility Layer — Tier 4: Sidebar Glossary ─────────────────────── */
-.tp-glossary {
-    max-height: 55vh;
-    overflow-y: auto;
-    padding-right: 4px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-accent) transparent;
-}
-
-.tp-glossary-item {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.tp-glossary-item:last-child { border-bottom: none; }
-
-.tp-glossary-term {
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--teal-mid);
-    letter-spacing: 0.02em;
-    margin-bottom: 0.2rem;
-}
-
-.tp-glossary-def {
-    font-family: var(--font-body);
-    font-size: 0.71rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-/* ── Subtle fade-in for page content ────────────────────────────────────── */
-.block-container > div:first-child {
-    animation: tp-fadein 0.3s ease both;
-}
-
-@keyframes tp-fadein {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
 /* ── Sidebar brand block ─────────────────────────────────────────────────── */
 .tp-brand {
     padding: 0.25rem 0 0.5rem 0;
 }
-
 .tp-brand-name {
     font-family: var(--font-header);
-    font-size: 1.05rem;
-    font-weight: 800;
+    font-size: 1.05rem; font-weight: 800;
     color: var(--teal-bright);
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    letter-spacing: -0.01em; line-height: 1.2;
 }
-
 .tp-brand-tier {
     font-family: var(--font-data);
     font-size: 0.65rem;
@@ -674,189 +755,122 @@ hr {
     margin-top: 2px;
 }
 
-/* ── Intelligence brief container ───────────────────────────────────────── */
-.tp-brief {
+/* ── Subtle fade-in for page content ────────────────────────────────────── */
+.block-container > div:first-child {
+    animation: tp-fadein 0.3s ease both;
+}
+@keyframes tp-fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Restore Material Icons ─────────────────────────────────────────────── */
+[data-testid="stIconMaterial"],
+.material-symbols-rounded,
+[data-testid="collapsedControl"] span,
+span[class*="icon"] {
+    font-family: "Material Symbols Rounded" !important;
+}
+
+/* ── Multiselect chips ──────────────────────────────────────────────────── */
+[data-baseweb="tag"] {
+    background: var(--bg-raised) !important;
+    border-color: var(--border-default) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ── Number input ───────────────────────────────────────────────────────── */
+.stNumberInput > div > div {
+    background: var(--bg-surface) !important;
+    border-color: var(--border-default) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ── Safety Chat Query Page ────────────────────────────────────────────── */
+.query-page-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin: 1rem 0;
-    line-height: 1.7;
+    padding: 2rem 2.5rem;
+    box-shadow: var(--shadow-card);
+    max-width: 720px;
+    margin: 1.5rem auto;
+}
+
+.query-page-title {
+    font-family: var(--font-header);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+.query-page-title span {
+    color: var(--teal-bright);
+}
+
+.query-page-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+/* ── Results Dashboard sidebar query block ─────────────────────────────── */
+.results-sidebar-query {
+    background: var(--bg-raised);
+    border: 1px solid var(--border-default);
+    border-left: 4px solid var(--teal-mid);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.45;
+    font-family: var(--font-body);
+    word-wrap: break-word;
+}
+
+.results-sidebar-label {
+    font-family: var(--font-data);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    margin-bottom: 0.4rem;
 }
 """
 
-st.markdown(f"<style>{GLOBAL_CSS}</style>", unsafe_allow_html=True)
-
 
 # ---------------------------------------------------------------------------
-# Data loading (cached)
+# Helper functions
 # ---------------------------------------------------------------------------
-@st.cache_data(ttl=3600)
-def load_json_safe(path: str) -> dict | list | None:
-    if not os.path.exists(path):
-        return None
-    try:
-        with open(path, "r") as f:
-            return json.load(f)
-    except Exception:
-        return None
+def inject_theme():
+    """Inject the global CSS design system into the current page."""
+    st.markdown(f"<style>{GLOBAL_CSS}</style>", unsafe_allow_html=True)
 
 
-@st.cache_data(ttl=3600)
-def load_all_data():
-    return {
-        "registry":    load_json_safe(config.REGISTRY_OUTPUT),
-        "pharmacology":load_json_safe(config.PHARMACOLOGY_OUTPUT),
-        "signals":     load_json_safe(config.SIGNAL_RESULTS_OUTPUT),
-        "nlp_insights":load_json_safe(config.NLP_INSIGHTS_OUTPUT),
-        "mortality":   load_json_safe(config.CDC_MORTALITY_OUTPUT),
-        "prescribing": load_json_safe(config.CMS_PRESCRIBING_OUTPUT),
-        "geographic":  load_json_safe(config.GEO_PROFILES_OUTPUT),
-        "mme":         load_json_safe(config.MME_REFERENCE_OUTPUT),
-        "demographics":load_json_safe(config.DEMOGRAPHICS_OUTPUT),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Sidebar navigation
-# ---------------------------------------------------------------------------
-def _status_row(label: str, value: str, loaded: bool) -> str:
-    dot_cls = "ok" if loaded else "miss"
-    return (
-        f"<div class='tp-status-row'>"
-        f"<span><span class='tp-status-dot {dot_cls}'></span>"
-        f"<span class='tp-status-label'>{label}</span></span>"
-        f"<span class='tp-status-value'>{value}</span>"
-        f"</div>"
-    )
-
-
-def render_sidebar():
-    with st.sidebar:
-        # Brand block
-        st.markdown(
-            f"<div class='tp-brand'>"
-            f"<div class='tp-brand-name'>{config.DASHBOARD_TITLE}</div>"
-            f"<div class='tp-brand-tier'>Tier 3 &mdash; Deep Intelligence</div>"
-            f"</div>",
-            unsafe_allow_html=True,
-        )
-        st.divider()
-
-        page = st.radio(
-            "Navigate",
-            [
-                "\U0001F50D Drug Explorer",
-                "\U0001F30D Opioid Landscape",
-                "\U0001F5FA Geographic Intelligence",
-                "\U0001F4CA Demographics",
-                "\U000026A0 Signal Detection",
-                "\U0001F6E1 Watchdog Tools",
-            ],
-            label_visibility="collapsed",
-        )
-
-        st.divider()
-
-        # Data source status panel
-        data = load_all_data()
-
-        reg    = data.get("registry")
-        pharma = data.get("pharmacology")
-        sigs   = data.get("signals")
-        nlp    = data.get("nlp_insights")
-        geo    = data.get("geographic")
-        demo   = data.get("demographics")
-
-        reg_meta   = reg.get("metadata", {})    if reg    else {}
-        pharma_meta= pharma.get("metadata", {}) if pharma else {}
-        sig_meta   = sigs.get("metadata", {})   if sigs   else {}
-        nlp_meta   = nlp.get("metadata", {})    if nlp    else {}
-
-        rxcuis = reg_meta.get("total_opioid_rxcuis", "—") if reg else "—"
-        ings   = pharma_meta.get("total_ingredients", "—") if pharma else "—"
-        cons   = sig_meta.get("total_consensus_signals", "—") if sigs else "—"
-        nlp_n  = nlp_meta.get("total_drugs_processed", "—") if nlp else "—"
-
-        rows_html = (
-            _status_row("Registry", f"{rxcuis} RxCUIs", bool(reg))
-            + _status_row("Pharmacology", f"{ings} ingredients", bool(pharma))
-            + _status_row("FAERS Signals", f"{cons} consensus", bool(sigs))
-            + _status_row("NLP Labels", f"{nlp_n} drugs", bool(nlp))
-            + _status_row("Geographic", "loaded" if geo else "missing", bool(geo))
-            + _status_row("Demographics", "loaded" if demo else "missing", bool(demo))
-        )
-
-        st.markdown(
-            f"<div style='font-family:var(--font-body); font-size:0.72rem; "
-            f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
-            f"color:var(--text-muted); margin-bottom:0.4rem;'>Data Sources</div>"
-            + rows_html,
-            unsafe_allow_html=True,
-        )
-
-        st.divider()
-
-        # Glossary
-        from opioid_track.dashboard.components.accessibility import render_sidebar_glossary
-        render_sidebar_glossary()
-
-        st.divider()
-
-        # Footer: last refreshed
-        now = datetime.now().strftime("%Y-%m-%d %H:%M")
-        st.markdown(
-            f"<div style='font-family:var(--font-data); font-size:0.62rem; "
-            f"color:var(--text-muted); letter-spacing:0.04em;'>"
-            f"Session: {now}</div>",
-            unsafe_allow_html=True,
-        )
-
-        return page
-
-
-# ---------------------------------------------------------------------------
-# Top identity bar (rendered once per page)
-# ---------------------------------------------------------------------------
-def render_topbar(page_name: str):
+def render_topbar(page_name: str, badge_text: str = "CLINICAL INTELLIGENCE"):
+    """Render the top identity bar."""
     page_label = page_name.split(" ", 1)[-1] if " " in page_name else page_name
     st.markdown(
         f"<div class='tp-topbar'>"
         f"<span class='tp-topbar-title'>TruPharma &nbsp;&rsaquo;&nbsp; {page_label}</span>"
-        f"<span class='tp-topbar-badge'>TIER 3 &middot; OPIOID INTELLIGENCE</span>"
+        f"<span class='tp-topbar-badge'>{badge_text}</span>"
         f"</div>",
         unsafe_allow_html=True,
     )
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-def main():
-    page = render_sidebar()
-    data = load_all_data()
-
-    render_topbar(page)
-
-    if "\U0001F50D" in page:
-        from opioid_track.dashboard.pages.drug_explorer import render
-        render(data)
-    elif "\U0001F30D" in page:
-        from opioid_track.dashboard.pages.landscape import render
-        render(data)
-    elif "\U0001F5FA" in page:
-        from opioid_track.dashboard.pages.geography import render
-        render(data)
-    elif "\U0001F4CA" in page:
-        from opioid_track.dashboard.pages.demographics import render
-        render(data)
-    elif "\U000026A0" in page:
-        from opioid_track.dashboard.pages.signals import render
-        render(data)
-    elif "\U0001F6E1" in page:
-        from opioid_track.dashboard.pages.watchdog import render
-        render(data)
-
-
-if __name__ == "__main__":
-    main()
+def render_brand(title: str = "TruPharma", subtitle: str = "Clinical Intelligence"):
+    """Render the sidebar brand block."""
+    st.markdown(
+        f"<div class='tp-brand'>"
+        f"<div class='tp-brand-name'>{title}</div>"
+        f"<div class='tp-brand-tier'>{subtitle}</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
