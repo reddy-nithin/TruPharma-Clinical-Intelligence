@@ -352,85 +352,6 @@ with st.sidebar:
 
     st.divider()
 
-    # Phase 2D: Risk Assessment in sidebar
-    st.divider()
-    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
-                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
-                "color:var(--text-muted); margin-bottom:0.4rem;'>Risk Assessment</div>", unsafe_allow_html=True)
-    
-    # Find most recent assistant message with KG data
-    latest_kg_result = None
-    if "messages" in st.session_state:
-        for m in reversed(st.session_state.messages):
-            if m.get("role") == "assistant" and m.get("result", {}).get("kg_available"):
-                latest_kg_result = m["result"]
-                break
-    
-    if latest_kg_result:
-        raw_ix = latest_kg_result.get("kg_interactions", [])
-        raw_rx = latest_kg_result.get("kg_reactions", [])
-        raw_ing = latest_kg_result.get("kg_ingredients", [])
-        raw_co = latest_kg_result.get("kg_co_reported", [])
-        enriched_rc = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
-        with st.expander("Interactive Calculator", expanded=True):
-            _render_risk_calculator(enriched_rc, latest_kg_result.get("drug_name", "Drug"))
-    else:
-        st.caption("Submit a query to enable risk assessment")
-
-    # Phase 2E: Query history in sidebar
-    st.divider()
-    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
-                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
-                "color:var(--text-muted); margin-bottom:0.4rem;'>Query History</div>", unsafe_allow_html=True)
-    user_queries = []
-    if "messages" in st.session_state:
-        # Get unique queries to avoid duplicates in display
-        seen = set()
-        for m in reversed(st.session_state.messages):
-            if m["role"] == "user" and m["content"] not in seen:
-                user_queries.append(m["content"])
-                seen.add(m["content"])
-            if len(user_queries) >= 8: break
-            
-    for q in user_queries:
-        truncated = (q[:30] + "...") if len(q) > 30 else q
-        if st.button(f"💊 {truncated}", key=f"hist_{hash(q)}", use_container_width=True):
-             st.session_state["_pending_example"] = q
-             st.rerun()
-
-    st.divider()
-
-    # System Status
-    has_results = len(st.session_state.messages) > 0 and any(
-        m.get("result") for m in st.session_state.messages if m.get("role") == "assistant"
-    )
-
-    # Check Vertex AI availability
-    try:
-        from src.config import is_vertex_available
-        vertex_ok = is_vertex_available()
-    except Exception:
-        vertex_ok = False
-
-    # Check Pinecone availability
-    import os
-    pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
-                       (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
-
-    status_html = (
-        _status_row("RAG Engine", "Online", True)
-        + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
-        + _status_row("FAERS Data", "Connected", True)
-        + _status_row("Vertex AI", "Connected" if vertex_ok else "Fallback", vertex_ok)
-        + _status_row("Pinecone", "Connected" if pinecone_ok else "Local FAISS", pinecone_ok)
-    )
-    st.markdown(
-        f"<div style='font-family:var(--font-body); font-size:0.72rem; "
-        f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
-        f"color:var(--text-muted); margin-bottom:0.4rem;'>System Status</div>"
-        + status_html,
-        unsafe_allow_html=True,
-    )
 
 
 # Retrieve settings from sidebar (defaults if not set via expander)
@@ -1880,4 +1801,85 @@ with detail_col:
                 if st.button("Clear Selection"):
                     st.session_state.active_detail = None
                     st.rerun()
+
+with st.sidebar:
+    # Phase 2D: Risk Assessment in sidebar
+    st.divider()
+    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
+                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+                "color:var(--text-muted); margin-bottom:0.4rem;'>Risk Assessment</div>", unsafe_allow_html=True)
+    
+    # Find most recent assistant message with KG data
+    latest_kg_result = None
+    if "messages" in st.session_state:
+        for m in reversed(st.session_state.messages):
+            if m.get("role") == "assistant" and m.get("result", {}).get("kg_available"):
+                latest_kg_result = m["result"]
+                break
+    
+    if latest_kg_result:
+        raw_ix = latest_kg_result.get("kg_interactions", [])
+        raw_rx = latest_kg_result.get("kg_reactions", [])
+        raw_ing = latest_kg_result.get("kg_ingredients", [])
+        raw_co = latest_kg_result.get("kg_co_reported", [])
+        enriched_rc = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
+        with st.expander("Interactive Calculator", expanded=True):
+            _render_risk_calculator(enriched_rc, latest_kg_result.get("drug_name", "Drug"))
+    else:
+        st.caption("Submit a query to enable risk assessment")
+
+    # Phase 2E: Query history in sidebar
+    st.divider()
+    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
+                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+                "color:var(--text-muted); margin-bottom:0.4rem;'>Query History</div>", unsafe_allow_html=True)
+    user_queries = []
+    if "messages" in st.session_state:
+        # Get unique queries to avoid duplicates in display
+        seen = set()
+        for m in reversed(st.session_state.messages):
+            if m["role"] == "user" and m["content"] not in seen:
+                user_queries.append(m["content"])
+                seen.add(m["content"])
+            if len(user_queries) >= 8: break
+            
+    for q in user_queries:
+        truncated = (q[:30] + "...") if len(q) > 30 else q
+        if st.button(f"💊 {truncated}", key=f"hist_{hash(q)}", use_container_width=True):
+             st.session_state["_pending_example"] = q
+             st.rerun()
+
+    st.divider()
+
+    # System Status
+    has_results = len(st.session_state.messages) > 0 and any(
+        m.get("result") for m in st.session_state.messages if m.get("role") == "assistant"
+    )
+
+    # Check Vertex AI availability
+    try:
+        from src.config import is_vertex_available
+        vertex_ok = is_vertex_available()
+    except Exception:
+        vertex_ok = False
+
+    # Check Pinecone availability
+    import os
+    pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
+                       (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
+
+    status_html = (
+        _status_row("RAG Engine", "Online", True)
+        + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
+        + _status_row("FAERS Data", "Connected", True)
+        + _status_row("Vertex AI", "Connected" if vertex_ok else "Fallback", vertex_ok)
+        + _status_row("Pinecone", "Connected" if pinecone_ok else "Local FAISS", pinecone_ok)
+    )
+    st.markdown(
+        f"<div style='font-family:var(--font-body); font-size:0.72rem; "
+        f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+        f"color:var(--text-muted); margin-bottom:0.4rem;'>System Status</div>"
+        + status_html,
+        unsafe_allow_html=True,
+    )
 
