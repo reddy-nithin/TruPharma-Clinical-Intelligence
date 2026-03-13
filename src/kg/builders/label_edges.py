@@ -44,20 +44,42 @@ def _extract_via_gemini(
     drug_name: str,
     api_key: str,
 ) -> List[str]:
+    prompt = _GEMINI_PROMPT_TEMPLATE.format(
+        drug_name=drug_name,
+        text=text[:3000],
+    )
+
+    raw = None
+
+    # Try Vertex AI via new google.genai SDK first
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        from src.config import is_vertex_available
+        if is_vertex_available():
+            from google import genai
+            client = genai.Client(vertexai=True,
+                                  project=os.environ.get("GCP_PROJECT_ID", ""),
+                                  location=os.environ.get("GCP_LOCATION", "us-central1"))
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+    except Exception as e:
+        warnings.warn(f"Vertex AI Gemini extraction error: {e}")
 
-        prompt = _GEMINI_PROMPT_TEMPLATE.format(
-            drug_name=drug_name,
-            text=text[:3000],
-        )
-        resp = model.generate_content(prompt)
-        if not resp or not resp.text:
-            return []
+    # Fallback to direct API key
+    if raw is None and api_key:
+        try:
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+        except Exception as e:
+            warnings.warn(f"Gemini extraction failed: {e}")
 
-        raw = resp.text.strip()
+    if not raw:
+        return []
+
+    try:
         if raw.startswith("```"):
             raw = re.sub(r"^```(?:json)?\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw)
@@ -66,7 +88,7 @@ def _extract_via_gemini(
         if isinstance(names, list):
             return [n.strip().lower() for n in names if isinstance(n, str) and n.strip()]
     except Exception as e:
-        warnings.warn(f"Gemini extraction failed: {e}")
+        warnings.warn(f"Gemini JSON parse failed: {e}")
 
     return []
 
