@@ -61,7 +61,9 @@ FIELD_BLOCKLIST = {
 API_BASE = "https://api.fda.gov/drug/label.json"
 DEFAULT_LIMIT = 20
 DEFAULT_MAX_REC = 20
-USE_SENTENCE_TRANSFORMERS = False
+USE_SENTENCE_TRANSFORMERS = True
+
+MEDICAL_BERT_MODEL = "pritamdeka/S-PubMedBert-MS-MARCO"
 
 # ── Logging paths ────────────────────────────────────────────
 LOG_DIR = _PROJECT_ROOT / "logs"
@@ -159,7 +161,7 @@ def _embed_query(query, embedder_type, embedder_model, vectorizer):
             from src.ingestion.openfda_client import _get_st_model
         except ImportError:
             return None
-        name = embedder_model or "sentence-transformers/all-MiniLM-L6-v2"
+        name = embedder_model or MEDICAL_BERT_MODEL
         return _get_st_model(name).encode(
             [query], convert_to_numpy=True, normalize_embeddings=True
         )
@@ -229,47 +231,64 @@ def _try_rerank(query, items, top_k):
 # ══════════════════════════════════════════════════════════════
 
 _RAG_SYSTEM = (
-    "You are TruPharma Assistant, a medical drug-label information tool.\n"
-    "Answer the question using ONLY the retrieved FDA drug-label evidence below.\n"
-    "Cite every key claim with the bracket notation shown (e.g. [Evidence 1]).\n"
-    "Keep the answer concise (3-6 sentences). If the evidence is insufficient, "
-    "respond exactly:\n"
-    '"Not enough evidence in the retrieved context."'
-    "\nDo NOT fabricate facts."
+    "You are TruPharma Clinical Intelligence Assistant, a medical drug-label "
+    "information tool used by healthcare professionals and patients.\n\n"
+    "INSTRUCTIONS:\n"
+    "1. Answer the question using ONLY the retrieved FDA drug-label evidence below.\n"
+    "2. Structure your response with clear markdown headings (##) for each major topic "
+    "(e.g., ## Key Findings, ## Warnings, ## Drug Interactions, ## Dosage, ## Adverse Reactions).\n"
+    "3. Use bullet points for lists of side effects, interactions, or warnings.\n"
+    "4. Cite every key claim with bracket notation (e.g. [Evidence 1]).\n"
+    "5. Highlight critical safety information (boxed warnings, contraindications) prominently.\n"
+    "6. If the evidence is insufficient, respond exactly: "
+    '"Not enough evidence in the retrieved context."\n'
+    "7. Do NOT fabricate facts. Do NOT add information beyond the evidence.\n"
+    "8. Use plain language where possible while preserving clinical accuracy.\n"
+    "9. End with a brief clinical note or disclaimer when relevant."
 )
 
 
 def _build_prompt(question: str, evidence: list) -> str:
     """Construct a RAG prompt with evidence citations."""
-    lines = [f'{e["cite"]}  {e["content"]}' for e in evidence]
-    block = "\n\n".join(lines)
+    lines = [f'{e["cite"]}  (Source: {e["field"]})\n{e["content"]}' for e in evidence]
+    block = "\n\n---\n\n".join(lines)
     return (
         f"{_RAG_SYSTEM}\n\n"
-        f"Evidence:\n{block}\n\n"
+        f"=== RETRIEVED EVIDENCE ===\n\n{block}\n\n"
+        f"=== END EVIDENCE ===\n\n"
         f"Question: {question}\n\n"
-        f"Answer (with citations):"
+        f"Provide a well-structured, readable answer with citations:"
     )
 
 
 
-def _call_gemini(prompt: str, api_key: str) -> Optional[str]:
-    """Call Google Gemini for grounded answer generation. Returns None on failure."""
+def _call_gemini(prompt: str, api_key: str) -> tuple:
+    """Call Google Gemini for grounded answer generation.
+
+    Returns (answer_text, error_message).  On success error_message is None;
+    on failure answer_text is None and error_message describes the problem.
+    """
     try:
         import google.generativeai as genai
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
         resp = model.generate_content(prompt)
         if resp and resp.text:
-            return resp.text.strip()
+            return resp.text.strip(), None
+        return None, "Gemini returned an empty response. The model may have refused the query."
     except Exception as exc:
-        warnings.warn(f"Gemini error: {exc}")
-    return None
+        err_str = str(exc)
+        if "API_KEY_INVALID" in err_str or "401" in err_str:
+            return None, f"Invalid Gemini API key. Please check your key and try again."
+        if "QUOTA" in err_str.upper() or "429" in err_str:
+            return None, "Gemini API quota exceeded. Please wait or check your billing."
+        return None, f"Gemini API error: {err_str}"
 
 
-def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
+def _fallback_answer(question: str, evidence: list, n: int = 8) -> str:
     """
     Extractive fallback answer generator — no external LLM required.
-    Selects the most relevant sentences from evidence and formats with citations.
+    Groups relevant sentences by evidence field and formats with structure.
     """
     if not evidence:
         return "Not enough evidence in the retrieved context."
@@ -279,9 +298,33 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
         return "Not enough evidence in the retrieved context."
 
     q_tok = set(tokenize(question))
-    cands = []
+
+    _FIELD_HEADINGS = {
+        "warnings": "Warnings & Precautions",
+        "warnings_and_cautions": "Warnings & Precautions",
+        "boxed_warning": "Boxed Warning",
+        "contraindications": "Contraindications",
+        "drug_interactions": "Drug Interactions",
+        "adverse_reactions": "Adverse Reactions",
+        "dosage_and_administration": "Dosage & Administration",
+        "indications_and_usage": "Indications & Usage",
+        "overdosage": "Overdosage",
+        "clinical_pharmacology": "Clinical Pharmacology",
+        "use_in_specific_populations": "Special Populations",
+        "pediatric_use": "Pediatric Use",
+        "geriatric_use": "Geriatric Use",
+        "pregnancy": "Pregnancy",
+        "nursing_mothers": "Nursing Mothers",
+        "active_ingredient": "Active Ingredients",
+        "inactive_ingredient": "Inactive Ingredients",
+        "description": "Description",
+        "mechanism_of_action": "Mechanism of Action",
+    }
+
+    field_buckets: Dict[str, list] = {}
     for e in evidence:
         cite = e["cite"]
+        field = e.get("field", "general")
         for sent in re.split(r"(?<=[.!?])\s+|\n+", (e.get("content") or "")):
             sent = sent.strip()
             if len(sent) < 30:
@@ -289,24 +332,50 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
             s_tok = set(tokenize(sent))
             overlap = len(q_tok & s_tok)
             bonus = 2 if re.search(r"\d", sent) else 0
-            cands.append((overlap + bonus, sent, cite))
+            score = overlap + bonus
+            if score > 0:
+                field_buckets.setdefault(field, []).append((score, sent, cite))
 
-    cands.sort(key=lambda x: x[0], reverse=True)
-    picked, seen = [], set()
-    for sc, sent, cite in cands:
-        if sc <= 0:
-            break
-        key = sent[:60].lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        picked.append(f"{sent} {cite}")
-        if len(picked) >= n:
-            break
-
-    if not picked:
+    if not field_buckets:
         return "Not enough evidence in the retrieved context."
-    return "\n\n".join(picked)
+
+    for field in field_buckets:
+        field_buckets[field].sort(key=lambda x: x[0], reverse=True)
+
+    sections = []
+    total_picked = 0
+    seen = set()
+    for field, cands in sorted(
+        field_buckets.items(),
+        key=lambda kv: max(c[0] for c in kv[1]),
+        reverse=True,
+    ):
+        if total_picked >= n:
+            break
+        heading = _FIELD_HEADINGS.get(field, field.replace("_", " ").title())
+        field_lines = []
+        for sc, sent, cite in cands:
+            key = sent[:60].lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            field_lines.append(f"- {sent} {cite}")
+            total_picked += 1
+            if total_picked >= n:
+                break
+        if field_lines:
+            sections.append(f"**{heading}**\n\n" + "\n".join(field_lines))
+
+    if not sections:
+        return "Not enough evidence in the retrieved context."
+
+    header = "## Key Findings\n\n"
+    footer = (
+        "\n\n---\n*This response was generated using extractive summarization "
+        "from FDA drug-label evidence. For comprehensive clinical guidance, "
+        "consult the full prescribing information.*"
+    )
+    return header + "\n\n".join(sections) + footer
 
 
 def _confidence(evidence: list, answer: str) -> float:
@@ -427,6 +496,7 @@ def run_rag_query(
             include_table_fields=False,
             min_chars=40,
             use_st=USE_SENTENCE_TRANSFORMERS,
+            st_model=MEDICAL_BERT_MODEL,
             save=False,
             save_vectorizer=False,
             api_base_url=API_BASE,
@@ -513,10 +583,11 @@ def run_rag_query(
     # 6 ── Generate answer (Gemini LLM or extractive fallback)
     prompt = _build_prompt(query, evidence)
     llm_used = False
+    gemini_error = None
     answer = None
 
     if gemini_key:
-        answer = _call_gemini(prompt, gemini_key)
+        answer, gemini_error = _call_gemini(prompt, gemini_key)
         if answer:
             llm_used = True
 
@@ -614,6 +685,7 @@ def run_rag_query(
         "drug_name": kg_data.get("_drug_name", _extract_drug_name(query)),
         "prompt": prompt,
         "llm_used": llm_used,
+        "gemini_error": gemini_error,
         "method": method,
         "graph_enriched_chunks": n_enriched,
         "total_chunks": n_chunks,
