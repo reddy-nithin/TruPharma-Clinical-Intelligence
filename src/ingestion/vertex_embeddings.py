@@ -60,8 +60,28 @@ def embed_texts(
     model = TextEmbeddingModel.from_pretrained(model_name)
     all_embeddings = []
 
-    for i in range(0, len(texts), batch_size):
-        batch = texts[i : i + batch_size]
+    # Vertex AI text-embedding-004 has a 20K token limit per request.
+    # Truncate oversized individual texts and use adaptive batching
+    # to keep total chars per batch under ~40K.
+    _MAX_CHARS_PER_TEXT = 10000
+    texts = [t[:_MAX_CHARS_PER_TEXT] if len(t) > _MAX_CHARS_PER_TEXT else t for t in texts]
+
+    # Adaptive batching: respect both count and total character limits
+    _MAX_BATCH_CHARS = 40000
+    batches = []
+    current_batch = []
+    current_chars = 0
+    for t in texts:
+        if current_batch and (len(current_batch) >= batch_size or current_chars + len(t) > _MAX_BATCH_CHARS):
+            batches.append(current_batch)
+            current_batch = []
+            current_chars = 0
+        current_batch.append(t)
+        current_chars += len(t)
+    if current_batch:
+        batches.append(current_batch)
+
+    for batch in batches:
         inputs = [TextEmbeddingInput(text=t, task_type=task_type) for t in batch]
 
         for attempt in range(max_retries):

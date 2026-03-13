@@ -234,13 +234,18 @@ def _try_rerank(query, items, top_k):
 
 _RAG_SYSTEM = (
     "You are TruPharma Assistant, an AI-powered drug safety information tool.\n"
-    "Use the provided evidence and knowledge graph data to answer drug safety questions.\n"
-    "Cite sources using bracket notation: [FDA Label N] for label evidence, "
-    "[FAERS] for adverse event data, [KG] for knowledge graph facts.\n"
-    "Keep the answer concise (3-6 sentences). If the evidence is insufficient, "
-    "respond exactly:\n"
-    '"Not enough evidence in the retrieved context."'
-    "\nDo NOT fabricate facts. If conversation history is provided, maintain continuity."
+    "Answer drug safety questions using the provided FDA label evidence, knowledge graph "
+    "data, and your general pharmacological knowledge.\n"
+    "PRIORITIES:\n"
+    "1. Cite retrieved FDA evidence using [Evidence N] notation when available.\n"
+    "2. Supplement with knowledge graph facts using [KG] notation.\n"
+    "3. You may add well-established pharmacological context to give a complete answer, "
+    "but clearly distinguish it from cited evidence.\n"
+    "Keep answers informative but concise (3-8 sentences). "
+    "If conversation history is provided, maintain continuity and resolve pronouns.\n"
+    "Do NOT fabricate specific study results or statistics. "
+    "If the evidence is truly insufficient and you have no relevant knowledge, "
+    'respond: "Not enough evidence in the retrieved context."'
 )
 
 
@@ -437,6 +442,29 @@ def run_rag_query(
 
     # 1 ── Extract drug name and build a drug-scoped openFDA query
     drug_name = _extract_drug_name(query)
+
+    # 1a ── Conversational drug resolution: if the extracted name doesn't look
+    #        like a real drug (too long, equals the full query, or fails KG/RxNorm),
+    #        look back at conversation history for the most recent drug name.
+    _needs_resolution = (
+        not drug_name
+        or len(drug_name) <= 2
+        or drug_name == query.strip()  # fallback returned full query
+        or len(drug_name.split()) > 3  # real drug names are 1-3 words
+    )
+    if not _needs_resolution:
+        # Quick check: is the extracted name actually a known drug?
+        if not _drug_is_known(drug_name):
+            _needs_resolution = True
+
+    if _needs_resolution and conversation_history:
+        for prev_msg in reversed(conversation_history):
+            if prev_msg.get("role") == "user":
+                prev_drug = _extract_drug_name(prev_msg.get("content", ""))
+                if prev_drug and len(prev_drug) > 2 and prev_drug != prev_msg.get("content", "").strip():
+                    drug_name = prev_drug
+                    break
+
     if drug_name and len(drug_name) > 2:
         # Scope the API search to the specific drug to avoid irrelevant
         # labels (e.g. MEKINIST) dominating keyword-only searches.
@@ -593,15 +621,13 @@ def run_rag_query(
             s = _sparse(query, bm25, corpus, pool)
             items = [it for _, it in _fuse(d, s, 0.5, pool)]
 
-        # 3b ── Upsert fresh vectors to cache
+        # 3b ── Upsert fresh vectors to cache (only when dims match Pinecone's 768)
         if vector_store and drug_name and corpus:
             try:
                 vecs = arts.get("faiss_A")
-                if vecs is not None and hasattr(vecs, 'ntotal') and vecs.ntotal > 0:
-                    import faiss as _faiss
+                if vecs is not None and hasattr(vecs, 'ntotal') and vecs.ntotal > 0 and vecs.d == 768:
                     n_total = vecs.ntotal
-                    dim = 768 if e_type == "vertex_ai" else vecs.d
-                    all_vecs = np.zeros((n_total, dim), dtype=np.float32)
+                    all_vecs = np.zeros((n_total, 768), dtype=np.float32)
                     for i in range(n_total):
                         all_vecs[i] = vecs.reconstruct(i)
 
