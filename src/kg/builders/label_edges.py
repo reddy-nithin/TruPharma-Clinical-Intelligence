@@ -44,20 +44,41 @@ def _extract_via_gemini(
     drug_name: str,
     api_key: str,
 ) -> List[str]:
+    prompt = _GEMINI_PROMPT_TEMPLATE.format(
+        drug_name=drug_name,
+        text=text[:3000],
+    )
+
+    raw = None
+
+    # Try Vertex AI SDK first
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        from src.config import is_vertex_available
+        if is_vertex_available():
+            from vertexai.generative_models import GenerativeModel
+            model = GenerativeModel("gemini-2.0-flash")
+            resp = model.generate_content(prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+    except Exception as e:
+        warnings.warn(f"Vertex AI Gemini extraction error: {e}")
 
-        prompt = _GEMINI_PROMPT_TEMPLATE.format(
-            drug_name=drug_name,
-            text=text[:3000],
-        )
-        resp = model.generate_content(prompt)
-        if not resp or not resp.text:
-            return []
+    # Fallback to direct API
+    if raw is None and api_key:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel("gemini-2.0-flash")
+            resp = model.generate_content(prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+        except Exception as e:
+            warnings.warn(f"Gemini extraction failed: {e}")
 
-        raw = resp.text.strip()
+    if not raw:
+        return []
+
+    try:
         if raw.startswith("```"):
             raw = re.sub(r"^```(?:json)?\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw)
@@ -66,7 +87,7 @@ def _extract_via_gemini(
         if isinstance(names, list):
             return [n.strip().lower() for n in names if isinstance(n, str) and n.strip()]
     except Exception as e:
-        warnings.warn(f"Gemini extraction failed: {e}")
+        warnings.warn(f"Gemini JSON parse failed: {e}")
 
     return []
 
