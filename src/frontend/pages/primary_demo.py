@@ -275,6 +275,35 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
+    # #region agent log f1239c
+    with st.expander("🔧 Debug Info (f1239c)", expanded=False):
+        try:
+            from src.config import _debug_init_info
+            st.write("**config.py init state:**", _debug_init_info)
+        except Exception as e:
+            st.write(f"config debug unavailable: {e}")
+        try:
+            from src.rag.engine import _last_gemini_debug
+            st.write("**Last Gemini call debug:**", _last_gemini_debug)
+        except Exception as e:
+            st.write(f"engine debug unavailable: {e}")
+        import os
+        st.write("**os.environ GCP_PROJECT_ID:**", "SET" if os.environ.get("GCP_PROJECT_ID") else "NOT SET")
+        st.write("**os.environ GCP_LOCATION:**", os.environ.get("GCP_LOCATION", "NOT SET"))
+        st.write("**os.environ GOOGLE_APPLICATION_CREDENTIALS:**", "SET" if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") else "NOT SET")
+        try:
+            gcp_secret = st.secrets.get("GCP_PROJECT_ID", "")
+            st.write("**st.secrets GCP_PROJECT_ID:**", "FOUND" if gcp_secret else "MISSING")
+        except Exception as e:
+            st.write(f"st.secrets check error: {e}")
+        try:
+            from google import genai as _genai_check
+            st.write("**google.genai importable:**", True)
+            st.write("**google.genai.Client exists:**", hasattr(_genai_check, "Client"))
+        except Exception as e:
+            st.write(f"**google.genai import error:** {e}")
+    # #endregion
+
     st.divider()
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     st.markdown(
