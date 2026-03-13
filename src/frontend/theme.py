@@ -818,7 +818,61 @@ span[class*="icon"] {
     font-weight: 500;
 }
 
-/* ── Results Dashboard sidebar query block ─────────────────────────────── */
+/* ── Phase 3 Animations & Polish ────────────────────────────────────────── */
+.typing-dots {
+    display: flex; gap: 4px; padding: 10px 15px; margin: 10px 0;
+    background: var(--bg-surface); border-radius: 12px;
+    border: 1px solid var(--border-subtle); width: fit-content;
+    animation: tp-fadein 0.3s ease both;
+}
+.dot-bounce {
+    width: 6px; height: 6px; background: var(--teal-bright);
+    border-radius: 50%; animation: tp-dot-bounce 1.4s infinite ease-in-out;
+}
+.dot-bounce:nth-child(2) { animation-delay: 0.2s; }
+.dot-bounce:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tp-dot-bounce {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+    40%           { transform: scale(1); opacity: 1; }
+}
+
+.streaming-glow {
+    animation: tp-streaming-glow 2s infinite ease-in-out;
+}
+@keyframes tp-streaming-glow {
+    0%, 100% { border-color: var(--border-subtle); }
+    50%      { border-color: var(--teal-dim); box-shadow: 0 0 12px rgba(61,245,200,0.08); }
+}
+
+.source-conf-bar {
+    display: flex; height: 6px; border-radius: 3px;
+    overflow: hidden; margin: 8px 0; background: var(--bg-void);
+    border: 1px solid var(--border-subtle);
+}
+.conf-segment { height: 100%; transition: width 0.5s ease; }
+
+.pulse-dot {
+    display: inline-block; width: 8px; height: 8px;
+    background: var(--signal-ok); border-radius: 50%;
+    margin-right: 6px; vertical-align: baseline; position: relative;
+}
+.pulse-dot::after {
+    content: ''; position: absolute; inset: -4px;
+    border-radius: 50%; border: 1px solid var(--signal-ok);
+    animation: tp-pulse 2s infinite;
+}
+@keyframes tp-pulse {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Styling for pill-like Streamlit buttons */
+.stButton > button {
+    border-radius: 20px !important;
+    padding: 2px 12px !important;
+    font-size: 0.75rem !important;
+}
+
 .results-sidebar-query {
     background: var(--bg-raised);
     border: 1px solid var(--border-default);
