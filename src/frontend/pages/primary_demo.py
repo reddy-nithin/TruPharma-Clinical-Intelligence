@@ -1,8 +1,8 @@
 """
-TruPharma GenAI Assistant  ·  Safety Chat
-==========================================
-Streamlit page: drug-label evidence RAG — openFDA pipeline,
-grounded answers, knowledge graph, metrics.
+TruPharma GenAI Assistant  ·  Safety Intelligence Chat
+======================================================
+Perplexity-style conversational drug-safety RAG with inline citations,
+expandable evidence/KG/metrics panels, dark theme integration.
 """
 
 import sys
@@ -18,118 +18,171 @@ import streamlit.components.v1 as components
 from datetime import datetime
 import time
 import base64
+import math
+import json as _json
+import re
 
 from src.rag.engine import run_rag_query, read_logs
 from src.frontend.theme import inject_theme, render_topbar, render_brand
 
 # ─── Page config ──────────────────────────────────────────────
-# ─── Determine sidebar state based on view ────────────────────
-_initial_sidebar = "expanded" if st.session_state.get("safety_view", "query") == "results" else "collapsed"
-
 st.set_page_config(
     page_title="Safety Chat | TruPharma RAG",
-    page_icon="🩺",
+    page_icon="🧪",
     layout="wide",
-    initial_sidebar_state=_initial_sidebar,
+    initial_sidebar_state="expanded",
 )
 
-# ─── Force sidebar state depending on current view ───────────
-_view = st.session_state.get("safety_view", "query")
-if _view == "results":
-    # Expand sidebar on results page
-    components.html("""
-    <script>
-    (function() {
-        const doc = window.parent.document;
-        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-        if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
-            const btn = doc.querySelector('[data-testid="collapsedControl"]');
-            if (btn) btn.click();
-        }
-    })();
-    </script>
-    """, height=0)
-else:
-    # Collapse sidebar on query page
-    components.html("""
-    <script>
-    (function() {
-        const doc = window.parent.document;
-        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-        if (sidebar && sidebar.getAttribute('aria-expanded') !== 'false') {
-            const btn = doc.querySelector('[data-testid="stSidebarCollapseButton"]');
-            if (btn) btn.click();
-        }
-    })();
-    </script>
-    """, height=0)
-
-# ─── Inject dark theme ───────────────────────────────────────
 inject_theme()
+
+
+# ══════════════════════════════════════════════════════════════
+#  CHAT-SPECIFIC CSS (extends theme.py dark tokens)
+# ══════════════════════════════════════════════════════════════
+st.markdown("""<style>
+/* ── Citation superscripts ── */
+.cite-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(14,122,96,0.25); color: var(--teal-bright, #3df5c8);
+    font-size: 11px; font-weight: 700; min-width: 18px; height: 18px;
+    padding: 0 5px; border-radius: 9px; margin: 0 1px;
+    vertical-align: super; line-height: 1; cursor: default;
+    border: 1px solid rgba(61,245,200,0.2);
+}
+
+/* ── Source type badges ── */
+.source-badge {
+    display: inline-block; padding: 3px 10px; margin: 2px 3px;
+    border-radius: 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.03em;
+}
+.source-badge.fda-label {
+    background: rgba(25,118,210,0.15); color: #64b5f6;
+    border: 1px solid rgba(25,118,210,0.3);
+}
+.source-badge.faers {
+    background: rgba(198,40,40,0.15); color: #ef9a9a;
+    border: 1px solid rgba(198,40,40,0.3);
+}
+.source-badge.kg {
+    background: rgba(124,58,237,0.15); color: #c4b5fd;
+    border: 1px solid rgba(124,58,237,0.3);
+}
+
+/* ── Disclaimer banner ── */
+.disclaimer-banner {
+    background: var(--bg-raised, #182840);
+    border: 1px solid var(--signal-warn, #f59e0b);
+    border-radius: var(--radius-md, 10px);
+    padding: 8px 16px; font-size: 12px;
+    color: var(--signal-warn, #f59e0b);
+    margin-bottom: 16px; text-align: center;
+    font-family: var(--font-body);
+}
+
+/* ── KG pills (dark theme) ── */
+.kg-pill {
+    display: inline-block; padding: 5px 14px; margin: 3px 4px;
+    border-radius: 20px; font-size: 13px; font-weight: 700; line-height: 1.4;
+}
+.kg-pill.ingredient {
+    background: rgba(0,137,123,0.15); color: #4db6ac;
+    border: 1px solid rgba(0,137,123,0.3);
+}
+.kg-pill.interaction {
+    background: rgba(245,124,0,0.15); color: #ffb74d;
+    border: 1px solid rgba(245,124,0,0.3);
+}
+.kg-pill.co-reported {
+    background: rgba(25,118,210,0.15); color: #64b5f6;
+    border: 1px solid rgba(25,118,210,0.3);
+}
+.kg-pill.reaction {
+    background: rgba(198,40,40,0.15); color: #ef9a9a;
+    border: 1px solid rgba(198,40,40,0.3);
+}
+.kg-risk-badge {
+    font-size: 10px; font-weight: 800; padding: 2px 8px;
+    border-radius: 6px; text-transform: uppercase; margin-left: 4px;
+}
+.kg-risk-badge.severe {
+    background: rgba(153,27,27,0.3); color: #fca5a5;
+}
+.kg-risk-badge.moderate {
+    background: rgba(146,64,14,0.3); color: #fcd34d;
+}
+.kg-risk-badge.mild {
+    background: rgba(6,95,70,0.3); color: #86efac;
+}
+
+/* ── Example query buttons ── */
+.example-btn {
+    display: block; width: 100%; padding: 8px 12px; margin: 4px 0;
+    background: var(--bg-raised, #182840);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-sm, 6px);
+    color: var(--text-secondary, #7a9bbf);
+    font-size: 12px; text-align: left; cursor: pointer;
+    font-family: var(--font-body); transition: all 0.15s;
+}
+.example-btn:hover {
+    background: var(--bg-hover, #1e3450);
+    border-color: var(--teal-dim, #0e7a60);
+    color: var(--text-primary, #e8f0f8);
+}
+
+/* ── Evidence card styling ── */
+.evidence-chunk {
+    background: var(--bg-surface, #111e2e);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-sm, 6px);
+    padding: 10px 14px; margin-bottom: 8px;
+}
+.evidence-chunk-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; font-size: 13px; font-weight: 700;
+    color: var(--text-primary, #e8f0f8);
+}
+.evidence-chunk-text {
+    font-size: 12px; color: var(--text-secondary, #7a9bbf);
+    line-height: 1.5; font-family: var(--font-body);
+}
+
+/* ── Chat area tweaks ── */
+[data-testid="stChatMessage"] {
+    background: var(--bg-surface, #111e2e) !important;
+    border: 1px solid var(--border-subtle, #1a2f45) !important;
+    border-radius: var(--radius-md, 10px) !important;
+    margin-bottom: 12px !important;
+}
+</style>""", unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════
 #  SESSION STATE
 # ══════════════════════════════════════════════════════════════
-if "active_panel" not in st.session_state:
-    st.session_state.active_panel = "ALL"
-if "result" not in st.session_state:
-    st.session_state.result = None
-if "logs" not in st.session_state:
-    st.session_state.logs = []
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 if "kg_poll_count" not in st.session_state:
     st.session_state.kg_poll_count = 0
-if "safety_view" not in st.session_state:
-    st.session_state.safety_view = "query"
-if "submitted_query" not in st.session_state:
-    st.session_state.submitted_query = ""
-
-def set_panel(name: str):
-    st.session_state.active_panel = (
-        "ALL" if st.session_state.active_panel == name else name
-    )
 
 
 # ══════════════════════════════════════════════════════════════
-#  EXAMPLE QUERIES (shared constant)
+#  EXAMPLE QUERIES
 # ══════════════════════════════════════════════════════════════
 EXAMPLES = [
-    "-- Select an example --",
-    # Drug interactions
     "What are the drug interactions for ibuprofen?",
     "Can I take aspirin with warfarin?",
-    "What drugs interact with metformin?",
-    # Dosage and warnings
-    "What is the recommended dosage for acetaminophen and are there any warnings?",
-    "What safety warnings exist for caffeine-containing products?",
-    "Are there any boxed warnings for lisinopril?",
-    # Adverse reactions
-    "What are the most commonly reported side effects of omeprazole?",
-    "What adverse reactions are associated with atorvastatin?",
-    "How serious are adverse events reported for metoprolol?",
-    # Active ingredients
-    "What are the active ingredients in Tylenol and what are the drug interactions?",
-    "What drugs contain acetaminophen as an active ingredient?",
-    # Overdosage and patient guidance
-    "I am taking aspirin daily. What should I know about overdosage and when to stop use?",
-    "What happens if I take too much gabapentin?",
-    # Multi-drug and comparative
-    "Compare the adverse reaction profiles of ibuprofen and naproxen.",
-    "What drugs are commonly co-reported with prednisone in adverse event reports?",
-    # Out-of-scope (expected to fail gracefully)
-    "What is the projected cost of antimicrobial resistance to GDP in 2050?",
+    "What safety warnings exist for metformin?",
+    "What are the side effects of omeprazole?",
+    "Compare adverse reactions of ibuprofen and naproxen.",
+    "What drugs are co-reported with prednisone in FAERS?",
 ]
 
 
 # ══════════════════════════════════════════════════════════════
-#  VIEW ROUTER — decides Query Page vs Results Dashboard
+#  SIDEBAR
 # ══════════════════════════════════════════════════════════════
-current_view = st.session_state.safety_view   # "query" or "results"
-
-
-# ──────────────────────────────────────────────────────────────
-#  SIDEBAR HELPERS
-# ──────────────────────────────────────────────────────────────
 def _status_row(label: str, value: str, loaded: bool) -> str:
     dot_cls = "ok" if loaded else "miss"
     return (
@@ -141,59 +194,78 @@ def _status_row(label: str, value: str, loaded: bool) -> str:
     )
 
 with st.sidebar:
-    # 1. Home button (prominent, at the top)
-    if st.sidebar.button("⬅ Return to Home", key="go_home", use_container_width=True):
-        for k in ["active_panel", "result", "logs", "show_risk_calc",
-                  "primary_last_run", "safety_view", "submitted_query"]:
-            st.session_state.pop(k, None)
+    # Home button
+    if st.button("< Return to Home", key="go_home", use_container_width=True):
+        for k in list(st.session_state.keys()):
+            if k not in ("_stcore",):
+                st.session_state.pop(k, None)
         st.switch_page("app.py")
 
     st.divider()
-
-    # 2. Brand Block
     render_brand()
     st.divider()
 
-    # 3. View-dependent content
-    if current_view == "results":
-        # Back button for results view
-        if st.button("⬅ Back to Query", key="go_back_query", use_container_width=True):
-            st.session_state.safety_view = "query"
-            st.session_state.submitted_query = ""
+    # New Chat / Clear
+    col_new, col_clear = st.columns(2)
+    with col_new:
+        if st.button("+ New Chat", use_container_width=True):
+            st.session_state.messages = []
             st.rerun()
-
-        st.markdown(
-            "<div class='tp-status-label' style='font-size:0.72rem; margin-bottom:0.4rem; text-transform:uppercase; font-weight:600; color:var(--text-label);'>Current Query</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f"<div class='results-sidebar-query' style='margin-bottom:1rem;'>{st.session_state.submitted_query}</div>",
-            unsafe_allow_html=True,
-        )
-        st.divider()
-
-    # 4. Scenario Selection
-    st.markdown(
-        "<div class='tp-section-header'>Scenario Mode</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        "<div class='scenario-card primary-active'>"
-        "🟢 Safety Chat<br><small>Normal user workflow</small></div>",
-        unsafe_allow_html=True,
-    )
-    if st.button("⚠️ Go to Stress Test", key="go_stress", use_container_width=True):
-        st.switch_page("pages/stress_test.py")
+    with col_clear:
+        if st.button("Clear All", use_container_width=True):
+            st.session_state.clear()
+            st.rerun()
 
     st.divider()
 
-    # 5. System Status (like Data Sources in opioid app)
-    has_results = st.session_state.result is not None
+    # Example queries
+    st.markdown(
+        "<div style='font-size:0.72rem; font-weight:600; letter-spacing:0.08em; "
+        "text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; "
+        "font-family:var(--font-body);'>Example Queries</div>",
+        unsafe_allow_html=True,
+    )
+    for ex in EXAMPLES:
+        if st.button(ex, key=f"ex_{ex[:20]}", use_container_width=True):
+            st.session_state["_pending_example"] = ex
+            st.rerun()
+
+    st.divider()
+
+    # Advanced settings
+    with st.expander("Advanced Settings", expanded=False):
+        method = st.selectbox("Retrieval method", ["hybrid", "dense", "sparse"], index=0)
+        top_k = st.slider("Top-K evidence chunks", 3, 15, 5)
+        gemini_key = st.text_input("Gemini API key (optional)", type="password",
+                                    value=st.session_state.get("_gemini_key", ""))
+        if gemini_key:
+            st.session_state["_gemini_key"] = gemini_key
+
+    st.divider()
+
+    # System Status
+    has_results = len(st.session_state.messages) > 0 and any(
+        m.get("result") for m in st.session_state.messages if m.get("role") == "assistant"
+    )
+
+    # Check Vertex AI availability
+    try:
+        from src.config import is_vertex_available
+        vertex_ok = is_vertex_available()
+    except Exception:
+        vertex_ok = False
+
+    # Check Pinecone availability
+    import os
+    pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
+                       (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
+
     status_html = (
         _status_row("RAG Engine", "Online", True)
         + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
         + _status_row("FAERS Data", "Connected", True)
-        + _status_row("Metrics", "Loaded" if has_results else "Standby", has_results)
+        + _status_row("Vertex AI", "Connected" if vertex_ok else "Fallback", vertex_ok)
+        + _status_row("Pinecone", "Connected" if pinecone_ok else "Local FAISS", pinecone_ok)
     )
     st.markdown(
         f"<div style='font-family:var(--font-body); font-size:0.72rem; "
@@ -204,15 +276,6 @@ with st.sidebar:
     )
 
     st.divider()
-
-    # 6. Session Controls
-    if st.button("🔄 Reset Session", use_container_width=True):
-        st.session_state.clear()
-        st.rerun()
-
-    st.divider()
-
-    # 7. Footer
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     st.markdown(
         f"<div style='font-family:var(--font-data); font-size:0.62rem; "
@@ -221,66 +284,65 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
+# Retrieve settings from sidebar (defaults if not set via expander)
+if "method" not in dir():
+    method = "hybrid"
+if "top_k" not in dir():
+    top_k = 5
+if "gemini_key" not in dir():
+    gemini_key = st.session_state.get("_gemini_key", "")
+
 
 # ══════════════════════════════════════════════════════════════
-#  RENDER HELPERS
+#  HELPER FUNCTIONS
 # ══════════════════════════════════════════════════════════════
 
 def _normalize_citations(answer: str, evidence: list) -> str:
-    """Replace any leftover raw chunk-ID citations with [Evidence N] labels."""
-    import re
+    """Replace raw chunk-ID citations with [1], [2], ... superscript format."""
     for i, ev in enumerate(evidence, 1):
         raw_id = ev.get("_raw_id", "")
         if raw_id:
-            answer = answer.replace(f"[{raw_id}]", f"[Evidence {i}]")
-    # Catch any remaining bracket citations that aren't already [Evidence N]
+            answer = answer.replace(f"[{raw_id}]", f"[{i}]")
+    # Convert [Evidence N] to [N]
+    answer = re.sub(r"\[Evidence (\d+)\]", r"[\1]", answer)
+    # Replace unknown bracket citations
     def _replace_unknown(m):
         inner = m.group(1)
-        if re.match(r"Evidence \d+", inner):
+        if re.match(r"\d+$", inner):
             return m.group(0)
         for j, ev in enumerate(evidence, 1):
             if ev.get("doc_id", "") in inner or ev.get("field", "") in inner:
-                return f"[Evidence {j}]"
+                return f"[{j}]"
         return m.group(0)
     answer = re.sub(r"\[([^\]]+)\]", _replace_unknown, answer)
     return answer
 
 
-def render_response():
-    st.markdown(
-        "<div class='card card-response'><div class='card-title response'>Response Panel</div>",
-        unsafe_allow_html=True,
-    )
-    r = st.session_state.result
-    if not r:
-        st.info("Enter a drug-label question in the sidebar and click **Run RAG Query**.")
-    else:
-        st.markdown(f"**Confidence:** {r['confidence']:.0%}")
-        llm_label = "Gemini 2.0 Flash" if r["llm_used"] else "Extractive fallback"
-        st.markdown(f"**Generator:** {llm_label}")
-        st.markdown("---")
-        display_answer = _normalize_citations(r["answer"], r.get("evidence", []))
-        st.markdown(display_answer)
-    st.markdown("</div>", unsafe_allow_html=True)
+def _citations_to_pills(answer: str) -> str:
+    """Convert [N] references to styled HTML citation pills."""
+    def _pill(m):
+        n = m.group(1)
+        return f'<span class="cite-pill">{n}</span>'
+    return re.sub(r"\[(\d+)\]", _pill, answer)
 
 
-def render_evidence():
-    st.markdown(
-        "<div class='card card-evidence'><div class='card-title evidence'>Evidence / Artifacts</div>",
-        unsafe_allow_html=True,
-    )
-    r = st.session_state.result
-    if not r or not r["evidence"]:
-        st.info("Evidence will appear here after running a query.")
-    else:
-        for i, ev in enumerate(r["evidence"], 1):
-            with st.expander(f"Evidence {i}  ·  field: {ev['field']}"):
-                st.markdown(f"**Document:** `{ev['doc_id']}`")
-                st.markdown(f"**Field:** `{ev['field']}`")
-                st.markdown("**Content:**")
-                st.text(ev["content"][:600])
-    st.markdown("</div>", unsafe_allow_html=True)
+def _get_source_badge(field: str) -> str:
+    """Return an HTML source-type badge based on the evidence field name."""
+    f = field.lower()
+    if any(k in f for k in ("interaction", "warning", "precaution", "contraindication",
+                             "dosage", "adverse", "boxed", "indication", "ingredient",
+                             "overdosage", "label")):
+        return "<span class='source-badge fda-label'>FDA Label</span>"
+    elif any(k in f for k in ("faers", "signal", "report")):
+        return "<span class='source-badge faers'>FAERS</span>"
+    elif any(k in f for k in ("kg", "graph", "knowledge")):
+        return "<span class='source-badge kg'>Knowledge Graph</span>"
+    return "<span class='source-badge fda-label'>FDA Label</span>"
 
+
+# ══════════════════════════════════════════════════════════════
+#  KG DATA ENRICHMENT
+# ══════════════════════════════════════════════════════════════
 
 def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
     """Derive severity, importance, and summary metrics from raw KG data."""
@@ -309,30 +371,25 @@ def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
         cnt = cr.get("report_count", 0)
         enriched_co.append({**cr, "_pct": round(cnt / max_co * 100, 1), "_importance": cnt / max_co})
 
-    most_common_rxn = max(enriched_rx, key=lambda r: r.get("report_count", 0)) if enriched_rx else None
-    most_severe_ix = next(
-        (ix for ix in enriched_ix if ix["_severity"] == "severe"),
-        enriched_ix[0] if enriched_ix else None,
-    )
     return {
         "ingredients": ingredients,
         "interactions": enriched_ix,
         "co_reported": enriched_co,
         "reactions": enriched_rx,
-        "most_common_rxn": most_common_rxn,
-        "most_severe_ix": most_severe_ix,
     }
 
 
-def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions):
-    """Build a full decision-support KG visualization with vis.js."""
-    import json as _json, math
+# ══════════════════════════════════════════════════════════════
+#  KG VISUALIZATION (vis.js — dark theme)
+# ══════════════════════════════════════════════════════════════
 
+def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions):
+    """Build a decision-support KG visualization with vis.js in dark theme."""
     nodes, edges, details_map = [], [], {}
     nid = 0
     RADIUS = 210
 
-    # ── Center node ──
+    # Center node
     center_id = nid
     nodes.append({
         "id": center_id, "label": drug_name.upper(),
@@ -349,16 +406,20 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                     {"label": "Data sources", "value": "FDA labels, FAERS, openFDA"}],
     }
 
-    # ── Category definitions ──
+    # Category definitions (dark theme colors)
     categories = []
     if ingredients:
-        categories.append(("ingredient", ingredients[:8], "#e0f2f1", "#00897b", "contains"))
+        categories.append(("ingredient", ingredients[:8],
+                           "rgba(0,137,123,0.2)", "#00897b", "contains"))
     if interactions:
-        categories.append(("interaction", interactions[:8], "#fff3e0", "#f57c00", "interacts"))
+        categories.append(("interaction", interactions[:8],
+                           "rgba(245,124,0,0.2)", "#f57c00", "interacts"))
     if co_reported:
-        categories.append(("co_reported", co_reported[:8], "#e3f2fd", "#1976d2", "co-reported"))
+        categories.append(("co_reported", co_reported[:8],
+                           "rgba(25,118,210,0.2)", "#1976d2", "co-reported"))
     if reactions:
-        categories.append(("reaction", reactions[:8], "#fce4ec", "#c62828", "adverse rxn"))
+        categories.append(("reaction", reactions[:8],
+                           "rgba(198,40,40,0.2)", "#c62828", "adverse rxn"))
 
     n_cat = len(categories)
     for ci, (cat, items, bg, border, edge_label) in enumerate(categories):
@@ -386,7 +447,6 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                     label += f"\n({item['strength']})"
                 det_fields = [
                     {"label": "Dosage / Strength", "value": item.get("strength") or "See label"},
-                    {"label": "Clinical relevance", "value": "Check for sodium load, allergens, or inactive excipients"},
                     {"label": "Source", "value": "FDA drug label"},
                 ]
             elif cat == "interaction":
@@ -395,7 +455,6 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                 det_fields = [
                     {"label": "Clinical severity", "value": sev.title(), "badge": sev},
                     {"label": "Mechanism", "value": (desc[:160] + "...") if len(desc) > 160 else desc},
-                    {"label": "Recommendation", "value": "Consult prescribing information"},
                     {"label": "Evidence", "value": "FDA label-derived"},
                 ]
             elif cat == "co_reported":
@@ -413,14 +472,13 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                     {"label": "Report count", "value": f"{cnt:,}"},
                     {"label": "Relative frequency", "value": f"{item.get('_pct', 0):.0f}%"},
                     {"label": "Severity", "value": sev.title(), "badge": sev},
-                    {"label": "Onset timing", "value": "Data not available"},
                     {"label": "Source", "value": "FAERS"},
                 ]
 
             nodes.append({
                 "id": nid, "label": label, "x": x, "y": y,
                 "color": {"background": bg, "border": border},
-                "font": {"size": font_sz, "face": "Quicksand"},
+                "font": {"size": font_sz, "face": "Quicksand", "color": "#e8f0f8"},
                 "shape": "box", "borderWidth": bw,
                 "margin": {"top": margin_v, "bottom": margin_v,
                            "left": margin_h, "right": margin_h},
@@ -428,7 +486,7 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
             edges.append({
                 "id": f"e{nid}", "from": center_id, "to": nid,
                 "label": edge_label, "width": edge_w,
-                "font": {"size": 9, "color": "#999"},
+                "font": {"size": 9, "color": "#3d5a74"},
                 "color": {"color": border},
                 "dashes": dashes,
             })
@@ -447,10 +505,8 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
+body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
 #kg-root{{position:relative;width:100%}}
-
-/* ── toolbar ── */
 #kg-toolbar{{display:flex;gap:6px;align-items:center;padding:6px 8px;
   background:#111e2e;border:1px solid #1f3d5a;border-radius:10px 10px 0 0}}
 #kg-search{{flex:1;max-width:220px;padding:5px 10px;border:1px solid #1f3d5a;border-radius:7px;
@@ -461,12 +517,8 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
   transition:background .12s,box-shadow .12s}}
 .tb-btn:hover{{background:#1e3450;box-shadow:0 1px 4px rgba(0,0,0,.2)}}
 .tb-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
-
-/* ── graph canvas ── */
 #kg-net{{width:100%;height:470px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
   background:#0b1622}}
-
-/* ── detail panel ── */
 #kg-detail{{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);
   background:rgba(17,30,46,.97);border-left:2px solid #2a5278;
   padding:14px;overflow-y:auto;transform:translateX(100%);
@@ -485,8 +537,6 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
 #kg-detail-close{{position:absolute;top:8px;right:10px;background:none;border:none;
   font-size:16px;cursor:pointer;color:#3d5a74;font-family:inherit}}
 #kg-detail-close:hover{{color:#e8f0f8}}
-
-/* ── hint ── */
 #kg-hint{{position:absolute;bottom:8px;left:8px;z-index:15;
   background:rgba(17,30,46,.95);border:1px solid #1f3d5a;border-radius:10px;
   padding:9px 14px;font-size:11.5px;color:#7a9bbf;line-height:1.45;
@@ -495,8 +545,6 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
 #kg-hint-close{{position:absolute;top:3px;right:7px;cursor:pointer;font-size:13px;
   color:#3d5a74;background:none;border:none;padding:0;font-family:inherit}}
 #kg-hint-close:hover{{color:#e8f0f8}}
-
-/* ── legend ── */
 .legend{{display:flex;gap:14px;flex-wrap:wrap;padding:6px 8px;font-size:11.5px;
   background:#111e2e;border:1px solid #1f3d5a;border-radius:0 0 10px 10px;color:#7a9bbf}}
 .legend span{{display:inline-flex;align-items:center;gap:4px}}
@@ -506,10 +554,11 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
 </style></head><body>
 <div id="kg-root">
   <div id="kg-toolbar">
-    <input id="kg-search" placeholder="Search nodes..." autocomplete="off" title="Type to filter nodes by name — matching nodes stay visible while others fade out"/>
-    <button class="tb-btn" id="kg-focus-btn" title="Click a node first, then press Focus to isolate it and its direct connections">Focus</button>
-    <button class="tb-btn" id="kg-reset-btn" title="Clear all filters and restore the full graph to its original state">Reset</button>
-    <button class="tb-btn" id="kg-fit-btn" title="Zoom and pan to fit the entire graph within the view">Fit</button>
+    <input id="kg-search" placeholder="Search nodes..." autocomplete="off"
+      title="Type to filter nodes by name"/>
+    <button class="tb-btn" id="kg-focus-btn" title="Focus on selected node">Focus</button>
+    <button class="tb-btn" id="kg-reset-btn" title="Reset graph">Reset</button>
+    <button class="tb-btn" id="kg-fit-btn" title="Fit to view">Fit</button>
   </div>
   <div id="kg-net"></div>
   <div id="kg-detail">
@@ -519,16 +568,14 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
   <div id="kg-hint">
     <button id="kg-hint-close">&times;</button>
     <b>Click a node</b> for detailed clinical info.
-    <b>Drag nodes</b> to rearrange the layout and
-    isolate relationships. Larger nodes indicate higher
-    frequency or importance.
+    <b>Drag nodes</b> to rearrange the layout.
   </div>
 </div>
 <div class="legend">
-  <span><span class="dot" style="background:#e0f2f1;border:1px solid #00897b"></span> Ingredient</span>
-  <span><span class="dot" style="background:#fff3e0;border:1px solid #f57c00"></span> Interaction</span>
-  <span><span class="dot" style="background:#e3f2fd;border:1px solid #1976d2"></span> Co-reported</span>
-  <span><span class="dot" style="background:#fce4ec;border:1px solid #c62828"></span> Adverse Rxn</span>
+  <span><span class="dot" style="background:rgba(0,137,123,0.4);border:1px solid #00897b"></span> Ingredient</span>
+  <span><span class="dot" style="background:rgba(245,124,0,0.4);border:1px solid #f57c00"></span> Interaction</span>
+  <span><span class="dot" style="background:rgba(25,118,210,0.4);border:1px solid #1976d2"></span> Co-reported</span>
+  <span><span class="dot" style="background:rgba(198,40,40,0.4);border:1px solid #c62828"></span> Adverse Rxn</span>
   <span class="sep"></span>
   <span class="dash-label">Dashed = milder evidence</span>
 </div>
@@ -555,7 +602,6 @@ network.once("stabilizationIterationsDone",function(){{
   network.fit({{animation:{{duration:400,easingFunction:"easeInOutQuad"}}}});
 }});
 
-/* ── Click → detail panel ── */
 function esc(s){{var d=document.createElement("div");d.textContent=s;return d.innerHTML}}
 function showDetail(id){{
   var d=detailsMap[id];if(!d)return;
@@ -578,7 +624,6 @@ network.on("click",function(p){{
 }});
 document.getElementById("kg-detail-close").addEventListener("click",hideDetail);
 
-/* ── Search ── */
 document.getElementById("kg-search").addEventListener("input",function(){{
   var q=this.value.toLowerCase().trim();
   if(!q){{resetView();return}}
@@ -587,7 +632,6 @@ document.getElementById("kg-search").addEventListener("input",function(){{
   if(keep.length>1)fadeExcept(keep);
 }});
 
-/* ── Focus / fade ── */
 function fadeExcept(keepIds){{
   var nu=[],eu=[];
   nodes.forEach(function(n){{
@@ -610,7 +654,6 @@ document.getElementById("kg-focus-btn").addEventListener("click",function(){{
   this.classList.add("active");
 }});
 
-/* ── Reset ── */
 function resetView(){{
   nodes.clear();nodes.add(JSON.parse(origN));
   edges.clear();edges.add(JSON.parse(origE));
@@ -621,12 +664,10 @@ function resetView(){{
 }}
 document.getElementById("kg-reset-btn").addEventListener("click",resetView);
 
-/* ── Fit ── */
 document.getElementById("kg-fit-btn").addEventListener("click",function(){{
   network.fit({{animation:{{duration:350,easingFunction:"easeInOutQuad"}}}});
 }});
 
-/* ── Dismiss hint ── */
 document.getElementById("kg-hint-close").addEventListener("click",function(){{
   var h=document.getElementById("kg-hint");h.style.opacity="0";
   setTimeout(function(){{h.style.display="none"}},300);
@@ -634,1161 +675,214 @@ document.getElementById("kg-hint-close").addEventListener("click",function(){{
 </script></body></html>"""
 
 
-# ──────────────────────────────────────────────────────────────
-#  PERSONALIZED RISK CALCULATOR
-# ──────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════
+#  RENDER MESSAGE DETAILS (Perplexity-style expandable cards)
+# ══════════════════════════════════════════════════════════════
 
-_COMORBIDITY_WEIGHTS = {
-    "Liver disease (hepatic impairment)": 0.9,
-    "Kidney disease (renal impairment)": 0.8,
-    "Heart disease / cardiovascular": 0.7,
-    "Pregnancy / nursing": 0.9,
-    "Blood disorders (coagulopathy)": 0.7,
-    "GI disorders (ulcers, bleeding)": 0.6,
-    "Diabetes": 0.4,
-    "Hypertension": 0.4,
-    "Asthma / respiratory": 0.4,
-    "Immunocompromised": 0.5,
-}
+def render_message_details(result: dict, msg_idx: int):
+    """Render expandable evidence/KG/metrics below each assistant message."""
+    if not result:
+        return
 
+    evidence = result.get("evidence", [])
 
-def _compute_personalized_risk(age_group, comorbidities,
-                                dosage, duration, concurrent_meds,
-                                reactions, interactions):
-    """Compute a personalized risk score from transparent, justified factors."""
-    factors = []  # list of (label, value, justification)
-    score = 1.0   # baseline — every medication carries minimal inherent risk
+    # Source type badges row
+    if evidence:
+        badges_html = ""
+        fields_seen = set()
+        for ev in evidence:
+            field = ev.get("field", "")
+            if field not in fields_seen:
+                badges_html += _get_source_badge(field)
+                fields_seen.add(field)
+        if result.get("kg_available"):
+            badges_html += "<span class='source-badge kg'>Knowledge Graph</span>"
+        st.markdown(f"**Sources:** {badges_html}", unsafe_allow_html=True)
 
-    # ── Drug-data factors (derived from the KG) ──
-    n_sev_ix = sum(1 for ix in interactions if ix.get("_severity") == "severe")
-    n_mod_ix = sum(1 for ix in interactions if ix.get("_severity") == "moderate")
-    n_sev_rx = sum(1 for rx in reactions if rx.get("_severity") == "severe")
-    n_mod_rx = sum(1 for rx in reactions if rx.get("_severity") == "moderate")
-
-    if n_sev_ix:
-        v = round(n_sev_ix * 0.8, 1)
-        names = ", ".join(ix["drug_name"] for ix in interactions
-                          if ix.get("_severity") == "severe")[:80]
-        factors.append((f"{n_sev_ix} severe interaction(s)", v,
-                         f"FDA labels flag contraindications or serious risk with: {names}"))
-        score += v
-    if n_mod_ix:
-        v = round(n_mod_ix * 0.3, 1)
-        factors.append((f"{n_mod_ix} moderate interaction(s)", v,
-                         "These interactions require monitoring or dose adjustment"))
-        score += v
-    if n_sev_rx:
-        v = round(n_sev_rx * 0.5, 1)
-        names = ", ".join(rx["reaction"] for rx in reactions
-                          if rx.get("_severity") == "severe")[:80]
-        factors.append((f"{n_sev_rx} high-frequency reaction(s)", v,
-                         f"FAERS data shows frequent reports of: {names}"))
-        score += v
-    if n_mod_rx:
-        v = round(n_mod_rx * 0.15, 1)
-        factors.append((f"{n_mod_rx} moderate-frequency reaction(s)", v,
-                         "These adverse events appear at moderate rates in FAERS"))
-        score += v
-
-    # ── Patient factors ──
-    age_mult = {"Pediatric (<18)": 0.6, "Adult (18–64)": 0.0, "Elderly (65+)": 0.8}
-    age_add = age_mult.get(age_group, 0.0)
-    if age_add:
-        just = ("Pediatric patients have immature hepatic/renal metabolism"
-                if "Pediatric" in age_group else
-                "Elderly patients have reduced clearance and higher sensitivity")
-        factors.append((f"Age — {age_group}", age_add, just))
-        score += age_add
-
-    _COMORB_JUST = {
-        "Liver disease (hepatic impairment)":
-            "Most drugs are hepatically metabolized; impairment raises plasma levels and toxicity",
-        "Kidney disease (renal impairment)":
-            "Reduced renal clearance prolongs drug half-life and increases adverse-event risk",
-        "Heart disease / cardiovascular":
-            "Cardiovascular conditions can be exacerbated by vasoconstrictive or QT-prolonging agents",
-        "Pregnancy / nursing":
-            "Many drugs cross the placental barrier; FDA pregnancy categories must be reviewed",
-        "Blood disorders (coagulopathy)":
-            "Anticoagulant or antiplatelet interactions can cause life-threatening bleeding",
-        "GI disorders (ulcers, bleeding)":
-            "GI-irritant drugs (NSAIDs, corticosteroids) sharply increase perforation/bleeding risk",
-        "Diabetes":
-            "Some drugs alter glucose metabolism or interact with hypoglycemics",
-        "Hypertension":
-            "Risk of additive or antagonistic effects with antihypertensives",
-        "Asthma / respiratory":
-            "Beta-blockers and certain agents can trigger bronchospasm",
-        "Immunocompromised":
-            "Reduced immune surveillance may amplify infection-related adverse events",
-    }
-    for cond in comorbidities:
-        w = _COMORBIDITY_WEIGHTS.get(cond, 0.3)
-        factors.append((cond, w, _COMORB_JUST.get(cond, "Condition may alter drug safety profile")))
-        score += w
-
-    d_add = {"Low": -0.3, "Standard": 0.0, "High": 0.6}.get(dosage, 0.0)
-    if d_add:
-        just = ("Lower dose reduces exposure and adverse-event probability" if d_add < 0
-                else "Higher dose increases systemic exposure and toxicity risk")
-        factors.append((f"Dosage — {dosage}", d_add, just))
-        score += d_add
-
-    dur_add = {"Short-term (<2 wk)": 0.0, "Long-term (2–12 wk)": 0.4,
-               "Chronic (>12 wk)": 0.7}.get(duration, 0.0)
-    if dur_add:
-        factors.append((f"Duration — {duration}", dur_add,
-                         "Prolonged exposure increases cumulative organ toxicity and "
-                         "the likelihood of delayed adverse reactions"))
-        score += dur_add
-
-    if concurrent_meds > 0:
-        med_add = round(min(1.5, concurrent_meds * 0.35), 1)
-        factors.append((f"{concurrent_meds} concurrent medication(s)", med_add,
-                         "Each additional drug increases the chance of pharmacokinetic "
-                         "or pharmacodynamic interactions"))
-        score += med_add
-
-    score = min(10.0, max(0.0, round(score, 1)))
-
-    # ── Contextual warnings ──
-    warnings = []
-    sev_ix = [ix for ix in interactions if ix.get("_severity") == "severe"]
-    sev_rx = [rx for rx in reactions if rx.get("_severity") == "severe"]
-
-    if any("Liver" in c for c in comorbidities):
-        warnings.append("Pre-existing liver disease increases hepatotoxicity risk. "
-                         "Monitor liver enzymes regularly.")
-    if any("Kidney" in c for c in comorbidities):
-        warnings.append("Renal impairment may reduce drug clearance. "
-                         "Consider dose adjustment and monitor renal function.")
-    if any("Pregnancy" in c for c in comorbidities):
-        warnings.append("Verify FDA pregnancy category. Many drugs are "
-                         "contraindicated or require risk-benefit assessment.")
-    if any("Blood" in c for c in comorbidities) and sev_ix:
-        warnings.append("Coagulopathy combined with severe drug interactions "
-                         "increases bleeding risk.")
-    if age_group == "Elderly (65+)":
-        warnings.append("Elderly patients may need dose reduction due to "
-                         "altered pharmacokinetics and polypharmacy risk.")
-    if concurrent_meds >= 3:
-        warnings.append(f"{concurrent_meds} concurrent medications significantly "
-                         "increase the probability of drug-drug interactions.")
-    if sev_ix:
-        names = ", ".join(ix["drug_name"] for ix in sev_ix[:3])
-        warnings.append(f"Severe interaction(s) flagged with: {names}. "
-                         "Review before co-prescribing.")
-    if sev_rx:
-        names = ", ".join(rx["reaction"] for rx in sev_rx[:3])
-        warnings.append(f"High-frequency adverse reaction(s): {names}.")
-
-    if not warnings:
-        warnings.append("No elevated-risk factors detected for this profile.")
-
-    return score, factors, warnings
-
-
-def _build_risk_gauge_html(score):
-    """Return an HTML/SVG semicircle gauge for the personalized risk score."""
-    frac = score / 10.0
-    arc_len = 251.3
-    fill = round(frac * arc_len, 1)
-    if score >= 7:
-        color, label = "#dc2626", "HIGH RISK"
-    elif score >= 4:
-        color, label = "#d97706", "MODERATE"
-    else:
-        color, label = "#059669", "LOW RISK"
-    return f"""
-    <div style="text-align:center;padding:8px 0">
-      <svg viewBox="0 0 200 115" width="220" height="130">
-        <path d="M 20 100 A 80 80 0 0 1 180 100"
-              stroke="#1f3d5a" stroke-width="16" fill="none" stroke-linecap="round"/>
-        <path d="M 20 100 A 80 80 0 0 1 180 100"
-              stroke="{color}" stroke-width="16" fill="none" stroke-linecap="round"
-              stroke-dasharray="{fill} {arc_len}"
-              style="transition:stroke-dasharray .6s ease"/>
-        <text x="100" y="80" text-anchor="middle"
-              font-size="28" font-weight="800" fill="{color}"
-              font-family="'Quicksand',serif">{score:.1f}</text>
-        <text x="100" y="98" text-anchor="middle"
-              font-size="11" fill="#7a9bbf"
-              font-family="'Quicksand',serif">{label}</text>
-      </svg>
-    </div>"""
-
-
-def _parse_reference_dose(ingredients):
-    """Extract a numeric dose + unit from the first ingredient strength for the dosage bar."""
-    import re as _re
-    for ing in ingredients:
-        s = ing.get("strength", "")
-        m = _re.match(r"([\d.]+)\s*([A-Za-z/%]+)", s)
-        if m:
-            return float(m.group(1)), m.group(2), ing["ingredient"]
-    return None, None, None
-
-
-def _build_dosage_bar_html(dose_val, dose_unit, ingredient, selected_level):
-    """HTML bar showing Low / Standard / High dose ranges with the selected level highlighted."""
-    if dose_val is None:
-        return ""
-    low = round(dose_val * 0.5, 1)
-    std = round(dose_val, 1)
-    high = round(dose_val * 2, 1)
-
-    def _fmt(v):
-        return f"{v:g}"
-
-    sel_colors = {"Low": ("#059669", 0), "Standard": ("#d97706", 1), "High": ("#dc2626", 2)}
-    sel_color, sel_idx = sel_colors.get(selected_level, ("#d97706", 1))
-
-    segments = [
-        (f"Low\n≤ {_fmt(low)} {dose_unit}", "#d1fae5", "#059669", 0),
-        (f"Standard\n~{_fmt(std)} {dose_unit}", "#fef3c7", "#d97706", 1),
-        (f"High\n≥ {_fmt(high)} {dose_unit}", "#fee2e2", "#dc2626", 2),
-    ]
-    bar_html = (
-        f"<div style='margin:8px 0 4px;font-size:11px;color:#6b7280'>"
-        f"Dosage reference for <b>{ingredient}</b> ({_fmt(std)} {dose_unit} labeled strength)</div>"
-        f"<div style='display:flex;gap:3px;margin-bottom:6px'>"
-    )
-    for label, bg, border, idx in segments:
-        active = idx == sel_idx
-        weight = "800" if active else "600"
-        bdr = f"3px solid {border}" if active else f"1px solid {border}40"
-        opacity = "1" if active else "0.55"
-        parts = label.split("\n")
-        bar_html += (
-            f"<div style='flex:1;text-align:center;padding:8px 4px;border-radius:8px;"
-            f"background:{bg};border:{bdr};opacity:{opacity};line-height:1.35'>"
-            f"<div style='font-weight:{weight};font-size:12px;color:{border}'>{parts[0]}</div>"
-            f"<div style='font-size:11px;color:#374151'>{parts[1]}</div></div>"
-        )
-    bar_html += "</div>"
-    return bar_html
-
-
-def _render_risk_calculator(enriched, drug_name):
-    """Render the personalized risk assessment panel."""
-    st.markdown(
-        "<div class='card' style='border:2px solid #ede9fe;'>"
-        "<div class='card-title' style='color:#7c3aed;'>"
-        f"Personalized Risk Assessment — {drug_name.title()}</div>",
-        unsafe_allow_html=True,
-    )
-
-    left, right = st.columns([1, 1.2], gap="large")
-
-    with left:
-        st.markdown("##### Patient Context")
-        age_group = st.selectbox(
-            "Age group",
-            ["Adult (18–64)", "Pediatric (<18)", "Elderly (65+)"],
-            key="risk_age",
-        )
-        comorbidities = st.multiselect(
-            "Comorbidities & conditions",
-            list(_COMORBIDITY_WEIGHTS.keys()),
-            key="risk_comorb",
-        )
-        rc1, rc2 = st.columns(2)
-        with rc1:
-            dosage = st.selectbox("Dosage level", ["Standard", "Low", "High"],
-                                   key="risk_dosage")
-        with rc2:
-            duration = st.selectbox("Duration",
-                                     ["Short-term (<2 wk)", "Long-term (2–12 wk)",
-                                      "Chronic (>12 wk)"],
-                                     key="risk_duration")
-
-        # Dosage reference bar
-        dose_val, dose_unit, dose_ing = _parse_reference_dose(enriched["ingredients"])
-        dose_bar = _build_dosage_bar_html(dose_val, dose_unit, dose_ing, dosage)
-        if dose_bar:
-            st.markdown(dose_bar, unsafe_allow_html=True)
-
-        concurrent_meds = st.number_input(
-            "Concurrent medications", 0, 20, 0, key="risk_meds",
-            help="Number of other drugs the patient is currently taking",
-        )
-
-    p_score, factors, warns = _compute_personalized_risk(
-        age_group, comorbidities, dosage, duration, concurrent_meds,
-        enriched["reactions"], enriched["interactions"],
-    )
-
-    with right:
-        st.markdown("##### Risk Score")
-        st.markdown(_build_risk_gauge_html(p_score), unsafe_allow_html=True)
-
-        st.markdown("**Factor Breakdown**")
-        for label, val, justification in factors:
-            sign = "+" if val > 0 else ""
-            bar_w = min(100, max(4, abs(val) / 2 * 100))
-            bar_color = "#dc2626" if val > 0.5 else ("#d97706" if val > 0 else "#059669")
-            st.markdown(
-                f"<div style='margin:5px 0 1px'>"
-                f"<div style='display:flex;align-items:center;gap:8px;font-size:12px'>"
-                f"<span style='flex:1;color:#7a9bbf;font-weight:700'>{label}</span>"
-                f"<span style='width:50px;text-align:right;font-weight:800;"
-                f"color:{bar_color}'>{sign}{val}</span>"
-                f"<div style='width:70px;height:6px;background:#1a2f45;border-radius:3px'>"
-                f"<div style='width:{bar_w}%;height:100%;background:{bar_color};"
-                f"border-radius:3px'></div></div></div>"
-                f"<div style='font-size:11px;color:#3d5a74;margin:1px 0 0 4px;'>"
-                f"{justification}</div></div>",
-                unsafe_allow_html=True,
-            )
-
-    st.markdown("---")
-    st.markdown("##### Contextual Warnings")
-    for w in warns:
-        icon = "&#9888;" if "risk" in w.lower() or "severe" in w.lower() else "&#9432;"
-        st.markdown(
-            f"<div style='padding:6px 10px;margin:4px 0;background:rgba(245,158,11,0.08);"
-            f"border-left:4px solid #d97706;border-radius:6px;font-size:13px;color:#fcd34d'>"
-            f"{icon}&nbsp; {w}</div>",
-            unsafe_allow_html=True,
-        )
-
-    st.caption("This assessment uses a heuristic model for exploratory purposes — "
-               "not a substitute for clinical judgment. Factor weights are illustrative, "
-               "not derived from validated pharmacological models.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-def render_kg():
-    st.markdown(
-        "<div class='card card-kg'><div class='card-title' style='color:#7c3aed;'>"
-        "Knowledge Graph — Decision Support</div>",
-        unsafe_allow_html=True,
-    )
-    r = st.session_state.result
-    if not r:
-        st.info("Run a query to see Knowledge Graph data.")
-    elif not r.get("kg_available", False):
-        st.warning("Knowledge Graph not available. "
-                   "Build it with: `python3 scripts/build_kg.py`")
-    else:
-        # ── Dynamic build banners ──────────────────────────────
-        is_dynamic = r.get("kg_dynamic", False)
-        build_status = r.get("kg_build_status", "")
-        phase1_time = r.get("kg_build_phase1_time", 0)
-
-        if is_dynamic:
-            if build_status in ("PHASE1_COMPLETE", "PHASE2_RUNNING"):
+    # Evidence expander
+    if evidence:
+        with st.expander(f"Evidence Sources ({len(evidence)} chunks)", expanded=False):
+            for i, ev in enumerate(evidence, 1):
+                badge = _get_source_badge(ev.get("field", ""))
                 st.markdown(
-                    "<div style='padding:10px 14px;background:rgba(37,99,235,0.08);"
-                    "border-left:4px solid #2563eb;border-radius:6px;"
-                    "margin-bottom:12px;font-size:14px;'>"
-                    "🔄 <b>Building full drug profile...</b> "
-                    f"Basic data shown below (loaded in {phase1_time:.1f}s). "
-                    "Full data (interactions, co-reported drugs) will appear automatically."
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-                # Auto-poll: rerun up to 5 times every 5 seconds
-                if st.session_state.kg_poll_count < 5:
-                    st.session_state.kg_poll_count += 1
-                    time.sleep(5)
-                    st.rerun()
-            elif build_status == "PHASE2_COMPLETE":
-                st.session_state.kg_poll_count = 0  # reset counter
-                st.markdown(
-                    "<div style='padding:10px 14px;background:rgba(5,150,105,0.08);"
-                    "border-left:4px solid #059669;border-radius:6px;"
-                    "margin-bottom:12px;font-size:14px;'>"
-                    "✅ <b>Full drug profile built!</b> "
-                    "This drug was dynamically added to the Knowledge Graph. "
-                    "All data panels are now fully populated."
-                    "</div>",
-                    unsafe_allow_html=True,
-                )
-        raw_ix = r.get("kg_interactions", [])
-        raw_co = r.get("kg_co_reported", [])
-        raw_rx = r.get("kg_reactions", [])
-        raw_ing = r.get("kg_ingredients", [])
-
-        # ── Ingredient-only match ──
-        ing_match = r.get("kg_ingredient_match")
-        if ing_match:
-            ing_name = ing_match["ingredient"].title()
-            drugs = ing_match["drugs"]
-            st.markdown(
-                f"<div style='margin-bottom:0.75rem;padding:0.6rem 1rem;"
-                f"background:rgba(202,138,4,0.08);border-left:4px solid #ca8a04;border-radius:6px;'>"
-                f"<span style='font-size:1.05rem;color:#fcd34d'><b>{ing_name}</b> is an "
-                f"<b>ingredient</b>, not a standalone drug in the Knowledge Graph.</span><br/>"
-                f"<span style='color:#7a9bbf;font-size:0.88rem;'>"
-                f"Found in {len(drugs)} drug(s):</span></div>",
-                unsafe_allow_html=True,
-            )
-            for d in drugs[:8]:
-                brand_preview = ", ".join(d.get("brand_names", [])[:3]) or "—"
-                strength = f" ({d['strength']})" if d.get("strength") else ""
-                st.markdown(
-                    f"&nbsp;&nbsp;&nbsp;&nbsp;**{d['generic_name'].title()}**{strength}"
-                    f" — *{brand_preview}*"
-                )
-            if len(drugs) > 8:
-                st.caption(f"  ...and {len(drugs) - 8} more")
-            st.markdown("</div>", unsafe_allow_html=True)
-            return
-
-        if not (raw_ix or raw_co or raw_rx or raw_ing):
-            st.info("This drug is not in the Knowledge Graph seed list. "
-                    "Try a more common drug, or rebuild with a larger seed.")
-        else:
-            # ── Partial KG Data badge ──
-            if is_dynamic and build_status in ("PHASE1_COMPLETE", "PHASE2_RUNNING"):
-                st.markdown(
-                    f"<div style='display:inline-block;padding:3px 12px;"
-                    "background:rgba(245,158,11,0.12);border:1px solid #f59e0b;"
-                    "border-radius:20px;font-size:12px;font-weight:700;"
-                    "color:#fcd34d;margin-bottom:10px;'>"
-                    "⏳ Partial KG Data</div>",
-                    unsafe_allow_html=True,
-                )
-            # ── Drug identity subheading ──
-            kg_id = r.get("kg_identity") or {}
-            queried_name = r.get("drug_name", "")
-            generic = kg_id.get("generic_name", "")
-            brands = kg_id.get("brand_names", [])
-            brand_str = ", ".join(brands[:5]) if brands else "—"
-            if generic:
-                resolved_line = f"<b>{generic.title()}</b>"
-                if queried_name.lower() != generic.lower():
-                    resolved_line = f"<b>{generic.title()}</b> (searched: <i>{queried_name}</i>)"
-                st.markdown(
-                    f"<div style='margin-bottom:0.75rem;padding:0.6rem 1rem;"
-                    f"background:rgba(124,58,237,0.08);border-left:4px solid #7c3aed;border-radius:6px;'>"
-                    f"<span style='font-size:1.05rem;color:#c4b5fd'>{resolved_line}</span><br/>"
-                    f"<span style='color:#7a9bbf;font-size:0.88rem;'>"
-                    f"Brand names: {brand_str}"
-                    f"{'&hellip;' if len(brands) > 5 else ''}</span></div>",
+                    f"<div class='evidence-chunk'>"
+                    f"<div class='evidence-chunk-header'>"
+                    f"<span class='cite-pill'>{i}</span> {badge} "
+                    f"<code>{ev.get('field', '')}</code> &middot; "
+                    f"Doc: <code>{ev.get('doc_id', 'N/A')}</code>"
+                    f"</div>"
+                    f"<div class='evidence-chunk-text'>"
+                    f"{ev.get('content', '')[:500]}"
+                    f"</div></div>",
                     unsafe_allow_html=True,
                 )
 
-            enriched = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
-            ingredients = enriched["ingredients"]
-            interactions = enriched["interactions"]
-            co_reported = enriched["co_reported"]
-            reactions = enriched["reactions"]
+    # KG expander
+    if result.get("kg_available"):
+        raw_ix = result.get("kg_interactions", [])
+        raw_co = result.get("kg_co_reported", [])
+        raw_rx = result.get("kg_reactions", [])
+        raw_ing = result.get("kg_ingredients", [])
 
-            # ── Summary insight panel ──
-            s1, s2, s3, s4 = st.columns(4)
-            mcr = enriched["most_common_rxn"]
-            msi = enriched["most_severe_ix"]
+        if raw_ix or raw_co or raw_rx or raw_ing:
+            with st.expander("Knowledge Graph", expanded=False):
+                enriched = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
 
-            with s1:
-                st.markdown(
-                    "<div class='kg-summary-card'><div class='label'>Most Common Reaction</div>"
-                    f"<div class='value'>{mcr['reaction'] if mcr else '—'}</div>"
-                    f"<div class='sub'>{mcr.get('report_count', 0):,} reports</div></div>"
-                    if mcr else
-                    "<div class='kg-summary-card'><div class='label'>Most Common Reaction</div>"
-                    "<div class='value'>—</div><div class='sub'>No data</div></div>",
-                    unsafe_allow_html=True)
-            with s2:
-                st.markdown(
-                    "<div class='kg-summary-card'><div class='label'>Most Severe Interaction</div>"
-                    f"<div class='value'>{msi['drug_name'] if msi else '—'}</div>"
-                    f"<div class='sub'>"
-                    f"<span class='kg-risk-badge {msi['_severity']}'>{msi['_severity']}</span>"
-                    f"</div></div>"
-                    if msi else
-                    "<div class='kg-summary-card'><div class='label'>Most Severe Interaction</div>"
-                    "<div class='value'>—</div><div class='sub'>No data</div></div>",
-                    unsafe_allow_html=True)
-            with s3:
-                total_rels = len(interactions) + len(co_reported) + len(reactions) + len(ingredients)
-                st.markdown(
-                    "<div class='kg-summary-card'><div class='label'>Total Relationships</div>"
-                    f"<div class='value'>{total_rels}</div>"
-                    f"<div class='sub'>{len(interactions)} interactions · "
-                    f"{len(reactions)} reactions</div></div>",
-                    unsafe_allow_html=True)
-            with s4:
-                st.markdown(
-                    "<div class='kg-summary-card' style='cursor:pointer'>"
-                    "<div class='label'>Personalized Assessment</div>"
-                    "<div class='value' style='font-size:15px;color:#7c3aed'>Analyze My Risk</div>"
-                    "<div class='sub'>Based on your patient context</div></div>",
-                    unsafe_allow_html=True)
-                def _toggle_risk():
-                    st.session_state["show_risk_calc"] = not st.session_state.get("show_risk_calc", False)
+                # KG identity
+                kg_id = result.get("kg_identity") or {}
+                generic = kg_id.get("generic_name", "")
+                brands = kg_id.get("brand_names", [])
+                if generic:
+                    brand_str = ", ".join(brands[:5]) if brands else "--"
+                    st.markdown(f"**Drug:** {generic.title()} | **Brands:** {brand_str}")
 
-                _risk_open = st.session_state.get("show_risk_calc", False)
-                _risk_label = "Close Assessment" if _risk_open else "Open Assessment"
-                _risk_type = "secondary" if _risk_open else "primary"
-                st.button(_risk_label, key="kg_risk_toggle",
-                          use_container_width=True, type=_risk_type,
-                          on_click=_toggle_risk)
+                # Summary metrics
+                s1, s2, s3 = st.columns(3)
+                with s1:
+                    st.metric("Interactions", len(raw_ix))
+                with s2:
+                    st.metric("Adverse Reactions", len(raw_rx))
+                with s3:
+                    st.metric("Co-reported Drugs", len(raw_co))
 
-            # ── Personalized risk calculator (shown on toggle) ──
-            if st.session_state.get("show_risk_calc", False):
-                drug_name_for_calc = r.get("drug_name") or "Drug"
-                _render_risk_calculator(enriched, drug_name_for_calc)
+                # Interactive vis.js network
+                drug_name = result.get("drug_name") or "Drug"
+                f_ing = enriched["ingredients"]
+                f_ix = enriched["interactions"]
+                f_co = enriched["co_reported"]
+                f_rx = enriched["reactions"]
+                if f_ing or f_ix or f_co or f_rx:
+                    html = _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
+                    components.html(html, height=560, scrolling=False)
 
-            # ── Filter controls ──
-            with st.expander("Filters", expanded=False):
-                fc1, fc2, fc3 = st.columns([2, 1.5, 1.5])
-                with fc1:
-                    show_cats = st.multiselect(
-                        "Show categories",
-                        ["Ingredients", "Interactions", "Co-reported", "Adverse Reactions"],
-                        default=["Ingredients", "Interactions", "Co-reported", "Adverse Reactions"],
-                        key="kg_cats",
-                    )
-                with fc2:
-                    sev_filter = st.multiselect(
-                        "Severity",
-                        ["mild", "moderate", "severe"],
-                        default=["mild", "moderate", "severe"],
-                        key="kg_sev",
-                    )
-                with fc3:
-                    all_counts = (
-                        [rx.get("report_count", 0) for rx in reactions]
-                        + [cr.get("report_count", 0) for cr in co_reported]
-                    )
-                    max_count = max(all_counts) if all_counts else 0
-                    freq_thresh = st.slider(
-                        "Min reports", 0, max(max_count, 1), 0, key="kg_freq",
-                    ) if max_count > 0 else 0
+                # Pill summaries
+                if raw_ing:
+                    st.markdown("**Ingredients:**")
+                    pills = "".join(
+                        f"<span class='kg-pill ingredient'>{i['ingredient']}"
+                        f"{(' &middot; ' + i['strength']) if i.get('strength') else ''}</span>"
+                        for i in raw_ing[:8])
+                    st.markdown(pills, unsafe_allow_html=True)
 
-            # Apply filters
-            f_ing = ingredients if "Ingredients" in show_cats else []
-            f_ix = [ix for ix in interactions
-                    if "Interactions" in show_cats and ix.get("_severity", "mild") in sev_filter]
-            f_co = [cr for cr in co_reported
-                    if "Co-reported" in show_cats and cr.get("report_count", 0) >= freq_thresh]
-            f_rx = [rx for rx in reactions
-                    if "Adverse Reactions" in show_cats
-                    and rx.get("_severity", "mild") in sev_filter
-                    and rx.get("report_count", 0) >= freq_thresh]
+                if raw_ix:
+                    st.markdown("**Drug Interactions:**")
+                    for ix in enriched["interactions"][:6]:
+                        sev = ix.get("_severity", "mild")
+                        st.markdown(
+                            f"<span class='kg-pill interaction'>{ix['drug_name']}</span> "
+                            f"<span class='kg-risk-badge {sev}'>{sev}</span>",
+                            unsafe_allow_html=True)
 
-            # ── Interactive network visualization ──
-            drug_name = r.get("drug_name") or ""
-            if not drug_name:
-                import re as _re
-                _stop = {"what","are","the","is","of","for","a","an","in","on","to",
-                         "and","or","how","does","do","can","side","effects","warnings",
-                         "interactions","dosage","dose","drug","about","with","tell","me",
-                         "information","safety","adverse","reactions","risk","taking","take",
-                         "should","i","my","it","its","this","that"}
-                _toks = _re.findall(r"[a-zA-Z0-9\-]+", query_text or "")
-                _cands = [t for t in _toks if t.lower() not in _stop and len(t) > 2]
-                drug_name = _cands[0] if _cands else "Drug"
-            html = _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
-            components.html(html, height=560, scrolling=False)
+                if raw_rx:
+                    st.markdown("**Top Adverse Reactions:**")
+                    for rx in enriched["reactions"][:6]:
+                        sev = rx.get("_severity", "mild")
+                        cnt = rx.get("report_count", 0)
+                        st.markdown(
+                            f"<span class='kg-pill reaction'>{rx['reaction']}</span> "
+                            f"({cnt:,} reports) "
+                            f"<span class='kg-risk-badge {sev}'>{sev}</span>",
+                            unsafe_allow_html=True)
 
-            # ── Tabbed detail sections ──
-            tab_labels, tab_data = [], []
-            if f_ing:
-                tab_labels.append(f"Ingredients ({len(f_ing)})")
-                tab_data.append(("ing", f_ing))
-            if f_ix:
-                tab_labels.append(f"Interactions ({len(f_ix)})")
-                tab_data.append(("ix", f_ix))
-            if f_co:
-                tab_labels.append(f"Co-Reported ({len(f_co)})")
-                tab_data.append(("co", f_co))
-            if f_rx:
-                tab_labels.append(f"Adverse Reactions ({len(f_rx)})")
-                tab_data.append(("rx", f_rx))
-
-            if tab_labels:
-                tabs = st.tabs(tab_labels)
-                _tab_desc = {
-                    "ing": "Active and inactive ingredients listed on the drug label, with strengths where available.",
-                    "ix":  "Known drug-drug interactions sourced from FDA labels, ranked by severity.",
-                    "co":  "Drugs most frequently reported alongside this one in FDA adverse-event reports (FAERS).",
-                    "rx":  "Adverse reactions reported to the FDA, ranked by frequency in the FAERS database.",
-                }
-                for ti, (kind, items) in enumerate(tab_data):
-                    with tabs[ti]:
-                        st.caption(_tab_desc[kind])
-                        if kind == "ing":
-                            pills = "".join(
-                                f"<span class='kg-pill ingredient'>{i['ingredient']}"
-                                f"{(' · ' + i['strength']) if i.get('strength') else ''}</span>"
-                                for i in items)
-                            st.markdown(pills, unsafe_allow_html=True)
-                        elif kind == "ix":
-                            for ix in items[:10]:
-                                sev = ix.get("_severity", "mild")
-                                desc = ix.get("description", "")
-                                s = (desc[:120] + "...") if len(desc) > 120 else desc
-                                st.markdown(
-                                    f"<span class='kg-pill interaction'>{ix['drug_name']}</span> "
-                                    f"<span class='kg-risk-badge {sev}'>{sev}</span>"
-                                    + (f"&nbsp; {s}" if s else ""),
-                                    unsafe_allow_html=True)
-                        elif kind == "co":
-                            import pandas as pd
-                            df = pd.DataFrame([
-                                {"Drug": c["drug_name"], "Reports": c.get("report_count", 0)}
-                                for c in items[:10]
-                            ]).sort_values("Reports", ascending=True)
-                            st.bar_chart(df, x="Drug", y="Reports", horizontal=True, color="#1976d2")
-                        else:
-                            import pandas as pd
-                            df = pd.DataFrame([
-                                {"Reaction": rx["reaction"], "Reports": rx.get("report_count", 0),
-                                 "Severity": rx.get("_severity", "—").title()}
-                                for rx in items[:10]
-                            ]).sort_values("Reports", ascending=True)
-                            st.bar_chart(df, x="Reaction", y="Reports", horizontal=True, color="#c62828")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-def render_metrics():
-    st.markdown(
-        "<div class='card card-metrics'><div class='card-title metrics'>Metrics & Monitoring</div>",
-        unsafe_allow_html=True,
-    )
-    r = st.session_state.result
-    if r:
+    # Metrics expander
+    with st.expander("Query Metrics", expanded=False):
         m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Latency", f"{r['latency_ms']:.0f} ms")
-        m2.metric("Evidence Ct.", len(r["evidence"]))
-        m3.metric("Confidence", f"{r['confidence']:.0%}")
-        m4.metric("Records Fetched", r["num_records"])
+        m1.metric("Latency", f"{result.get('latency_ms', 0):.0f} ms")
+        m2.metric("Evidence", len(evidence))
+        m3.metric("Confidence", f"{result.get('confidence', 0):.0%}")
+        m4.metric("Records", result.get("num_records", 0))
 
-        enriched_n = r.get("graph_enriched_chunks", 0)
-        total_n = r.get("total_chunks", 0)
+        llm_label = "Gemini 2.5 Flash"
+        if result.get("llm_used"):
+            if vertex_ok:
+                llm_label += " (Vertex AI)"
+            else:
+                llm_label += " (Direct API)"
+        else:
+            llm_label = "Extractive fallback"
+        st.markdown(
+            f"**Generator:** {llm_label} | "
+            f"**Method:** {result.get('method', 'hybrid')}"
+        )
+
+        enriched_n = result.get("graph_enriched_chunks", 0)
+        total_n = result.get("total_chunks", 0)
         if enriched_n > 0:
-            st.markdown(
-                f"<div style='padding:8px 12px;margin:8px 0;background:rgba(22,163,106,0.08);"
-                f"border-left:4px solid #16a34a;border-radius:6px;font-size:13px;color:#86efac'>"
-                f"<b>Graph Enrichment Active</b> — "
-                f"{enriched_n}/{total_n} chunks enriched with KG context "
-                f"(interactions, reactions, ingredients, FAERS signals)</div>",
-                unsafe_allow_html=True,
+            st.success(
+                f"Graph Enrichment Active -- {enriched_n}/{total_n} chunks "
+                f"enriched with KG context"
             )
-        elif r.get("kg_available"):
-            st.markdown(
-                f"<div style='padding:8px 12px;margin:8px 0;background:rgba(202,138,4,0.08);"
-                f"border-left:4px solid #ca8a04;border-radius:6px;font-size:13px;color:#fcd34d'>"
-                f"<b>Graph Enrichment</b> — KG available but no chunks matched "
-                f"graph data for this drug</div>",
-                unsafe_allow_html=True,
-            )
-
-        st.markdown(f"- **Retrieval method:** {r['method']}")
-        st.markdown(f"- **LLM used:** {'Gemini 2.0 Flash' if r['llm_used'] else 'Extractive fallback'}")
-        st.markdown(f"- **openFDA search:** `{r['search_query'][:120]}`")
-        st.markdown(f"- **Errors / Fallbacks:** None")
-    else:
-        st.info("Run a query to see metrics.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-def render_logs():
-    st.markdown(
-        "<div class='card card-logs'><div class='card-title logs'>Logs</div>",
-        unsafe_allow_html=True,
-    )
-
-    # Session logs (in-memory)
-    st.markdown("**Session Log**")
-    if not st.session_state.logs:
-        st.write("No queries run yet this session.")
-    else:
-        for line in reversed(st.session_state.logs[-10:]):
-            st.write(line)
-
-    # CSV log (persistent)
-    st.markdown("---")
-    st.markdown("**Product Metrics CSV** (`logs/product_metrics.csv`)")
-    csv_rows = read_logs(last_n=10)
-    if csv_rows:
-        import pandas as pd
-        df = pd.DataFrame(csv_rows)
-        st.dataframe(df, use_container_width=True, hide_index=True)
-    else:
-        st.write("No CSV log entries yet.")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-# ──────────────────────────────────────────────────────────────
-#  BODY-REGION HEATMAP
-# ──────────────────────────────────────────────────────────────
-
-_SYMPTOM_REGION_MAP: dict[str, str] = {}
-
-_REGION_KEYWORDS: dict[str, list[str]] = {
-    "head": [
-        "headache", "migraine", "dizziness", "vertigo", "syncope", "tinnitus",
-        "blurred vision", "vision", "visual", "eye", "ear", "hearing",
-        "somnolence", "insomnia", "confusion", "seizure", "tremor",
-        "anxiety", "depression", "hallucination", "amnesia", "coma",
-        "cerebral", "encephalopathy", "meningitis", "stroke",
-    ],
-    "chest": [
-        "chest pain", "palpitation", "tachycardia", "bradycardia", "arrhythmia",
-        "dyspnoea", "dyspnea", "cough", "bronchospasm", "asthma",
-        "pneumonia", "pulmonary", "respiratory", "cardiac", "myocardial",
-        "heart", "angina", "hypertension", "hypotension", "oedema",
-        "edema", "pleural", "wheezing",
-    ],
-    "abdomen": [
-        "nausea", "vomiting", "diarrhoea", "diarrhea", "constipation",
-        "abdominal", "stomach", "gastro", "gi ", "hepat", "liver",
-        "pancreat", "intestin", "colitis", "dyspepsia", "flatulence",
-        "rectal", "jaundice", "biliary", "spleen", "ascites",
-    ],
-    "arms": [
-        "arm", "hand", "wrist", "elbow", "shoulder", "upper extremity",
-        "carpal", "finger", "grip",
-    ],
-    "legs": [
-        "leg", "foot", "feet", "ankle", "knee", "hip", "lower extremity",
-        "gait", "claudication", "deep vein", "dvt", "toe",
-    ],
-    "skin": [
-        "rash", "pruritus", "urticaria", "dermatitis", "erythema",
-        "skin", "alopecia", "acne", "photosensitivity", "blister",
-        "stevens-johnson", "toxic epidermal", "angioedema", "injection site",
-        "swelling", "bruising", "petechiae", "purpura", "cellulitis",
-    ],
-    "systemic": [
-        "fatigue", "fever", "pyrexia", "malaise", "weight", "anaphyla",
-        "death", "multi-organ", "sepsis", "infection", "anaemia", "anemia",
-        "thrombocytopenia", "leukopenia", "neutropenia", "lymph",
-        "blood", "coagul", "haemorrhage", "hemorrhage", "pain",
-        "arthralgia", "myalgia", "back pain", "muscle",
-    ],
-}
-
-for _region, _kws in _REGION_KEYWORDS.items():
-    for _kw in _kws:
-        _SYMPTOM_REGION_MAP[_kw] = _region
-
-
-def map_symptoms_to_regions(symptoms: list[str]) -> dict[str, int]:
-    """Map symptom strings to body regions and return counts per region."""
-    counts: dict[str, int] = {r: 0 for r in _REGION_KEYWORDS}
-    counts["unknown"] = 0
-    for sym in symptoms:
-        low = sym.lower().strip()
-        matched = False
-        for kw, region in _SYMPTOM_REGION_MAP.items():
-            if kw in low:
-                counts[region] += 1
-                matched = True
-                break
-        if not matched:
-            counts["unknown"] += 1
-    return counts
-
-
-def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str]) -> str:
-    """Return HTML with the human body image overlaid with radial gradient circles."""
-    img_path = Path(__file__).resolve().parent.parent / "assets" / "images" / "humanbody.jpg"
-    img_b64 = base64.b64encode(img_path.read_bytes()).decode()
-
-    body_max = max(
-        (v for k, v in region_counts.items() if k not in ("unknown", "skin", "systemic")),
-        default=1,
-    ) or 1
-    total = sum(region_counts.values())
-    unknown = region_counts.get("unknown", 0)
-
-    def _rgb(region: str) -> str | None:
-        c = region_counts.get(region, 0)
-        if c == 0:
-            return None
-        frac = c / body_max
-        if frac > 0.66:
-            return "220,38,38"
-        elif frac > 0.33:
-            return "245,158,11"
-        return "59,130,246"
-
-    def _size(region: str) -> int:
-        c = region_counts.get(region, 0)
-        if c == 0:
-            return 0
-        return 40 + int(40 * (c / body_max))
-
-    # Positions as % of the cropped front-figure view (left 52% of image)
-    region_positions: dict[str, list[dict[str, float]]] = {
-        "head":    [{"x": 47.5, "y": 8.6}],
-        "chest":   [{"x": 47.5, "y": 28.8}],
-        "abdomen": [{"x": 47.5, "y": 44.2}],
-        "arms":    [{"x": 17.5, "y": 34.0}, {"x": 77.3, "y": 34.0}],
-        "legs":    [{"x": 39.0, "y": 68.0}, {"x": 57.7, "y": 68.0}],
-    }
-
-    circles: list[str] = []
-    for region, positions in region_positions.items():
-        rgb = _rgb(region)
-        if not rgb:
-            continue
-        sz = _size(region)
-        cnt = region_counts.get(region, 0)
-        for i, pos in enumerate(positions):
-            label = f"<span class='cnt'>{cnt}</span>" if i == 0 else ""
-            circles.append(
-                f"<div class='heat-dot' style='"
-                f"left:{pos['x']}%;top:{pos['y']}%;"
-                f"width:{sz}px;height:{sz}px;"
-                f"background:radial-gradient(circle,"
-                f"rgba({rgb},0.85) 0%,rgba({rgb},0.45) 30%,"
-                f"rgba({rgb},0.15) 55%,transparent 72%);'>"
-                f"{label}</div>"
-            )
-    circles_html = "\n    ".join(circles)
-
-    skin_count = region_counts.get("skin", 0)
-    skin_overlay = ""
-    skin_legend = ""
-    if skin_count > 0:
-        sk_frac = skin_count / body_max
-        sk_hex = "#dc2626" if sk_frac > 0.66 else "#f59e0b" if sk_frac > 0.33 else "#3b82f6"
-        skin_overlay = (
-            f"<div style='position:absolute;left:6%;top:1%;width:87%;height:96%;"
-            f"border:2.5px dashed {sk_hex};border-radius:35%;opacity:0.55;"
-            f"pointer-events:none;z-index:1'></div>"
-        )
-        skin_legend = f"<span>| Dashed = Skin ({skin_count})</span>"
-
-    return f"""<html><head><style>
-*{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
-.bm-wrap{{text-align:center;padding:4px 0}}
-.bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
-.bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
-.body-ctr{{position:relative;display:inline-block;width:220px;overflow:hidden;cursor:zoom-in}}
-.body-img{{display:block;width:192%;max-width:none;opacity:0.82}}
-.heat-dot{{position:absolute;border-radius:50%;transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}}
-.cnt{{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)}}
-.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#7a9bbf;
-  background:rgba(17,30,46,0.85);padding:2px 7px;border-radius:8px;z-index:3;
-  display:flex;align-items:center;gap:3px;pointer-events:none}}
-.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf}}
-.legend span{{display:inline-flex;align-items:center;gap:3px}}
-.ldot{{width:10px;height:10px;border-radius:50%;display:inline-block}}
-.how-to{{font-size:10px;color:#3d5a74;margin-top:6px;font-style:italic;line-height:1.4}}
-#zoom-overlay{{display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,0.82);flex-direction:column;
-  align-items:center;justify-content:center;cursor:pointer;
-  backdrop-filter:blur(6px)}}
-#zoom-inner{{background:#111e2e;border-radius:14px;padding:16px 20px 12px;
-  box-shadow:0 12px 48px rgba(0,0,0,0.6);position:relative;cursor:default;
-  max-width:90vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}}
-#zoom-inner .body-ctr{{width:min(420px,38vh)!important;cursor:default;overflow:hidden}}
-#zoom-inner .body-img{{opacity:1!important}}
-#zoom-inner .zoom-hint{{display:none}}
-#zoom-inner .cnt{{font-size:13px}}
-.zoom-x{{position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;font-size:20px;color:#7a9bbf;
-  transition:background 0.2s,color 0.2s;z-index:10000}}
-.zoom-x:hover{{background:rgba(255,255,255,0.16);color:#e8f0f8}}
-</style></head><body>
-<div class="bm-wrap">
-  <div class="bm-title">Symptom Body Map</div>
-  <div class="bm-sub">{total} symptom(s) mapped{f' &middot; {unknown} unclassified' if unknown else ''}</div>
-  <div class="body-ctr" id="body-main">
-    <img class="body-img" src="data:image/jpeg;base64,{img_b64}" alt="body outline"/>
-    {skin_overlay}
-    {circles_html}
-    <div class="zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-      stroke="#6b7280" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-      Click to zoom</div>
-  </div>
-  <div class="legend">
-    <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
-    <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
-    <span><span class="ldot" style="background:#dc2626"></span> High</span>
-    {skin_legend}
-  </div>
-  <div class="how-to">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-  Numbers indicate symptom count per region.</div>
-</div>
-<div id="zoom-overlay">
-  <div id="zoom-inner">
-    <button class="zoom-x" id="zoom-x-btn" title="Close">&times;</button>
-    <div id="zoom-clone-slot"></div>
-    <div class="legend" style="margin-top:12px">
-      <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
-      <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
-      <span><span class="ldot" style="background:#dc2626"></span> High</span>
-      {skin_legend}
-    </div>
-    <div class="how-to" style="margin-top:8px">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-    Numbers indicate symptom count per region.</div>
-  </div>
-</div>
-<script>
-(function(){{
-  var main=document.getElementById('body-main');
-  var overlay=document.getElementById('zoom-overlay');
-  var inner=document.getElementById('zoom-inner');
-  var xBtn=document.getElementById('zoom-x-btn');
-  var origFrameStyle='';
-  function expandFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f){{
-        origFrameStyle=f.getAttribute('style')||'';
-        f.style.position='fixed';
-        f.style.inset='0';
-        f.style.width='100vw';
-        f.style.height='100vh';
-        f.style.zIndex='9999';
-        f.style.background='transparent';
-      }}
-    }}catch(e){{}}
-  }}
-  function restoreFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f) f.setAttribute('style',origFrameStyle);
-    }}catch(e){{}}
-  }}
-  var slot=document.getElementById('zoom-clone-slot');
-  function openLightbox(){{
-    expandFrame();
-    var clone=main.cloneNode(true);
-    clone.removeAttribute('id');
-    slot.innerHTML='';
-    slot.appendChild(clone);
-    overlay.style.display='flex';
-  }}
-  function closeLightbox(){{
-    overlay.style.display='none';
-    slot.innerHTML='';
-    restoreFrame();
-  }}
-  main.addEventListener('click',openLightbox);
-  overlay.addEventListener('click',function(e){{
-    if(e.target===overlay) closeLightbox();
-  }});
-  xBtn.addEventListener('click',function(e){{
-    e.stopPropagation();
-    closeLightbox();
-  }});
-  document.addEventListener('keydown',function(e){{
-    if(e.key==='Escape'&&overlay.style.display==='flex') closeLightbox();
-  }});
-}})();
-</script>
-</body></html>"""
-
-
-def _extract_symptoms_from_result(r: dict) -> list[str]:
-    """Pull symptom strings from KG reactions + evidence field names."""
-    symptoms = []
-    for rx in r.get("kg_reactions", []):
-        name = rx.get("reaction", "")
-        if name:
-            symptoms.append(name)
-    return symptoms
-
-
-def render_body_heatmap():
-    """Render the body-region heatmap card."""
-    r = st.session_state.result
-    if not r:
-        return
-    symptoms = _extract_symptoms_from_result(r)
-    if not symptoms:
-        return
-    region_counts = map_symptoms_to_regions(symptoms)
-    if sum(v for k, v in region_counts.items() if k != "unknown") == 0:
-        return
-
-    st.markdown(
-        "<div class='card card-bodymap'><div class='card-title' style='color:#7c3aed;'>"
-        "Adverse-Event Body Map</div>"
-        "<p style='font-size:12px;color:#3d5a74;margin:-4px 0 6px;'>"
-        "Visual overlay of reported adverse events on anatomical regions</p>",
-        unsafe_allow_html=True,
-    )
-    html = _build_body_heatmap_html(region_counts, symptoms)
-    components.html(html, height=530, scrolling=False)
-
-    # Systemic callout
-    sys_count = region_counts.get("systemic", 0)
-    if sys_count:
-        st.markdown(
-            f"<div style='text-align:center;font-size:12px;color:#7a9bbf;margin-top:-8px'>"
-            f"<b>Systemic</b> (whole-body): {sys_count} symptom(s)</div>",
-            unsafe_allow_html=True,
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-def render_overall():
-    left, right = st.columns([2.2, 1.2], gap="large")
-    with left:
-        render_response()
-        render_kg()
-    with right:
-        render_body_heatmap()
-        render_evidence()
-        render_metrics()
-    render_logs()
 
 
 # ══════════════════════════════════════════════════════════════
-#  PAGE RENDERING — Query Page or Results Dashboard
+#  MAIN CHAT INTERFACE
 # ══════════════════════════════════════════════════════════════
 
-if current_view == "query":
-    # ── QUERY PAGE ─────────────────────────────────────────────
-    render_topbar("Safety Chat")
+render_topbar("Safety Chat", badge_text="CLINICAL INTELLIGENCE")
 
-    st.markdown(
-        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
-        unsafe_allow_html=True,
-    )
+# Disclaimer
+st.markdown(
+    "<div class='disclaimer-banner'>"
+    "AI-powered tool for informational purposes only. "
+    "Not a substitute for professional medical advice, diagnosis, or treatment. "
+    "Always consult a qualified healthcare provider."
+    "</div>",
+    unsafe_allow_html=True,
+)
 
-    # Centered query card
-    _pad_l, _card, _pad_r = st.columns([1, 3, 1])
-    with _card:
-        st.markdown(
-            "<div class='query-page-title'>Safety Chat</div>"
-            "<div class='query-page-subtitle'>"
-            "Enter a drug-label question below to retrieve FDA evidence, "
-            "build a knowledge graph, and generate a grounded answer."
-            "</div>",
-            unsafe_allow_html=True,
-        )
+# Display conversation history
+for i, msg in enumerate(st.session_state.messages):
+    with st.chat_message(msg["role"]):
+        if msg["role"] == "assistant":
+            display_text = _citations_to_pills(msg["content"])
+            st.markdown(display_text, unsafe_allow_html=True)
+            render_message_details(msg.get("result", {}), i)
+        else:
+            st.markdown(msg["content"])
 
-        # Example queries
-        example = st.selectbox(
-            "Example Queries",
-            EXAMPLES,
-            index=0,
-            help="Pick a sample question to pre-fill the query field.",
-        )
-        default_q = st.session_state.submitted_query or \
-                     ("" if example == EXAMPLES[0] else example)
-        query_text = st.text_area(
-            "Enter your drug-label question:",
-            value=default_q,
-            placeholder="e.g. What are the side effects of ibuprofen?",
-            height=120,
-        )
+# Handle pending example query
+query_text = st.chat_input("Ask a drug-safety question...")
+if not query_text and st.session_state.get("_pending_example"):
+    query_text = st.session_state.pop("_pending_example")
 
-        # Advanced settings
-        with st.expander("⚙️ Advanced Settings"):
-            method = st.selectbox(
-                "Retrieval method",
-                ["hybrid", "dense", "sparse"],
-                index=0,
-            )
-            top_k = st.slider("Top-K evidence", 3, 10, 5)
-            gemini_key = st.text_input(
-                "Google Gemini API key (optional)",
-                type="password",
-                help="If provided, answers are generated by Gemini 2.0 Flash. "
-                     "Otherwise, a rule-based extractive fallback is used.",
-            )
+if query_text:
+    if len(query_text.strip()) < 3:
+        st.warning("Please enter a more specific question.")
+    else:
+        # Add user message
+        st.session_state.messages.append({"role": "user", "content": query_text})
+        with st.chat_message("user"):
+            st.markdown(query_text)
 
-        st.markdown("")  # spacer
-        run = st.button(
-            "🔍 Run RAG Query",
-            type="primary",
-            use_container_width=True,
-        )
+        # Build conversation history (last 10 messages for Gemini context)
+        conv_history = [
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages[:-1]
+        ][-10:]
 
-        if run and query_text:
-            with st.spinner("Fetching FDA drug labels and running RAG pipeline..."):
+        # Run RAG query
+        with st.chat_message("assistant"):
+            with st.spinner("Searching FDA labels and knowledge graph..."):
                 result = run_rag_query(
                     query_text,
                     gemini_key=gemini_key,
                     method=method,
                     top_k=top_k,
                     use_rerank=False,
+                    conversation_history=conv_history if conv_history else None,
                 )
-            st.session_state.result = result
-            st.session_state.submitted_query = query_text
 
-            # Store for stress-test comparison page
-            st.session_state.primary_last_run = {
-                "query": query_text,
-                "confidence": f"{result['confidence']:.0%}",
-                "evidence_count": len(result["evidence"]),
-            }
+            # Format answer with citation pills
+            answer = _normalize_citations(result["answer"], result.get("evidence", []))
+            display_answer = _citations_to_pills(answer)
+            st.markdown(display_answer, unsafe_allow_html=True)
 
-            st.session_state.logs.append(
-                f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  "
-                f"Query completed in {result['latency_ms']} ms  ·  "
-                f"Evidence: {len(result['evidence'])}  ·  "
-                f"Confidence: {result['confidence']:.0%}"
-            )
+            # Render expandable details
+            render_message_details(result, len(st.session_state.messages))
 
-            # Navigate to results
-            st.session_state.safety_view = "results"
-            st.rerun()
-
-        elif run and not query_text:
-            st.warning("Please enter a query first.")
-
-
-else:
-    # ── RESULTS DASHBOARD ──────────────────────────────────────
-    render_topbar("Safety Chat")
-
-    st.markdown(
-        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
-        unsafe_allow_html=True,
-    )
-
-    # ── Pill row ──
-    c1, c2, c3, c4, c5 = st.columns(5, gap="small")
-    c1.button("Response", width="stretch",
-               type="primary" if st.session_state.active_panel == "Response" else "secondary",
-               key="pill_response", on_click=set_panel, args=("Response",))
-    c2.button("Knowledge Graph", width="stretch",
-               type="primary" if st.session_state.active_panel == "KG" else "secondary",
-               key="pill_kg", on_click=set_panel, args=("KG",))
-    c3.button("Evidence / Artifacts", width="stretch",
-               type="primary" if st.session_state.active_panel == "Evidence" else "secondary",
-               key="pill_evidence", on_click=set_panel, args=("Evidence",))
-    c4.button("Metrics & Monitoring", width="stretch",
-               type="primary" if st.session_state.active_panel == "Metrics" else "secondary",
-               key="pill_metrics", on_click=set_panel, args=("Metrics",))
-    c5.button("Logs", width="stretch",
-               type="primary" if st.session_state.active_panel == "Logs" else "secondary",
-               key="pill_logs", on_click=set_panel, args=("Logs",))
-
-    st.caption("Click a pill to focus; click again to return to the full dashboard view.")
-
-    # ── Panel rendering ──
-    active = st.session_state.active_panel
-
-    if active == "ALL":
-        render_overall()
-    elif active == "Response":
-        _resp_l, _resp_r = st.columns([2, 1], gap="large")
-        with _resp_l:
-            render_response()
-        with _resp_r:
-            render_body_heatmap()
-    elif active == "KG":
-        render_kg()
-    elif active == "Evidence":
-        render_evidence()
-    elif active == "Metrics":
-        render_metrics()
-    elif active == "Logs":
-        render_logs()
+            # Store assistant message
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": answer,
+                "result": result,
+            })
