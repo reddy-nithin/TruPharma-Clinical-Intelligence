@@ -236,8 +236,20 @@ with st.sidebar:
     with st.expander("Advanced Settings", expanded=False):
         method = st.selectbox("Retrieval method", ["hybrid", "dense", "sparse"], index=0)
         top_k = st.slider("Top-K evidence chunks", 3, 15, 5)
+
+        # Auto-load Gemini key from secrets or environment
+        _default_key = ""
+        try:
+            _default_key = st.secrets.get("GEMINI_API_KEY", "")
+        except Exception:
+            pass
+        if not _default_key:
+            import os as _os
+            _default_key = _os.environ.get("GEMINI_API_KEY", "") or _os.environ.get("GOOGLE_API_KEY", "")
+
         gemini_key = st.text_input("Gemini API key (optional)", type="password",
-                                    value=st.session_state.get("_gemini_key", ""))
+                                    value=st.session_state.get("_gemini_key", _default_key),
+                                    help="Used for Gemini 2.5 Flash answer generation. Auto-loaded from secrets/environment if available.")
         if gemini_key:
             st.session_state["_gemini_key"] = gemini_key
 
