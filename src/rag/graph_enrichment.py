@@ -64,14 +64,16 @@ def _build_drug_context(drug_id: str, kg: KnowledgeGraph) -> Optional[str]:
     lines = [
         "[GRAPH CONTEXT]",
         f"Drug: {generic} | RxCUI: {rxcui} | Also known as: {brand_str}",
-        f"Ingredients: {ing_names}",
-        f"Known interactions ({int_count} total): {int_names}",
-        f"Adverse reactions (FAERS, {rxn_count} total): {rxn_names}",
-        f"Co-reported drugs ({co_count} total): {co_names}",
-        f"Disparity score: {disparity_score:.2f} | Emerging signals: {emerging_count}",
-        f"Emerging risks (FAERS not on label): {emerging_str}",
-        "[END GRAPH CONTEXT]",
+        f"Active Ingredients: {ing_names}",
+        f"Known Drug Interactions ({int_count} total): {int_names}",
+        f"Reported Adverse Reactions (FAERS, {rxn_count} total): {rxn_names}",
+        f"Frequently Co-reported Drugs ({co_count} total): {co_names}",
     ]
+    if disparity_score > 0 or emerging_count > 0:
+        lines.append(f"Label-vs-FAERS Disparity: score={disparity_score:.2f}, {emerging_count} emerging signal(s)")
+        if emerging_str != "none detected":
+            lines.append(f"Emerging Safety Risks (in FAERS but not on label): {emerging_str}")
+    lines.append("[END GRAPH CONTEXT]")
     return "\n".join(lines)
 
 
