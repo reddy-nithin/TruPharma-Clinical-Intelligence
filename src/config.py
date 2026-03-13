@@ -55,8 +55,9 @@ def _init_vertex_ai():
         import vertexai
         vertexai.init(project=project_id, location=location)
         _vertex_initialized = True
-    except ImportError:
-        pass  # google-cloud-aiplatform not installed
+    except Exception as e:
+        import warnings
+        warnings.warn(f"Vertex AI initialization skipped: {e}")
 
 
 def is_vertex_available() -> bool:
