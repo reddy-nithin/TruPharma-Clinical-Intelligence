@@ -293,7 +293,7 @@ def build_artifacts(
     words_per_chunk: int = 250,
     overlap: int = 40,
     use_st: bool = True,
-    st_model: str = "sentence-transformers/all-MiniLM-L6-v2",
+    st_model: str = "pritamdeka/S-PubMedBert-MS-MARCO",
     save: bool = True,
     save_vectorizer: bool = True,
     verbose: bool = True,
