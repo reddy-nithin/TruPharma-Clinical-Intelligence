@@ -316,7 +316,7 @@ def _call_gemini(
     except Exception as _ie:
         _last_gemini_debug["genai_import_ok"] = False
         _last_gemini_debug["genai_import_error"] = str(_ie)
-    _engine_logger.warning(f"[DEBUG-f1239c-engine] _call_gemini start: {_last_gemini_debug}")
+    _engine_logger.warning(f"[DEBUG-f1239c-engine][post-fix] _call_gemini start: {_last_gemini_debug}")
     # #endregion
 
     # Try Vertex AI via new google.genai SDK first
