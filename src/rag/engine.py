@@ -293,25 +293,25 @@ def _call_gemini(
             history_block = "\n".join(history_lines)
             full_prompt = f"Conversation History:\n{history_block}\n\n{prompt}"
 
-    # Try Vertex AI SDK first
+    # Try Vertex AI via new google.genai SDK first
     try:
         from src.config import is_vertex_available
         if is_vertex_available():
-            from vertexai.generative_models import GenerativeModel
-            model = GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(full_prompt)
+            from google import genai
+            client = genai.Client(vertexai=True, project=os.environ.get("GCP_PROJECT_ID", ""),
+                                  location=os.environ.get("GCP_LOCATION", "us-central1"))
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
             if resp and resp.text:
                 return resp.text.strip()
     except Exception as exc:
         warnings.warn(f"Vertex AI Gemini error: {exc}")
 
-    # Fallback to direct google-generativeai SDK
+    # Fallback to direct Gemini API key
     if api_key:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(full_prompt)
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
             if resp and resp.text:
                 return resp.text.strip()
         except Exception as exc:

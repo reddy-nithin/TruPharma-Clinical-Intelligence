@@ -59,23 +59,25 @@ def _try_llm_analysis(query: str) -> Optional[Dict[str, Any]]:
     try:
         from src.config import is_vertex_available
         if is_vertex_available():
-            from vertexai.generative_models import GenerativeModel
-            model = GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(prompt)
+            import os as _os
+            from google import genai
+            client = genai.Client(vertexai=True,
+                                  project=_os.environ.get("GCP_PROJECT_ID", ""),
+                                  location=_os.environ.get("GCP_LOCATION", "us-central1"))
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             if resp and resp.text:
                 return _parse_response(resp.text)
     except Exception as exc:
         warnings.warn(f"Vertex AI query analysis failed: {exc}")
 
-    # Fallback to direct Gemini API
+    # Fallback to direct Gemini API key
     import os
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
     if api_key:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(prompt)
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             if resp and resp.text:
                 return _parse_response(resp.text)
         except Exception as exc:

@@ -51,25 +51,26 @@ def _extract_via_gemini(
 
     raw = None
 
-    # Try Vertex AI SDK first
+    # Try Vertex AI via new google.genai SDK first
     try:
         from src.config import is_vertex_available
         if is_vertex_available():
-            from vertexai.generative_models import GenerativeModel
-            model = GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(prompt)
+            from google import genai
+            client = genai.Client(vertexai=True,
+                                  project=os.environ.get("GCP_PROJECT_ID", ""),
+                                  location=os.environ.get("GCP_LOCATION", "us-central1"))
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             if resp and resp.text:
                 raw = resp.text.strip()
     except Exception as e:
         warnings.warn(f"Vertex AI Gemini extraction error: {e}")
 
-    # Fallback to direct API
+    # Fallback to direct API key
     if raw is None and api_key:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            resp = model.generate_content(prompt)
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
             if resp and resp.text:
                 raw = resp.text.strip()
         except Exception as e:
