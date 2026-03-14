@@ -314,6 +314,11 @@ with st.sidebar:
     render_brand()
     st.divider()
 
+    if st.button("⬅ Return to Home", use_container_width=True):
+        st.switch_page("app.py")
+
+    st.divider()
+
     # New Chat / Clear
     col_new, col_clear = st.columns(2)
     with col_new:
@@ -327,7 +332,10 @@ with st.sidebar:
 
     st.divider()
 
+    if st.button("⚠️ Stress Test", use_container_width=True):
+        st.switch_page("pages/stress_test.py")
 
+    st.divider()
 
     # Advanced settings
     with st.expander("Advanced Settings", expanded=False):
@@ -1380,6 +1388,12 @@ def _render_risk_calculator(enriched, drug_name):
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+@st.dialog("Personalized Risk Assessment", width="large")
+def _show_risk_dialog(enriched, drug_name):
+    """Lightbox modal for the personalized risk assessment calculator."""
+    _render_risk_calculator(enriched, drug_name)
+
+
 # ══════════════════════════════════════════════════════════════
 #  SIDE-PANEL RENDERERS (Phase 2C)
 # ══════════════════════════════════════════════════════════════
@@ -1803,28 +1817,28 @@ with detail_col:
                     st.rerun()
 
 with st.sidebar:
-    # Phase 2D: Risk Assessment in sidebar
+    # Phase 2D: Risk Assessment — lightbox button
     st.divider()
     st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
                 "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
                 "color:var(--text-muted); margin-bottom:0.4rem;'>Risk Assessment</div>", unsafe_allow_html=True)
-    
-    # Find most recent assistant message with KG data
+
     latest_kg_result = None
     if "messages" in st.session_state:
         for m in reversed(st.session_state.messages):
             if m.get("role") == "assistant" and m.get("result", {}).get("kg_available"):
                 latest_kg_result = m["result"]
                 break
-    
+
     if latest_kg_result:
         raw_ix = latest_kg_result.get("kg_interactions", [])
         raw_rx = latest_kg_result.get("kg_reactions", [])
         raw_ing = latest_kg_result.get("kg_ingredients", [])
         raw_co = latest_kg_result.get("kg_co_reported", [])
         enriched_rc = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
-        with st.expander("Interactive Calculator", expanded=True):
-            _render_risk_calculator(enriched_rc, latest_kg_result.get("drug_name", "Drug"))
+        _drug = latest_kg_result.get("drug_name", "Drug")
+        if st.button(f"⚕️ Open Risk Calculator — {_drug.title()}", use_container_width=True):
+            _show_risk_dialog(enriched_rc, _drug)
     else:
         st.caption("Submit a query to enable risk assessment")
 
@@ -1865,8 +1879,11 @@ with st.sidebar:
 
     # Check Pinecone availability
     import os
-    pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
-                       (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
+    try:
+        pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
+                           (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
+    except Exception:
+        pinecone_ok = bool(os.environ.get("PINECONE_API_KEY"))
 
     status_html = (
         _status_row("RAG Engine", "Online", True)
