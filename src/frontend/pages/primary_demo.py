@@ -498,11 +498,22 @@ def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
 #  KG VISUALIZATION (vis.js — dark theme)
 # ══════════════════════════════════════════════════════════════
 
-def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions):
-    """Build a decision-support KG visualization with vis.js in dark theme."""
+def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions,
+                           compact=False):
+    """Build a decision-support KG visualization with vis.js in dark theme.
+
+    When compact=True the layout is tuned for the narrow detail panel: smaller
+    radius, shorter canvas, overlay-style detail card instead of a side drawer,
+    and a streamlined toolbar.
+    """
     nodes, edges, details_map = [], [], {}
     nid = 0
-    RADIUS = 210
+    RADIUS = 130 if compact else 210
+    MAX_ITEMS = 6 if compact else 8
+
+    center_font = 13 if compact else 16
+    center_margin = {"top": 7, "bottom": 7, "left": 10, "right": 10} if compact else \
+                    {"top": 10, "bottom": 10, "left": 14, "right": 14}
 
     # Center node
     center_id = nid
@@ -511,9 +522,9 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
         "x": 0, "y": 0, "fixed": {"x": True, "y": True},
         "color": {"background": "#7c3aed", "border": "#5b21b6",
                   "highlight": {"background": "#8b5cf6", "border": "#5b21b6"}},
-        "font": {"color": "#fff", "size": 16, "face": "Quicksand", "bold": True},
+        "font": {"color": "#fff", "size": center_font, "face": "Quicksand", "bold": True},
         "shape": "box", "borderWidth": 2,
-        "margin": {"top": 10, "bottom": 10, "left": 14, "right": 14},
+        "margin": center_margin,
     })
     details_map[center_id] = {
         "name": drug_name.title(), "type_label": "Queried Drug", "color": "#7c3aed",
@@ -524,16 +535,16 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     # Category definitions (dark theme colors)
     categories = []
     if ingredients:
-        categories.append(("ingredient", ingredients[:8],
+        categories.append(("ingredient", ingredients[:MAX_ITEMS],
                            "rgba(0,137,123,0.2)", "#00897b", "contains"))
     if interactions:
-        categories.append(("interaction", interactions[:8],
+        categories.append(("interaction", interactions[:MAX_ITEMS],
                            "rgba(245,124,0,0.2)", "#f57c00", "interacts"))
     if co_reported:
-        categories.append(("co_reported", co_reported[:8],
+        categories.append(("co_reported", co_reported[:MAX_ITEMS],
                            "rgba(25,118,210,0.2)", "#1976d2", "co-reported"))
     if reactions:
-        categories.append(("reaction", reactions[:8],
+        categories.append(("reaction", reactions[:MAX_ITEMS],
                            "rgba(198,40,40,0.2)", "#c62828", "adverse rxn"))
 
     n_cat = len(categories)
@@ -548,17 +559,24 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
             y = round(RADIUS * math.sin(angle))
 
             importance = item.get("_importance", 0.5)
-            font_sz = round(11 + importance * 5)
-            margin_v = round(6 + importance * 5)
-            margin_h = round(10 + importance * 4)
-            bw = round(1 + importance * 2, 1)
-            edge_w = round(1.0 + importance * 2.5, 1)
+            if compact:
+                font_sz = round(9 + importance * 3)
+                margin_v = round(4 + importance * 3)
+                margin_h = round(6 + importance * 3)
+                bw = round(1 + importance * 1.5, 1)
+                edge_w = round(0.8 + importance * 1.5, 1)
+            else:
+                font_sz = round(11 + importance * 5)
+                margin_v = round(6 + importance * 5)
+                margin_h = round(10 + importance * 4)
+                bw = round(1 + importance * 2, 1)
+                edge_w = round(1.0 + importance * 2.5, 1)
             sev = item.get("_severity", "")
             dashes = (sev == "mild") if sev else False
 
             if cat == "ingredient":
                 label = item["ingredient"]
-                if item.get("strength"):
+                if item.get("strength") and not compact:
                     label += f"\n({item['strength']})"
                 det_fields = [
                     {"label": "Dosage / Strength", "value": item.get("strength") or "See label"},
@@ -566,10 +584,8 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                 ]
             elif cat == "interaction":
                 label = item["drug_name"]
-                desc = item.get("description") or "No description available"
                 det_fields = [
                     {"label": "Clinical severity", "value": sev.title(), "badge": sev},
-                    {"label": "Mechanism", "value": (desc[:160] + "...") if len(desc) > 160 else desc},
                     {"label": "Evidence", "value": "FDA label-derived"},
                 ]
             elif cat == "co_reported":
@@ -598,10 +614,11 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                 "margin": {"top": margin_v, "bottom": margin_v,
                            "left": margin_h, "right": margin_h},
             })
+            edge_font_sz = 8 if compact else 9
             edges.append({
                 "id": f"e{nid}", "from": center_id, "to": nid,
                 "label": edge_label, "width": edge_w,
-                "font": {"size": 9, "color": "#3d5a74"},
+                "font": {"size": edge_font_sz, "color": "#3d5a74"},
                 "color": {"color": border},
                 "dashes": dashes,
             })
@@ -616,54 +633,89 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     ej = _json.dumps(edges)
     dj = _json.dumps(details_map)
 
+    # ── Layout parameters that differ between compact & full ──
+    net_height = "320px" if compact else "470px"
+    spring_len = 90 if compact else 145
+    grav_const = -28 if compact else -38
+    toolbar_pad = "4px 6px" if compact else "6px 8px"
+    search_max_w = "140px" if compact else "220px"
+    search_pad = "4px 8px" if compact else "5px 10px"
+    search_fs = "11px" if compact else "12px"
+    btn_pad = "4px 8px" if compact else "5px 11px"
+    btn_fs = "10px" if compact else "11px"
+    legend_gap = "8px" if compact else "14px"
+    legend_fs = "10px" if compact else "11.5px"
+    dot_sz = "9px" if compact else "11px"
+    hint_max_w = "200px" if compact else "260px"
+    hint_fs = "10.5px" if compact else "11.5px"
+
+    # In compact mode the node-detail card is a centered overlay instead of a
+    # side drawer, so it never steals horizontal space from the graph.
+    if compact:
+        detail_css = (
+            "#kg-detail{position:absolute;left:50%;top:50%;width:88%;max-width:300px;"
+            "max-height:60%;transform:translate(-50%,-50%) scale(0.92);opacity:0;"
+            "background:rgba(17,30,46,.97);border:1px solid #2a5278;border-radius:10px;"
+            "padding:12px 14px;overflow-y:auto;pointer-events:none;"
+            "transition:transform .2s ease,opacity .2s ease;z-index:20;"
+            "font-size:12px;color:#e8f0f8;box-shadow:0 8px 32px rgba(0,0,0,.45)}"
+            "#kg-detail.visible{transform:translate(-50%,-50%) scale(1);opacity:1;"
+            "pointer-events:auto}"
+            "#kg-detail h3{margin:0 0 2px;font-size:13px}"
+        )
+    else:
+        detail_css = (
+            "#kg-detail{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);"
+            "background:rgba(17,30,46,.97);border-left:2px solid #2a5278;"
+            "padding:14px;overflow-y:auto;transform:translateX(100%);"
+            "transition:transform .25s ease;z-index:20;font-size:13px;color:#e8f0f8}"
+            "#kg-detail.visible{transform:translateX(0)}"
+            "#kg-detail h3{margin:0 0 2px;font-size:15px}"
+        )
+
     return f"""<html><head>
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
 body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
-#kg-root{{position:relative;width:100%}}
-#kg-toolbar{{display:flex;gap:6px;align-items:center;padding:6px 8px;
+#kg-root{{position:relative;width:100%;overflow:hidden}}
+#kg-toolbar{{display:flex;gap:{'4px' if compact else '6px'};align-items:center;padding:{toolbar_pad};
   background:#111e2e;border:1px solid #1f3d5a;border-radius:10px 10px 0 0}}
-#kg-search{{flex:1;max-width:220px;padding:5px 10px;border:1px solid #1f3d5a;border-radius:7px;
-  font-size:12px;font-family:inherit;outline:none;background:#182840;color:#e8f0f8}}
+#kg-search{{flex:1;max-width:{search_max_w};padding:{search_pad};border:1px solid #1f3d5a;border-radius:7px;
+  font-size:{search_fs};font-family:inherit;outline:none;background:#182840;color:#e8f0f8}}
 #kg-search:focus{{border-color:#7c3aed;box-shadow:0 0 0 2px rgba(124,58,237,.15)}}
-.tb-btn{{padding:5px 11px;border:1px solid #1f3d5a;border-radius:7px;background:#182840;
-  font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:#7a9bbf;
+.tb-btn{{padding:{btn_pad};border:1px solid #1f3d5a;border-radius:7px;background:#182840;
+  font-size:{btn_fs};font-weight:700;cursor:pointer;font-family:inherit;color:#7a9bbf;
   transition:background .12s,box-shadow .12s}}
 .tb-btn:hover{{background:#1e3450;box-shadow:0 1px 4px rgba(0,0,0,.2)}}
 .tb-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
-#kg-net{{width:100%;height:470px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
+#kg-net{{width:100%;height:{net_height};border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
   background:#0b1622}}
-#kg-detail{{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);
-  background:rgba(17,30,46,.97);border-left:2px solid #2a5278;
-  padding:14px;overflow-y:auto;transform:translateX(100%);
-  transition:transform .25s ease;z-index:20;font-size:13px;color:#e8f0f8}}
-#kg-detail.visible{{transform:translateX(0)}}
-#kg-detail h3{{margin:0 0 2px;font-size:15px}}
-.det-type{{font-size:11px;color:#7a9bbf;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #1f3d5a}}
-.det-row{{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;
+{detail_css}
+.det-type{{font-size:{'10px' if compact else '11px'};color:#7a9bbf;margin-bottom:{'8px' if compact else '10px'};padding-bottom:{'6px' if compact else '8px'};border-bottom:1px solid #1f3d5a}}
+.det-row{{display:flex;justify-content:space-between;align-items:baseline;padding:{'4px' if compact else '5px'} 0;
   border-bottom:1px solid #1a2f45}}
-.det-label{{font-size:11px;color:#7a9bbf;font-weight:700;flex-shrink:0;margin-right:8px}}
-.det-value{{font-size:12px;color:#e8f0f8;text-align:right}}
-.det-badge{{font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase}}
+.det-label{{font-size:{'10px' if compact else '11px'};color:#7a9bbf;font-weight:700;flex-shrink:0;margin-right:8px}}
+.det-value{{font-size:{'11px' if compact else '12px'};color:#e8f0f8;text-align:right}}
+.det-badge{{font-size:{'9px' if compact else '10px'};font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase}}
 .det-badge.severe{{background:rgba(153,27,27,0.3);color:#fca5a5}}
 .det-badge.moderate{{background:rgba(146,64,14,0.3);color:#fcd34d}}
 .det-badge.mild{{background:rgba(6,95,70,0.3);color:#86efac}}
-#kg-detail-close{{position:absolute;top:8px;right:10px;background:none;border:none;
-  font-size:16px;cursor:pointer;color:#3d5a74;font-family:inherit}}
+#kg-detail-close{{position:absolute;top:{'6px' if compact else '8px'};right:{'8px' if compact else '10px'};background:none;border:none;
+  font-size:{'14px' if compact else '16px'};cursor:pointer;color:#3d5a74;font-family:inherit}}
 #kg-detail-close:hover{{color:#e8f0f8}}
 #kg-hint{{position:absolute;bottom:8px;left:8px;z-index:15;
   background:rgba(17,30,46,.95);border:1px solid #1f3d5a;border-radius:10px;
-  padding:9px 14px;font-size:11.5px;color:#7a9bbf;line-height:1.45;
-  box-shadow:0 2px 8px rgba(0,0,0,.2);max-width:260px;transition:opacity .3s}}
+  padding:{'7px 10px' if compact else '9px 14px'};font-size:{hint_fs};color:#7a9bbf;line-height:1.45;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);max-width:{hint_max_w};transition:opacity .3s}}
 #kg-hint b{{color:#e8f0f8}}
 #kg-hint-close{{position:absolute;top:3px;right:7px;cursor:pointer;font-size:13px;
   color:#3d5a74;background:none;border:none;padding:0;font-family:inherit}}
 #kg-hint-close:hover{{color:#e8f0f8}}
-.legend{{display:flex;gap:14px;flex-wrap:wrap;padding:6px 8px;font-size:11.5px;
+.legend{{display:flex;gap:{legend_gap};flex-wrap:wrap;padding:{'4px 6px' if compact else '6px 8px'};font-size:{legend_fs};
   background:#111e2e;border:1px solid #1f3d5a;border-radius:0 0 10px 10px;color:#7a9bbf}}
-.legend span{{display:inline-flex;align-items:center;gap:4px}}
-.dot{{width:11px;height:11px;border-radius:3px;display:inline-block}}
+.legend span{{display:inline-flex;align-items:center;gap:{'3px' if compact else '4px'}}}
+.dot{{width:{dot_sz};height:{dot_sz};border-radius:3px;display:inline-block}}
 .legend .sep{{border-left:1px solid #1f3d5a;height:14px;margin:0 2px}}
 .legend .dash-label{{color:#3d5a74;font-style:italic}}
 </style></head><body>
@@ -682,8 +734,8 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-ser
   </div>
   <div id="kg-hint">
     <button id="kg-hint-close">&times;</button>
-    <b>Click a node</b> for detailed clinical info.
-    <b>Drag nodes</b> to rearrange the layout.
+    <b>Click a node</b> for clinical info.
+    {'<br/>' if not compact else ' '}<b>Drag nodes</b> to rearrange.
   </div>
 </div>
 <div class="legend">
@@ -691,8 +743,7 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-ser
   <span><span class="dot" style="background:rgba(245,124,0,0.4);border:1px solid #f57c00"></span> Interaction</span>
   <span><span class="dot" style="background:rgba(25,118,210,0.4);border:1px solid #1976d2"></span> Co-reported</span>
   <span><span class="dot" style="background:rgba(198,40,40,0.4);border:1px solid #c62828"></span> Adverse Rxn</span>
-  <span class="sep"></span>
-  <span class="dash-label">Dashed = milder evidence</span>
+  {'<span class="sep"></span><span class="dash-label">Dashed = milder evidence</span>' if not compact else ''}
 </div>
 <script>
 var nodesData={nj};
@@ -703,8 +754,8 @@ var edges=new vis.DataSet(edgesData);
 var container=document.getElementById("kg-net");
 var network=new vis.Network(container,{{nodes:nodes,edges:edges}},{{
   physics:{{solver:"forceAtlas2Based",
-    forceAtlas2Based:{{gravitationalConstant:-38,centralGravity:0.006,
-      springLength:145,springConstant:0.04,damping:0.45}},
+    forceAtlas2Based:{{gravitationalConstant:{grav_const},centralGravity:0.006,
+      springLength:{spring_len},springConstant:0.04,damping:0.45}},
     stabilization:{{iterations:160}}}},
   interaction:{{hover:true,tooltipDelay:120,zoomView:true,dragView:true}},
   edges:{{smooth:{{type:"cubicBezier",roundness:0.4}}}}
@@ -1434,7 +1485,6 @@ def _render_kg_panel(result):
 
     enriched = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
 
-    # KG identity
     kg_id = result.get("kg_identity") or {}
     generic = kg_id.get("generic_name", "")
     if generic:
@@ -1442,38 +1492,46 @@ def _render_kg_panel(result):
     else:
         st.markdown("### Knowledge Graph")
 
-    # Interactive vis.js network (compact mode - smaller RADIUS)
     drug_name = result.get("drug_name") or "Drug"
-    f_ing = enriched["ingredients"]
-    f_ix = enriched["interactions"]
-    f_co = enriched["co_reported"]
-    f_rx = enriched["reactions"]
+    html = _build_kg_network_html(
+        drug_name,
+        enriched["ingredients"],
+        enriched["interactions"],
+        enriched["co_reported"],
+        enriched["reactions"],
+        compact=True,
+    )
+    components.html(html, height=390, scrolling=False)
 
-    # Re-calculate with smaller radius for right panel
-    def _build_compact_kg_html(drug_name, f_ing, f_ix, f_co, f_rx):
-        # We'll just use the regular one for now, but height-adjusted
-        return _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
-
-    html = _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
-    components.html(html, height=520, scrolling=False)
-
-    # Pill summaries
+    # Compact pill summaries — inline flow to save vertical space
+    pill_html = ""
     if raw_ing:
-        st.markdown("**Ingredients:**")
-        pills = "".join(f"<span class='kg-pill ingredient'>{i['ingredient']}</span>" for i in raw_ing[:8])
-        st.markdown(pills, unsafe_allow_html=True)
-
+        pill_html += "<div style='margin:6px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Ingredients</div>"
+        pill_html += "".join(
+            f"<span class='kg-pill ingredient' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+            f"{i['ingredient']}</span>"
+            for i in raw_ing[:6]
+        )
     if raw_ix:
-        st.markdown("**Drug Interactions:**")
-        for ix in enriched["interactions"][:6]:
+        pill_html += "<div style='margin:8px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Interactions</div>"
+        for ix in enriched["interactions"][:4]:
             sev = ix.get("_severity", "mild")
-            st.markdown(f"<span class='kg-pill interaction'>{ix['drug_name']}</span> <span class='kg-risk-badge {sev}'>{sev}</span>", unsafe_allow_html=True)
-
+            pill_html += (
+                f"<span class='kg-pill interaction' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+                f"{ix['drug_name']}</span>"
+                f"<span class='kg-risk-badge {sev}' style='font-size:9px'>{sev}</span> "
+            )
     if raw_rx:
-        st.markdown("**Top Adverse Reactions:**")
-        for rx in enriched["reactions"][:6]:
+        pill_html += "<div style='margin:8px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Top Reactions</div>"
+        for rx in enriched["reactions"][:4]:
             sev = rx.get("_severity", "mild")
-            st.markdown(f"<span class='kg-pill reaction'>{rx['reaction']}</span> <span class='kg-risk-badge {sev}'>{sev}</span>", unsafe_allow_html=True)
+            pill_html += (
+                f"<span class='kg-pill reaction' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+                f"{rx['reaction']}</span>"
+                f"<span class='kg-risk-badge {sev}' style='font-size:9px'>{sev}</span> "
+            )
+    if pill_html:
+        st.markdown(pill_html, unsafe_allow_html=True)
 
 def _render_bodymap_panel(result):
     """Render the body map heatmap in the right panel."""
@@ -1575,7 +1633,7 @@ def render_message_details(result: dict, msg_idx: int):
 
 # ── Layout: Two-Column Architecture (Phase 2A) ──
 if st.session_state.get("active_detail"):
-    chat_col, detail_col = st.columns([7, 3], gap="medium")
+    chat_col, detail_col = st.columns([6, 4], gap="medium")
 else:
     chat_col, detail_col = st.columns([10, 0.01], gap="small")
 
