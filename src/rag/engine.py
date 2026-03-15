@@ -543,10 +543,10 @@ def run_rag_query(
             "kg_available": False,
         }
 
-    # 2 ── Fetch + chunk + index (in-memory, no disk save)
+    # 2 ── Check vector cache (Pinecone) for fresh results
     cache_hit = False
     vector_store = None
-    kg = load_kg()
+    kg = None
     try:
         arts = build_artifacts(
             api_search=search_q,
@@ -569,91 +569,40 @@ def run_rag_query(
         if "404" in str(exc) or "Not Found" in str(exc):
             err_answer = "Not enough evidence in the retrieved context."
         else:
-            err_answer = f"Error fetching data from openFDA: {exc}"
-        log_row({
-            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "query": query[:200],
-            "latency_ms": lat,
-            "evidence_ids": "",
-            "confidence": 0.0,
-            "num_evidence": 0,
-            "num_records": 0,
-            "retrieval_method": method,
-            "llm_used": False,
-            "answer_preview": err_answer[:150],
-        })
-        return {
-            "answer": err_answer,
-            "evidence": [],
-            "latency_ms": lat,
-            "confidence": 0.0,
-            "num_records": 0,
-            "search_query": search_q,
-            "drug_name": drug_name,
-            "prompt": "",
-            "llm_used": False,
-            "method": method,
-            "kg_interactions": [],
-            "kg_co_reported": [],
-            "kg_reactions": [],
-            "kg_ingredients": [],
-            "kg_available": False,
-        }
+            d = _dense(query, index, corpus, e_type, e_model, vec, pool)
+            s = _sparse(query, bm25, corpus, pool)
+            items = [it for _, it in _fuse(d, s, 0.5, pool)]
 
-    # 2b ── Unpack artifacts into retrieval components
-    corpus = arts["record_chunks"]
-    index = arts["faiss_A"]
-    bm25 = arts["bm25_A"]
-    emb = (arts.get("manifest", {}).get("embedder") or {})
-    e_type = emb.get("type")
-    e_model = emb.get("model")
-    vec = arts.get("vectorizer")
-    counts = (arts.get("manifest", {}).get("counts") or {})
-    n_recs = counts.get("records", 0)
-    n_enriched = counts.get("graph_enriched_chunks", 0)
-    n_chunks = counts.get("record_chunks", 0)
+        # 3b ── Upsert fresh vectors to cache (only when dims match Pinecone's 768)
+        if vector_store and drug_name and corpus:
+            try:
+                vecs = arts.get("faiss_A")
+                if vecs is not None and hasattr(vecs, 'ntotal') and vecs.ntotal > 0 and vecs.d == 768:
+                    n_total = vecs.ntotal
+                    all_vecs = np.zeros((n_total, 768), dtype=np.float32)
+                    for i in range(n_total):
+                        all_vecs[i] = vecs.reconstruct(i)
 
-    # 3 ── Retrieve
-    pool = max(20, top_k * 3)
-    if method == "dense":
-        items = [it for _, it in _dense(query, index, corpus, e_type, e_model, vec, pool)]
-    elif method == "sparse":
-        items = [it for _, it in _sparse(query, bm25, corpus, pool)]
-    else:
-        d = _dense(query, index, corpus, e_type, e_model, vec, pool)
-        s = _sparse(query, bm25, corpus, pool)
-        items = [it for _, it in _fuse(d, s, 0.5, pool)]
+                    # Delete old vectors for this drug, then upsert new
+                    vector_store.delete_by_filter({"drug_name": drug_name})
 
-    # 3b ── Upsert fresh vectors to cache (only when dims match Pinecone's 768)
-    if vector_store and drug_name and corpus:
-        try:
-            vecs = arts.get("faiss_A")
-            if vecs is not None and hasattr(vecs, 'ntotal') and vecs.ntotal > 0 and vecs.d == 768:
-                n_total = vecs.ntotal
-                all_vecs = np.zeros((n_total, 768), dtype=np.float32)
-                for i in range(n_total):
-                    all_vecs[i] = vecs.reconstruct(i)
+                    cache_ids = []
+                    cache_meta = []
+                    for i, chunk in enumerate(corpus[:n_total]):
+                        cache_ids.append(f"{drug_name}_{chunk.field}_{i:04d}")
+                        cache_meta.append({
+                            "drug_name": drug_name,
+                            "doc_id": chunk.doc_id,
+                            "field": chunk.field,
+                            "text": chunk.text[:1000],
+                            "ingested_at": time.time(),
+                        })
+                    vector_store.upsert(cache_ids, all_vecs[:len(cache_ids)], cache_meta)
+            except Exception:
+                pass  # Cache upsert is best-effort
 
-                # Delete old vectors for this drug, then upsert new
-                vector_store.delete_by_filter({"drug_name": drug_name})
-
-                cache_ids = []
-                cache_meta = []
-                for i, chunk in enumerate(corpus[:n_total]):
-                    cache_ids.append(f"{drug_name}_{chunk.field}_{i:04d}")
-                    cache_meta.append({
-                        "drug_name": drug_name,
-                        "doc_id": chunk.doc_id,
-                        "field": chunk.field,
-                        "text": chunk.text[:1000],
-                        "ingested_at": time.time(),
-                    })
-                vector_store.upsert(cache_ids, all_vecs[:len(cache_ids)], cache_meta)
-        except Exception:
-            pass  # Cache upsert is best-effort
-
-    del arts, index, bm25, corpus, vec
-    gc.collect()
+        del arts, index, bm25, corpus, vec
+        gc.collect()
 
     # 4 ── Optional rerank with KG-aware boost
     if use_rerank and items:
