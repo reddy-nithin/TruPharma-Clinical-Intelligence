@@ -546,6 +546,7 @@ def run_rag_query(
     # 2 ── Check vector cache (Pinecone) for fresh results
     cache_hit = False
     vector_store = None
+    kg = None
     try:
         arts = build_artifacts(
             api_search=search_q,
