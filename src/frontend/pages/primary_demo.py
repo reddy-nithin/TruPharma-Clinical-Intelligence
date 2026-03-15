@@ -422,6 +422,49 @@ def _citations_to_pills(answer: str, evidence: list = None) -> str:
     return re.sub(r"\[(\d+)\]", _pill, answer)
 
 
+def _get_source_badge(field: str) -> str:
+    """Return an HTML source-type badge based on the evidence field name."""
+    f = field.lower()
+    if any(k in f for k in ("interaction", "warning", "precaution", "contraindication",
+                             "dosage", "adverse", "boxed", "indication", "ingredient",
+                             "overdosage", "label")):
+        return "<span class='source-badge fda-label'>FDA Label</span>"
+    elif any(k in f for k in ("faers", "signal", "report")):
+        return "<span class='source-badge faers'>FAERS</span>"
+    elif any(k in f for k in ("kg", "graph", "knowledge")):
+        return "<span class='source-badge kg'>Knowledge Graph</span>"
+    return "<span class='source-badge fda-label'>FDA Label</span>"
+
+
+def _render_confidence_bar(evidence: list) -> str:
+    """Render a stacked horizontal bar showing the breakdown of evidence sources."""
+    if not evidence:
+        return ""
+    total = len(evidence)
+    counts = {"blue": 0, "red": 0, "purple": 0}
+    for ev in evidence:
+        f = ev.get("field", "").lower()
+        if any(k in f for k in ("faers", "signal", "report")):
+            counts["red"] += 1
+        elif any(k in f for k in ("kg", "graph", "knowledge")):
+            counts["purple"] += 1
+        else:
+            counts["blue"] += 1
+    n_blue, n_red, n_purple = counts["blue"], counts["red"], counts["purple"]
+    html = "<div class='source-conf-bar'>"
+    if n_blue:
+        w = (n_blue / total) * 100
+        html += f"<div class='conf-segment' style='width:{w:.1f}%; background:#3b82f6;' title='FDA Labels: {n_blue}'></div>"
+    if n_red:
+        w = (n_red / total) * 100
+        html += f"<div class='conf-segment' style='width:{w:.1f}%; background:#ef4444;' title='FAERS Reports: {n_red}'></div>"
+    if n_purple:
+        w = (n_purple / total) * 100
+        html += f"<div class='conf-segment' style='width:{w:.1f}%; background:#7c3aed;' title='Knowledge Graph: {n_purple}'></div>"
+    html += "</div>"
+    return html
+
+
 def render_response():
     st.markdown(
         "<div class='card card-response'><div class='card-title response'>Response Panel</div>",
