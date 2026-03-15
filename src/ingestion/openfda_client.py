@@ -38,6 +38,15 @@ def _get_st_model(model_name: str):
         _ST_MODEL_CACHE[model_name] = SentenceTransformer(model_name)
     return _ST_MODEL_CACHE[model_name]
 
+
+def _try_vertex_embeddings(texts: List[str], task_type: str = "RETRIEVAL_DOCUMENT") -> Optional[np.ndarray]:
+    """Attempt Vertex AI embeddings; returns None if unavailable."""
+    try:
+        from src.ingestion.vertex_embeddings import embed_texts
+        return embed_texts(texts, task_type=task_type)
+    except Exception:
+        return None
+
 OPENFDA_BASE_URL = "https://api.fda.gov/drug/label.json"
 OPENFDA_MAX_LIMIT = 1000
 
@@ -391,27 +400,34 @@ def build_artifacts(
     vecs_A = None
     vecs_B = None
 
-    if use_st and SentenceTransformer is not None and texts_A:
-        embedder = _get_st_model(st_model)
-        embedder_type = "sentence_transformers"
-        vecs_A = embedder.encode(
-            texts_A, show_progress_bar=False, convert_to_numpy=True, normalize_embeddings=True
-        )
-        vecs_B = embedder.encode(
-            texts_B, show_progress_bar=False, convert_to_numpy=True, normalize_embeddings=True
-        ) if texts_B else None
-    elif texts_A:
-        embedder_type = "tfidf"
-        tfidf_vec = TfidfVectorizer(max_features=50000, ngram_range=(1, 2))
-        combined = texts_A + texts_B
-        tfidf_vec.fit(combined)
-        vectorizer = tfidf_vec
-        vecs_A = normalize(tfidf_vec.transform(texts_A)).toarray().astype(np.float32)
-        vecs_B = (
-            normalize(tfidf_vec.transform(texts_B)).toarray().astype(np.float32)
-            if texts_B
-            else None
-        )
+    # Priority: Vertex AI > SentenceTransformers > TF-IDF
+    if texts_A:
+        vertex_vecs = _try_vertex_embeddings(texts_A)
+        if vertex_vecs is not None:
+            embedder_type = "vertex_ai"
+            vecs_A = vertex_vecs
+            vecs_B = _try_vertex_embeddings(texts_B) if texts_B else None
+        elif use_st and SentenceTransformer is not None:
+            embedder = _get_st_model(st_model)
+            embedder_type = "sentence_transformers"
+            vecs_A = embedder.encode(
+                texts_A, show_progress_bar=False, convert_to_numpy=True, normalize_embeddings=True
+            )
+            vecs_B = embedder.encode(
+                texts_B, show_progress_bar=False, convert_to_numpy=True, normalize_embeddings=True
+            ) if texts_B else None
+        else:
+            embedder_type = "tfidf"
+            tfidf_vec = TfidfVectorizer(max_features=50000, ngram_range=(1, 2))
+            combined = texts_A + texts_B
+            tfidf_vec.fit(combined)
+            vectorizer = tfidf_vec
+            vecs_A = normalize(tfidf_vec.transform(texts_A)).toarray().astype(np.float32)
+            vecs_B = (
+                normalize(tfidf_vec.transform(texts_B)).toarray().astype(np.float32)
+                if texts_B
+                else None
+            )
 
     faiss_A = _build_faiss_ip(vecs_A) if vecs_A is not None and len(texts_A) else None
     faiss_B = _build_faiss_ip(vecs_B) if vecs_B is not None and len(texts_B) else None
@@ -457,7 +473,11 @@ def build_artifacts(
         },
         "embedder": {
             "type": embedder_type,
-            "model": st_model if embedder_type == "sentence_transformers" else None,
+            "model": (
+                "text-embedding-004" if embedder_type == "vertex_ai"
+                else st_model if embedder_type == "sentence_transformers"
+                else None
+            ),
         },
         "artifacts": {},
     }

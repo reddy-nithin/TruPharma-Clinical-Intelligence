@@ -14,8 +14,14 @@ import re
 import csv
 import time
 import json
+import logging
 import warnings
 import numpy as np
+
+# #region agent log f1239c
+_engine_logger = logging.getLogger("trupharma.engine")
+_last_gemini_debug: dict = {}
+# #endregion
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
@@ -110,17 +116,12 @@ def _drug_is_known(name: str) -> bool:
     try:
         kg = load_kg()
         if kg:
-            identity = kg.get_drug_identity(name)
-            if identity:
-                print(f"[DEBUG] KG: Found drug identity for '{name}': {identity.get('id')}")
+            if kg.get_drug_identity(name):
                 return True
             if kg.get_ingredient_drugs(name):
-                print(f"[DEBUG] KG: Found ingredient match for '{name}'")
                 return True
-        else:
-            print("[DEBUG] KG: load_kg() returned None")
-    except Exception as e:
-        print(f"[DEBUG] KG: Error in _drug_is_known: {e}")
+    except Exception:
+        pass
 
     try:
         from src.ingestion.rxnorm import get_rxcui_by_name, get_drug_info
@@ -156,6 +157,15 @@ def _drug_is_known(name: str) -> bool:
 
 def _embed_query(query, embedder_type, embedder_model, vectorizer):
     """Embed a query using the same method that was used during indexing."""
+    if embedder_type == "vertex_ai":
+        try:
+            from src.ingestion.vertex_embeddings import embed_query as vertex_embed
+            result = vertex_embed(query)
+            if result is not None:
+                return result
+        except Exception:
+            pass
+        return None
     if embedder_type == "sentence_transformers":
         try:
             from src.ingestion.openfda_client import _get_st_model
@@ -260,7 +270,19 @@ def _build_prompt(question: str, evidence: list) -> str:
         f"Provide a well-structured, readable answer with citations:"
     )
 
+    sections = [_RAG_SYSTEM, ""]
 
+    if kg_context:
+        sections.append(kg_context)
+        sections.append("")
+
+    sections.append(f"## Retrieved Evidence (Vector Search)\n{block}")
+    sections.append("")
+    sections.append(f"## User Question\n{question}")
+    sections.append("")
+    sections.append("Answer (with citations):")
+
+    return "\n".join(sections)
 
 def _call_gemini(prompt: str, api_key: str) -> tuple:
     """Call Google Gemini for grounded answer generation.
@@ -429,6 +451,7 @@ def run_rag_query(
     use_rerank: bool = False,
     api_limit: int = DEFAULT_LIMIT,
     max_records: int = DEFAULT_MAX_REC,
+    conversation_history: Optional[List[Dict[str, str]]] = None,
 ) -> Dict[str, Any]:
     """
     End-to-end RAG pipeline:
@@ -436,8 +459,44 @@ def run_rag_query(
     """
     t0 = time.time()
 
+    # 0 ── Analyze query for intent and entities (GraphRAG fusion)
+    query_analysis = None
+    kg_context_text = ""
+    try:
+        from src.rag.query_analyzer import analyze_query, get_kg_context_for_query, format_kg_context_for_prompt
+        query_analysis = analyze_query(query)
+        _kg_for_analysis = load_kg()
+        if _kg_for_analysis and query_analysis:
+            kg_ctx = get_kg_context_for_query(query_analysis, _kg_for_analysis)
+            kg_context_text = format_kg_context_for_prompt(kg_ctx)
+    except Exception:
+        pass
+
     # 1 ── Extract drug name and build a drug-scoped openFDA query
     drug_name = _extract_drug_name(query)
+
+    # 1a ── Conversational drug resolution: if the extracted name doesn't look
+    #        like a real drug (too long, equals the full query, or fails KG/RxNorm),
+    #        look back at conversation history for the most recent drug name.
+    _needs_resolution = (
+        not drug_name
+        or len(drug_name) <= 2
+        or drug_name == query.strip()  # fallback returned full query
+        or len(drug_name.split()) > 3  # real drug names are 1-3 words
+    )
+    if not _needs_resolution:
+        # Quick check: is the extracted name actually a known drug?
+        if not _drug_is_known(drug_name):
+            _needs_resolution = True
+
+    if _needs_resolution and conversation_history:
+        for prev_msg in reversed(conversation_history):
+            if prev_msg.get("role") == "user":
+                prev_drug = _extract_drug_name(prev_msg.get("content", ""))
+                if prev_drug and len(prev_drug) > 2 and prev_drug != prev_msg.get("content", "").strip():
+                    drug_name = prev_drug
+                    break
+
     if drug_name and len(drug_name) > 2:
         # Scope the API search to the specific drug to avoid irrelevant
         # labels (e.g. MEKINIST) dominating keyword-only searches.
@@ -484,10 +543,9 @@ def run_rag_query(
             "kg_available": False,
         }
 
-    # 2 ── Fetch + chunk + index (in-memory, no disk save)
-    #      Load the KG so chunks are enriched with graph context before
-    #      embedding — improves retrieval for multi-hop pharma queries.
-    kg = load_kg()
+    # 2 ── Check vector cache (Pinecone) for fresh results
+    cache_hit = False
+    vector_store = None
     try:
         arts = build_artifacts(
             api_search=search_q,
@@ -510,63 +568,64 @@ def run_rag_query(
         if "404" in str(exc) or "Not Found" in str(exc):
             err_answer = "Not enough evidence in the retrieved context."
         else:
-            err_answer = f"Error fetching data from openFDA: {exc}"
-        log_row({
-            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "query": query[:200],
-            "latency_ms": lat,
-            "evidence_ids": "",
-            "confidence": 0.0,
-            "num_evidence": 0,
-            "num_records": 0,
-            "retrieval_method": method,
-            "llm_used": False,
-            "answer_preview": err_answer[:150],
-        })
-        return {
-            "answer": err_answer,
-            "evidence": [],
-            "latency_ms": lat,
-            "confidence": 0.0,
-            "num_records": 0,
-            "search_query": search_q,
-            "drug_name": _extract_drug_name(query),
-            "prompt": "",
-            "llm_used": False,
-            "method": method,
-        }
+            d = _dense(query, index, corpus, e_type, e_model, vec, pool)
+            s = _sparse(query, bm25, corpus, pool)
+            items = [it for _, it in _fuse(d, s, 0.5, pool)]
 
-    corpus = arts["record_chunks"]
-    index = arts["faiss_A"]
-    bm25 = arts["bm25_A"]
-    emb = (arts.get("manifest", {}).get("embedder") or {})
-    e_type = emb.get("type")
-    e_model = emb.get("model")
-    vec = arts.get("vectorizer")
-    counts = (arts.get("manifest", {}).get("counts") or {})
-    n_recs = counts.get("records", 0)
-    n_enriched = counts.get("graph_enriched_chunks", 0)
-    n_chunks = counts.get("record_chunks", 0)
+        # 3b ── Upsert fresh vectors to cache (only when dims match Pinecone's 768)
+        if vector_store and drug_name and corpus:
+            try:
+                vecs = arts.get("faiss_A")
+                if vecs is not None and hasattr(vecs, 'ntotal') and vecs.ntotal > 0 and vecs.d == 768:
+                    n_total = vecs.ntotal
+                    all_vecs = np.zeros((n_total, 768), dtype=np.float32)
+                    for i in range(n_total):
+                        all_vecs[i] = vecs.reconstruct(i)
 
-    # 3 ── Retrieve
-    pool = max(20, top_k * 3)
-    if method == "dense":
-        items = [it for _, it in _dense(query, index, corpus, e_type, e_model, vec, pool)]
-    elif method == "sparse":
-        items = [it for _, it in _sparse(query, bm25, corpus, pool)]
-    else:
-        d = _dense(query, index, corpus, e_type, e_model, vec, pool)
-        s = _sparse(query, bm25, corpus, pool)
-        items = [it for _, it in _fuse(d, s, 0.5, pool)]
+                    # Delete old vectors for this drug, then upsert new
+                    vector_store.delete_by_filter({"drug_name": drug_name})
 
-    del arts, index, bm25, corpus, vec
-    gc.collect()
+                    cache_ids = []
+                    cache_meta = []
+                    for i, chunk in enumerate(corpus[:n_total]):
+                        cache_ids.append(f"{drug_name}_{chunk.field}_{i:04d}")
+                        cache_meta.append({
+                            "drug_name": drug_name,
+                            "doc_id": chunk.doc_id,
+                            "field": chunk.field,
+                            "text": chunk.text[:1000],
+                            "ingested_at": time.time(),
+                        })
+                    vector_store.upsert(cache_ids, all_vecs[:len(cache_ids)], cache_meta)
+            except Exception:
+                pass  # Cache upsert is best-effort
 
-    # 4 ── Optional rerank
+        del arts, index, bm25, corpus, vec
+        gc.collect()
+
+    # 4 ── Optional rerank with KG-aware boost
     if use_rerank and items:
         items = _try_rerank(query, items, top_k)
     else:
         items = items[:top_k]
+
+    # 4b ── KG-aware reordering: prioritize chunks mentioning known KG entities
+    if query_analysis and items:
+        try:
+            kg_drugs = set(query_analysis.get("drugs", []))
+            if kg_drugs:
+                kg_items = []
+                non_kg_items = []
+                for it in items:
+                    text_lower = it.text.lower()
+                    if any(d in text_lower for d in kg_drugs):
+                        kg_items.append(it)
+                    else:
+                        non_kg_items.append(it)
+                # Put KG-matched items first, then others, keeping top_k total
+                items = (kg_items + non_kg_items)[:top_k]
+        except Exception:
+            pass
 
     # 5 ── Build evidence pack (keep raw chunk_id for post-processing)
     evidence = [
@@ -580,8 +639,21 @@ def run_rag_query(
         for i, it in enumerate(items, 1)
     ]
 
+    # 5b ── KG-aware relevance boost: boost chunks mentioning KG entities
+    if query_analysis and evidence:
+        try:
+            kg_drugs = set(query_analysis.get("drugs", []))
+            for ev in evidence:
+                content_lower = ev.get("content", "").lower()
+                for drug in kg_drugs:
+                    if drug in content_lower:
+                        ev["_kg_boosted"] = True
+                        break
+        except Exception:
+            pass
+
     # 6 ── Generate answer (Gemini LLM or extractive fallback)
-    prompt = _build_prompt(query, evidence)
+    prompt = _build_prompt(query, evidence, kg_context=kg_context_text)
     llm_used = False
     gemini_error = None
     answer = None

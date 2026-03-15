@@ -44,20 +44,42 @@ def _extract_via_gemini(
     drug_name: str,
     api_key: str,
 ) -> List[str]:
+    prompt = _GEMINI_PROMPT_TEMPLATE.format(
+        drug_name=drug_name,
+        text=text[:3000],
+    )
+
+    raw = None
+
+    # Try Vertex AI via new google.genai SDK first
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        from src.config import is_vertex_available
+        if is_vertex_available():
+            from google import genai
+            client = genai.Client(vertexai=True,
+                                  project=os.environ.get("GCP_PROJECT_ID", ""),
+                                  location=os.environ.get("GCP_LOCATION", "us-central1"))
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+    except Exception as e:
+        warnings.warn(f"Vertex AI Gemini extraction error: {e}")
 
-        prompt = _GEMINI_PROMPT_TEMPLATE.format(
-            drug_name=drug_name,
-            text=text[:3000],
-        )
-        resp = model.generate_content(prompt)
-        if not resp or not resp.text:
-            return []
+    # Fallback to direct API key
+    if raw is None and api_key:
+        try:
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+            if resp and resp.text:
+                raw = resp.text.strip()
+        except Exception as e:
+            warnings.warn(f"Gemini extraction failed: {e}")
 
-        raw = resp.text.strip()
+    if not raw:
+        return []
+
+    try:
         if raw.startswith("```"):
             raw = re.sub(r"^```(?:json)?\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw)
@@ -66,7 +88,7 @@ def _extract_via_gemini(
         if isinstance(names, list):
             return [n.strip().lower() for n in names if isinstance(n, str) and n.strip()]
     except Exception as e:
-        warnings.warn(f"Gemini extraction failed: {e}")
+        warnings.warn(f"Gemini JSON parse failed: {e}")
 
     return []
 
@@ -93,6 +115,25 @@ def _extract_drug_names_from_prose(
             found.append(drug_name)
 
     return found
+
+
+def _extract_interaction_snippet(
+    prose: str,
+    drug_name: str,
+    max_len: int = 300,
+) -> str:
+    """Extract sentence(s) from label prose that mention a specific interacting drug."""
+    if not prose or not drug_name:
+        return ""
+    sentences = re.split(r'(?<=[.!?])\s+', prose)
+    pattern = re.compile(r'\b' + re.escape(drug_name) + r'\b', re.IGNORECASE)
+    relevant = [s.strip() for s in sentences if pattern.search(s)]
+    if not relevant:
+        return ""
+    snippet = " ".join(relevant)
+    if len(snippet) > max_len:
+        snippet = snippet[:max_len].rsplit(" ", 1)[0] + "..."
+    return snippet
 
 
 def _extract_from_interaction_table(
@@ -182,6 +223,7 @@ def build_label_interaction_edges(
             continue
 
         interacting_names: Set[str] = set()
+        all_prose_parts: list[str] = []
 
         for rec in records:
             table = rec.get("drug_interactions_table")
@@ -194,6 +236,8 @@ def build_label_interaction_edges(
                 if isinstance(prose, list):
                     prose = " ".join(prose)
 
+                all_prose_parts.append(prose)
+
                 if use_gemini and len(prose) > 50:
                     gemini_names = _extract_via_gemini(prose, generic, api_key)
                     interacting_names.update(gemini_names)
@@ -205,15 +249,19 @@ def build_label_interaction_edges(
                     interacting_names.update(names)
 
         interacting_names -= self_names
+        full_prose = " ".join(all_prose_parts)
 
         for int_name in interacting_names:
             target_id = backend.find_drug_node_id(int_name)
             if target_id and target_id != node_id:
+                description = _extract_interaction_snippet(full_prose, int_name)
                 backend.upsert_edge(node_id, target_id, "INTERACTS_WITH", {
                     "source": "label",
+                    "description": description,
                 })
                 backend.upsert_edge(target_id, node_id, "INTERACTS_WITH", {
                     "source": "label",
+                    "description": description,
                 })
                 edge_count += 1
 

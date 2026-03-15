@@ -1,8 +1,8 @@
 """
-TruPharma GenAI Assistant  ·  Safety Chat
-==========================================
-Streamlit page: drug-label evidence RAG — openFDA pipeline,
-grounded answers, knowledge graph, metrics.
+TruPharma GenAI Assistant  ·  Safety Intelligence Chat
+======================================================
+Perplexity-style conversational drug-safety RAG with inline citations,
+expandable evidence/KG/metrics panels, dark theme integration.
 """
 
 import sys
@@ -18,65 +18,266 @@ import streamlit.components.v1 as components
 from datetime import datetime
 import time
 import base64
+import math
+import json as _json
+import re
 
 from src.rag.engine import run_rag_query, read_logs
 from src.frontend.theme import inject_theme, render_topbar, render_brand
 
 # ─── Page config ──────────────────────────────────────────────
-# ─── Determine sidebar state based on view ────────────────────
-_initial_sidebar = "expanded" if st.session_state.get("safety_view", "query") == "results" else "collapsed"
-
 st.set_page_config(
     page_title="Safety Chat | TruPharma RAG",
-    page_icon="🩺",
+    page_icon="🧪",
     layout="wide",
-    initial_sidebar_state=_initial_sidebar,
+    initial_sidebar_state="expanded",
 )
 
-# ─── Force sidebar state depending on current view ───────────
-_view = st.session_state.get("safety_view", "query")
-if _view == "results":
-    # Expand sidebar on results page
-    components.html("""
-    <script>
-    (function() {
-        const doc = window.parent.document;
-        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-        if (sidebar && sidebar.getAttribute('aria-expanded') === 'false') {
-            const btn = doc.querySelector('[data-testid="collapsedControl"]');
-            if (btn) btn.click();
-        }
-    })();
-    </script>
-    """, height=0)
-else:
-    # Collapse sidebar on query page
-    components.html("""
-    <script>
-    (function() {
-        const doc = window.parent.document;
-        const sidebar = doc.querySelector('[data-testid="stSidebar"]');
-        if (sidebar && sidebar.getAttribute('aria-expanded') !== 'false') {
-            const btn = doc.querySelector('[data-testid="stSidebarCollapseButton"]');
-            if (btn) btn.click();
-        }
-    })();
-    </script>
-    """, height=0)
-
-# ─── Inject dark theme ───────────────────────────────────────
 inject_theme()
+
+
+# ══════════════════════════════════════════════════════════════
+#  CHAT-SPECIFIC CSS (extends theme.py dark tokens)
+# ══════════════════════════════════════════════════════════════
+st.markdown("""<style>
+/* ── Citation superscripts ── */
+.cite-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(14,122,96,0.25); color: var(--teal-bright, #3df5c8);
+    font-size: 11px; font-weight: 700; min-width: 18px; height: 18px;
+    padding: 0 5px; border-radius: 9px; margin: 0 1px;
+    vertical-align: super; line-height: 1; cursor: default;
+    border: 1px solid rgba(61,245,200,0.2);
+}
+
+/* ── Source type badges ── */
+.source-badge {
+    display: inline-block; padding: 3px 10px; margin: 2px 3px;
+    border-radius: 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.03em;
+}
+.source-badge.fda-label {
+    background: rgba(25,118,210,0.15); color: #64b5f6;
+    border: 1px solid rgba(25,118,210,0.3);
+}
+.source-badge.faers {
+    background: rgba(198,40,40,0.15); color: #ef9a9a;
+    border: 1px solid rgba(198,40,40,0.3);
+}
+.source-badge.kg {
+    background: rgba(124,58,237,0.15); color: #c4b5fd;
+    border: 1px solid rgba(124,58,237,0.3);
+}
+
+/* ── Disclaimer banner ── */
+.disclaimer-banner {
+    background: var(--bg-raised, #182840);
+    border: 1px solid var(--signal-warn, #f59e0b);
+    border-radius: var(--radius-md, 10px);
+    padding: 8px 16px; font-size: 12px;
+    color: var(--signal-warn, #f59e0b);
+    margin-bottom: 16px; text-align: center;
+    font-family: var(--font-body);
+}
+
+/* ── KG pills (dark theme) ── */
+.kg-pill {
+    display: inline-block; padding: 5px 14px; margin: 3px 4px;
+    border-radius: 20px; font-size: 13px; font-weight: 700; line-height: 1.4;
+}
+.kg-pill.ingredient {
+    background: rgba(0,137,123,0.15); color: #4db6ac;
+    border: 1px solid rgba(0,137,123,0.3);
+}
+.kg-pill.interaction {
+    background: rgba(245,124,0,0.15); color: #ffb74d;
+    border: 1px solid rgba(245,124,0,0.3);
+}
+.kg-pill.co-reported {
+    background: rgba(25,118,210,0.15); color: #64b5f6;
+    border: 1px solid rgba(25,118,210,0.3);
+}
+.kg-pill.reaction {
+    background: rgba(198,40,40,0.15); color: #ef9a9a;
+    border: 1px solid rgba(198,40,40,0.3);
+}
+.kg-risk-badge {
+    font-size: 10px; font-weight: 800; padding: 2px 8px;
+    border-radius: 6px; text-transform: uppercase; margin-left: 4px;
+}
+.kg-risk-badge.severe {
+    background: rgba(153,27,27,0.3); color: #fca5a5;
+}
+.kg-risk-badge.moderate {
+    background: rgba(146,64,14,0.3); color: #fcd34d;
+}
+.kg-risk-badge.mild {
+    background: rgba(6,95,70,0.3); color: #86efac;
+}
+
+/* ── Example query buttons ── */
+.example-btn {
+    display: block; width: 100%; padding: 8px 12px; margin: 4px 0;
+    background: var(--bg-raised, #182840);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-sm, 6px);
+    color: var(--text-secondary, #7a9bbf);
+    font-size: 12px; text-align: left; cursor: pointer;
+    font-family: var(--font-body); transition: all 0.15s;
+}
+.example-btn:hover {
+    background: var(--bg-hover, #1e3450);
+    border-color: var(--teal-dim, #0e7a60);
+    color: var(--text-primary, #e8f0f8);
+}
+
+/* ── Evidence card styling ── */
+.evidence-chunk {
+    background: var(--bg-surface, #111e2e);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-sm, 6px);
+    padding: 10px 14px; margin-bottom: 8px;
+}
+.evidence-chunk-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; font-size: 13px; font-weight: 700;
+    color: var(--text-primary, #e8f0f8);
+}
+.evidence-chunk-text {
+    font-size: 12px; color: var(--text-secondary, #7a9bbf);
+    line-height: 1.5; font-family: var(--font-body);
+}
+
+/* ── Chat area tweaks ── */
+[data-testid="stChatMessage"] {
+    background: var(--bg-surface, #111e2e) !important;
+    border: 1px solid var(--border-subtle, #1a2f45) !important;
+    border-radius: var(--radius-md, 10px) !important;
+    margin-bottom: 12px !important;
+    animation: msg-appear 0.3s ease both;
+}
+@keyframes msg-appear {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Enhanced chat input ── */
+[data-testid="stChatInput"] textarea {
+    border: 1px solid var(--border-subtle, #1a2f45) !important;
+    background: var(--bg-surface, #111e2e) !important;
+}
+[data-testid="stChatInput"] textarea:focus {
+    border-color: var(--teal-bright, #3df5c8) !important;
+    box-shadow: none !important;
+}
+
+/* ── Welcome state ── */
+.welcome-hero {
+    text-align: center;
+    padding: 48px 20px 32px;
+    animation: msg-appear 0.5s ease both;
+}
+.welcome-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text-primary, #e8f0f8);
+    font-family: var(--font-heading, 'Quicksand', sans-serif);
+    margin-bottom: 4px;
+}
+.welcome-title span {
+    color: var(--teal-bright, #3df5c8);
+}
+.welcome-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary, #7a9bbf);
+    font-family: var(--font-body);
+    margin-bottom: 32px;
+}
+.trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+}
+.trust-card {
+    background: var(--bg-raised, #182840);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-md, 10px);
+    padding: 14px 20px;
+    min-width: 150px;
+    text-align: center;
+}
+.trust-card .trust-val {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--teal-bright, #3df5c8);
+    font-family: var(--font-data, 'JetBrains Mono', monospace);
+}
+.trust-card .trust-label {
+    font-size: 0.72rem;
+    color: var(--text-secondary, #7a9bbf);
+    font-family: var(--font-body);
+    margin-top: 2px;
+}
+.example-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto 24px;
+}
+.example-card {
+    background: var(--bg-surface, #111e2e);
+    border: 1px solid var(--border-subtle, #1a2f45);
+    border-radius: var(--radius-md, 10px);
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+}
+.example-card:hover {
+    border-color: var(--teal-dim, #0e7a60);
+    box-shadow: 0 0 12px rgba(61,245,200,0.08);
+    transform: translateY(-1px);
+}
+.example-card .ec-icon {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+.example-card .ec-query {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary, #e8f0f8);
+    margin-bottom: 3px;
+    line-height: 1.3;
+}
+.example-card .ec-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted, #3d5a74);
+    line-height: 1.3;
+}
+.welcome-prompt {
+    text-align: center;
+    color: var(--text-muted, #3d5a74);
+    font-size: 0.82rem;
+    font-family: var(--font-body);
+    margin-top: 8px;
+    animation: pulse-arrow 2s ease-in-out infinite;
+}
+@keyframes pulse-arrow {
+    0%, 100% { opacity: 0.5; transform: translateY(0); }
+    50%      { opacity: 1;   transform: translateY(4px); }
+}
+</style>""", unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════
 #  SESSION STATE
 # ══════════════════════════════════════════════════════════════
-if "active_panel" not in st.session_state:
-    st.session_state.active_panel = "ALL"
-if "result" not in st.session_state:
-    st.session_state.result = None
-if "logs" not in st.session_state:
-    st.session_state.logs = []
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 if "kg_poll_count" not in st.session_state:
     st.session_state.kg_poll_count = 0
 if "safety_view" not in st.session_state:
@@ -93,45 +294,21 @@ def set_panel(name: str):
 
 
 # ══════════════════════════════════════════════════════════════
-#  EXAMPLE QUERIES (shared constant)
+#  EXAMPLE QUERIES
 # ══════════════════════════════════════════════════════════════
 EXAMPLES = [
-    "-- Select an example --",
-    # Drug interactions
     "What are the drug interactions for ibuprofen?",
     "Can I take aspirin with warfarin?",
-    "What drugs interact with metformin?",
-    # Dosage and warnings
-    "What is the recommended dosage for acetaminophen and are there any warnings?",
-    "What safety warnings exist for caffeine-containing products?",
-    "Are there any boxed warnings for lisinopril?",
-    # Adverse reactions
-    "What are the most commonly reported side effects of omeprazole?",
-    "What adverse reactions are associated with atorvastatin?",
-    "How serious are adverse events reported for metoprolol?",
-    # Active ingredients
-    "What are the active ingredients in Tylenol and what are the drug interactions?",
-    "What drugs contain acetaminophen as an active ingredient?",
-    # Overdosage and patient guidance
-    "I am taking aspirin daily. What should I know about overdosage and when to stop use?",
-    "What happens if I take too much gabapentin?",
-    # Multi-drug and comparative
-    "Compare the adverse reaction profiles of ibuprofen and naproxen.",
-    "What drugs are commonly co-reported with prednisone in adverse event reports?",
-    # Out-of-scope (expected to fail gracefully)
-    "What is the projected cost of antimicrobial resistance to GDP in 2050?",
+    "What safety warnings exist for metformin?",
+    "What are the side effects of omeprazole?",
+    "Compare adverse reactions of ibuprofen and naproxen.",
+    "What drugs are co-reported with prednisone in FAERS?",
 ]
 
 
 # ══════════════════════════════════════════════════════════════
-#  VIEW ROUTER — decides Query Page vs Results Dashboard
+#  SIDEBAR
 # ══════════════════════════════════════════════════════════════
-current_view = st.session_state.safety_view   # "query" or "results"
-
-
-# ──────────────────────────────────────────────────────────────
-#  SIDEBAR HELPERS
-# ──────────────────────────────────────────────────────────────
 def _status_row(label: str, value: str, loaded: bool) -> str:
     dot_cls = "ok" if loaded else "miss"
     return (
@@ -143,106 +320,87 @@ def _status_row(label: str, value: str, loaded: bool) -> str:
     )
 
 with st.sidebar:
-    # 1. Home button (prominent, at the top)
-    if st.sidebar.button("⬅ Return to Home", key="go_home", use_container_width=True):
-        for k in ["active_panel", "result", "logs", "show_risk_calc",
-                  "primary_last_run", "safety_view", "submitted_query"]:
-            st.session_state.pop(k, None)
+    render_brand()
+    st.divider()
+
+    if st.button("⬅ Return to Home", use_container_width=True):
         st.switch_page("app.py")
 
     st.divider()
 
-    # 2. Brand Block
-    render_brand()
-    st.divider()
-
-    # 3. View-dependent content
-    if current_view == "results":
-        # Back button for results view
-        if st.button("⬅ Back to Query", key="go_back_query", use_container_width=True):
-            st.session_state.safety_view = "query"
-            st.session_state.submitted_query = ""
+    # New Chat / Clear
+    col_new, col_clear = st.columns(2)
+    with col_new:
+        if st.button("+ New Chat", use_container_width=True):
+            st.session_state.messages = []
+            st.session_state.active_detail = None
+            st.rerun()
+    with col_clear:
+        if st.button("Clear All", use_container_width=True):
+            st.session_state.clear()
             st.rerun()
 
-        st.markdown(
-            "<div class='tp-status-label' style='font-size:0.72rem; margin-bottom:0.4rem; text-transform:uppercase; font-weight:600; color:var(--text-label);'>Current Query</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f"<div class='results-sidebar-query' style='margin-bottom:1rem;'>{st.session_state.submitted_query}</div>",
-            unsafe_allow_html=True,
-        )
-        st.divider()
+    st.divider()
 
-    # 4. Scenario Selection
-    st.markdown(
-        "<div class='tp-section-header'>Scenario Mode</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        "<div class='scenario-card primary-active'>"
-        "🟢 Safety Chat<br><small>Normal user workflow</small></div>",
-        unsafe_allow_html=True,
-    )
-    if st.button("⚠️ Go to Stress Test", key="go_stress", use_container_width=True):
+    if st.button("⚠️ Stress Test", use_container_width=True):
         st.switch_page("pages/stress_test.py")
 
     st.divider()
 
-    # 5. System Status (like Data Sources in opioid app)
-    has_results = st.session_state.result is not None
-    status_html = (
-        _status_row("RAG Engine", "Online", True)
-        + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
-        + _status_row("FAERS Data", "Connected", True)
-        + _status_row("Metrics", "Loaded" if has_results else "Standby", has_results)
-    )
-    st.markdown(
-        f"<div style='font-family:var(--font-body); font-size:0.72rem; "
-        f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
-        f"color:var(--text-muted); margin-bottom:0.4rem;'>System Status</div>"
-        + status_html,
-        unsafe_allow_html=True,
-    )
+    # Advanced settings
+    with st.expander("Advanced Settings", expanded=False):
+        method = st.selectbox("Retrieval method", ["hybrid", "dense", "sparse"], index=0)
+        top_k = st.slider("Top-K evidence chunks", 3, 15, 5)
+
+        # Auto-load Gemini key from secrets or environment
+        _default_key = ""
+        try:
+            _default_key = st.secrets.get("GEMINI_API_KEY", "")
+        except Exception:
+            pass
+        if not _default_key:
+            import os as _os
+            _default_key = _os.environ.get("GEMINI_API_KEY", "") or _os.environ.get("GOOGLE_API_KEY", "")
+
+        gemini_key = st.text_input("Gemini API key (optional)", type="password",
+                                    value=st.session_state.get("_gemini_key", _default_key),
+                                    help="Used for Gemini 2.5 Flash answer generation. Auto-loaded from secrets/environment if available.")
+        if gemini_key:
+            st.session_state["_gemini_key"] = gemini_key
 
     st.divider()
 
-    # 6. Session Controls
-    if st.button("🔄 Reset Session", use_container_width=True):
-        st.session_state.clear()
-        st.rerun()
 
-    st.divider()
 
-    # 7. Footer
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
-    st.markdown(
-        f"<div style='font-family:var(--font-data); font-size:0.62rem; "
-        f"color:var(--text-muted); letter-spacing:0.04em;'>"
-        f"Session: {now}</div>",
-        unsafe_allow_html=True,
-    )
+# Retrieve settings from sidebar (defaults if not set via expander)
+if "method" not in dir():
+    method = "hybrid"
+if "top_k" not in dir():
+    top_k = 5
+if "gemini_key" not in dir():
+    gemini_key = st.session_state.get("_gemini_key", "")
 
 
 # ══════════════════════════════════════════════════════════════
-#  RENDER HELPERS
+#  HELPER FUNCTIONS
 # ══════════════════════════════════════════════════════════════
 
 def _normalize_citations(answer: str, evidence: list) -> str:
-    """Replace any leftover raw chunk-ID citations with [Evidence N] labels."""
-    import re
+    """Replace raw chunk-ID citations with [1], [2], ... superscript format."""
     for i, ev in enumerate(evidence, 1):
         raw_id = ev.get("_raw_id", "")
         if raw_id:
-            answer = answer.replace(f"[{raw_id}]", f"[Evidence {i}]")
-    # Catch any remaining bracket citations that aren't already [Evidence N]
+            answer = answer.replace(f"[{raw_id}]", f"[{i}]")
+    # Convert [Evidence N] to [N]
+    answer = re.sub(r"\[Evidence (\d+)\]", r"[\1]", answer)
+    # Replace unknown bracket citations
     def _replace_unknown(m):
         inner = m.group(1)
-        if re.match(r"Evidence \d+", inner):
+        if re.match(r"\d+$", inner):
             return m.group(0)
         for j, ev in enumerate(evidence, 1):
             if ev.get("doc_id", "") in inner or ev.get("field", "") in inner:
-                return f"[Evidence {j}]"
+                return f"[{j}]"
         return m.group(0)
     answer = re.sub(r"\[([^\]]+)\]", _replace_unknown, answer)
     return answer
@@ -295,23 +453,10 @@ def render_response():
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-def render_evidence():
-    st.markdown(
-        "<div class='card card-evidence'><div class='card-title evidence'>Evidence / Artifacts</div>",
-        unsafe_allow_html=True,
-    )
-    r = st.session_state.result
-    if not r or not r["evidence"]:
-        st.info("Evidence will appear here after running a query.")
-    else:
-        for i, ev in enumerate(r["evidence"], 1):
-            with st.expander(f"Evidence {i}  ·  field: {ev['field']}"):
-                st.markdown(f"**Document:** `{ev['doc_id']}`")
-                st.markdown(f"**Field:** `{ev['field']}`")
-                st.markdown("**Content:**")
-                st.text(ev["content"][:600])
-    st.markdown("</div>", unsafe_allow_html=True)
 
+# ══════════════════════════════════════════════════════════════
+#  KG DATA ENRICHMENT
+# ══════════════════════════════════════════════════════════════
 
 def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
     """Derive severity, importance, and summary metrics from raw KG data."""
@@ -340,39 +485,45 @@ def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
         cnt = cr.get("report_count", 0)
         enriched_co.append({**cr, "_pct": round(cnt / max_co * 100, 1), "_importance": cnt / max_co})
 
-    most_common_rxn = max(enriched_rx, key=lambda r: r.get("report_count", 0)) if enriched_rx else None
-    most_severe_ix = next(
-        (ix for ix in enriched_ix if ix["_severity"] == "severe"),
-        enriched_ix[0] if enriched_ix else None,
-    )
     return {
         "ingredients": ingredients,
         "interactions": enriched_ix,
         "co_reported": enriched_co,
         "reactions": enriched_rx,
-        "most_common_rxn": most_common_rxn,
-        "most_severe_ix": most_severe_ix,
     }
 
 
-def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions):
-    """Build a full decision-support KG visualization with vis.js."""
-    import json as _json, math
+# ══════════════════════════════════════════════════════════════
+#  KG VISUALIZATION (vis.js — dark theme)
+# ══════════════════════════════════════════════════════════════
 
+def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions,
+                           compact=False):
+    """Build a decision-support KG visualization with vis.js in dark theme.
+
+    When compact=True the layout is tuned for the narrow detail panel: smaller
+    radius, shorter canvas, overlay-style detail card instead of a side drawer,
+    and a streamlined toolbar.
+    """
     nodes, edges, details_map = [], [], {}
     nid = 0
-    RADIUS = 210
+    RADIUS = 130 if compact else 210
+    MAX_ITEMS = 6 if compact else 8
 
-    # ── Center node ──
+    center_font = 13 if compact else 16
+    center_margin = {"top": 7, "bottom": 7, "left": 10, "right": 10} if compact else \
+                    {"top": 10, "bottom": 10, "left": 14, "right": 14}
+
+    # Center node
     center_id = nid
     nodes.append({
         "id": center_id, "label": drug_name.upper(),
         "x": 0, "y": 0, "fixed": {"x": True, "y": True},
         "color": {"background": "#7c3aed", "border": "#5b21b6",
                   "highlight": {"background": "#8b5cf6", "border": "#5b21b6"}},
-        "font": {"color": "#fff", "size": 16, "face": "Quicksand", "bold": True},
+        "font": {"color": "#fff", "size": center_font, "face": "Quicksand", "bold": True},
         "shape": "box", "borderWidth": 2,
-        "margin": {"top": 10, "bottom": 10, "left": 14, "right": 14},
+        "margin": center_margin,
     })
     details_map[center_id] = {
         "name": drug_name.title(), "type_label": "Queried Drug", "color": "#7c3aed",
@@ -380,16 +531,20 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                     {"label": "Data sources", "value": "FDA labels, FAERS, openFDA"}],
     }
 
-    # ── Category definitions ──
+    # Category definitions (dark theme colors)
     categories = []
     if ingredients:
-        categories.append(("ingredient", ingredients[:8], "#e0f2f1", "#00897b", "contains"))
+        categories.append(("ingredient", ingredients[:MAX_ITEMS],
+                           "rgba(0,137,123,0.2)", "#00897b", "contains"))
     if interactions:
-        categories.append(("interaction", interactions[:8], "#fff3e0", "#f57c00", "interacts"))
+        categories.append(("interaction", interactions[:MAX_ITEMS],
+                           "rgba(245,124,0,0.2)", "#f57c00", "interacts"))
     if co_reported:
-        categories.append(("co_reported", co_reported[:8], "#e3f2fd", "#1976d2", "co-reported"))
+        categories.append(("co_reported", co_reported[:MAX_ITEMS],
+                           "rgba(25,118,210,0.2)", "#1976d2", "co-reported"))
     if reactions:
-        categories.append(("reaction", reactions[:8], "#fce4ec", "#c62828", "adverse rxn"))
+        categories.append(("reaction", reactions[:MAX_ITEMS],
+                           "rgba(198,40,40,0.2)", "#c62828", "adverse rxn"))
 
     n_cat = len(categories)
     for ci, (cat, items, bg, border, edge_label) in enumerate(categories):
@@ -403,30 +558,33 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
             y = round(RADIUS * math.sin(angle))
 
             importance = item.get("_importance", 0.5)
-            font_sz = round(11 + importance * 5)
-            margin_v = round(6 + importance * 5)
-            margin_h = round(10 + importance * 4)
-            bw = round(1 + importance * 2, 1)
-            edge_w = round(1.0 + importance * 2.5, 1)
+            if compact:
+                font_sz = round(9 + importance * 3)
+                margin_v = round(4 + importance * 3)
+                margin_h = round(6 + importance * 3)
+                bw = round(1 + importance * 1.5, 1)
+                edge_w = round(0.8 + importance * 1.5, 1)
+            else:
+                font_sz = round(11 + importance * 5)
+                margin_v = round(6 + importance * 5)
+                margin_h = round(10 + importance * 4)
+                bw = round(1 + importance * 2, 1)
+                edge_w = round(1.0 + importance * 2.5, 1)
             sev = item.get("_severity", "")
             dashes = (sev == "mild") if sev else False
 
             if cat == "ingredient":
                 label = item["ingredient"]
-                if item.get("strength"):
+                if item.get("strength") and not compact:
                     label += f"\n({item['strength']})"
                 det_fields = [
                     {"label": "Dosage / Strength", "value": item.get("strength") or "See label"},
-                    {"label": "Clinical relevance", "value": "Check for sodium load, allergens, or inactive excipients"},
                     {"label": "Source", "value": "FDA drug label"},
                 ]
             elif cat == "interaction":
                 label = item["drug_name"]
-                desc = item.get("description") or "No description available"
                 det_fields = [
                     {"label": "Clinical severity", "value": sev.title(), "badge": sev},
-                    {"label": "Mechanism", "value": (desc[:160] + "...") if len(desc) > 160 else desc},
-                    {"label": "Recommendation", "value": "Consult prescribing information"},
                     {"label": "Evidence", "value": "FDA label-derived"},
                 ]
             elif cat == "co_reported":
@@ -444,22 +602,22 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
                     {"label": "Report count", "value": f"{cnt:,}"},
                     {"label": "Relative frequency", "value": f"{item.get('_pct', 0):.0f}%"},
                     {"label": "Severity", "value": sev.title(), "badge": sev},
-                    {"label": "Onset timing", "value": "Data not available"},
                     {"label": "Source", "value": "FAERS"},
                 ]
 
             nodes.append({
                 "id": nid, "label": label, "x": x, "y": y,
                 "color": {"background": bg, "border": border},
-                "font": {"size": font_sz, "face": "Quicksand"},
+                "font": {"size": font_sz, "face": "Quicksand", "color": "#e8f0f8"},
                 "shape": "box", "borderWidth": bw,
                 "margin": {"top": margin_v, "bottom": margin_v,
                            "left": margin_h, "right": margin_h},
             })
+            edge_font_sz = 8 if compact else 9
             edges.append({
                 "id": f"e{nid}", "from": center_id, "to": nid,
                 "label": edge_label, "width": edge_w,
-                "font": {"size": 9, "color": "#999"},
+                "font": {"size": edge_font_sz, "color": "#3d5a74"},
                 "color": {"color": border},
                 "dashes": dashes,
             })
@@ -474,73 +632,99 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     ej = _json.dumps(edges)
     dj = _json.dumps(details_map)
 
+    # ── Layout parameters that differ between compact & full ──
+    net_height = "320px" if compact else "470px"
+    spring_len = 90 if compact else 145
+    grav_const = -28 if compact else -38
+    toolbar_pad = "4px 6px" if compact else "6px 8px"
+    search_max_w = "140px" if compact else "220px"
+    search_pad = "4px 8px" if compact else "5px 10px"
+    search_fs = "11px" if compact else "12px"
+    btn_pad = "4px 8px" if compact else "5px 11px"
+    btn_fs = "10px" if compact else "11px"
+    legend_gap = "8px" if compact else "14px"
+    legend_fs = "10px" if compact else "11.5px"
+    dot_sz = "9px" if compact else "11px"
+    hint_max_w = "200px" if compact else "260px"
+    hint_fs = "10.5px" if compact else "11.5px"
+
+    # In compact mode the node-detail card is a centered overlay instead of a
+    # side drawer, so it never steals horizontal space from the graph.
+    if compact:
+        detail_css = (
+            "#kg-detail{position:absolute;left:50%;top:50%;width:88%;max-width:300px;"
+            "max-height:60%;transform:translate(-50%,-50%) scale(0.92);opacity:0;"
+            "background:rgba(17,30,46,.97);border:1px solid #2a5278;border-radius:10px;"
+            "padding:12px 14px;overflow-y:auto;pointer-events:none;"
+            "transition:transform .2s ease,opacity .2s ease;z-index:20;"
+            "font-size:12px;color:#e8f0f8;box-shadow:0 8px 32px rgba(0,0,0,.45)}"
+            "#kg-detail.visible{transform:translate(-50%,-50%) scale(1);opacity:1;"
+            "pointer-events:auto}"
+            "#kg-detail h3{margin:0 0 2px;font-size:13px}"
+        )
+    else:
+        detail_css = (
+            "#kg-detail{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);"
+            "background:rgba(17,30,46,.97);border-left:2px solid #2a5278;"
+            "padding:14px;overflow-y:auto;transform:translateX(100%);"
+            "transition:transform .25s ease;z-index:20;font-size:13px;color:#e8f0f8}"
+            "#kg-detail.visible{transform:translateX(0)}"
+            "#kg-detail h3{margin:0 0 2px;font-size:15px}"
+        )
+
     return f"""<html><head>
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
-#kg-root{{position:relative;width:100%}}
-
-/* ── toolbar ── */
-#kg-toolbar{{display:flex;gap:6px;align-items:center;padding:6px 8px;
+body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
+#kg-root{{position:relative;width:100%;overflow:hidden}}
+#kg-toolbar{{display:flex;gap:{'4px' if compact else '6px'};align-items:center;padding:{toolbar_pad};
   background:#111e2e;border:1px solid #1f3d5a;border-radius:10px 10px 0 0}}
-#kg-search{{flex:1;max-width:220px;padding:5px 10px;border:1px solid #1f3d5a;border-radius:7px;
-  font-size:12px;font-family:inherit;outline:none;background:#182840;color:#e8f0f8}}
+#kg-search{{flex:1;max-width:{search_max_w};padding:{search_pad};border:1px solid #1f3d5a;border-radius:7px;
+  font-size:{search_fs};font-family:inherit;outline:none;background:#182840;color:#e8f0f8}}
 #kg-search:focus{{border-color:#7c3aed;box-shadow:0 0 0 2px rgba(124,58,237,.15)}}
-.tb-btn{{padding:5px 11px;border:1px solid #1f3d5a;border-radius:7px;background:#182840;
-  font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:#7a9bbf;
+.tb-btn{{padding:{btn_pad};border:1px solid #1f3d5a;border-radius:7px;background:#182840;
+  font-size:{btn_fs};font-weight:700;cursor:pointer;font-family:inherit;color:#7a9bbf;
   transition:background .12s,box-shadow .12s}}
 .tb-btn:hover{{background:#1e3450;box-shadow:0 1px 4px rgba(0,0,0,.2)}}
 .tb-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
-
-/* ── graph canvas ── */
-#kg-net{{width:100%;height:470px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
+#kg-net{{width:100%;height:{net_height};border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
   background:#0b1622}}
-
-/* ── detail panel ── */
-#kg-detail{{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);
-  background:rgba(17,30,46,.97);border-left:2px solid #2a5278;
-  padding:14px;overflow-y:auto;transform:translateX(100%);
-  transition:transform .25s ease;z-index:20;font-size:13px;color:#e8f0f8}}
-#kg-detail.visible{{transform:translateX(0)}}
-#kg-detail h3{{margin:0 0 2px;font-size:15px}}
-.det-type{{font-size:11px;color:#7a9bbf;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #1f3d5a}}
-.det-row{{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;
+{detail_css}
+.det-type{{font-size:{'10px' if compact else '11px'};color:#7a9bbf;margin-bottom:{'8px' if compact else '10px'};padding-bottom:{'6px' if compact else '8px'};border-bottom:1px solid #1f3d5a}}
+.det-row{{display:flex;justify-content:space-between;align-items:baseline;padding:{'4px' if compact else '5px'} 0;
   border-bottom:1px solid #1a2f45}}
-.det-label{{font-size:11px;color:#7a9bbf;font-weight:700;flex-shrink:0;margin-right:8px}}
-.det-value{{font-size:12px;color:#e8f0f8;text-align:right}}
-.det-badge{{font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase}}
+.det-label{{font-size:{'10px' if compact else '11px'};color:#7a9bbf;font-weight:700;flex-shrink:0;margin-right:8px}}
+.det-value{{font-size:{'11px' if compact else '12px'};color:#e8f0f8;text-align:right}}
+.det-badge{{font-size:{'9px' if compact else '10px'};font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase}}
 .det-badge.severe{{background:rgba(153,27,27,0.3);color:#fca5a5}}
 .det-badge.moderate{{background:rgba(146,64,14,0.3);color:#fcd34d}}
 .det-badge.mild{{background:rgba(6,95,70,0.3);color:#86efac}}
-#kg-detail-close{{position:absolute;top:8px;right:10px;background:none;border:none;
-  font-size:16px;cursor:pointer;color:#3d5a74;font-family:inherit}}
+#kg-detail-close{{position:absolute;top:{'6px' if compact else '8px'};right:{'8px' if compact else '10px'};background:none;border:none;
+  font-size:{'14px' if compact else '16px'};cursor:pointer;color:#3d5a74;font-family:inherit}}
 #kg-detail-close:hover{{color:#e8f0f8}}
-
-/* ── hint ── */
 #kg-hint{{position:absolute;bottom:8px;left:8px;z-index:15;
   background:rgba(17,30,46,.95);border:1px solid #1f3d5a;border-radius:10px;
-  padding:9px 14px;font-size:11.5px;color:#7a9bbf;line-height:1.45;
-  box-shadow:0 2px 8px rgba(0,0,0,.2);max-width:260px;transition:opacity .3s}}
+  padding:{'7px 10px' if compact else '9px 14px'};font-size:{hint_fs};color:#7a9bbf;line-height:1.45;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);max-width:{hint_max_w};transition:opacity .3s}}
 #kg-hint b{{color:#e8f0f8}}
 #kg-hint-close{{position:absolute;top:3px;right:7px;cursor:pointer;font-size:13px;
   color:#3d5a74;background:none;border:none;padding:0;font-family:inherit}}
 #kg-hint-close:hover{{color:#e8f0f8}}
-
-/* ── legend ── */
-.legend{{display:flex;gap:14px;flex-wrap:wrap;padding:6px 8px;font-size:11.5px;
+.legend{{display:flex;gap:{legend_gap};flex-wrap:wrap;padding:{'4px 6px' if compact else '6px 8px'};font-size:{legend_fs};
   background:#111e2e;border:1px solid #1f3d5a;border-radius:0 0 10px 10px;color:#7a9bbf}}
-.legend span{{display:inline-flex;align-items:center;gap:4px}}
-.dot{{width:11px;height:11px;border-radius:3px;display:inline-block}}
+.legend span{{display:inline-flex;align-items:center;gap:{'3px' if compact else '4px'}}}
+.dot{{width:{dot_sz};height:{dot_sz};border-radius:3px;display:inline-block}}
 .legend .sep{{border-left:1px solid #1f3d5a;height:14px;margin:0 2px}}
 .legend .dash-label{{color:#3d5a74;font-style:italic}}
 </style></head><body>
 <div id="kg-root">
   <div id="kg-toolbar">
-    <input id="kg-search" placeholder="Search nodes..." autocomplete="off" title="Type to filter nodes by name — matching nodes stay visible while others fade out"/>
-    <button class="tb-btn" id="kg-focus-btn" title="Click a node first, then press Focus to isolate it and its direct connections">Focus</button>
-    <button class="tb-btn" id="kg-reset-btn" title="Clear all filters and restore the full graph to its original state">Reset</button>
-    <button class="tb-btn" id="kg-fit-btn" title="Zoom and pan to fit the entire graph within the view">Fit</button>
+    <input id="kg-search" placeholder="Search nodes..." autocomplete="off"
+      title="Type to filter nodes by name"/>
+    <button class="tb-btn" id="kg-focus-btn" title="Focus on selected node">Focus</button>
+    <button class="tb-btn" id="kg-reset-btn" title="Reset graph">Reset</button>
+    <button class="tb-btn" id="kg-fit-btn" title="Fit to view">Fit</button>
   </div>
   <div id="kg-net"></div>
   <div id="kg-detail">
@@ -549,19 +733,16 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
   </div>
   <div id="kg-hint">
     <button id="kg-hint-close">&times;</button>
-    <b>Click a node</b> for detailed clinical info.
-    <b>Drag nodes</b> to rearrange the layout and
-    isolate relationships. Larger nodes indicate higher
-    frequency or importance.
+    <b>Click a node</b> for clinical info.
+    {'<br/>' if not compact else ' '}<b>Drag nodes</b> to rearrange.
   </div>
 </div>
 <div class="legend">
-  <span><span class="dot" style="background:#e0f2f1;border:1px solid #00897b"></span> Ingredient</span>
-  <span><span class="dot" style="background:#fff3e0;border:1px solid #f57c00"></span> Interaction</span>
-  <span><span class="dot" style="background:#e3f2fd;border:1px solid #1976d2"></span> Co-reported</span>
-  <span><span class="dot" style="background:#fce4ec;border:1px solid #c62828"></span> Adverse Rxn</span>
-  <span class="sep"></span>
-  <span class="dash-label">Dashed = milder evidence</span>
+  <span><span class="dot" style="background:rgba(0,137,123,0.4);border:1px solid #00897b"></span> Ingredient</span>
+  <span><span class="dot" style="background:rgba(245,124,0,0.4);border:1px solid #f57c00"></span> Interaction</span>
+  <span><span class="dot" style="background:rgba(25,118,210,0.4);border:1px solid #1976d2"></span> Co-reported</span>
+  <span><span class="dot" style="background:rgba(198,40,40,0.4);border:1px solid #c62828"></span> Adverse Rxn</span>
+  {'<span class="sep"></span><span class="dash-label">Dashed = milder evidence</span>' if not compact else ''}
 </div>
 <script>
 var nodesData={nj};
@@ -572,8 +753,8 @@ var edges=new vis.DataSet(edgesData);
 var container=document.getElementById("kg-net");
 var network=new vis.Network(container,{{nodes:nodes,edges:edges}},{{
   physics:{{solver:"forceAtlas2Based",
-    forceAtlas2Based:{{gravitationalConstant:-38,centralGravity:0.006,
-      springLength:145,springConstant:0.04,damping:0.45}},
+    forceAtlas2Based:{{gravitationalConstant:{grav_const},centralGravity:0.006,
+      springLength:{spring_len},springConstant:0.04,damping:0.45}},
     stabilization:{{iterations:160}}}},
   interaction:{{hover:true,tooltipDelay:120,zoomView:true,dragView:true}},
   edges:{{smooth:{{type:"cubicBezier",roundness:0.4}}}}
@@ -586,7 +767,6 @@ network.once("stabilizationIterationsDone",function(){{
   network.fit({{animation:{{duration:400,easingFunction:"easeInOutQuad"}}}});
 }});
 
-/* ── Click → detail panel ── */
 function esc(s){{var d=document.createElement("div");d.textContent=s;return d.innerHTML}}
 function showDetail(id){{
   var d=detailsMap[id];if(!d)return;
@@ -609,7 +789,6 @@ network.on("click",function(p){{
 }});
 document.getElementById("kg-detail-close").addEventListener("click",hideDetail);
 
-/* ── Search ── */
 document.getElementById("kg-search").addEventListener("input",function(){{
   var q=this.value.toLowerCase().trim();
   if(!q){{resetView();return}}
@@ -618,7 +797,6 @@ document.getElementById("kg-search").addEventListener("input",function(){{
   if(keep.length>1)fadeExcept(keep);
 }});
 
-/* ── Focus / fade ── */
 function fadeExcept(keepIds){{
   var nu=[],eu=[];
   nodes.forEach(function(n){{
@@ -641,7 +819,6 @@ document.getElementById("kg-focus-btn").addEventListener("click",function(){{
   this.classList.add("active");
 }});
 
-/* ── Reset ── */
 function resetView(){{
   nodes.clear();nodes.add(JSON.parse(origN));
   edges.clear();edges.add(JSON.parse(origE));
@@ -652,12 +829,10 @@ function resetView(){{
 }}
 document.getElementById("kg-reset-btn").addEventListener("click",resetView);
 
-/* ── Fit ── */
 document.getElementById("kg-fit-btn").addEventListener("click",function(){{
   network.fit({{animation:{{duration:350,easingFunction:"easeInOutQuad"}}}});
 }});
 
-/* ── Dismiss hint ── */
 document.getElementById("kg-hint-close").addEventListener("click",function(){{
   var h=document.getElementById("kg-hint");h.style.opacity="0";
   setTimeout(function(){{h.style.display="none"}},300);
@@ -665,9 +840,287 @@ document.getElementById("kg-hint-close").addEventListener("click",function(){{
 </script></body></html>"""
 
 
-# ──────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════
+#  BODY-REGION HEATMAP
+# ══════════════════════════════════════════════════════════════
+
+_SYMPTOM_REGION_MAP: dict[str, str] = {}
+
+_REGION_KEYWORDS: dict[str, list[str]] = {
+    "head": [
+        "headache", "migraine", "dizziness", "vertigo", "syncope", "tinnitus",
+        "blurred vision", "vision", "visual", "eye", "ear", "hearing",
+        "somnolence", "insomnia", "confusion", "seizure", "tremor",
+        "anxiety", "depression", "hallucination", "amnesia", "coma",
+        "cerebral", "encephalopathy", "meningitis", "stroke",
+    ],
+    "chest": [
+        "chest pain", "palpitation", "tachycardia", "bradycardia", "arrhythmia",
+        "dyspnoea", "dyspnea", "cough", "bronchospasm", "asthma",
+        "pneumonia", "pulmonary", "respiratory", "cardiac", "myocardial",
+        "heart", "angina", "hypertension", "hypotension", "oedema",
+        "edema", "pleural", "wheezing",
+    ],
+    "abdomen": [
+        "nausea", "vomiting", "diarrhoea", "diarrhea", "constipation",
+        "abdominal", "stomach", "gastro", "gi ", "hepat", "liver",
+        "pancreat", "intestin", "colitis", "dyspepsia", "flatulence",
+        "rectal", "jaundice", "biliary", "spleen", "ascites",
+    ],
+    "arms": [
+        "arm", "hand", "wrist", "elbow", "shoulder", "upper extremity",
+        "carpal", "finger", "grip",
+    ],
+    "legs": [
+        "leg", "foot", "feet", "ankle", "knee", "hip", "lower extremity",
+        "gait", "claudication", "deep vein", "dvt", "toe",
+    ],
+    "skin": [
+        "rash", "pruritus", "urticaria", "dermatitis", "erythema",
+        "skin", "alopecia", "acne", "photosensitivity", "blister",
+        "stevens-johnson", "toxic epidermal", "angioedema", "injection site",
+        "swelling", "bruising", "petechiae", "purpura", "cellulitis",
+    ],
+    "systemic": [
+        "fatigue", "fever", "pyrexia", "malaise", "weight", "anaphyla",
+        "death", "multi-organ", "sepsis", "infection", "anaemia", "anemia",
+        "thrombocytopenia", "leukopenia", "neutropenia", "lymph",
+        "blood", "coagul", "haemorrhage", "hemorrhage", "pain",
+        "arthralgia", "myalgia", "back pain", "muscle",
+    ],
+}
+
+for _region, _kws in _REGION_KEYWORDS.items():
+    for _kw in _kws:
+        _SYMPTOM_REGION_MAP[_kw] = _region
+
+
+def map_symptoms_to_regions(symptoms: list[str]) -> dict[str, int]:
+    """Map symptom strings to body regions and return counts per region."""
+    counts: dict[str, int] = {r: 0 for r in _REGION_KEYWORDS}
+    counts["unknown"] = 0
+    for sym in symptoms:
+        low = sym.lower().strip()
+        matched = False
+        for kw, region in _SYMPTOM_REGION_MAP.items():
+            if kw in low:
+                counts[region] += 1
+                matched = True
+                break
+        if not matched:
+            counts["unknown"] += 1
+    return counts
+
+
+def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str]) -> str:
+    """Return HTML with the human body image overlaid with radial gradient circles (dark theme)."""
+    img_path = Path(__file__).resolve().parent.parent / "assets" / "images" / "humanbody.jpg"
+    img_b64 = base64.b64encode(img_path.read_bytes()).decode()
+
+    body_max = max(
+        (v for k, v in region_counts.items() if k not in ("unknown", "skin", "systemic")),
+        default=1,
+    ) or 1
+    total = sum(region_counts.values())
+    unknown = region_counts.get("unknown", 0)
+
+    def _rgb(region: str) -> str | None:
+        c = region_counts.get(region, 0)
+        if c == 0:
+            return None
+        frac = c / body_max
+        if frac > 0.66:
+            return "220,38,38"
+        elif frac > 0.33:
+            return "245,158,11"
+        return "59,130,246"
+
+    def _size(region: str) -> int:
+        c = region_counts.get(region, 0)
+        if c == 0:
+            return 0
+        return 40 + int(40 * (c / body_max))
+
+    region_positions: dict[str, list[dict[str, float]]] = {
+        "head":    [{"x": 47.5, "y": 8.6}],
+        "chest":   [{"x": 47.5, "y": 28.8}],
+        "abdomen": [{"x": 47.5, "y": 44.2}],
+        "arms":    [{"x": 17.5, "y": 34.0}, {"x": 77.3, "y": 34.0}],
+        "legs":    [{"x": 39.0, "y": 68.0}, {"x": 57.7, "y": 68.0}],
+    }
+
+    circles: list[str] = []
+    for region, positions in region_positions.items():
+        rgb = _rgb(region)
+        if not rgb:
+            continue
+        sz = _size(region)
+        cnt = region_counts.get(region, 0)
+        for i, pos in enumerate(positions):
+            label = f"<span class='cnt'>{cnt}</span>" if i == 0 else ""
+            circles.append(
+                f"<div class='heat-dot' style='"
+                f"left:{pos['x']}%;top:{pos['y']}%;"
+                f"width:{sz}px;height:{sz}px;"
+                f"background:radial-gradient(circle,"
+                f"rgba({rgb},0.85) 0%,rgba({rgb},0.45) 30%,"
+                f"rgba({rgb},0.15) 55%,transparent 72%);'>"
+                f"{label}</div>"
+            )
+    circles_html = "\n    ".join(circles)
+
+    skin_count = region_counts.get("skin", 0)
+    skin_overlay = ""
+    skin_legend = ""
+    if skin_count > 0:
+        sk_frac = skin_count / body_max
+        sk_hex = "#dc2626" if sk_frac > 0.66 else "#f59e0b" if sk_frac > 0.33 else "#3b82f6"
+        skin_overlay = (
+            f"<div style='position:absolute;left:6%;top:1%;width:87%;height:96%;"
+            f"border:2.5px dashed {sk_hex};border-radius:35%;opacity:0.55;"
+            f"pointer-events:none;z-index:1'></div>"
+        )
+        skin_legend = f"<span>| Dashed = Skin ({skin_count})</span>"
+
+    return f"""<html><head><style>
+*{{box-sizing:border-box}}
+body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
+.bm-wrap{{text-align:center;padding:4px 0}}
+.bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
+.bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
+.body-ctr{{position:relative;display:inline-block;width:220px;overflow:hidden;cursor:zoom-in}}
+.body-img{{display:block;width:192%;max-width:none;opacity:0.82}}
+.heat-dot{{position:absolute;border-radius:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}}
+.cnt{{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)}}
+.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#7a9bbf;
+  background:rgba(17,30,46,0.85);padding:2px 7px;border-radius:8px;z-index:3;
+  display:flex;align-items:center;gap:3px;pointer-events:none}}
+.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf}}
+.legend span{{display:inline-flex;align-items:center;gap:3px}}
+.ldot{{width:10px;height:10px;border-radius:50%;display:inline-block}}
+.how-to{{font-size:10px;color:#3d5a74;margin-top:6px;font-style:italic;line-height:1.4}}
+#zoom-overlay{{display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.82);flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;
+  backdrop-filter:blur(6px)}}
+#zoom-inner{{background:#111e2e;border-radius:14px;padding:16px 20px 12px;
+  box-shadow:0 12px 48px rgba(0,0,0,0.45);position:relative;cursor:default;
+  max-width:90vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}}
+#zoom-inner .body-ctr{{width:min(420px,38vh)!important;cursor:default;overflow:hidden}}
+#zoom-inner .body-img{{opacity:1!important}}
+#zoom-inner .zoom-hint{{display:none}}
+#zoom-inner .cnt{{font-size:13px}}
+.zoom-x{{position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;font-size:20px;color:#7a9bbf;
+  transition:background 0.2s,color 0.2s;z-index:10000}}
+.zoom-x:hover{{background:rgba(255,255,255,0.16);color:#e8f0f8}}
+</style></head><body>
+<div class="bm-wrap">
+  <div class="bm-title">Symptom Body Map</div>
+  <div class="bm-sub">{total} symptom(s) mapped{f' &middot; {unknown} unclassified' if unknown else ''}</div>
+  <div class="body-ctr" id="body-main">
+    <img class="body-img" src="data:image/jpeg;base64,{img_b64}" alt="body outline"/>
+    {skin_overlay}
+    {circles_html}
+    <div class="zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+      stroke="#7a9bbf" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+      Click to zoom</div>
+  </div>
+  <div class="legend">
+    <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
+    <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
+    <span><span class="ldot" style="background:#dc2626"></span> High</span>
+    {skin_legend}
+  </div>
+  <div class="how-to">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
+  Numbers indicate symptom count per region.</div>
+</div>
+<div id="zoom-overlay">
+  <div id="zoom-inner">
+    <button class="zoom-x" id="zoom-x-btn" title="Close">&times;</button>
+    <div id="zoom-clone-slot"></div>
+    <div class="legend" style="margin-top:12px">
+      <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
+      <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
+      <span><span class="ldot" style="background:#dc2626"></span> High</span>
+      {skin_legend}
+    </div>
+    <div class="how-to" style="margin-top:8px">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
+    Numbers indicate symptom count per region.</div>
+  </div>
+</div>
+<script>
+(function(){{
+  var main=document.getElementById('body-main');
+  var overlay=document.getElementById('zoom-overlay');
+  var inner=document.getElementById('zoom-inner');
+  var xBtn=document.getElementById('zoom-x-btn');
+  var origFrameStyle='';
+  function expandFrame(){{
+    try{{
+      var f=window.frameElement;
+      if(f){{
+        origFrameStyle=f.getAttribute('style')||'';
+        f.style.position='fixed';
+        f.style.inset='0';
+        f.style.width='100vw';
+        f.style.height='100vh';
+        f.style.zIndex='9999';
+        f.style.background='transparent';
+      }}
+    }}catch(e){{}}
+  }}
+  function restoreFrame(){{
+    try{{
+      var f=window.frameElement;
+      if(f) f.setAttribute('style',origFrameStyle);
+    }}catch(e){{}}
+  }}
+  var slot=document.getElementById('zoom-clone-slot');
+  function openLightbox(){{
+    expandFrame();
+    var clone=main.cloneNode(true);
+    clone.removeAttribute('id');
+    slot.innerHTML='';
+    slot.appendChild(clone);
+    overlay.style.display='flex';
+  }}
+  function closeLightbox(){{
+    overlay.style.display='none';
+    slot.innerHTML='';
+    restoreFrame();
+  }}
+  main.addEventListener('click',openLightbox);
+  overlay.addEventListener('click',function(e){{
+    if(e.target===overlay) closeLightbox();
+  }});
+  xBtn.addEventListener('click',function(e){{
+    e.stopPropagation();
+    closeLightbox();
+  }});
+  document.addEventListener('keydown',function(e){{
+    if(e.key==='Escape'&&overlay.style.display==='flex') closeLightbox();
+  }});
+}})();
+</script>
+</body></html>"""
+
+
+def _extract_symptoms_from_result(r: dict) -> list[str]:
+    """Pull symptom strings from KG reactions + evidence field names."""
+    symptoms = []
+    for rx in r.get("kg_reactions", []):
+        name = rx.get("reaction", "")
+        if name:
+            symptoms.append(name)
+    return symptoms
+
+
+# ══════════════════════════════════════════════════════════════
 #  PERSONALIZED RISK CALCULATOR
-# ──────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════
 
 _COMORBIDITY_WEIGHTS = {
     "Liver disease (hepatic impairment)": 0.9,
@@ -687,10 +1140,9 @@ def _compute_personalized_risk(age_group, comorbidities,
                                 dosage, duration, concurrent_meds,
                                 reactions, interactions):
     """Compute a personalized risk score from transparent, justified factors."""
-    factors = []  # list of (label, value, justification)
-    score = 1.0   # baseline — every medication carries minimal inherent risk
+    factors = []
+    score = 1.0
 
-    # ── Drug-data factors (derived from the KG) ──
     n_sev_ix = sum(1 for ix in interactions if ix.get("_severity") == "severe")
     n_mod_ix = sum(1 for ix in interactions if ix.get("_severity") == "moderate")
     n_sev_rx = sum(1 for rx in reactions if rx.get("_severity") == "severe")
@@ -721,7 +1173,6 @@ def _compute_personalized_risk(age_group, comorbidities,
                          "These adverse events appear at moderate rates in FAERS"))
         score += v
 
-    # ── Patient factors ──
     age_mult = {"Pediatric (<18)": 0.6, "Adult (18–64)": 0.0, "Elderly (65+)": 0.8}
     age_add = age_mult.get(age_group, 0.0)
     if age_add:
@@ -782,7 +1233,6 @@ def _compute_personalized_risk(age_group, comorbidities,
 
     score = min(10.0, max(0.0, round(score, 1)))
 
-    # ── Contextual warnings ──
     warnings = []
     sev_ix = [ix for ix in interactions if ix.get("_severity") == "severe"]
     sev_rx = [rx for rx in reactions if rx.get("_severity") == "severe"]
@@ -820,7 +1270,7 @@ def _compute_personalized_risk(age_group, comorbidities,
 
 
 def _build_risk_gauge_html(score):
-    """Return an HTML/SVG semicircle gauge for the personalized risk score."""
+    """Return an HTML/SVG semicircle gauge for the personalized risk score (dark theme)."""
     frac = score / 10.0
     arc_len = 251.3
     fill = round(frac * arc_len, 1)
@@ -834,17 +1284,17 @@ def _build_risk_gauge_html(score):
     <div style="text-align:center;padding:8px 0">
       <svg viewBox="0 0 200 115" width="220" height="130">
         <path d="M 20 100 A 80 80 0 0 1 180 100"
-              stroke="#1f3d5a" stroke-width="16" fill="none" stroke-linecap="round"/>
+              stroke="#1a2f45" stroke-width="16" fill="none" stroke-linecap="round"/>
         <path d="M 20 100 A 80 80 0 0 1 180 100"
               stroke="{color}" stroke-width="16" fill="none" stroke-linecap="round"
               stroke-dasharray="{fill} {arc_len}"
               style="transition:stroke-dasharray .6s ease"/>
         <text x="100" y="80" text-anchor="middle"
               font-size="28" font-weight="800" fill="{color}"
-              font-family="'Quicksand',serif">{score:.1f}</text>
+              font-family="Quicksand,sans-serif">{score:.1f}</text>
         <text x="100" y="98" text-anchor="middle"
               font-size="11" fill="#7a9bbf"
-              font-family="'Quicksand',serif">{label}</text>
+              font-family="Quicksand,sans-serif">{label}</text>
       </svg>
     </div>"""
 
@@ -861,7 +1311,7 @@ def _parse_reference_dose(ingredients):
 
 
 def _build_dosage_bar_html(dose_val, dose_unit, ingredient, selected_level):
-    """HTML bar showing Low / Standard / High dose ranges with the selected level highlighted."""
+    """HTML bar showing Low / Standard / High dose ranges (dark theme)."""
     if dose_val is None:
         return ""
     low = round(dose_val * 0.5, 1)
@@ -875,13 +1325,13 @@ def _build_dosage_bar_html(dose_val, dose_unit, ingredient, selected_level):
     sel_color, sel_idx = sel_colors.get(selected_level, ("#d97706", 1))
 
     segments = [
-        (f"Low\n≤ {_fmt(low)} {dose_unit}", "#d1fae5", "#059669", 0),
-        (f"Standard\n~{_fmt(std)} {dose_unit}", "#fef3c7", "#d97706", 1),
-        (f"High\n≥ {_fmt(high)} {dose_unit}", "#fee2e2", "#dc2626", 2),
+        (f"Low\n≤ {_fmt(low)} {dose_unit}", "rgba(5,150,105,0.12)", "#059669", 0),
+        (f"Standard\n~{_fmt(std)} {dose_unit}", "rgba(217,119,6,0.12)", "#d97706", 1),
+        (f"High\n≥ {_fmt(high)} {dose_unit}", "rgba(220,38,38,0.12)", "#dc2626", 2),
     ]
     bar_html = (
-        f"<div style='margin:8px 0 4px;font-size:11px;color:#6b7280'>"
-        f"Dosage reference for <b>{ingredient}</b> ({_fmt(std)} {dose_unit} labeled strength)</div>"
+        f"<div style='margin:8px 0 4px;font-size:11px;color:#7a9bbf'>"
+        f"Dosage reference for <b style=\"color:#e8f0f8\">{ingredient}</b> ({_fmt(std)} {dose_unit} labeled strength)</div>"
         f"<div style='display:flex;gap:3px;margin-bottom:6px'>"
     )
     for label, bg, border, idx in segments:
@@ -894,17 +1344,17 @@ def _build_dosage_bar_html(dose_val, dose_unit, ingredient, selected_level):
             f"<div style='flex:1;text-align:center;padding:8px 4px;border-radius:8px;"
             f"background:{bg};border:{bdr};opacity:{opacity};line-height:1.35'>"
             f"<div style='font-weight:{weight};font-size:12px;color:{border}'>{parts[0]}</div>"
-            f"<div style='font-size:11px;color:#374151'>{parts[1]}</div></div>"
+            f"<div style='font-size:11px;color:#7a9bbf'>{parts[1]}</div></div>"
         )
     bar_html += "</div>"
     return bar_html
 
 
 def _render_risk_calculator(enriched, drug_name):
-    """Render the personalized risk assessment panel."""
+    """Render the personalized risk assessment panel (dark theme)."""
     st.markdown(
-        "<div class='card' style='border:2px solid #ede9fe;'>"
-        "<div class='card-title' style='color:#7c3aed;'>"
+        f"<div style='border:2px solid #2a5278;border-radius:10px;padding:16px;margin-bottom:8px'>"
+        f"<div style='color:#7c3aed;font-size:16px;font-weight:800;margin-bottom:12px;'>"
         f"Personalized Risk Assessment — {drug_name.title()}</div>",
         unsafe_allow_html=True,
     )
@@ -933,7 +1383,6 @@ def _render_risk_calculator(enriched, drug_name):
                                       "Chronic (>12 wk)"],
                                      key="risk_duration")
 
-        # Dosage reference bar
         dose_val, dose_unit, dose_ing = _parse_reference_dose(enriched["ingredients"])
         dose_bar = _build_dosage_bar_html(dose_val, dose_unit, dose_ing, dosage)
         if dose_bar:
@@ -961,13 +1410,13 @@ def _render_risk_calculator(enriched, drug_name):
             st.markdown(
                 f"<div style='margin:5px 0 1px'>"
                 f"<div style='display:flex;align-items:center;gap:8px;font-size:12px'>"
-                f"<span style='flex:1;color:#7a9bbf;font-weight:700'>{label}</span>"
+                f"<span style='flex:1;color:#e8f0f8;font-weight:700'>{label}</span>"
                 f"<span style='width:50px;text-align:right;font-weight:800;"
                 f"color:{bar_color}'>{sign}{val}</span>"
                 f"<div style='width:70px;height:6px;background:#1a2f45;border-radius:3px'>"
                 f"<div style='width:{bar_w}%;height:100%;background:{bar_color};"
                 f"border-radius:3px'></div></div></div>"
-                f"<div style='font-size:11px;color:#3d5a74;margin:1px 0 0 4px;'>"
+                f"<div style='font-size:11px;color:#5a8aaa;margin:1px 0 0 4px;'>"
                 f"{justification}</div></div>",
                 unsafe_allow_html=True,
             )
@@ -978,7 +1427,7 @@ def _render_risk_calculator(enriched, drug_name):
         icon = "&#9888;" if "risk" in w.lower() or "severe" in w.lower() else "&#9432;"
         st.markdown(
             f"<div style='padding:6px 10px;margin:4px 0;background:rgba(245,158,11,0.08);"
-            f"border-left:4px solid #d97706;border-radius:6px;font-size:13px;color:#fcd34d'>"
+            f"border-left:4px solid #d97706;border-radius:6px;font-size:13px;color:#e8f0f8'>"
             f"{icon}&nbsp; {w}</div>",
             unsafe_allow_html=True,
         )
@@ -1446,278 +1895,302 @@ def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str])
             return "245,158,11"
         return "59,130,246"
 
-    def _size(region: str) -> int:
-        c = region_counts.get(region, 0)
-        if c == 0:
-            return 0
-        return 40 + int(40 * (c / body_max))
 
-    # Positions as % of the cropped front-figure view (left 52% of image)
-    region_positions: dict[str, list[dict[str, float]]] = {
-        "head":    [{"x": 47.5, "y": 8.6}],
-        "chest":   [{"x": 47.5, "y": 28.8}],
-        "abdomen": [{"x": 47.5, "y": 44.2}],
-        "arms":    [{"x": 17.5, "y": 34.0}, {"x": 77.3, "y": 34.0}],
-        "legs":    [{"x": 39.0, "y": 68.0}, {"x": 57.7, "y": 68.0}],
-    }
+@st.dialog("Personalized Risk Assessment", width="large")
+def _show_risk_dialog(enriched, drug_name):
+    """Lightbox modal for the personalized risk assessment calculator."""
+    _render_risk_calculator(enriched, drug_name)
 
-    circles: list[str] = []
-    for region, positions in region_positions.items():
-        rgb = _rgb(region)
-        if not rgb:
-            continue
-        sz = _size(region)
-        cnt = region_counts.get(region, 0)
-        for i, pos in enumerate(positions):
-            label = f"<span class='cnt'>{cnt}</span>" if i == 0 else ""
-            circles.append(
-                f"<div class='heat-dot' style='"
-                f"left:{pos['x']}%;top:{pos['y']}%;"
-                f"width:{sz}px;height:{sz}px;"
-                f"background:radial-gradient(circle,"
-                f"rgba({rgb},0.85) 0%,rgba({rgb},0.45) 30%,"
-                f"rgba({rgb},0.15) 55%,transparent 72%);'>"
-                f"{label}</div>"
-            )
-    circles_html = "\n    ".join(circles)
 
-    skin_count = region_counts.get("skin", 0)
-    skin_overlay = ""
-    skin_legend = ""
-    if skin_count > 0:
-        sk_frac = skin_count / body_max
-        sk_hex = "#dc2626" if sk_frac > 0.66 else "#f59e0b" if sk_frac > 0.33 else "#3b82f6"
-        skin_overlay = (
-            f"<div style='position:absolute;left:6%;top:1%;width:87%;height:96%;"
-            f"border:2.5px dashed {sk_hex};border-radius:35%;opacity:0.55;"
-            f"pointer-events:none;z-index:1'></div>"
+# ══════════════════════════════════════════════════════════════
+#  SIDE-PANEL RENDERERS (Phase 2C)
+# ══════════════════════════════════════════════════════════════
+
+def _render_evidence_panel(result):
+    """Render the evidence sources in the right panel."""
+    evidence = result.get("evidence", [])
+    if not evidence:
+        st.info("No evidence chunks available for this query.")
+        return
+
+    st.markdown(f"### Evidence Sources ({len(evidence)})")
+    for i, ev in enumerate(evidence, 1):
+        badge = _get_source_badge(ev.get("field", ""))
+        st.markdown(
+            f"<div class='evidence-chunk'>"
+            f"<div class='evidence-chunk-header'>"
+            f"<span class='cite-pill'>{i}</span> {badge} "
+            f"<code>{ev.get('field', '')}</code>"
+            f"</div>"
+            f"<div class='evidence-chunk-text'>"
+            f"{ev.get('content', '')}"
+            f"</div><div style='font-size:10px; color:var(--text-muted); margin-top:4px;'>"
+            f"Doc ID: {ev.get('doc_id', 'N/A')}</div></div>",
+            unsafe_allow_html=True,
         )
-        skin_legend = f"<span>| Dashed = Skin ({skin_count})</span>"
 
-    return f"""<html><head><style>
-*{{box-sizing:border-box}}
-body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",serif}}
-.bm-wrap{{text-align:center;padding:4px 0}}
-.bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
-.bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
-.body-ctr{{position:relative;display:inline-block;width:220px;overflow:hidden;cursor:zoom-in}}
-.body-img{{display:block;width:192%;max-width:none;opacity:0.82}}
-.heat-dot{{position:absolute;border-radius:50%;transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}}
-.cnt{{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)}}
-.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#7a9bbf;
-  background:rgba(17,30,46,0.85);padding:2px 7px;border-radius:8px;z-index:3;
-  display:flex;align-items:center;gap:3px;pointer-events:none}}
-.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf}}
-.legend span{{display:inline-flex;align-items:center;gap:3px}}
-.ldot{{width:10px;height:10px;border-radius:50%;display:inline-block}}
-.how-to{{font-size:10px;color:#3d5a74;margin-top:6px;font-style:italic;line-height:1.4}}
-#zoom-overlay{{display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,0.82);flex-direction:column;
-  align-items:center;justify-content:center;cursor:pointer;
-  backdrop-filter:blur(6px)}}
-#zoom-inner{{background:#111e2e;border-radius:14px;padding:16px 20px 12px;
-  box-shadow:0 12px 48px rgba(0,0,0,0.6);position:relative;cursor:default;
-  max-width:90vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}}
-#zoom-inner .body-ctr{{width:min(420px,38vh)!important;cursor:default;overflow:hidden}}
-#zoom-inner .body-img{{opacity:1!important}}
-#zoom-inner .zoom-hint{{display:none}}
-#zoom-inner .cnt{{font-size:13px}}
-.zoom-x{{position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;font-size:20px;color:#7a9bbf;
-  transition:background 0.2s,color 0.2s;z-index:10000}}
-.zoom-x:hover{{background:rgba(255,255,255,0.16);color:#e8f0f8}}
-</style></head><body>
-<div class="bm-wrap">
-  <div class="bm-title">Symptom Body Map</div>
-  <div class="bm-sub">{total} symptom(s) mapped{f' &middot; {unknown} unclassified' if unknown else ''}</div>
-  <div class="body-ctr" id="body-main">
-    <img class="body-img" src="data:image/jpeg;base64,{img_b64}" alt="body outline"/>
-    {skin_overlay}
-    {circles_html}
-    <div class="zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-      stroke="#6b7280" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-      Click to zoom</div>
-  </div>
-  <div class="legend">
-    <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
-    <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
-    <span><span class="ldot" style="background:#dc2626"></span> High</span>
-    {skin_legend}
-  </div>
-  <div class="how-to">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-  Numbers indicate symptom count per region.</div>
-</div>
-<div id="zoom-overlay">
-  <div id="zoom-inner">
-    <button class="zoom-x" id="zoom-x-btn" title="Close">&times;</button>
-    <div id="zoom-clone-slot"></div>
-    <div class="legend" style="margin-top:12px">
-      <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
-      <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
-      <span><span class="ldot" style="background:#dc2626"></span> High</span>
-      {skin_legend}
-    </div>
-    <div class="how-to" style="margin-top:8px">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-    Numbers indicate symptom count per region.</div>
-  </div>
-</div>
-<script>
-(function(){{
-  var main=document.getElementById('body-main');
-  var overlay=document.getElementById('zoom-overlay');
-  var inner=document.getElementById('zoom-inner');
-  var xBtn=document.getElementById('zoom-x-btn');
-  var origFrameStyle='';
-  function expandFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f){{
-        origFrameStyle=f.getAttribute('style')||'';
-        f.style.position='fixed';
-        f.style.inset='0';
-        f.style.width='100vw';
-        f.style.height='100vh';
-        f.style.zIndex='9999';
-        f.style.background='transparent';
-      }}
-    }}catch(e){{}}
-  }}
-  function restoreFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f) f.setAttribute('style',origFrameStyle);
-    }}catch(e){{}}
-  }}
-  var slot=document.getElementById('zoom-clone-slot');
-  function openLightbox(){{
-    expandFrame();
-    var clone=main.cloneNode(true);
-    clone.removeAttribute('id');
-    slot.innerHTML='';
-    slot.appendChild(clone);
-    overlay.style.display='flex';
-  }}
-  function closeLightbox(){{
-    overlay.style.display='none';
-    slot.innerHTML='';
-    restoreFrame();
-  }}
-  main.addEventListener('click',openLightbox);
-  overlay.addEventListener('click',function(e){{
-    if(e.target===overlay) closeLightbox();
-  }});
-  xBtn.addEventListener('click',function(e){{
-    e.stopPropagation();
-    closeLightbox();
-  }});
-  document.addEventListener('keydown',function(e){{
-    if(e.key==='Escape'&&overlay.style.display==='flex') closeLightbox();
-  }});
-}})();
-</script>
-</body></html>"""
-
-
-def _extract_symptoms_from_result(r: dict) -> list[str]:
-    """Pull symptom strings from KG reactions + evidence field names."""
-    symptoms = []
-    for rx in r.get("kg_reactions", []):
-        name = rx.get("reaction", "")
-        if name:
-            symptoms.append(name)
-    return symptoms
-
-
-def render_body_heatmap():
-    """Render the body-region heatmap card."""
-    r = st.session_state.result
-    if not r:
+def _render_kg_panel(result):
+    """Render Knowledge Graph visualization and data in the right panel."""
+    if not result.get("kg_available"):
+        st.info("Knowledge Graph data not available for this query.")
         return
-    symptoms = _extract_symptoms_from_result(r)
+
+    raw_ix = result.get("kg_interactions", [])
+    raw_co = result.get("kg_co_reported", [])
+    raw_rx = result.get("kg_reactions", [])
+    raw_ing = result.get("kg_ingredients", [])
+
+    enriched = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
+
+    kg_id = result.get("kg_identity") or {}
+    generic = kg_id.get("generic_name", "")
+    if generic:
+        st.markdown(f"### Knowledge Graph: {generic.title()}")
+    else:
+        st.markdown("### Knowledge Graph")
+
+    drug_name = result.get("drug_name") or "Drug"
+    html = _build_kg_network_html(
+        drug_name,
+        enriched["ingredients"],
+        enriched["interactions"],
+        enriched["co_reported"],
+        enriched["reactions"],
+        compact=True,
+    )
+    components.html(html, height=390, scrolling=False)
+
+    # Compact pill summaries — inline flow to save vertical space
+    pill_html = ""
+    if raw_ing:
+        pill_html += "<div style='margin:6px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Ingredients</div>"
+        pill_html += "".join(
+            f"<span class='kg-pill ingredient' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+            f"{i['ingredient']}</span>"
+            for i in raw_ing[:6]
+        )
+    if raw_ix:
+        pill_html += "<div style='margin:8px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Interactions</div>"
+        for ix in enriched["interactions"][:4]:
+            sev = ix.get("_severity", "mild")
+            pill_html += (
+                f"<span class='kg-pill interaction' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+                f"{ix['drug_name']}</span>"
+                f"<span class='kg-risk-badge {sev}' style='font-size:9px'>{sev}</span> "
+            )
+    if raw_rx:
+        pill_html += "<div style='margin:8px 0 2px;font-size:11px;font-weight:700;color:#7a9bbf'>Top Reactions</div>"
+        for rx in enriched["reactions"][:4]:
+            sev = rx.get("_severity", "mild")
+            pill_html += (
+                f"<span class='kg-pill reaction' style='padding:3px 10px;font-size:11px;margin:2px 3px'>"
+                f"{rx['reaction']}</span>"
+                f"<span class='kg-risk-badge {sev}' style='font-size:9px'>{sev}</span> "
+            )
+    if pill_html:
+        st.markdown(pill_html, unsafe_allow_html=True)
+
+def _render_bodymap_panel(result):
+    """Render the body map heatmap in the right panel."""
+    symptoms = _extract_symptoms_from_result(result)
     if not symptoms:
+        st.info("No symptoms identified for body mapping.")
         return
+
     region_counts = map_symptoms_to_regions(symptoms)
     if sum(v for k, v in region_counts.items() if k != "unknown") == 0:
+        st.info("Symptoms could not be mapped to specific body regions.")
         return
 
-    st.markdown(
-        "<div class='card card-bodymap'><div class='card-title' style='color:#7c3aed;'>"
-        "Adverse-Event Body Map</div>"
-        "<p style='font-size:12px;color:#3d5a74;margin:-4px 0 6px;'>"
-        "Visual overlay of reported adverse events on anatomical regions</p>",
-        unsafe_allow_html=True,
-    )
+    st.markdown("### Adverse-Event Body Map")
     html = _build_body_heatmap_html(region_counts, symptoms)
     components.html(html, height=530, scrolling=False)
 
-    # Systemic callout
-    sys_count = region_counts.get("systemic", 0)
-    if sys_count:
-        st.markdown(
-            f"<div style='text-align:center;font-size:12px;color:#7a9bbf;margin-top:-8px'>"
-            f"<b>Systemic</b> (whole-body): {sys_count} symptom(s)</div>",
-            unsafe_allow_html=True,
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
+def _render_metrics_panel(result):
+    """Render query performance metrics in the right panel."""
+    st.markdown("### Query Metrics")
+    m1, m2 = st.columns(2)
+    m1.metric("Latency", f"{result.get('latency_ms', 0):.0f} ms")
+    m2.metric("Confidence", f"{result.get('confidence', 0):.0%}")
 
+    st.divider()
+    evidence = result.get("evidence", [])
+    st.markdown(f"**Evidence chunks:** {len(evidence)}")
+    st.markdown(f"**Records analyzed:** {result.get('num_records', 0)}")
 
-def render_overall():
-    left, right = st.columns([2.2, 1.2], gap="large")
-    with left:
-        render_response()
-        render_kg()
-    with right:
-        render_body_heatmap()
-        render_evidence()
-        render_metrics()
-    render_logs()
+    try:
+        from src.config import is_vertex_available
+        vertex_ok = is_vertex_available()
+    except Exception:
+        vertex_ok = False
+
+    llm_label = "Gemini 2.5 Flash"
+    if result.get("llm_used"):
+        llm_label += " (Vertex AI)" if vertex_ok else " (Direct API)"
+    else:
+        llm_label = "Extractive fallback"
+
+    st.markdown(f"**Generator:** {llm_label}")
+    st.markdown(f"**Method:** {result.get('method', 'hybrid')}")
+
+    enriched_n = result.get("graph_enriched_chunks", 0)
+    total_n = result.get("total_chunks", 0)
+    if enriched_n > 0:
+        st.success(f"Graph Enrichment Active: {enriched_n}/{total_n} chunks")
 
 
 # ══════════════════════════════════════════════════════════════
-#  PAGE RENDERING — Query Page or Results Dashboard
+#  RENDER MESSAGE DETAILS (Perplexity-style expandable cards)
 # ══════════════════════════════════════════════════════════════
 
-if current_view == "query":
-    # ── QUERY PAGE ─────────────────────────────────────────────
-    render_topbar("Safety Chat")
+def render_message_details(result: dict, msg_idx: int):
+    """Render pill buttons that open details in the right side panel."""
+    if not result:
+        return
 
+    # Source type badges row (optional, keeps context)
+    evidence = result.get("evidence", [])
+    if evidence:
+        badges_html = ""
+        fields_seen = set()
+        for ev in evidence:
+            field = ev.get("field", "")
+            if field not in fields_seen:
+                badges_html += _get_source_badge(field)
+                fields_seen.add(field)
+        if result.get("kg_available"):
+            badges_html += "<span class='source-badge kg'>Knowledge Graph</span>"
+        st.markdown(f"<div style='margin-top:8px;'>{badges_html}</div>", unsafe_allow_html=True)
+
+    # Pill buttons for right panel (centered)
+    cols = st.columns([2, 1, 1, 1, 1, 2])
+    with cols[1]:
+        if st.button("📊 KG", key=f"kg_btn_{msg_idx}", help="View Knowledge Graph", disabled=not result.get("kg_available")):
+            st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "kg"}
+            st.rerun()
+    with cols[2]:
+        if st.button("📋 Evidence", key=f"ev_btn_{msg_idx}", help="View Source Evidence", disabled=not evidence):
+            st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "evidence"}
+            st.rerun()
+    with cols[3]:
+        symptoms = _extract_symptoms_from_result(result)
+        has_symptoms = len(symptoms) > 0
+        if st.button("🫁 Body Map", key=f"bm_btn_{msg_idx}", help="View Symptom Heatmap", disabled=not has_symptoms):
+            st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "bodymap"}
+            st.rerun()
+    with cols[4]:
+        if st.button("📈 Metrics", key=f"mt_btn_{msg_idx}", help="View Query Metrics"):
+            st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "metrics"}
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════
+#  MAIN CHAT INTERFACE
+# ══════════════════════════════════════════════════════════════
+
+# ── Layout: Two-Column Architecture (Phase 2A) ──
+if st.session_state.get("active_detail"):
+    chat_col, detail_col = st.columns([6, 4], gap="medium")
+else:
+    chat_col, detail_col = st.columns([10, 0.01], gap="small")
+
+with chat_col:
+    render_topbar("Safety Chat", badge_text="CLINICAL INTELLIGENCE")
+
+    # Disclaimer
     st.markdown(
-        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
+        "<div class='disclaimer-banner'>"
+        "AI-powered tool for informational purposes only. "
+        "Not a substitute for professional medical advice, diagnosis, or treatment. "
+        "Always consult a qualified healthcare provider."
+        "</div>",
         unsafe_allow_html=True,
     )
-    st.markdown(
-        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
-        unsafe_allow_html=True,
-    )
 
-    # Centered query card
-    _pad_l, _card, _pad_r = st.columns([1, 3, 1])
-    with _card:
+    # ── Welcome state (empty chat) ──
+    if len(st.session_state.messages) == 0:
+        _WELCOME_EXAMPLES = [
+            {"icon": "💊", "query": "What are the drug interactions for ibuprofen?",
+             "desc": "FDA label interactions, severity, and clinical guidance"},
+            {"icon": "⚠️", "query": "Can I take aspirin with warfarin?",
+             "desc": "Contraindications and co-prescribing risks"},
+            {"icon": "🔬", "query": "What safety warnings exist for metformin?",
+             "desc": "Boxed warnings, precautions, and monitoring"},
+            {"icon": "📊", "query": "What are the side effects of omeprazole?",
+             "desc": "FAERS adverse event reports and frequencies"},
+            {"icon": "🔄", "query": "Compare adverse reactions of ibuprofen and naproxen",
+             "desc": "Head-to-head safety profile comparison"},
+            {"icon": "🧬", "query": "What drugs are co-reported with prednisone in FAERS?",
+             "desc": "Real-world co-prescribing patterns from FDA data"},
+        ]
+
         st.markdown(
-            "<div class='query-page-title'>Safety Chat</div>"
-            "<div class='query-page-subtitle'>"
-            "Enter a drug-label question below to retrieve FDA evidence, "
-            "build a knowledge graph, and generate a grounded answer."
+            "<div class='welcome-hero' style='padding-top: 10px;'>"
+            "<div class='welcome-title'><span>Tru</span>Pharma</div>"
+            "<div class='welcome-subtitle' style='margin-bottom: 20px;'>AI-powered drug safety intelligence</div>"
             "</div>",
             unsafe_allow_html=True,
         )
+        
+        # Phase 3E: Animated Counters
+        components.html("""
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700;800&family=JetBrains+Mono:wght@700&display=swap');
+            .t-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-family: 'Quicksand', sans-serif; background: transparent; }
+            .t-card { background: #182840; border: 1px solid #1a2f45; border-radius: 10px; padding: 12px 16px; min-width: 140px; text-align: center; }
+            .t-val { font-size: 1.2rem; font-weight: 800; color: #3df5c8; font-family: 'JetBrains Mono', monospace; }
+            .t-label { font-size: 0.7rem; color: #7a9bbf; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+            .pulse { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 4px; position: relative; }
+            .pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid #22c55e; animation: p 2s infinite; }
+            @keyframes p { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+        </style>
+        <div class="t-row">
+            <div class="t-card"><div class="t-val" id="val1">0</div><div class="t-label">Drug Labels</div></div>
+            <div class="t-card"><div class="t-val" id="val2">0</div><div class="t-label">FAERS Reports</div></div>
+            <div class="t-card"><div class="t-val"><span class="pulse"></span>Real-time</div><div class="t-label">Knowledge Graph</div></div>
+            <div class="t-card"><div class="t-val" id="val3">0</div><div class="t-label">Flash 2.5</div></div>
+        </div>
+        <script>
+            function animate(id, start, end, duration, suffix='') {
+                let obj = document.getElementById(id);
+                let range = end - start;
+                let startTime = null;
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    let progress = Math.min((timestamp - startTime) / duration, 1);
+                    let val = Math.floor(progress * range + start);
+                    obj.innerHTML = (val >= 1000 ? (val/1000).toFixed(1) + 'K+' : val) + suffix;
+                    if (progress < 1) window.requestAnimationFrame(step);
+                    else obj.innerHTML = (end >= 1000000 ? (end/1000000).toFixed(1) + 'M+' : (end >= 1000 ? (end/1000).toFixed(0) + 'K+' : end)) + suffix;
+                }
+                window.requestAnimationFrame(step);
+            }
+            setTimeout(() => {
+                animate('val1', 0, 150000, 1500);
+                animate('val2', 0, 4200000, 2000);
+                animate('val3', 0, 2.5, 1000, '');
+                // Correct for val3
+                document.getElementById('val3').innerHTML = 'Gemini';
+            }, 300);
+        </script>
+        """, height=100)
 
-        # Example queries
-        example = st.selectbox(
-            "Example Queries",
-            EXAMPLES,
-            index=0,
-            help="Pick a sample question to pre-fill the query field.",
-        )
-        default_q = st.session_state.submitted_query or \
-                     ("" if example == EXAMPLES[0] else example)
-        query_text = st.text_area(
-            "Enter your drug-label question:",
-            value=default_q,
-            placeholder="e.g. What are the side effects of ibuprofen?",
-            height=120,
+        # Render clickable example cards
+        cols = st.columns(2)
+        for idx, ex in enumerate(_WELCOME_EXAMPLES):
+            with cols[idx % 2]:
+                if st.button(
+                    f"{ex['icon']}  {ex['query']}",
+                    key=f"welcome_ex_{idx}",
+                    use_container_width=True,
+                    help=ex["desc"],
+                ):
+                    st.session_state["_pending_example"] = ex["query"]
+                    st.rerun()
+
+        st.markdown(
+            "<div class='welcome-prompt'>Ask any drug safety question below ↓</div>",
+            unsafe_allow_html=True,
         )
 
         # Advanced settings
@@ -1738,96 +2211,219 @@ if current_view == "query":
             if gemini_key != st.session_state.gemini_key:
                 st.session_state.gemini_key = gemini_key
 
-        st.markdown("")  # spacer
-        run = st.button(
-            "🔍 Run RAG Query",
-            type="primary",
-            use_container_width=True,
-        )
+    # Handle pending example query
+    query_text = st.chat_input("Ask a drug-safety question...")
+    if not query_text and st.session_state.get("_pending_example"):
+        query_text = st.session_state.pop("_pending_example")
 
-        if run and query_text:
-            with st.spinner("Fetching FDA drug labels and running RAG pipeline..."):
+    if query_text:
+        if len(query_text.strip()) < 3:
+            st.warning("Please enter a more specific question.")
+        else:
+            # Add user message
+            st.session_state.messages.append({"role": "user", "content": query_text})
+            with st.chat_message("user", avatar="👤"):
+                st.markdown(query_text)
+
+            # Build conversation history (last 10 messages for Gemini context)
+            conv_history = [
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages[:-1]
+            ][-10:]
+
+            # Run RAG query
+            with st.chat_message("assistant", avatar="🧪"):
+                # Phase 3A: Typing Indicator
+                status_placeholder = st.empty()
+                status_placeholder.markdown("""
+                    <div class='typing-dots'>
+                        <div class='dot-bounce'></div>
+                        <div class='dot-bounce'></div>
+                        <div class='dot-bounce'></div>
+                        <span style='margin-left:10px; font-size:12px; color:var(--text-secondary);'>Analyzing drug safety data...</span>
+                    </div>
+                """, unsafe_allow_html=True)
+
                 result = run_rag_query(
                     query_text,
                     gemini_key=gemini_key,
                     method=method,
                     top_k=top_k,
                     use_rerank=False,
+                    conversation_history=conv_history if conv_history else None,
                 )
-            st.session_state.result = result
-            st.session_state.submitted_query = query_text
+                
+                status_placeholder.empty()
 
-            # Store for stress-test comparison page
-            st.session_state.primary_last_run = {
-                "query": query_text,
-                "confidence": f"{result['confidence']:.0%}",
-                "evidence_count": len(result["evidence"]),
-            }
+                # Format answer with citation pills
+                answer = _normalize_citations(result["answer"], result.get("evidence", []))
+                
+                # Phase 3B: Typewriter streaming effect
+                answer_placeholder = st.empty()
+                words = answer.split(" ")
+                for i in range(len(words)):
+                    partial = " ".join(words[:i+1])
+                    display_partial = _citations_to_pills(partial, result.get("evidence"))
+                    answer_placeholder.markdown(f"<div class='streaming-glow'>{display_partial} ▌</div>", unsafe_allow_html=True)
+                    time.sleep(0.01)
+                
+                display_answer = _citations_to_pills(answer, result.get("evidence"))
+                answer_placeholder.markdown(display_answer, unsafe_allow_html=True)
 
-            st.session_state.logs.append(
-                f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]  "
-                f"Query completed in {result['latency_ms']} ms  ·  "
-                f"Evidence: {len(result['evidence'])}  ·  "
-                f"Confidence: {result['confidence']:.0%}"
-            )
+                # Phase 3C: Source confidence bar
+                if result.get("evidence"):
+                    st.markdown(_render_confidence_bar(result["evidence"]), unsafe_allow_html=True)
 
-            # Navigate to results
-            st.session_state.safety_view = "results"
-            st.rerun()
+                # Render expandable details
+                try:
+                    render_message_details(result, len(st.session_state.messages))
+                except Exception:
+                    st.caption("⚠ Details unavailable")
 
-        elif run and not query_text:
-            st.warning("Please enter a query first.")
+                # Store assistant message
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": answer,
+                    "result": result,
+                })
 
+                # Persist last run for stress test comparison
+                st.session_state.primary_last_run = {
+                    "query": query_text,
+                    "confidence": result.get("confidence", 0),
+                    "evidence_count": len(result.get("evidence", [])),
+                    "latency_ms": result.get("latency_ms", 0),
+                    "method": result.get("method", "hybrid"),
+                    "num_records": result.get("num_records", 0),
+                    "llm_used": result.get("llm_used", False),
+                    "answer": answer,
+                    "evidence": result.get("evidence", []),
+                }
+                st.rerun()
 
-else:
-    # ── RESULTS DASHBOARD ──────────────────────────────────────
-    render_topbar("Safety Chat")
+with detail_col:
+    if st.session_state.get("active_detail"):
+        det = st.session_state.active_detail
+        msg_idx = det["msg_idx"]
+        panel = det["panel"]
+        
+        # Get the result from session state messages
+        # Note: messages list has [user, assistant, user, assistant...]
+        # so assistant results are at 1, 3, 5...
+        # Wait, the msg_idx passed to render_message_details is the index in st.session_state.messages
+        if msg_idx < len(st.session_state.messages):
+            res = st.session_state.messages[msg_idx].get("result")
+            if not res and msg_idx == len(st.session_state.messages) - 1:
+                 # This might be the latest result not yet stored? 
+                 # Actually we just stored it and reran, so it should be there.
+                 pass
+            
+            if res:
+                # Top header for detail panel
+                st.markdown(f"<div style='display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;'>"
+                            f"<div style='font-weight:800; color:var(--teal-bright); font-size:14px;'>DETAILS PANEL</div>"
+                            f"</div>", unsafe_allow_html=True)
+                if st.button("✕ Close Panel", use_container_width=True):
+                    st.session_state.active_detail = None
+                    st.rerun()
+                
+                st.divider()
+                
+                if panel == "kg":
+                    _render_kg_panel(res)
+                elif panel == "evidence":
+                    _render_evidence_panel(res)
+                elif panel == "bodymap":
+                    _render_bodymap_panel(res)
+                elif panel == "metrics":
+                    _render_metrics_panel(res)
+            else:
+                st.warning("Selected result data not found.")
+                if st.button("Clear Selection"):
+                    st.session_state.active_detail = None
+                    st.rerun()
 
-    st.markdown(
-        "<div class='tp-page-header'><span>TruPharma</span> GenAI Assistant</div>",
-        unsafe_allow_html=True,
+with st.sidebar:
+    # Phase 2D: Risk Assessment — lightbox button
+    st.divider()
+    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
+                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+                "color:var(--text-muted); margin-bottom:0.4rem;'>Risk Assessment</div>", unsafe_allow_html=True)
+
+    latest_kg_result = None
+    if "messages" in st.session_state:
+        for m in reversed(st.session_state.messages):
+            if m.get("role") == "assistant" and m.get("result", {}).get("kg_available"):
+                latest_kg_result = m["result"]
+                break
+
+    if latest_kg_result:
+        raw_ix = latest_kg_result.get("kg_interactions", [])
+        raw_rx = latest_kg_result.get("kg_reactions", [])
+        raw_ing = latest_kg_result.get("kg_ingredients", [])
+        raw_co = latest_kg_result.get("kg_co_reported", [])
+        enriched_rc = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
+        _drug = latest_kg_result.get("drug_name", "Drug")
+        if st.button(f"⚕️ Open Risk Calculator — {_drug.title()}", use_container_width=True):
+            _show_risk_dialog(enriched_rc, _drug)
+    else:
+        st.caption("Submit a query to enable risk assessment")
+
+    # Phase 2E: Query history in sidebar
+    st.divider()
+    st.markdown("<div style='font-family:var(--font-body); font-size:0.72rem; "
+                "font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+                "color:var(--text-muted); margin-bottom:0.4rem;'>Query History</div>", unsafe_allow_html=True)
+    user_queries = []
+    if "messages" in st.session_state:
+        # Get unique queries to avoid duplicates in display
+        seen = set()
+        for m in reversed(st.session_state.messages):
+            if m["role"] == "user" and m["content"] not in seen:
+                user_queries.append(m["content"])
+                seen.add(m["content"])
+            if len(user_queries) >= 8: break
+            
+    for q in user_queries:
+        truncated = (q[:30] + "...") if len(q) > 30 else q
+        if st.button(f"💊 {truncated}", key=f"hist_{hash(q)}", use_container_width=True):
+             st.session_state["_pending_example"] = q
+             st.rerun()
+
+    st.divider()
+
+    # System Status
+    has_results = len(st.session_state.messages) > 0 and any(
+        m.get("result") for m in st.session_state.messages if m.get("role") == "assistant"
+    )
+
+    # Check Vertex AI availability
+    try:
+        from src.config import is_vertex_available
+        vertex_ok = is_vertex_available()
+    except Exception:
+        vertex_ok = False
+
+    # Check Pinecone availability
+    import os
+    try:
+        pinecone_ok = bool(os.environ.get("PINECONE_API_KEY") or
+                           (hasattr(st, "secrets") and st.secrets.get("PINECONE_API_KEY", "")))
+    except Exception:
+        pinecone_ok = bool(os.environ.get("PINECONE_API_KEY"))
+
+    status_html = (
+        _status_row("RAG Engine", "Online", True)
+        + _status_row("Knowledge Graph", "Active" if has_results else "Standby", has_results)
+        + _status_row("FAERS Data", "Connected", True)
+        + _status_row("Vertex AI", "Connected" if vertex_ok else "Fallback", vertex_ok)
+        + _status_row("Pinecone", "Connected" if pinecone_ok else "Local FAISS", pinecone_ok)
     )
     st.markdown(
-        "<div class='main-header-bar'>Safety Chat — Drug Label Evidence RAG</div>",
+        f"<div style='font-family:var(--font-body); font-size:0.72rem; "
+        f"font-weight:600; letter-spacing:0.08em; text-transform:uppercase; "
+        f"color:var(--text-muted); margin-bottom:0.4rem;'>System Status</div>"
+        + status_html,
         unsafe_allow_html=True,
     )
 
-    # ── Pill row ──
-    c1, c2, c3, c4, c5 = st.columns(5, gap="small")
-    c1.button("Response", width="stretch",
-               type="primary" if st.session_state.active_panel == "Response" else "secondary",
-               key="pill_response", on_click=set_panel, args=("Response",))
-    c2.button("Knowledge Graph", width="stretch",
-               type="primary" if st.session_state.active_panel == "KG" else "secondary",
-               key="pill_kg", on_click=set_panel, args=("KG",))
-    c3.button("Evidence / Artifacts", width="stretch",
-               type="primary" if st.session_state.active_panel == "Evidence" else "secondary",
-               key="pill_evidence", on_click=set_panel, args=("Evidence",))
-    c4.button("Metrics & Monitoring", width="stretch",
-               type="primary" if st.session_state.active_panel == "Metrics" else "secondary",
-               key="pill_metrics", on_click=set_panel, args=("Metrics",))
-    c5.button("Logs", width="stretch",
-               type="primary" if st.session_state.active_panel == "Logs" else "secondary",
-               key="pill_logs", on_click=set_panel, args=("Logs",))
-
-    st.caption("Click a pill to focus; click again to return to the full dashboard view.")
-
-    # ── Panel rendering ──
-    active = st.session_state.active_panel
-
-    if active == "ALL":
-        render_overall()
-    elif active == "Response":
-        _resp_l, _resp_r = st.columns([2, 1], gap="large")
-        with _resp_l:
-            render_response()
-        with _resp_r:
-            render_body_heatmap()
-    elif active == "KG":
-        render_kg()
-    elif active == "Evidence":
-        render_evidence()
-    elif active == "Metrics":
-        render_metrics()
-    elif active == "Logs":
-        render_logs()
