@@ -258,17 +258,10 @@ _RAG_SYSTEM = (
 )
 
 
-def _build_prompt(question: str, evidence: list) -> str:
-    """Construct a RAG prompt with evidence citations."""
+def _build_prompt(question: str, evidence: list, kg_context: str = "") -> str:
+    """Construct a structured RAG prompt with KG context and evidence citations."""
     lines = [f'{e["cite"]}  (Source: {e["field"]})\n{e["content"]}' for e in evidence]
     block = "\n\n---\n\n".join(lines)
-    return (
-        f"{_RAG_SYSTEM}\n\n"
-        f"=== RETRIEVED EVIDENCE ===\n\n{block}\n\n"
-        f"=== END EVIDENCE ===\n\n"
-        f"Question: {question}\n\n"
-        f"Provide a well-structured, readable answer with citations:"
-    )
 
     sections = [_RAG_SYSTEM, ""]
 
@@ -276,35 +269,68 @@ def _build_prompt(question: str, evidence: list) -> str:
         sections.append(kg_context)
         sections.append("")
 
-    sections.append(f"## Retrieved Evidence (Vector Search)\n{block}")
+    sections.append(f"=== RETRIEVED EVIDENCE ===\n\n{block}\n\n=== END EVIDENCE ===")
     sections.append("")
-    sections.append(f"## User Question\n{question}")
+    sections.append(f"Question: {question}")
     sections.append("")
-    sections.append("Answer (with citations):")
+    sections.append("Provide a well-structured, readable answer with citations:")
 
     return "\n".join(sections)
 
-def _call_gemini(prompt: str, api_key: str) -> tuple:
-    """Call Google Gemini for grounded answer generation.
+def _call_gemini(
+    prompt: str,
+    api_key: str = "",
+    conversation_history: Optional[List[Dict[str, str]]] = None,
+) -> tuple:
+    """Call Gemini for grounded answer generation. Tries Vertex AI first, then direct API.
 
-    Returns (answer_text, error_message).  On success error_message is None;
+    Returns (answer_text, error_message). On success error_message is None;
     on failure answer_text is None and error_message describes the problem.
     """
+    full_prompt = prompt
+    if conversation_history:
+        history_lines = []
+        for msg in conversation_history[-5:]:
+            role = "User" if msg["role"] == "user" else "Assistant"
+            history_lines.append(f"{role}: {msg['content'][:500]}")
+        if history_lines:
+            history_block = "\n".join(history_lines)
+            full_prompt = f"Conversation History:\n{history_block}\n\n{prompt}"
+
+    # Try Vertex AI first
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        resp = model.generate_content(prompt)
-        if resp and resp.text:
-            return resp.text.strip(), None
-        return None, "Gemini returned an empty response. The model may have refused the query."
+        from src.config import is_vertex_available
+        if is_vertex_available():
+            from google import genai
+            client = genai.Client(
+                vertexai=True,
+                project=os.environ.get("GCP_PROJECT_ID", ""),
+                location=os.environ.get("GCP_LOCATION", "us-central1"),
+            )
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
+            if resp and resp.text:
+                return resp.text.strip(), None
     except Exception as exc:
-        err_str = str(exc)
-        if "API_KEY_INVALID" in err_str or "401" in err_str:
-            return None, f"Invalid Gemini API key. Please check your key and try again."
-        if "QUOTA" in err_str.upper() or "429" in err_str:
-            return None, "Gemini API quota exceeded. Please wait or check your billing."
-        return None, f"Gemini API error: {err_str}"
+        warnings.warn(f"Vertex AI Gemini error: {exc}")
+
+    # Fallback to direct Gemini API key
+    if api_key:
+        try:
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
+            if resp and resp.text:
+                return resp.text.strip(), None
+            return None, "Gemini returned an empty response. The model may have refused the query."
+        except Exception as exc:
+            err_str = str(exc)
+            if "API_KEY_INVALID" in err_str or "401" in err_str:
+                return None, "Invalid Gemini API key. Please check your key and try again."
+            if "QUOTA" in err_str.upper() or "429" in err_str:
+                return None, "Gemini API quota exceeded. Please wait or check your billing."
+            return None, f"Gemini API error: {err_str}"
+
+    return None, "No Gemini API key provided and Vertex AI is unavailable."
 
 
 def _fallback_answer(question: str, evidence: list, n: int = 8) -> str:
@@ -711,7 +737,7 @@ def run_rag_query(
     answer = None
 
     if gemini_key:
-        answer, gemini_error = _call_gemini(prompt, gemini_key)
+        answer, gemini_error = _call_gemini(prompt, gemini_key, conversation_history=conversation_history)
         if answer:
             llm_used = True
 
