@@ -11,6 +11,9 @@ reportlab>=4.0.0
 certifi>=2024.0.0
 neo4j>=5.0.0
 plotly>=5.18.0
+sentence-transformers>=2.2.0
+transformers>=4.30.0
+torch>=2.0.0
 
 py3Dmol>=2.0.4
 stmol>=0.0.9
