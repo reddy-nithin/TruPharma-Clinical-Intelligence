@@ -324,6 +324,7 @@ with st.sidebar:
     with col_new:
         if st.button("+ New Chat", use_container_width=True):
             st.session_state.messages = []
+            st.session_state.active_detail = None
             st.rerun()
     with col_clear:
         if st.button("Clear All", use_container_width=True):
