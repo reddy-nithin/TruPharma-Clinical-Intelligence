@@ -1831,6 +1831,19 @@ with chat_col:
                     "content": answer,
                     "result": result,
                 })
+
+                # Persist last run for stress test comparison
+                st.session_state.primary_last_run = {
+                    "query": query_text,
+                    "confidence": result.get("confidence", 0),
+                    "evidence_count": len(result.get("evidence", [])),
+                    "latency_ms": result.get("latency_ms", 0),
+                    "method": result.get("method", "hybrid"),
+                    "num_records": result.get("num_records", 0),
+                    "llm_used": result.get("llm_used", False),
+                    "answer": answer,
+                    "evidence": result.get("evidence", []),
+                }
                 st.rerun()
 
 with detail_col:
