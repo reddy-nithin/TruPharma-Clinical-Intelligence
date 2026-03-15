@@ -406,22 +406,6 @@ def _normalize_citations(answer: str, evidence: list) -> str:
     return answer
 
 
-def _citations_to_pills(answer: str, evidence: list = None) -> str:
-    """Convert [N] references to styled HTML citation pills with hover excerpts."""
-    def _pill(m):
-        n = int(m.group(1))
-        tooltip = ""
-        if evidence and 0 < n <= len(evidence):
-            excerpt = evidence[n-1].get("content", "")
-            excerpt = excerpt.replace('"', '&quot;').replace("'", "&apos;")
-            if len(excerpt) > 200:
-                excerpt = excerpt[:200] + "..."
-            source = evidence[n-1].get("field", "Source")
-            tooltip = f" title='{source}: {excerpt}'"
-        return f'<span class="cite-pill"{tooltip}>{n}</span>'
-    return re.sub(r"\[(\d+)\]", _pill, answer)
-
-
 def render_response():
     st.markdown(
         "<div class='card card-response'><div class='card-title response'>Response Panel</div>",
