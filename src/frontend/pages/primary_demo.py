@@ -1606,23 +1606,23 @@ def render_message_details(result: dict, msg_idx: int):
             badges_html += "<span class='source-badge kg'>Knowledge Graph</span>"
         st.markdown(f"<div style='margin-top:8px;'>{badges_html}</div>", unsafe_allow_html=True)
 
-    # Pill buttons for right panel
-    cols = st.columns([1, 1, 1, 1, 4]) # Adjust spacing
-    with cols[0]:
+    # Pill buttons for right panel (centered)
+    cols = st.columns([2, 1, 1, 1, 1, 2])
+    with cols[1]:
         if st.button("📊 KG", key=f"kg_btn_{msg_idx}", help="View Knowledge Graph", disabled=not result.get("kg_available")):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "kg"}
             st.rerun()
-    with cols[1]:
+    with cols[2]:
         if st.button("📋 Evidence", key=f"ev_btn_{msg_idx}", help="View Source Evidence", disabled=not evidence):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "evidence"}
             st.rerun()
-    with cols[2]:
+    with cols[3]:
         symptoms = _extract_symptoms_from_result(result)
         has_symptoms = len(symptoms) > 0
         if st.button("🫁 Body Map", key=f"bm_btn_{msg_idx}", help="View Symptom Heatmap", disabled=not has_symptoms):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "bodymap"}
             st.rerun()
-    with cols[3]:
+    with cols[4]:
         if st.button("📈 Metrics", key=f"mt_btn_{msg_idx}", help="View Query Metrics"):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "metrics"}
             st.rerun()
