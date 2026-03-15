@@ -472,8 +472,8 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
 .stTabs [data-baseweb="tab-list"] {
     background: var(--bg-surface) !important;
     border-radius: var(--radius-md) !important;
-    padding: 4px !important;
-    gap: 4px !important;
+    padding: 6px !important;
+    gap: 8px !important;
     border: 1px solid var(--border-subtle) !important;
 }
 
@@ -484,6 +484,7 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     font-family: var(--font-body) !important;
     font-size: 0.85rem !important;
     font-weight: 500 !important;
+    padding: 0.5rem 1.2rem !important;
     transition: background 0.15s ease !important;
 }
 
