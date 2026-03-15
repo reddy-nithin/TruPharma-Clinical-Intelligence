@@ -111,6 +111,18 @@ html, body {
         url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle fill='%231a2f45' cx='20' cy='20' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* ── Hide / blend the Streamlit top toolbar ─────────────────────────────── */
+header[data-testid="stHeader"],
+.stAppHeader {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+[data-testid="stDecoration"] {
+    display: none !important;
+}
+
 .block-container {
     padding-top: 1rem !important;
     padding-left: 2rem !important;
@@ -460,8 +472,8 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
 .stTabs [data-baseweb="tab-list"] {
     background: var(--bg-surface) !important;
     border-radius: var(--radius-md) !important;
-    padding: 4px !important;
-    gap: 4px !important;
+    padding: 6px !important;
+    gap: 8px !important;
     border: 1px solid var(--border-subtle) !important;
 }
 
@@ -472,6 +484,7 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     font-family: var(--font-body) !important;
     font-size: 0.85rem !important;
     font-weight: 500 !important;
+    padding: 0.5rem 1.2rem !important;
     transition: background 0.15s ease !important;
 }
 

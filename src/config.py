@@ -72,6 +72,15 @@ def _init_vertex_ai():
     os.environ["GCP_PROJECT_ID"] = project_id
     os.environ["GCP_LOCATION"] = location
 
+    # Propagate other API keys from st.secrets → os.environ (if not already set)
+    if secrets:
+        for key in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "PINECONE_API_KEY",
+                     "PINECONE_INDEX_NAME", "NEO4J_URI", "NEO4J_USER",
+                     "NEO4J_PASSWORD", "NEO4J_DATABASE"):
+            val = secrets.get(key, "")
+            if val and not os.environ.get(key):
+                os.environ[key] = str(val)
+
     # If service account JSON is provided (Streamlit Cloud), write to temp file
     if sa_json and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
         try:

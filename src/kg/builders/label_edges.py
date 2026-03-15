@@ -117,6 +117,25 @@ def _extract_drug_names_from_prose(
     return found
 
 
+def _extract_interaction_snippet(
+    prose: str,
+    drug_name: str,
+    max_len: int = 300,
+) -> str:
+    """Extract sentence(s) from label prose that mention a specific interacting drug."""
+    if not prose or not drug_name:
+        return ""
+    sentences = re.split(r'(?<=[.!?])\s+', prose)
+    pattern = re.compile(r'\b' + re.escape(drug_name) + r'\b', re.IGNORECASE)
+    relevant = [s.strip() for s in sentences if pattern.search(s)]
+    if not relevant:
+        return ""
+    snippet = " ".join(relevant)
+    if len(snippet) > max_len:
+        snippet = snippet[:max_len].rsplit(" ", 1)[0] + "..."
+    return snippet
+
+
 def _extract_from_interaction_table(
     table_data: list,
     known_drugs: Set[str],
@@ -204,6 +223,7 @@ def build_label_interaction_edges(
             continue
 
         interacting_names: Set[str] = set()
+        all_prose_parts: list[str] = []
 
         for rec in records:
             table = rec.get("drug_interactions_table")
@@ -216,6 +236,8 @@ def build_label_interaction_edges(
                 if isinstance(prose, list):
                     prose = " ".join(prose)
 
+                all_prose_parts.append(prose)
+
                 if use_gemini and len(prose) > 50:
                     gemini_names = _extract_via_gemini(prose, generic, api_key)
                     interacting_names.update(gemini_names)
@@ -227,15 +249,19 @@ def build_label_interaction_edges(
                     interacting_names.update(names)
 
         interacting_names -= self_names
+        full_prose = " ".join(all_prose_parts)
 
         for int_name in interacting_names:
             target_id = backend.find_drug_node_id(int_name)
             if target_id and target_id != node_id:
+                description = _extract_interaction_snippet(full_prose, int_name)
                 backend.upsert_edge(node_id, target_id, "INTERACTS_WITH", {
                     "source": "label",
+                    "description": description,
                 })
                 backend.upsert_edge(target_id, node_id, "INTERACTS_WITH", {
                     "source": "label",
+                    "description": description,
                 })
                 edge_count += 1
 

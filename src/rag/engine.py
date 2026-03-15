@@ -239,19 +239,21 @@ def _try_rerank(query, items, top_k):
 # ══════════════════════════════════════════════════════════════
 
 _RAG_SYSTEM = (
-    "You are TruPharma Assistant, an AI-powered drug safety information tool.\n"
-    "Answer drug safety questions using the provided FDA label evidence, knowledge graph "
-    "data, and your general pharmacological knowledge.\n"
-    "PRIORITIES:\n"
-    "1. Cite retrieved FDA evidence using [Evidence N] notation when available.\n"
-    "2. Supplement with knowledge graph facts using [KG] notation.\n"
-    "3. You may add well-established pharmacological context to give a complete answer, "
-    "but clearly distinguish it from cited evidence.\n"
-    "Keep answers informative but concise (3-8 sentences). "
-    "If conversation history is provided, maintain continuity and resolve pronouns.\n"
-    "Do NOT fabricate specific study results or statistics. "
-    "If the evidence is truly insufficient and you have no relevant knowledge, "
-    'respond: "Not enough evidence in the retrieved context."'
+    "You are TruPharma Clinical Intelligence Assistant, a medical drug-label "
+    "information tool used by healthcare professionals and patients.\n\n"
+    "INSTRUCTIONS:\n"
+    "1. Answer the question using ONLY the retrieved FDA drug-label evidence below.\n"
+    "2. Structure your response with clear markdown headings (##) for each major topic "
+    "(e.g., ## Key Findings, ## Warnings, ## Drug Interactions, ## Dosage, ## Adverse Reactions).\n"
+    "3. Use bullet points for lists of side effects, interactions, or warnings.\n"
+    "4. Cite every key claim with bracket notation (e.g. [Evidence 1]).\n"
+    "5. Highlight critical safety information (boxed warnings, contraindications) prominently.\n"
+    "6. If the evidence is insufficient, respond exactly: "
+    '"Not enough evidence in the retrieved context."\n'
+    "7. Do NOT fabricate facts. Do NOT add information beyond the evidence.\n"
+    "8. Use plain language where possible while preserving clinical accuracy.\n"
+    "9. End with a brief clinical note or disclaimer when relevant.\n"
+    "If conversation history is provided, maintain continuity and resolve pronouns."
 )
 
 
@@ -371,10 +373,34 @@ def _call_gemini(
     return None
 
 
+_FIELD_HEADINGS = {
+    "warnings": "Warnings & Precautions",
+    "warnings_and_cautions": "Warnings & Precautions",
+    "boxed_warning": "Boxed Warning",
+    "contraindications": "Contraindications",
+    "drug_interactions": "Drug Interactions",
+    "adverse_reactions": "Adverse Reactions",
+    "dosage_and_administration": "Dosage & Administration",
+    "indications_and_usage": "Indications & Usage",
+    "overdosage": "Overdosage",
+    "clinical_pharmacology": "Clinical Pharmacology",
+    "use_in_specific_populations": "Special Populations",
+    "pediatric_use": "Pediatric Use",
+    "geriatric_use": "Geriatric Use",
+    "pregnancy": "Pregnancy",
+    "nursing_mothers": "Nursing Mothers",
+    "active_ingredient": "Active Ingredients",
+    "inactive_ingredient": "Inactive Ingredients",
+    "description": "Description",
+    "mechanism_of_action": "Mechanism of Action",
+}
+
+
 def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
     """
     Extractive fallback answer generator — no external LLM required.
-    Selects the most relevant sentences from evidence and formats with citations.
+    Groups evidence by FDA label field and selects the most relevant
+    sentences from each category.
     """
     if not evidence:
         return "Not enough evidence in the retrieved context."
@@ -384,9 +410,10 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
         return "Not enough evidence in the retrieved context."
 
     q_tok = set(tokenize(question))
-    cands = []
+    field_buckets: Dict[str, list] = {}
     for e in evidence:
         cite = e["cite"]
+        field = e.get("field", "general")
         for sent in re.split(r"(?<=[.!?])\s+|\n+", (e.get("content") or "")):
             sent = sent.strip()
             if len(sent) < 30:
@@ -394,24 +421,43 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
             s_tok = set(tokenize(sent))
             overlap = len(q_tok & s_tok)
             bonus = 2 if re.search(r"\d", sent) else 0
-            cands.append((overlap + bonus, sent, cite))
+            score = overlap + bonus
+            if score > 0:
+                field_buckets.setdefault(field, []).append((score, sent, cite))
 
-    cands.sort(key=lambda x: x[0], reverse=True)
-    picked, seen = [], set()
-    for sc, sent, cite in cands:
-        if sc <= 0:
-            break
-        key = sent[:60].lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        picked.append(f"{sent} {cite}")
-        if len(picked) >= n:
-            break
-
-    if not picked:
+    if not field_buckets:
         return "Not enough evidence in the retrieved context."
-    return "\n\n".join(picked)
+
+    for field in field_buckets:
+        field_buckets[field].sort(key=lambda x: x[0], reverse=True)
+
+    sections = []
+    total_picked = 0
+    seen = set()
+    for field, cands in sorted(
+        field_buckets.items(),
+        key=lambda kv: max(c[0] for c in kv[1]),
+        reverse=True,
+    ):
+        heading = _FIELD_HEADINGS.get(field, field.replace("_", " ").title())
+        picks = []
+        for sc, sent, cite in cands:
+            key = sent[:60].lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            picks.append(f"{sent} {cite}")
+            total_picked += 1
+            if len(picks) >= 3 or total_picked >= n:
+                break
+        if picks:
+            sections.append(f"## {heading}\n" + "\n".join(f"- {p}" for p in picks))
+        if total_picked >= n:
+            break
+
+    if not sections:
+        return "Not enough evidence in the retrieved context."
+    return "\n\n".join(sections)
 
 
 def _confidence(evidence: list, answer: str) -> float:
@@ -750,6 +796,7 @@ def run_rag_query(
     # 6 ── Generate answer (Gemini LLM or extractive fallback)
     prompt = _build_prompt(query, evidence, kg_context=kg_context_text)
     llm_used = False
+    gemini_error = None
     answer = None
 
     answer = _call_gemini(prompt, gemini_key, conversation_history=conversation_history)
@@ -761,6 +808,9 @@ def run_rag_query(
         answer = _call_gemini(prompt, gemini_key)
         if answer:
             llm_used = True
+
+    if not llm_used:
+        gemini_error = _last_gemini_debug.get("vertex_error") or _last_gemini_debug.get("direct_api_error") or "Both LLM paths failed"
 
     if answer is None:
         answer = _fallback_answer(query, evidence)
@@ -856,6 +906,7 @@ def run_rag_query(
         "drug_name": kg_data.get("_drug_name", _extract_drug_name(query)),
         "prompt": prompt,
         "llm_used": llm_used,
+        "gemini_error": gemini_error,
         "method": method,
         "graph_enriched_chunks": n_enriched,
         "total_chunks": n_chunks,
