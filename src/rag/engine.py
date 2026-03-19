@@ -67,7 +67,9 @@ FIELD_BLOCKLIST = {
 API_BASE = "https://api.fda.gov/drug/label.json"
 DEFAULT_LIMIT = 20
 DEFAULT_MAX_REC = 20
-USE_SENTENCE_TRANSFORMERS = False
+USE_SENTENCE_TRANSFORMERS = True
+
+MEDICAL_BERT_MODEL = "pritamdeka/S-PubMedBert-MS-MARCO"
 
 # ── Logging paths ────────────────────────────────────────────
 LOG_DIR = _PROJECT_ROOT / "logs"
@@ -169,7 +171,7 @@ def _embed_query(query, embedder_type, embedder_model, vectorizer):
             from src.ingestion.openfda_client import _get_st_model
         except ImportError:
             return None
-        name = embedder_model or "sentence-transformers/all-MiniLM-L6-v2"
+        name = embedder_model or MEDICAL_BERT_MODEL
         return _get_st_model(name).encode(
             [query], convert_to_numpy=True, normalize_embeddings=True
         )
@@ -238,219 +240,77 @@ def _try_rerank(query, items, top_k):
 #  ANSWER GENERATION
 # ══════════════════════════════════════════════════════════════
 
-_RAG_SYSTEM = """\
-You are TruPharma Assistant, an AI-powered drug safety information tool used by \
-pharmacists and general healthcare staff. Your role is safety verification, not \
-prescribing or diagnosing.
-
-## Citation Rules
-Use exactly these tags — never invent data:
-- [Evidence N] — information from FDA label chunks (primary authority)
-- [KG] — facts from the knowledge graph (interactions, co-reports)
-- [FAERS] — adverse-event statistics from FAERS post-market surveillance data \
-(appears in the GRAPH CONTEXT block when relevant)
-- "Based on established pharmacology, ..." — well-known pharmacological context \
-with NO tag (use sparingly, only when it directly supports the cited evidence)
-
-When FDA label evidence and FAERS/KG data conflict, follow this hierarchy:
-1. FDA label evidence is the primary authority.
-2. If KG or FAERS shows a risk NOT on the FDA label, flag it explicitly:
-   "Notably, post-market FAERS data suggests [finding], though this is not yet \
-reflected in the FDA label." [FAERS]
-Never fabricate citations, statistics, or study results.
-
-## Answer Format — Adaptive by Query Type
-Match the format to the question; do not apply the same structure to every query:
-
-- Simple factual lookup (e.g., "What are the side effects of omeprazole?"):
-  Concise prose, 2–4 sentences. Bold the most clinically significant risks.
-
-- Single-drug safety check:
-  Prose with key risks bolded. Include severity only when the evidence explicitly \
-states it — do not invent a severity scale.
-
-- Drug interaction question (e.g., "Can I take aspirin with warfarin?"):
-  Structure as: Direct answer → Mechanism → Clinical significance.
-  Each section 1–3 sentences. Total: 6–10 sentences.
-
-- Multi-drug comparison (e.g., "Compare ibuprofen and naproxen"):
-  Use a brief comparison format with one bullet cluster per drug covering: \
-key risks, notable interactions, population warnings.
-
-- Mechanism question (e.g., "Why does metformin cause lactic acidosis?"):
-  Explain the pharmacological mechanism clearly, then cite supporting evidence.
-
-Resolve pronouns and follow-up references using conversation history \
-(e.g., "its interactions" → the drug asked about in the previous turn).
-
-## Safety Boundaries
-- Never provide specific dosing instructions or personalized treatment recommendations.
-- Never diagnose conditions.
-
-- If asked what medication to take for a condition (e.g., "I have diabetes, what \
-should I take?"): give a brief, general orientation of the drug classes commonly \
-used for that condition based on established pharmacology — no dosing, no \
-brand-specific picks. Then add a clear disclaimer that this is general knowledge, \
-not based on retrieved FDA evidence, and that personalized decisions should be \
-made with a doctor or pharmacist. Close with an invitation to look up a specific \
-drug. Example structure:
-  "Diabetes is typically managed with several medication classes — metformin \
-(a biguanide) is often a first-line option, alongside GLP-1 receptor agonists, \
-SGLT-2 inhibitors, and others depending on the patient's profile.
-  ⚠️ This is general pharmacological knowledge, not based on retrieved FDA \
-evidence. For a treatment plan tailored to you, please speak with your doctor \
-or pharmacist.
-  If you have a specific medication in mind, TruPharma can pull up its full FDA \
-safety profile, known interactions, and post-market adverse event data."
-
-- If the question is entirely outside drug safety (weather, sports, finance, \
-general science, etc.): respond warmly but briefly, name TruPharma, and invite \
-a drug-related follow-up. Example structure:
-  "That's outside TruPharma's area — I'm built specifically for drug safety \
-questions. Feel free to ask me about any medication's side effects, interactions, \
-or safety profile!"
-
-- If retrieved evidence is genuinely insufficient AND you have no relevant \
-pharmacological knowledge, respond: "Not enough evidence in the retrieved context."\
-"""
+_RAG_SYSTEM = (
+    "You are TruPharma Clinical Intelligence Assistant, a medical drug-label "
+    "information tool used by healthcare professionals and patients.\n\n"
+    "INSTRUCTIONS:\n"
+    "1. Answer the question using ONLY the retrieved FDA drug-label evidence below.\n"
+    "2. Structure your response with clear markdown headings (##) for each major topic "
+    "(e.g., ## Key Findings, ## Warnings, ## Drug Interactions, ## Dosage, ## Adverse Reactions).\n"
+    "3. Use bullet points for lists of side effects, interactions, or warnings.\n"
+    "4. Cite every key claim with bracket notation (e.g. [Evidence 1]).\n"
+    "5. Highlight critical safety information (boxed warnings, contraindications) prominently.\n"
+    "6. If the evidence is insufficient, respond exactly: "
+    '"Not enough evidence in the retrieved context."\n'
+    "7. Do NOT fabricate facts. Do NOT add information beyond the evidence.\n"
+    "8. Use plain language where possible while preserving clinical accuracy.\n"
+    "9. End with a brief clinical note or disclaimer when relevant."
+)
 
 
-def _build_prompt(
-    question: str,
-    evidence: list,
-    kg_context: str = "",
-    query_intent: str = "",
-    conversation_history: Optional[List[Dict[str, str]]] = None,
-) -> str:
-    """Construct a structured RAG prompt with KG context and evidence citations."""
-    sep = "\n" + "─" * 60 + "\n"
-    sections = [_RAG_SYSTEM]
+def _build_prompt(question: str, evidence: list) -> str:
+    """Construct a RAG prompt with evidence citations."""
+    lines = [f'{e["cite"]}  (Source: {e["field"]})\n{e["content"]}' for e in evidence]
+    block = "\n\n---\n\n".join(lines)
+    return (
+        f"{_RAG_SYSTEM}\n\n"
+        f"=== RETRIEVED EVIDENCE ===\n\n{block}\n\n"
+        f"=== END EVIDENCE ===\n\n"
+        f"Question: {question}\n\n"
+        f"Provide a well-structured, readable answer with citations:"
+    )
 
-    # Conversation history — placed inside the structured prompt, close to the question
-    if conversation_history:
-        history_lines = []
-        for msg in conversation_history[-5:]:
-            role = "User" if msg["role"] == "user" else "Assistant"
-            history_lines.append(f"{role}: {msg['content'][:500]}")
-        if history_lines:
-            sections.append(sep + "## Conversation History\n" + "\n".join(history_lines))
+    sections = [_RAG_SYSTEM, ""]
 
-    # Knowledge graph context
     if kg_context:
-        sections.append(sep + kg_context)
+        sections.append(kg_context)
+        sections.append("")
 
-    # Retrieved FDA evidence
-    lines = [f'{e["cite"]}  {e["content"]}' for e in evidence]
-    block = "\n\n".join(lines)
-    sections.append(sep + f"## Retrieved FDA Label Evidence\n{block}")
-
-    # Query-type hint helps the LLM choose the right format
-    if query_intent and query_intent != "general":
-        intent_label = {
-            "safety_check": "safety check",
-            "interaction": "interaction check",
-            "comparison": "drug comparison",
-            "mechanism": "mechanism explanation",
-        }.get(query_intent, query_intent)
-        hint = f"[Query type: {intent_label} — use the matching answer format described above]"
-    else:
-        hint = ""
-
-    sections.append(sep + f"## User Question\n{question}" + (f"\n{hint}" if hint else ""))
-    sections.append(sep + "Answer (with citations):")
+    sections.append(f"## Retrieved Evidence (Vector Search)\n{block}")
+    sections.append("")
+    sections.append(f"## User Question\n{question}")
+    sections.append("")
+    sections.append("Answer (with citations):")
 
     return "\n".join(sections)
 
+def _call_gemini(prompt: str, api_key: str) -> tuple:
+    """Call Google Gemini for grounded answer generation.
 
-
-def _call_gemini(
-    prompt: str,
-    api_key: str = "",
-) -> Optional[str]:
-    """Call Gemini for grounded answer generation. Tries Vertex AI first, then direct API.
-
-    Parameters
-    ----------
-    prompt : str
-        The RAG prompt with evidence, conversation history, and question.
-    api_key : str
-        Direct Gemini API key (fallback if Vertex AI unavailable).
+    Returns (answer_text, error_message).  On success error_message is None;
+    on failure answer_text is None and error_message describes the problem.
     """
-    # Conversation history is now embedded in the prompt by _build_prompt().
-    # _call_gemini no longer prepends it separately.
-    full_prompt = prompt
-
-    # #region agent log f1239c
-    _last_gemini_debug.clear()
-    _last_gemini_debug["gcp_project_env"] = os.environ.get("GCP_PROJECT_ID", "EMPTY")
-    _last_gemini_debug["gcp_location_env"] = os.environ.get("GCP_LOCATION", "EMPTY")
-    _last_gemini_debug["api_key_provided"] = bool(api_key)
     try:
-        from google import genai as _genai_test
-        _last_gemini_debug["genai_import_ok"] = True
-        _last_gemini_debug["genai_has_Client"] = hasattr(_genai_test, "Client")
-    except Exception as _ie:
-        _last_gemini_debug["genai_import_ok"] = False
-        _last_gemini_debug["genai_import_error"] = str(_ie)
-    _engine_logger.warning(f"[DEBUG-f1239c-engine][post-fix] _call_gemini start: {_last_gemini_debug}")
-    # #endregion
-
-    # Try Vertex AI via new google.genai SDK first
-    try:
-        from src.config import is_vertex_available
-        _vertex_ok = is_vertex_available()
-        # #region agent log f1239c
-        _last_gemini_debug["vertex_available"] = _vertex_ok
-        _engine_logger.warning(f"[DEBUG-f1239c-engine] is_vertex_available={_vertex_ok}")
-        # #endregion
-        if _vertex_ok:
-            from google import genai
-            client = genai.Client(vertexai=True, project=os.environ.get("GCP_PROJECT_ID", ""),
-                                  location=os.environ.get("GCP_LOCATION", "us-central1"))
-            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
-            if resp and resp.text:
-                # #region agent log f1239c
-                _last_gemini_debug["vertex_result"] = "SUCCESS"
-                _engine_logger.warning("[DEBUG-f1239c-engine] Vertex AI call SUCCESS")
-                # #endregion
-                return resp.text.strip()
+        import google.generativeai as genai
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        resp = model.generate_content(prompt)
+        if resp and resp.text:
+            return resp.text.strip(), None
+        return None, "Gemini returned an empty response. The model may have refused the query."
     except Exception as exc:
-        # #region agent log f1239c
-        _last_gemini_debug["vertex_error"] = str(exc)
-        _engine_logger.warning(f"[DEBUG-f1239c-engine] Vertex AI Gemini error: {exc}")
-        # #endregion
-        warnings.warn(f"Vertex AI Gemini error: {exc}")
-
-    # Fallback to direct Gemini API key
-    if api_key:
-        try:
-            from google import genai
-            client = genai.Client(api_key=api_key)
-            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
-            if resp and resp.text:
-                # #region agent log f1239c
-                _last_gemini_debug["direct_api_result"] = "SUCCESS"
-                _engine_logger.warning("[DEBUG-f1239c-engine] Direct Gemini API call SUCCESS")
-                # #endregion
-                return resp.text.strip()
-        except Exception as exc:
-            # #region agent log f1239c
-            _last_gemini_debug["direct_api_error"] = str(exc)
-            _engine_logger.warning(f"[DEBUG-f1239c-engine] Gemini direct API error: {exc}")
-            # #endregion
-            warnings.warn(f"Gemini direct API error: {exc}")
-
-    # #region agent log f1239c
-    _last_gemini_debug["final_result"] = "FALLBACK_extractive"
-    _engine_logger.warning(f"[DEBUG-f1239c-engine] Both LLM paths failed, using extractive fallback. debug={_last_gemini_debug}")
-    # #endregion
-    return None
+        err_str = str(exc)
+        if "API_KEY_INVALID" in err_str or "401" in err_str:
+            return None, f"Invalid Gemini API key. Please check your key and try again."
+        if "QUOTA" in err_str.upper() or "429" in err_str:
+            return None, "Gemini API quota exceeded. Please wait or check your billing."
+        return None, f"Gemini API error: {err_str}"
 
 
-def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
+def _fallback_answer(question: str, evidence: list, n: int = 8) -> str:
     """
     Extractive fallback answer generator — no external LLM required.
-    Selects the most relevant sentences from evidence and formats with citations.
+    Groups relevant sentences by evidence field and formats with structure.
     """
     if not evidence:
         return "Not enough evidence in the retrieved context."
@@ -460,9 +320,33 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
         return "Not enough evidence in the retrieved context."
 
     q_tok = set(tokenize(question))
-    cands = []
+
+    _FIELD_HEADINGS = {
+        "warnings": "Warnings & Precautions",
+        "warnings_and_cautions": "Warnings & Precautions",
+        "boxed_warning": "Boxed Warning",
+        "contraindications": "Contraindications",
+        "drug_interactions": "Drug Interactions",
+        "adverse_reactions": "Adverse Reactions",
+        "dosage_and_administration": "Dosage & Administration",
+        "indications_and_usage": "Indications & Usage",
+        "overdosage": "Overdosage",
+        "clinical_pharmacology": "Clinical Pharmacology",
+        "use_in_specific_populations": "Special Populations",
+        "pediatric_use": "Pediatric Use",
+        "geriatric_use": "Geriatric Use",
+        "pregnancy": "Pregnancy",
+        "nursing_mothers": "Nursing Mothers",
+        "active_ingredient": "Active Ingredients",
+        "inactive_ingredient": "Inactive Ingredients",
+        "description": "Description",
+        "mechanism_of_action": "Mechanism of Action",
+    }
+
+    field_buckets: Dict[str, list] = {}
     for e in evidence:
         cite = e["cite"]
+        field = e.get("field", "general")
         for sent in re.split(r"(?<=[.!?])\s+|\n+", (e.get("content") or "")):
             sent = sent.strip()
             if len(sent) < 30:
@@ -470,24 +354,50 @@ def _fallback_answer(question: str, evidence: list, n: int = 5) -> str:
             s_tok = set(tokenize(sent))
             overlap = len(q_tok & s_tok)
             bonus = 2 if re.search(r"\d", sent) else 0
-            cands.append((overlap + bonus, sent, cite))
+            score = overlap + bonus
+            if score > 0:
+                field_buckets.setdefault(field, []).append((score, sent, cite))
 
-    cands.sort(key=lambda x: x[0], reverse=True)
-    picked, seen = [], set()
-    for sc, sent, cite in cands:
-        if sc <= 0:
-            break
-        key = sent[:60].lower()
-        if key in seen:
-            continue
-        seen.add(key)
-        picked.append(f"{sent} {cite}")
-        if len(picked) >= n:
-            break
-
-    if not picked:
+    if not field_buckets:
         return "Not enough evidence in the retrieved context."
-    return "\n\n".join(picked)
+
+    for field in field_buckets:
+        field_buckets[field].sort(key=lambda x: x[0], reverse=True)
+
+    sections = []
+    total_picked = 0
+    seen = set()
+    for field, cands in sorted(
+        field_buckets.items(),
+        key=lambda kv: max(c[0] for c in kv[1]),
+        reverse=True,
+    ):
+        if total_picked >= n:
+            break
+        heading = _FIELD_HEADINGS.get(field, field.replace("_", " ").title())
+        field_lines = []
+        for sc, sent, cite in cands:
+            key = sent[:60].lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            field_lines.append(f"- {sent} {cite}")
+            total_picked += 1
+            if total_picked >= n:
+                break
+        if field_lines:
+            sections.append(f"**{heading}**\n\n" + "\n".join(field_lines))
+
+    if not sections:
+        return "Not enough evidence in the retrieved context."
+
+    header = "## Key Findings\n\n"
+    footer = (
+        "\n\n---\n*This response was generated using extractive summarization "
+        "from FDA drug-label evidence. For comprehensive clinical guidance, "
+        "consult the full prescribing information.*"
+    )
+    return header + "\n\n".join(sections) + footer
 
 
 def _confidence(evidence: list, answer: str) -> float:
@@ -599,46 +509,32 @@ def run_rag_query(
     else:
         search_q = build_openfda_query(query, fields=FIELD_ALLOWLIST)
 
-    # 1b ── Scope gate: no known drug detected — let the LLM handle it gracefully
-    #        (off-topic redirect, condition/treatment orientation, etc.)
-    #        Only skip retrieval; still call Gemini so the response is warm and helpful.
+    # 1b ── Scope gate: reject queries that don't reference any drug
     if not _drug_is_known(drug_name):
-        lat_oos = round((time.time() - t0) * 1000, 1)
-        _gemini_key_oos = gemini_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
-        _oos_prompt = _build_prompt(
-            query,
-            evidence=[],
-            kg_context="",
-            query_intent=query_analysis.get("intent", "") if query_analysis else "",
-            conversation_history=conversation_history,
-        )
-        oos_answer = _call_gemini(_oos_prompt, _gemini_key_oos) or (
-            "That's outside TruPharma's area — I'm built specifically for drug safety "
-            "questions. Feel free to ask me about any medication's side effects, "
-            "interactions, or safety profile!"
-        )
+        lat = round((time.time() - t0) * 1000, 1)
+        oos_answer = "Not enough evidence in the retrieved context."
         log_row({
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "query": query[:200],
-            "latency_ms": lat_oos,
+            "latency_ms": lat,
             "evidence_ids": "",
             "confidence": 0.0,
             "num_evidence": 0,
             "num_records": 0,
             "retrieval_method": method,
-            "llm_used": True,
+            "llm_used": False,
             "answer_preview": oos_answer[:150],
         })
         return {
             "answer": oos_answer,
             "evidence": [],
-            "latency_ms": lat_oos,
+            "latency_ms": lat,
             "confidence": 0.0,
             "num_records": 0,
             "search_query": search_q,
             "drug_name": drug_name,
-            "prompt": _oos_prompt,
-            "llm_used": True,
+            "prompt": "",
+            "llm_used": False,
             "method": method,
             "kg_interactions": [],
             "kg_co_reported": [],
@@ -651,107 +547,26 @@ def run_rag_query(
     cache_hit = False
     vector_store = None
     try:
-        from src.ingestion.vector_store import create_vector_store
-        vector_store = create_vector_store()
-        if hasattr(vector_store, 'has_fresh_vectors') and drug_name:
-            cache_hit = vector_store.has_fresh_vectors(drug_name)
-    except Exception:
-        pass
-
-    if cache_hit and vector_store and drug_name:
-        # Cache hit — retrieve directly from Pinecone, skip openFDA fetch
-        try:
-            qv = _embed_query(query, "vertex_ai", "text-embedding-004", None)
-            if qv is None:
-                cache_hit = False  # Can't query without embeddings
-            else:
-                cached_results = vector_store.get_drug_vectors(drug_name, qv, top_k=max(20, top_k * 3))
-                corpus = []
-                for cr in cached_results:
-                    meta = cr.get("metadata", {})
-                    corpus.append(TextChunk(
-                        chunk_id=cr["id"],
-                        doc_id=meta.get("doc_id", ""),
-                        field=meta.get("field", ""),
-                        text=meta.get("text", ""),
-                    ))
-                n_recs = 0
-                n_enriched = 0
-                n_chunks = len(corpus)
-                items = corpus[:max(20, top_k * 3)]
-        except Exception:
-            cache_hit = False
-
-    if not cache_hit:
-        # 2b ── Fetch + chunk + index (in-memory, no disk save)
-        #       Load the KG so chunks are enriched with graph context before
-        #       embedding — improves retrieval for multi-hop pharma queries.
-        kg = load_kg()
-        try:
-            arts = build_artifacts(
-                api_search=search_q,
-                field_allowlist=FIELD_ALLOWLIST,
-                field_blocklist=FIELD_BLOCKLIST,
-                include_table_fields=False,
-                min_chars=40,
-                use_st=USE_SENTENCE_TRANSFORMERS,
-                save=False,
-                save_vectorizer=False,
-                api_base_url=API_BASE,
-                api_limit=api_limit,
-                api_max_records=max_records,
-                verbose=False,
-                kg=kg,
-            )
-        except RuntimeError as exc:
-            lat = round((time.time() - t0) * 1000, 1)
-            if "404" in str(exc) or "Not Found" in str(exc):
-                err_answer = "Not enough evidence in the retrieved context."
-            else:
-                err_answer = f"Error fetching data from openFDA: {exc}"
-            log_row({
-                "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                "query": query[:200],
-                "latency_ms": lat,
-                "evidence_ids": "",
-                "confidence": 0.0,
-                "num_evidence": 0,
-                "num_records": 0,
-                "retrieval_method": method,
-                "llm_used": False,
-                "answer_preview": err_answer[:150],
-            })
-            return {
-                "answer": err_answer,
-                "evidence": [],
-                "latency_ms": lat,
-                "confidence": 0.0,
-                "num_records": 0,
-                "search_query": search_q,
-                "drug_name": _extract_drug_name(query),
-                "prompt": "",
-                "llm_used": False,
-                "method": method,
-            }
-
-        corpus = arts["record_chunks"]
-        index = arts["faiss_A"]
-        bm25 = arts["bm25_A"]
-        emb = (arts.get("manifest", {}).get("embedder") or {})
-        e_type = emb.get("type")
-        e_model = emb.get("model")
-        vec = arts.get("vectorizer")
-        counts = (arts.get("manifest", {}).get("counts") or {})
-        n_recs = counts.get("records", 0)
-        n_enriched = counts.get("graph_enriched_chunks", 0)
-        n_chunks = counts.get("record_chunks", 0)
-
-        # 3 ── Retrieve
-        pool = max(20, top_k * 3)
-        if method == "dense":
-            items = [it for _, it in _dense(query, index, corpus, e_type, e_model, vec, pool)]
-        elif method == "sparse":
-            items = [it for _, it in _sparse(query, bm25, corpus, pool)]
+        arts = build_artifacts(
+            api_search=search_q,
+            field_allowlist=FIELD_ALLOWLIST,
+            field_blocklist=FIELD_BLOCKLIST,
+            include_table_fields=False,
+            min_chars=40,
+            use_st=USE_SENTENCE_TRANSFORMERS,
+            st_model=MEDICAL_BERT_MODEL,
+            save=False,
+            save_vectorizer=False,
+            api_base_url=API_BASE,
+            api_limit=api_limit,
+            api_max_records=max_records,
+            verbose=False,
+            kg=kg,
+        )
+    except RuntimeError as exc:
+        lat = round((time.time() - t0) * 1000, 1)
+        if "404" in str(exc) or "Not Found" in str(exc):
+            err_answer = "Not enough evidence in the retrieved context."
         else:
             d = _dense(query, index, corpus, e_type, e_model, vec, pool)
             s = _sparse(query, bm25, corpus, pool)
@@ -838,24 +653,13 @@ def run_rag_query(
             pass
 
     # 6 ── Generate answer (Gemini LLM or extractive fallback)
-    query_intent = query_analysis.get("intent", "") if query_analysis else ""
-    prompt = _build_prompt(
-        query,
-        evidence,
-        kg_context=kg_context_text,
-        query_intent=query_intent,
-        conversation_history=conversation_history,
-    )
+    prompt = _build_prompt(query, evidence, kg_context=kg_context_text)
     llm_used = False
+    gemini_error = None
     answer = None
 
-    answer = _call_gemini(prompt, gemini_key)
-    if answer:
-        llm_used = True
-
-    if not llm_used and gemini_key:
-        # Retry with direct API key if Vertex AI failed
-        answer = _call_gemini(prompt, gemini_key)
+    if gemini_key:
+        answer, gemini_error = _call_gemini(prompt, gemini_key)
         if answer:
             llm_used = True
 
@@ -953,6 +757,7 @@ def run_rag_query(
         "drug_name": kg_data.get("_drug_name", _extract_drug_name(query)),
         "prompt": prompt,
         "llm_used": llm_used,
+        "gemini_error": gemini_error,
         "method": method,
         "graph_enriched_chunks": n_enriched,
         "total_chunks": n_chunks,
