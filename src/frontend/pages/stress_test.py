@@ -15,10 +15,8 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 import streamlit as st
 import streamlit.components.v1 as components
-import time
-from datetime import datetime
 
-from src.rag.engine import run_rag_query, read_logs
+from src.rag.engine import run_rag_query
 from src.frontend.theme import inject_theme, render_topbar, render_brand
 
 # ─── Page config ──────────────────────────────────────────────
@@ -89,11 +87,7 @@ run = st.sidebar.button("Run Stress Test", type="primary", width="stretch")
 #  SESSION STATE
 # ══════════════════════════════════════════════════════════════
 if "primary_last_run" not in st.session_state:
-    st.session_state.primary_last_run = {
-        "query": "(run a Safety Chat query first)",
-        "confidence": "—",
-        "evidence_count": 0,
-    }
+    st.session_state.primary_last_run = None
 
 if "stress_result" not in st.session_state:
     st.session_state.stress_result = None
@@ -141,121 +135,143 @@ st.markdown(
 
 
 # ══════════════════════════════════════════════════════════════
+#  HELPERS
+# ══════════════════════════════════════════════════════════════
+import re as _re
+
+def _clean_answer_citations(answer, evidence):
+    """Normalise raw citation IDs to [Evidence N] form."""
+    for j, ev in enumerate(evidence, 1):
+        raw = ev.get("_raw_id", "")
+        if raw:
+            answer = answer.replace(f"[{raw}]", f"[Evidence {j}]")
+    def _repl(m):
+        inner = m.group(1)
+        if _re.match(r"Evidence \d+", inner) or _re.match(r"\d+$", inner):
+            return m.group(0)
+        for k, e in enumerate(evidence, 1):
+            if e.get("doc_id", "") in inner or e.get("field", "") in inner:
+                return f"[Evidence {k}]"
+        return m.group(0)
+    return _re.sub(r"\[([^\]]+)\]", _repl, answer)
+
+
+def _render_result_panel(label, sublabel, header_cls, data):
+    """Render a unified result panel for either baseline or stress-test data."""
+    st.markdown(f"<div class='panel'>", unsafe_allow_html=True)
+    st.markdown(f"<div class='panel-header {header_cls}'>{label}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='panel-subheader'>{sublabel}</div>", unsafe_allow_html=True)
+
+    if data is None:
+        st.info("No data yet — run a query to populate this panel.")
+        st.markdown("</div>", unsafe_allow_html=True)
+        return
+
+    # Input
+    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-pill'>Input</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='mini'><b>Query:</b> {data['query']}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # Metrics row
+    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-pill'>Monitoring / Metrics</div>", unsafe_allow_html=True)
+    latency = data.get("latency_ms", 0)
+    confidence = data.get("confidence", 0)
+    evidence = data.get("evidence", [])
+    ev_count = data.get("evidence_count", len(evidence))
+    st.markdown(f"- **Latency:** {latency:.0f} ms")
+    st.markdown(f"- **Confidence:** {confidence:.0%}")
+    st.markdown(f"- **Evidence count:** {ev_count}")
+    st.markdown(f"- **Records fetched:** {data.get('num_records', '—')}")
+    st.markdown(f"- **Method:** {data.get('method', '—')}")
+    st.markdown(f"- **LLM used:** {'Gemini' if data.get('llm_used') else 'Extractive fallback'}")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # Answer preview
+    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-pill'>Answer Preview</div>", unsafe_allow_html=True)
+    ans = data.get("answer", "")
+    if ans and evidence:
+        ans = _clean_answer_citations(ans, evidence)
+    if ans:
+        st.write(ans[:500] + ("…" if len(ans) > 500 else ""))
+    else:
+        st.caption("No answer available.")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════
 #  TWO SIDE-BY-SIDE PANELS
 # ══════════════════════════════════════════════════════════════
 left, right = st.columns(2, gap="large")
 
+p = st.session_state.primary_last_run
+sr = st.session_state.stress_result
+sc = st.session_state.stress_condition
+
 # ── Safety Chat Scenario (from last Safety Chat run) ──
 with left:
-    st.markdown("<div class='panel'>", unsafe_allow_html=True)
-    st.markdown("<div class='panel-header primary'>Safety Chat Scenario</div>", unsafe_allow_html=True)
-    st.markdown("<div class='panel-subheader'>Normal user workflow</div>", unsafe_allow_html=True)
-
-    p = st.session_state.primary_last_run
-
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>Input</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='mini'>Query: {p['query']}</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>Expected Output</div>", unsafe_allow_html=True)
-    st.markdown(
-        f"<div class='mini'>Verified answer + evidence citations<br>"
-        f"Confidence: {p['confidence']}</div>",
-        unsafe_allow_html=True,
+    _render_result_panel(
+        "Safety Chat Baseline",
+        "Last query from Safety Chat",
+        "primary",
+        p,
     )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>Evidence</div>", unsafe_allow_html=True)
-    st.markdown(
-        f"<div class='mini'>Evidence count: {p['evidence_count']}</div>",
-        unsafe_allow_html=True,
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ── Stress-Test Scenario (real RAG results) ──
 with right:
-    st.markdown("<div class='panel'>", unsafe_allow_html=True)
-    st.markdown("<div class='panel-header stress'>Stress-Test Scenario</div>", unsafe_allow_html=True)
-    st.markdown("<div class='panel-subheader'>Edge case / robustness check</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>Stress Condition</div>", unsafe_allow_html=True)
-
-    sr = st.session_state.stress_result
-    sc = st.session_state.stress_condition
-
     if sr and sc:
-        st.markdown(f"<div class='mini'><b>Condition:</b> {sc}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='mini'><b>Query:</b> {STRESS_QUERIES[sc]}</div>", unsafe_allow_html=True)
+        stress_data = {
+            "query": STRESS_QUERIES[sc],
+            "latency_ms": sr.get("latency_ms", 0),
+            "confidence": sr.get("confidence", 0),
+            "evidence": sr.get("evidence", []),
+            "evidence_count": len(sr.get("evidence", [])),
+            "num_records": sr.get("num_records", 0),
+            "method": sr.get("method", "hybrid"),
+            "llm_used": sr.get("llm_used", False),
+            "answer": sr.get("answer", ""),
+        }
+        _render_result_panel(
+            f"Stress Test — {sc}",
+            "Edge case / robustness check",
+            "stress",
+            stress_data,
+        )
     else:
-        st.markdown("""
-        <div class='mini'>Choose ONE:</div>
-        <ul class="bullets">
-          <li>Rare input</li><li>Large doc</li>
-          <li>Heavy traffic</li><li>Conflicting evidence</li>
-        </ul>
-        """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+        _render_result_panel(
+            "Stress-Test Scenario",
+            "Select a condition and run",
+            "stress",
+            None,
+        )
 
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>System Behavior</div>", unsafe_allow_html=True)
-    if sr:
-        degradation = {
-            "Rare input": "Reduced result set, lower evidence count — system returns partial answer.",
-            "Large doc": "Large corpus indexed — system handles increased data gracefully.",
-            "Heavy traffic": "Reduced limits for faster response — graceful degradation.",
-            "Conflicting evidence": "Multiple drug labels compared — system cites both sources.",
-        }.get(sc, "")
-        st.markdown(f"<div class='mini'>{degradation}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='mini'><b>Method:</b> {sr['method']}</div>", unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class='mini'>Graceful degradation:</div>
-        <ul class="bullets">
-          <li>Reduced API limits</li><li>Adjusted top-k</li>
-          <li>Fallback retrieval</li>
-        </ul>
-        """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+# ══════════════════════════════════════════════════════════════
+#  COMPARISON DELTA (shown when both panels have data)
+# ══════════════════════════════════════════════════════════════
+if p and sr:
+    st.markdown("<div style='height:14px;'></div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='main-header-bar'>Comparison: Baseline vs Stress Test</div>",
+        unsafe_allow_html=True,
+    )
+    d1, d2, d3, d4 = st.columns(4)
+    base_lat = p.get("latency_ms", 0)
+    stress_lat = sr.get("latency_ms", 0)
+    d1.metric("Baseline Latency", f"{base_lat:.0f} ms")
+    d2.metric("Stress Latency", f"{stress_lat:.0f} ms",
+              delta=f"{stress_lat - base_lat:+.0f} ms",
+              delta_color="inverse")
 
-    st.markdown("<div class='inner-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-pill'>Monitoring / Logs</div>", unsafe_allow_html=True)
-    if sr:
-        st.markdown(f"- **Latency:** {sr['latency_ms']:.0f} ms")
-        st.markdown(f"- **Confidence:** {sr['confidence']:.0%}")
-        st.markdown(f"- **Evidence count:** {len(sr['evidence'])}")
-        st.markdown(f"- **Records fetched:** {sr['num_records']}")
-        ev_labels = [e["cite"] for e in sr["evidence"]]
-        st.markdown(f"- **Evidence:** {', '.join(ev_labels[:5])}")
-        st.markdown(f"- **LLM used:** {'Gemini' if sr['llm_used'] else 'Extractive fallback'}")
-        st.markdown("---")
-        st.markdown("**Answer preview:**")
-        import re as _re
-        _ans = sr["answer"]
-        for _j, _ev in enumerate(sr["evidence"], 1):
-            raw = _ev.get("_raw_id", "")
-            if raw:
-                _ans = _ans.replace(f"[{raw}]", f"[Evidence {_j}]")
-        def _repl(m):
-            inner = m.group(1)
-            if _re.match(r"Evidence \d+", inner):
-                return m.group(0)
-            for _k, _e in enumerate(sr["evidence"], 1):
-                if _e.get("doc_id", "") in inner or _e.get("field", "") in inner:
-                    return f"[Evidence {_k}]"
-            return m.group(0)
-        _ans = _re.sub(r"\[([^\]]+)\]", _repl, _ans)
-        st.write(_ans[:400])
-    else:
-        st.info("Run a stress test to populate logs.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
+    base_conf = p.get("confidence", 0)
+    stress_conf = sr.get("confidence", 0)
+    d3.metric("Baseline Confidence", f"{base_conf:.0%}")
+    d4.metric("Stress Confidence", f"{stress_conf:.0%}",
+              delta=f"{(stress_conf - base_conf):+.1%}",
+              delta_color="normal")
 
 
 # ══════════════════════════════════════════════════════════════
