@@ -238,39 +238,126 @@ def _try_rerank(query, items, top_k):
 #  ANSWER GENERATION
 # ══════════════════════════════════════════════════════════════
 
-_RAG_SYSTEM = (
-    "You are TruPharma Assistant, an AI-powered drug safety information tool.\n"
-    "Answer drug safety questions using the provided FDA label evidence, knowledge graph "
-    "data, and your general pharmacological knowledge.\n"
-    "PRIORITIES:\n"
-    "1. Cite retrieved FDA evidence using [Evidence N] notation when available.\n"
-    "2. Supplement with knowledge graph facts using [KG] notation.\n"
-    "3. You may add well-established pharmacological context to give a complete answer, "
-    "but clearly distinguish it from cited evidence.\n"
-    "Keep answers informative but concise (3-8 sentences). "
-    "If conversation history is provided, maintain continuity and resolve pronouns.\n"
-    "Do NOT fabricate specific study results or statistics. "
-    "If the evidence is truly insufficient and you have no relevant knowledge, "
-    'respond: "Not enough evidence in the retrieved context."'
-)
+_RAG_SYSTEM = """\
+You are TruPharma Assistant, an AI-powered drug safety information tool used by \
+pharmacists and general healthcare staff. Your role is safety verification, not \
+prescribing or diagnosing.
+
+## Citation Rules
+Use exactly these tags — never invent data:
+- [Evidence N] — information from FDA label chunks (primary authority)
+- [KG] — facts from the knowledge graph (interactions, co-reports)
+- [FAERS] — adverse-event statistics from FAERS post-market surveillance data \
+(appears in the GRAPH CONTEXT block when relevant)
+- "Based on established pharmacology, ..." — well-known pharmacological context \
+with NO tag (use sparingly, only when it directly supports the cited evidence)
+
+When FDA label evidence and FAERS/KG data conflict, follow this hierarchy:
+1. FDA label evidence is the primary authority.
+2. If KG or FAERS shows a risk NOT on the FDA label, flag it explicitly:
+   "Notably, post-market FAERS data suggests [finding], though this is not yet \
+reflected in the FDA label." [FAERS]
+Never fabricate citations, statistics, or study results.
+
+## Answer Format — Adaptive by Query Type
+Match the format to the question; do not apply the same structure to every query:
+
+- Simple factual lookup (e.g., "What are the side effects of omeprazole?"):
+  Concise prose, 2–4 sentences. Bold the most clinically significant risks.
+
+- Single-drug safety check:
+  Prose with key risks bolded. Include severity only when the evidence explicitly \
+states it — do not invent a severity scale.
+
+- Drug interaction question (e.g., "Can I take aspirin with warfarin?"):
+  Structure as: Direct answer → Mechanism → Clinical significance.
+  Each section 1–3 sentences. Total: 6–10 sentences.
+
+- Multi-drug comparison (e.g., "Compare ibuprofen and naproxen"):
+  Use a brief comparison format with one bullet cluster per drug covering: \
+key risks, notable interactions, population warnings.
+
+- Mechanism question (e.g., "Why does metformin cause lactic acidosis?"):
+  Explain the pharmacological mechanism clearly, then cite supporting evidence.
+
+Resolve pronouns and follow-up references using conversation history \
+(e.g., "its interactions" → the drug asked about in the previous turn).
+
+## Safety Boundaries
+- Never provide specific dosing instructions or personalized treatment recommendations.
+- Never diagnose conditions.
+
+- If asked what medication to take for a condition (e.g., "I have diabetes, what \
+should I take?"): give a brief, general orientation of the drug classes commonly \
+used for that condition based on established pharmacology — no dosing, no \
+brand-specific picks. Then add a clear disclaimer that this is general knowledge, \
+not based on retrieved FDA evidence, and that personalized decisions should be \
+made with a doctor or pharmacist. Close with an invitation to look up a specific \
+drug. Example structure:
+  "Diabetes is typically managed with several medication classes — metformin \
+(a biguanide) is often a first-line option, alongside GLP-1 receptor agonists, \
+SGLT-2 inhibitors, and others depending on the patient's profile.
+  ⚠️ This is general pharmacological knowledge, not based on retrieved FDA \
+evidence. For a treatment plan tailored to you, please speak with your doctor \
+or pharmacist.
+  If you have a specific medication in mind, TruPharma can pull up its full FDA \
+safety profile, known interactions, and post-market adverse event data."
+
+- If the question is entirely outside drug safety (weather, sports, finance, \
+general science, etc.): respond warmly but briefly, name TruPharma, and invite \
+a drug-related follow-up. Example structure:
+  "That's outside TruPharma's area — I'm built specifically for drug safety \
+questions. Feel free to ask me about any medication's side effects, interactions, \
+or safety profile!"
+
+- If retrieved evidence is genuinely insufficient AND you have no relevant \
+pharmacological knowledge, respond: "Not enough evidence in the retrieved context."\
+"""
 
 
-def _build_prompt(question: str, evidence: list, kg_context: str = "") -> str:
+def _build_prompt(
+    question: str,
+    evidence: list,
+    kg_context: str = "",
+    query_intent: str = "",
+    conversation_history: Optional[List[Dict[str, str]]] = None,
+) -> str:
     """Construct a structured RAG prompt with KG context and evidence citations."""
+    sep = "\n" + "─" * 60 + "\n"
+    sections = [_RAG_SYSTEM]
+
+    # Conversation history — placed inside the structured prompt, close to the question
+    if conversation_history:
+        history_lines = []
+        for msg in conversation_history[-5:]:
+            role = "User" if msg["role"] == "user" else "Assistant"
+            history_lines.append(f"{role}: {msg['content'][:500]}")
+        if history_lines:
+            sections.append(sep + "## Conversation History\n" + "\n".join(history_lines))
+
+    # Knowledge graph context
+    if kg_context:
+        sections.append(sep + kg_context)
+
+    # Retrieved FDA evidence
     lines = [f'{e["cite"]}  {e["content"]}' for e in evidence]
     block = "\n\n".join(lines)
+    sections.append(sep + f"## Retrieved FDA Label Evidence\n{block}")
 
-    sections = [_RAG_SYSTEM, ""]
+    # Query-type hint helps the LLM choose the right format
+    if query_intent and query_intent != "general":
+        intent_label = {
+            "safety_check": "safety check",
+            "interaction": "interaction check",
+            "comparison": "drug comparison",
+            "mechanism": "mechanism explanation",
+        }.get(query_intent, query_intent)
+        hint = f"[Query type: {intent_label} — use the matching answer format described above]"
+    else:
+        hint = ""
 
-    if kg_context:
-        sections.append(kg_context)
-        sections.append("")
-
-    sections.append(f"## Retrieved Evidence (Vector Search)\n{block}")
-    sections.append("")
-    sections.append(f"## User Question\n{question}")
-    sections.append("")
-    sections.append("Answer (with citations):")
+    sections.append(sep + f"## User Question\n{question}" + (f"\n{hint}" if hint else ""))
+    sections.append(sep + "Answer (with citations):")
 
     return "\n".join(sections)
 
@@ -279,30 +366,19 @@ def _build_prompt(question: str, evidence: list, kg_context: str = "") -> str:
 def _call_gemini(
     prompt: str,
     api_key: str = "",
-    conversation_history: Optional[List[Dict[str, str]]] = None,
 ) -> Optional[str]:
     """Call Gemini for grounded answer generation. Tries Vertex AI first, then direct API.
 
     Parameters
     ----------
     prompt : str
-        The RAG prompt with evidence and question.
+        The RAG prompt with evidence, conversation history, and question.
     api_key : str
         Direct Gemini API key (fallback if Vertex AI unavailable).
-    conversation_history : list, optional
-        List of {"role": "user"/"assistant", "content": str} dicts for
-        conversational context. Last N messages are prepended to the prompt.
     """
-    # Build full prompt with conversation history
+    # Conversation history is now embedded in the prompt by _build_prompt().
+    # _call_gemini no longer prepends it separately.
     full_prompt = prompt
-    if conversation_history:
-        history_lines = []
-        for msg in conversation_history[-5:]:
-            role = "User" if msg["role"] == "user" else "Assistant"
-            history_lines.append(f"{role}: {msg['content'][:500]}")
-        if history_lines:
-            history_block = "\n".join(history_lines)
-            full_prompt = f"Conversation History:\n{history_block}\n\n{prompt}"
 
     # #region agent log f1239c
     _last_gemini_debug.clear()
@@ -523,32 +599,46 @@ def run_rag_query(
     else:
         search_q = build_openfda_query(query, fields=FIELD_ALLOWLIST)
 
-    # 1b ── Scope gate: reject queries that don't reference any drug
+    # 1b ── Scope gate: no known drug detected — let the LLM handle it gracefully
+    #        (off-topic redirect, condition/treatment orientation, etc.)
+    #        Only skip retrieval; still call Gemini so the response is warm and helpful.
     if not _drug_is_known(drug_name):
-        lat = round((time.time() - t0) * 1000, 1)
-        oos_answer = "Not enough evidence in the retrieved context."
+        lat_oos = round((time.time() - t0) * 1000, 1)
+        _gemini_key_oos = gemini_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
+        _oos_prompt = _build_prompt(
+            query,
+            evidence=[],
+            kg_context="",
+            query_intent=query_analysis.get("intent", "") if query_analysis else "",
+            conversation_history=conversation_history,
+        )
+        oos_answer = _call_gemini(_oos_prompt, _gemini_key_oos) or (
+            "That's outside TruPharma's area — I'm built specifically for drug safety "
+            "questions. Feel free to ask me about any medication's side effects, "
+            "interactions, or safety profile!"
+        )
         log_row({
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "query": query[:200],
-            "latency_ms": lat,
+            "latency_ms": lat_oos,
             "evidence_ids": "",
             "confidence": 0.0,
             "num_evidence": 0,
             "num_records": 0,
             "retrieval_method": method,
-            "llm_used": False,
+            "llm_used": True,
             "answer_preview": oos_answer[:150],
         })
         return {
             "answer": oos_answer,
             "evidence": [],
-            "latency_ms": lat,
+            "latency_ms": lat_oos,
             "confidence": 0.0,
             "num_records": 0,
             "search_query": search_q,
             "drug_name": drug_name,
-            "prompt": "",
-            "llm_used": False,
+            "prompt": _oos_prompt,
+            "llm_used": True,
             "method": method,
             "kg_interactions": [],
             "kg_co_reported": [],
@@ -748,11 +838,18 @@ def run_rag_query(
             pass
 
     # 6 ── Generate answer (Gemini LLM or extractive fallback)
-    prompt = _build_prompt(query, evidence, kg_context=kg_context_text)
+    query_intent = query_analysis.get("intent", "") if query_analysis else ""
+    prompt = _build_prompt(
+        query,
+        evidence,
+        kg_context=kg_context_text,
+        query_intent=query_intent,
+        conversation_history=conversation_history,
+    )
     llm_used = False
     answer = None
 
-    answer = _call_gemini(prompt, gemini_key, conversation_history=conversation_history)
+    answer = _call_gemini(prompt, gemini_key)
     if answer:
         llm_used = True
 
