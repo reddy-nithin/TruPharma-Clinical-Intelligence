@@ -240,35 +240,10 @@ def _try_rerank(query, items, top_k):
 #  ANSWER GENERATION
 # ══════════════════════════════════════════════════════════════
 
-_RAG_SYSTEM = (
-    "You are TruPharma Clinical Intelligence Assistant, a medical drug-label "
-    "information tool used by healthcare professionals and patients.\n\n"
-    "INSTRUCTIONS:\n"
-    "1. Answer the question using ONLY the retrieved FDA drug-label evidence below.\n"
-    "2. Structure your response with clear markdown headings (##) for each major topic "
-    "(e.g., ## Key Findings, ## Warnings, ## Drug Interactions, ## Dosage, ## Adverse Reactions).\n"
-    "3. Use bullet points for lists of side effects, interactions, or warnings.\n"
-    "4. Cite every key claim with bracket notation (e.g. [Evidence 1]).\n"
-    "5. Highlight critical safety information (boxed warnings, contraindications) prominently.\n"
-    "6. If the evidence is insufficient, respond exactly: "
-    '"Not enough evidence in the retrieved context."\n'
-    "7. Do NOT fabricate facts. Do NOT add information beyond the evidence.\n"
-    "8. Use plain language where possible while preserving clinical accuracy.\n"
-    "9. End with a brief clinical note or disclaimer when relevant."
-)
-
-
-def _build_prompt(question: str, evidence: list) -> str:
-    """Construct a RAG prompt with evidence citations."""
-    lines = [f'{e["cite"]}  (Source: {e["field"]})\n{e["content"]}' for e in evidence]
-    block = "\n\n---\n\n".join(lines)
-    return (
-        f"{_RAG_SYSTEM}\n\n"
-        f"=== RETRIEVED EVIDENCE ===\n\n{block}\n\n"
-        f"=== END EVIDENCE ===\n\n"
-        f"Question: {question}\n\n"
-        f"Provide a well-structured, readable answer with citations:"
-    )
+_RAG_SYSTEM = """\
+You are TruPharma Assistant, an AI-powered drug safety information tool used by \
+pharmacists and general healthcare staff. Your role is safety verification, not \
+prescribing or diagnosing.
 
     sections = [_RAG_SYSTEM, ""]
 
@@ -276,35 +251,76 @@ def _build_prompt(question: str, evidence: list) -> str:
         sections.append(kg_context)
         sections.append("")
 
-    sections.append(f"## Retrieved Evidence (Vector Search)\n{block}")
-    sections.append("")
-    sections.append(f"## User Question\n{question}")
-    sections.append("")
-    sections.append("Answer (with citations):")
+    # Retrieved FDA evidence
+    lines = [f'{e["cite"]}  {e["content"]}' for e in evidence]
+    block = "\n\n".join(lines)
+    sections.append(sep + f"## Retrieved FDA Label Evidence\n{block}")
+
+    # Query-type hint helps the LLM choose the right format
+    if query_intent and query_intent != "general":
+        intent_label = {
+            "safety_check": "safety check",
+            "interaction": "interaction check",
+            "comparison": "drug comparison",
+            "mechanism": "mechanism explanation",
+        }.get(query_intent, query_intent)
+        hint = f"[Query type: {intent_label} — use the matching answer format described above]"
+    else:
+        hint = ""
+
+    sections.append(sep + f"## User Question\n{question}" + (f"\n{hint}" if hint else ""))
+    sections.append(sep + "Answer (with citations):")
 
     return "\n".join(sections)
 
-def _call_gemini(prompt: str, api_key: str) -> tuple:
-    """Call Google Gemini for grounded answer generation.
+def _call_gemini(prompt: str, api_key: str = "") -> tuple:
+    """Call Gemini for grounded answer generation. Tries Vertex AI first, then direct API.
 
-    Returns (answer_text, error_message).  On success error_message is None;
+    Returns (answer_text, error_message). On success error_message is None;
     on failure answer_text is None and error_message describes the problem.
     """
+    full_prompt = prompt
+    _last_gemini_debug.clear()
+    _last_gemini_debug["gcp_project_env"] = os.environ.get("GCP_PROJECT_ID", "EMPTY")
+    _last_gemini_debug["gcp_location_env"] = os.environ.get("GCP_LOCATION", "EMPTY")
+    _last_gemini_debug["api_key_provided"] = bool(api_key)
+
+    # Try Vertex AI first
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        resp = model.generate_content(prompt)
-        if resp and resp.text:
-            return resp.text.strip(), None
-        return None, "Gemini returned an empty response. The model may have refused the query."
+        from src.config import is_vertex_available
+        if is_vertex_available():
+            from google import genai
+            client = genai.Client(
+                vertexai=True,
+                project=os.environ.get("GCP_PROJECT_ID", ""),
+                location=os.environ.get("GCP_LOCATION", "us-central1"),
+            )
+            resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
+            if resp and resp.text:
+                return resp.text.strip(), None
     except Exception as exc:
-        err_str = str(exc)
-        if "API_KEY_INVALID" in err_str or "401" in err_str:
-            return None, f"Invalid Gemini API key. Please check your key and try again."
-        if "QUOTA" in err_str.upper() or "429" in err_str:
-            return None, "Gemini API quota exceeded. Please wait or check your billing."
-        return None, f"Gemini API error: {err_str}"
+        import warnings
+        warnings.warn(f"Vertex AI Gemini error: {exc}")
+
+    # Fallback to direct Gemini API key
+    if api_key:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel("gemini-2.0-flash")
+            resp = model.generate_content(full_prompt)
+            if resp and resp.text:
+                return resp.text.strip(), None
+            return None, "Gemini returned an empty response. The model may have refused the query."
+        except Exception as exc:
+            err_str = str(exc)
+            if "API_KEY_INVALID" in err_str or "401" in err_str:
+                return None, "Invalid Gemini API key. Please check your key and try again."
+            if "QUOTA" in err_str.upper() or "429" in err_str:
+                return None, "Gemini API quota exceeded. Please wait or check your billing."
+            return None, f"Gemini API error: {err_str}"
+
+    return None, "No Gemini API key provided and Vertex AI unavailable."
 
 
 def _fallback_answer(question: str, evidence: list, n: int = 8) -> str:
@@ -511,8 +527,21 @@ def run_rag_query(
 
     # 1b ── Scope gate: reject queries that don't reference any drug
     if not _drug_is_known(drug_name):
-        lat = round((time.time() - t0) * 1000, 1)
-        oos_answer = "Not enough evidence in the retrieved context."
+        lat_oos = round((time.time() - t0) * 1000, 1)
+        _gemini_key_oos = gemini_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
+        _oos_prompt = _build_prompt(
+            query,
+            evidence=[],
+            kg_context="",
+            query_intent=query_analysis.get("intent", "") if query_analysis else "",
+            conversation_history=conversation_history,
+        )
+        _ans, _ = _call_gemini(_oos_prompt, _gemini_key_oos)
+        oos_answer = _ans or (
+            "That's outside TruPharma's area — I'm built specifically for drug safety "
+            "questions. Feel free to ask me about any medication's side effects, "
+            "interactions, or safety profile!"
+        )
         log_row({
             "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "query": query[:200],
@@ -547,32 +576,113 @@ def run_rag_query(
     cache_hit = False
     vector_store = None
     try:
-        arts = build_artifacts(
-            api_search=search_q,
-            field_allowlist=FIELD_ALLOWLIST,
-            field_blocklist=FIELD_BLOCKLIST,
-            include_table_fields=False,
-            min_chars=40,
-            use_st=USE_SENTENCE_TRANSFORMERS,
-            st_model=MEDICAL_BERT_MODEL,
-            save=False,
-            save_vectorizer=False,
-            api_base_url=API_BASE,
-            api_limit=api_limit,
-            api_max_records=max_records,
-            verbose=False,
-            kg=kg,
-        )
-    except RuntimeError as exc:
-        lat = round((time.time() - t0) * 1000, 1)
-        if "404" in str(exc) or "Not Found" in str(exc):
-            err_answer = "Not enough evidence in the retrieved context."
+        from src.ingestion.vector_store import create_vector_store
+        vector_store = create_vector_store()
+        if hasattr(vector_store, 'has_fresh_vectors') and drug_name:
+            cache_hit = vector_store.has_fresh_vectors(drug_name)
+    except Exception:
+        pass
+
+    if cache_hit and vector_store and drug_name:
+        try:
+            qv = _embed_query(query, "vertex_ai", "text-embedding-004", None)
+            if qv is None:
+                cache_hit = False
+            else:
+                cached_results = vector_store.get_drug_vectors(drug_name, qv, top_k=max(20, top_k * 3))
+                corpus = []
+                for cr in cached_results:
+                    meta = cr.get("metadata", {})
+                    corpus.append(TextChunk(
+                        chunk_id=cr["id"],
+                        doc_id=meta.get("doc_id", ""),
+                        field=meta.get("field", ""),
+                        text=meta.get("text", ""),
+                    ))
+                n_recs = 0
+                n_enriched = 0
+                n_chunks = len(corpus)
+                items = corpus[:max(20, top_k * 3)]
+        except Exception:
+            cache_hit = False
+
+    if not cache_hit:
+        kg = load_kg()
+        try:
+            arts = build_artifacts(
+                api_search=search_q,
+                field_allowlist=FIELD_ALLOWLIST,
+                field_blocklist=FIELD_BLOCKLIST,
+                include_table_fields=False,
+                min_chars=40,
+                use_st=USE_SENTENCE_TRANSFORMERS,
+                st_model=MEDICAL_BERT_MODEL,
+                save=False,
+                save_vectorizer=False,
+                api_base_url=API_BASE,
+                api_limit=api_limit,
+                api_max_records=max_records,
+                verbose=False,
+                kg=kg,
+            )
+        except RuntimeError as exc:
+            lat = round((time.time() - t0) * 1000, 1)
+            if "404" in str(exc) or "Not Found" in str(exc):
+                err_answer = "Not enough evidence in the retrieved context."
+            else:
+                err_answer = f"Error fetching data from openFDA: {exc}"
+            log_row({
+                "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "query": query[:200],
+                "latency_ms": lat,
+                "evidence_ids": "",
+                "confidence": 0.0,
+                "num_evidence": 0,
+                "num_records": 0,
+                "retrieval_method": method,
+                "llm_used": False,
+                "answer_preview": err_answer[:150],
+            })
+            return {
+                "answer": err_answer,
+                "evidence": [],
+                "latency_ms": lat,
+                "confidence": 0.0,
+                "num_records": 0,
+                "search_query": search_q,
+                "drug_name": _extract_drug_name(query),
+                "prompt": "",
+                "llm_used": False,
+                "method": method,
+                "kg_interactions": [],
+                "kg_co_reported": [],
+                "kg_reactions": [],
+                "kg_ingredients": [],
+                "kg_available": False,
+            }
+
+        corpus = arts["record_chunks"]
+        index = arts["faiss_A"]
+        bm25 = arts["bm25_A"]
+        emb = (arts.get("manifest", {}).get("embedder") or {})
+        e_type = emb.get("type")
+        e_model = emb.get("model")
+        vec = arts.get("vectorizer")
+        counts = (arts.get("manifest", {}).get("counts") or {})
+        n_recs = counts.get("records", 0)
+        n_enriched = counts.get("graph_enriched_chunks", 0)
+        n_chunks = counts.get("record_chunks", 0)
+
+        pool = max(20, top_k * 3)
+        if method == "dense":
+            items = [it for _, it in _dense(query, index, corpus, e_type, e_model, vec, pool)]
+        elif method == "sparse":
+            items = [it for _, it in _sparse(query, bm25, corpus, pool)]
         else:
             d = _dense(query, index, corpus, e_type, e_model, vec, pool)
             s = _sparse(query, bm25, corpus, pool)
             items = [it for _, it in _fuse(d, s, 0.5, pool)]
 
-        # 3b ── Upsert fresh vectors to cache (only when dims match Pinecone's 768)
         if vector_store and drug_name and corpus:
             try:
                 vecs = arts.get("faiss_A")
@@ -581,10 +691,7 @@ def run_rag_query(
                     all_vecs = np.zeros((n_total, 768), dtype=np.float32)
                     for i in range(n_total):
                         all_vecs[i] = vecs.reconstruct(i)
-
-                    # Delete old vectors for this drug, then upsert new
                     vector_store.delete_by_filter({"drug_name": drug_name})
-
                     cache_ids = []
                     cache_meta = []
                     for i, chunk in enumerate(corpus[:n_total]):
@@ -598,9 +705,9 @@ def run_rag_query(
                         })
                     vector_store.upsert(cache_ids, all_vecs[:len(cache_ids)], cache_meta)
             except Exception:
-                pass  # Cache upsert is best-effort
+                pass
 
-        del arts, index, bm25, corpus, vec
+        del arts, index, bm25, vec
         gc.collect()
 
     # 4 ── Optional rerank with KG-aware boost
@@ -658,7 +765,12 @@ def run_rag_query(
     gemini_error = None
     answer = None
 
-    if gemini_key:
+    answer, gemini_error = _call_gemini(prompt, gemini_key)
+    if answer:
+        llm_used = True
+
+    if not llm_used and gemini_key:
+        # Retry with direct API key if Vertex AI failed
         answer, gemini_error = _call_gemini(prompt, gemini_key)
         if answer:
             llm_used = True
