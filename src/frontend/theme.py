@@ -538,6 +538,11 @@ section[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-chi
     background: linear-gradient(135deg, rgba(129,140,248,0.06) 0%, var(--bg-surface) 100%);
 }
 
+.nav-btn-block.opioid {
+    border-left: 6px solid var(--signal-warn);
+    background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, var(--bg-surface) 100%);
+}
+
 /* page-title / page-subtitle (Signal Heatmap, Stress Test, etc.) */
 .page-title {
     font-family: var(--font-header);
