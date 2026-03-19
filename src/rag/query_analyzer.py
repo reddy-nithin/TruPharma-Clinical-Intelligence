@@ -12,28 +12,47 @@ import warnings
 from typing import Any, Dict, List, Optional
 
 
-_ANALYSIS_PROMPT = """You are a pharmacology query analyzer. Extract structured information from the user's drug-safety question.
+_ANALYSIS_PROMPT = """\
+You are a pharmacology query analyzer. Extract structured information from the \
+user's drug-safety question.
 
-Return ONLY a JSON object with these fields:
-- "drugs": list of drug names mentioned (generic names preferred)
-- "reactions": list of adverse reactions or side effects mentioned
-- "intent": one of "safety_check", "interaction", "comparison", "general"
+Return ONLY a JSON object with these exact fields — no extra keys, no prose:
+- "drugs": list of drug names (normalize brand names to generic where known; \
+  e.g., "Tylenol" → "acetaminophen")
+- "reactions": list of adverse reactions or side effects explicitly mentioned
+- "intent": one of "safety_check", "interaction", "comparison", "mechanism", "general"
+- "context_clues": list of any route/population/condition qualifiers mentioned \
+  (e.g., ["pediatric", "renal impairment", "oral route"])
 
 Intent definitions:
-- "safety_check": asking about side effects, warnings, adverse reactions of a single drug
-- "interaction": asking about drug-drug interactions
+- "safety_check": side effects, warnings, adverse reactions of a single drug
+- "interaction": drug-drug or drug-class interactions
 - "comparison": comparing two or more drugs
-- "general": other drug-related questions (dosage, ingredients, etc.)
+- "mechanism": asking WHY a drug causes an effect (pharmacological mechanism)
+- "general": other drug-related questions (dosage, ingredients, FAERS reports, etc.)
 
-Example:
+If the query mentions no recognisable drug (e.g., off-topic questions), \
+return "drugs": [].
+
+Examples:
 Query: "Does ibuprofen interact with warfarin?"
-{"drugs": ["ibuprofen", "warfarin"], "reactions": [], "intent": "interaction"}
+{"drugs": ["ibuprofen", "warfarin"], "reactions": [], "intent": "interaction", \
+"context_clues": []}
 
-Query: "What are the side effects of metformin?"
-{"drugs": ["metformin"], "reactions": [], "intent": "safety_check"}
+Query: "What are the side effects of metformin in elderly patients?"
+{"drugs": ["metformin"], "reactions": [], "intent": "safety_check", \
+"context_clues": ["elderly"]}
+
+Query: "Why does metformin cause lactic acidosis?"
+{"drugs": ["metformin"], "reactions": ["lactic acidosis"], "intent": "mechanism", \
+"context_clues": []}
 
 Query: "Compare adverse reactions of ibuprofen and naproxen"
-{"drugs": ["ibuprofen", "naproxen"], "reactions": [], "intent": "comparison"}
+{"drugs": ["ibuprofen", "naproxen"], "reactions": [], "intent": "comparison", \
+"context_clues": []}
+
+Query: "What's the weather today?"
+{"drugs": [], "reactions": [], "intent": "general", "context_clues": []}
 
 Now analyze this query:
 """
@@ -86,6 +105,9 @@ def _try_llm_analysis(query: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+_VALID_INTENTS = {"safety_check", "interaction", "comparison", "mechanism", "general"}
+
+
 def _parse_response(text: str) -> Optional[Dict[str, Any]]:
     """Parse LLM JSON response into structured dict."""
     raw = text.strip()
@@ -95,10 +117,14 @@ def _parse_response(text: str) -> Optional[Dict[str, Any]]:
     try:
         data = json.loads(raw)
         if isinstance(data, dict):
+            intent = data.get("intent", "general")
+            if intent not in _VALID_INTENTS:
+                intent = "general"
             return {
                 "drugs": [d.strip().lower() for d in data.get("drugs", []) if isinstance(d, str)],
                 "reactions": [r.strip().lower() for r in data.get("reactions", []) if isinstance(r, str)],
-                "intent": data.get("intent", "general"),
+                "intent": intent,
+                "context_clues": [c.strip().lower() for c in data.get("context_clues", []) if isinstance(c, str)],
             }
     except (json.JSONDecodeError, KeyError):
         pass
@@ -115,6 +141,8 @@ def _regex_fallback(query: str) -> Dict[str, Any]:
         intent = "interaction"
     elif any(kw in query_lower for kw in ("compare", "comparison", "versus", "vs")):
         intent = "comparison"
+    elif any(kw in query_lower for kw in ("why does", "why do", "mechanism", "cause", "causes")):
+        intent = "mechanism"
     elif any(kw in query_lower for kw in ("side effect", "adverse", "reaction", "warning", "safety", "risk")):
         intent = "safety_check"
 
@@ -135,6 +163,7 @@ def _regex_fallback(query: str) -> Dict[str, Any]:
         "drugs": drugs[:5],
         "reactions": [],
         "intent": intent,
+        "context_clues": [],
     }
 
 
@@ -165,7 +194,7 @@ def get_kg_context_for_query(
         if identity:
             context["drugs_found"].append(identity)
 
-            if intent in ("safety_check", "general", "comparison"):
+            if intent in ("safety_check", "general", "comparison", "mechanism"):
                 reactions = kg.get_drug_reactions(drug_name)
                 context["reactions"].extend(reactions[:10])
                 co_reported = kg.get_co_reported(drug_name)
