@@ -276,12 +276,20 @@ st.markdown("""<style>
 # ══════════════════════════════════════════════════════════════
 #  SESSION STATE
 # ══════════════════════════════════════════════════════════════
+if st.session_state.pop("_reset_chat", False):
+    st.session_state.messages = []
+    st.session_state.kg_poll_count = 0
+    st.session_state.active_detail = None
+    st.session_state.show_risk_calc = False
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "kg_poll_count" not in st.session_state:
     st.session_state.kg_poll_count = 0
 if "active_detail" not in st.session_state:
     st.session_state.active_detail = None
+if "show_risk_calc" not in st.session_state:
+    st.session_state.show_risk_calc = False
 
 
 # ══════════════════════════════════════════════════════════════
@@ -314,11 +322,16 @@ with st.sidebar:
     render_brand()
     st.divider()
 
+    if st.button("🏠 Home", use_container_width=True):
+        st.switch_page("app.py")
+
     # New Chat / Clear
     col_new, col_clear = st.columns(2)
     with col_new:
         if st.button("+ New Chat", use_container_width=True):
             st.session_state.messages = []
+            st.session_state.active_detail = None
+            st.session_state.show_risk_calc = False
             st.rerun()
     with col_clear:
         if st.button("Clear All", use_container_width=True):
@@ -490,11 +503,13 @@ def _enrich_kg_data(ingredients, interactions, co_reported, reactions):
 #  KG VISUALIZATION (vis.js — dark theme)
 # ══════════════════════════════════════════════════════════════
 
-def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions):
+def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, reactions, compact=False):
     """Build a decision-support KG visualization with vis.js in dark theme."""
     nodes, edges, details_map = [], [], {}
     nid = 0
-    RADIUS = 210
+    RADIUS = 130 if compact else 210
+    MAX_ITEMS = 6 if compact else 8
+    center_font = 13 if compact else 16
 
     # Center node
     center_id = nid
@@ -503,7 +518,7 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
         "x": 0, "y": 0, "fixed": {"x": True, "y": True},
         "color": {"background": "#7c3aed", "border": "#5b21b6",
                   "highlight": {"background": "#8b5cf6", "border": "#5b21b6"}},
-        "font": {"color": "#fff", "size": 16, "face": "Quicksand", "bold": True},
+        "font": {"color": "#fff", "size": center_font, "face": "Quicksand", "bold": True},
         "shape": "box", "borderWidth": 2,
         "margin": {"top": 10, "bottom": 10, "left": 14, "right": 14},
     })
@@ -516,16 +531,16 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     # Category definitions (dark theme colors)
     categories = []
     if ingredients:
-        categories.append(("ingredient", ingredients[:8],
+        categories.append(("ingredient", ingredients[:MAX_ITEMS],
                            "rgba(0,137,123,0.2)", "#00897b", "contains"))
     if interactions:
-        categories.append(("interaction", interactions[:8],
+        categories.append(("interaction", interactions[:MAX_ITEMS],
                            "rgba(245,124,0,0.2)", "#f57c00", "interacts"))
     if co_reported:
-        categories.append(("co_reported", co_reported[:8],
+        categories.append(("co_reported", co_reported[:MAX_ITEMS],
                            "rgba(25,118,210,0.2)", "#1976d2", "co-reported"))
     if reactions:
-        categories.append(("reaction", reactions[:8],
+        categories.append(("reaction", reactions[:MAX_ITEMS],
                            "rgba(198,40,40,0.2)", "#c62828", "adverse rxn"))
 
     n_cat = len(categories)
@@ -608,6 +623,8 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     ej = _json.dumps(edges)
     dj = _json.dumps(details_map)
 
+    net_height = 350 if compact else 470
+
     return f"""<html><head>
 <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
@@ -624,7 +641,7 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-ser
   transition:background .12s,box-shadow .12s}}
 .tb-btn:hover{{background:#1e3450;box-shadow:0 1px 4px rgba(0,0,0,.2)}}
 .tb-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
-#kg-net{{width:100%;height:470px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
+#kg-net{{width:100%;height:{net_height}px;border-left:1px solid #1f3d5a;border-right:1px solid #1f3d5a;
   background:#0b1622}}
 #kg-detail{{position:absolute;top:40px;right:0;width:260px;height:calc(100% - 40px);
   background:rgba(17,30,46,.97);border-left:2px solid #2a5278;
@@ -854,198 +871,273 @@ def map_symptoms_to_regions(symptoms: list[str]) -> dict[str, int]:
     return counts
 
 
-def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str]) -> str:
-    """Return HTML with the human body image overlaid with radial gradient circles (dark theme)."""
-    img_path = Path(__file__).resolve().parent.parent / "assets" / "images" / "humanbody.jpg"
-    img_b64 = base64.b64encode(img_path.read_bytes()).decode()
+_HOTSPOT_COORDS = {
+    "male": {
+        "head":     {"pos": "0 0.738 0.02",     "normal": "0 0.25 1",  "label": True},
+        "chest":    {"pos": "0 0.378 0.02",     "normal": "0 0 1",     "label": True},
+        "abdomen":  {"pos": "0 0.137 0.02",     "normal": "0 0 1",     "label": True},
+        "arms_l":   {"pos": "-0.370 0.309 0.00","normal": "-1 0 0",    "label": True},
+        "arms_r":   {"pos": "0.370 0.309 0.00", "normal": "1 0 0",     "label": False},
+        "legs_l":   {"pos": "-0.108 -0.481 0.02","normal": "0 0 1",    "label": True},
+        "legs_r":   {"pos": "0.108 -0.481 0.02","normal": "0 0 1",     "label": False},
+        "skin":     {"pos": "0.18 0.26 0.02",   "normal": "0 0 1",     "label": True},
+        "systemic": {"pos": "-0.16 0.06 0.02",  "normal": "0 0 1",     "label": True},
+    },
+    "female": {
+        "head":     {"pos": "0 0.724 0.00",     "normal": "0 0.25 1",  "label": True},
+        "chest":    {"pos": "0 0.371 0.00",     "normal": "0 0 1",     "label": True},
+        "abdomen":  {"pos": "0 0.135 0.00",     "normal": "0 0 1",     "label": True},
+        "arms_l":   {"pos": "-0.370 0.303 0.00","normal": "-1 0 0",    "label": True},
+        "arms_r":   {"pos": "0.370 0.303 0.00", "normal": "1 0 0",     "label": False},
+        "legs_l":   {"pos": "-0.108 -0.472 0.00","normal": "0 0 1",    "label": True},
+        "legs_r":   {"pos": "0.108 -0.472 0.00","normal": "0 0 1",     "label": False},
+        "skin":     {"pos": "0.18 0.24 0.00",   "normal": "0 0 1",     "label": True},
+        "systemic": {"pos": "-0.16 0.04 0.00",  "normal": "0 0 1",     "label": True},
+    },
+}
 
+
+def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str]) -> str:
+    """Return HTML with a 3D model-viewer body overlaid with hotspot dots (dark theme)."""
     body_max = max(
-        (v for k, v in region_counts.items() if k not in ("unknown", "skin", "systemic")),
+        (v for k, v in region_counts.items() if k != "unknown"),
         default=1,
     ) or 1
     total = sum(region_counts.values())
     unknown = region_counts.get("unknown", 0)
 
-    def _rgb(region: str) -> str | None:
+    def _hex(region: str) -> str | None:
         c = region_counts.get(region, 0)
         if c == 0:
             return None
         frac = c / body_max
         if frac > 0.66:
-            return "220,38,38"
+            return "#dc2626"
         elif frac > 0.33:
-            return "245,158,11"
-        return "59,130,246"
+            return "#f59e0b"
+        return "#3b82f6"
 
-    def _size(region: str) -> int:
+    def _size_px(region: str) -> int:
         c = region_counts.get(region, 0)
         if c == 0:
             return 0
-        return 40 + int(40 * (c / body_max))
+        return 18 + int(16 * (c / body_max))
 
-    region_positions: dict[str, list[dict[str, float]]] = {
-        "head":    [{"x": 47.5, "y": 8.6}],
-        "chest":   [{"x": 47.5, "y": 28.8}],
-        "abdomen": [{"x": 47.5, "y": 44.2}],
-        "arms":    [{"x": 17.5, "y": 34.0}, {"x": 77.3, "y": 34.0}],
-        "legs":    [{"x": 39.0, "y": 68.0}, {"x": 57.7, "y": 68.0}],
+    _REGION_DESCRIPTIONS = {
+        "head": "Head & Neurological — headaches, dizziness, vision changes, seizures, cognitive effects",
+        "chest": "Chest & Cardiopulmonary — heart rhythm, blood pressure, breathing, cough, chest pain",
+        "abdomen": "Abdominal & GI — nausea, vomiting, diarrhea, liver toxicity, GI bleeding",
+        "arms": "Upper Extremities — arm/shoulder pain, peripheral neuropathy, grip weakness",
+        "legs": "Lower Extremities — leg pain, gait changes, deep vein thrombosis, joint issues",
+        "skin": "Skin & Dermatologic — rash, hives, itching, photosensitivity, severe skin reactions (SJS/TEN)",
+        "systemic": "Systemic & Whole-Body — fatigue, fever, blood disorders, anaphylaxis, multi-organ effects",
     }
 
-    circles: list[str] = []
-    for region, positions in region_positions.items():
-        rgb = _rgb(region)
-        if not rgb:
-            continue
-        sz = _size(region)
-        cnt = region_counts.get(region, 0)
-        for i, pos in enumerate(positions):
-            label = f"<span class='cnt'>{cnt}</span>" if i == 0 else ""
-            circles.append(
-                f"<div class='heat-dot' style='"
-                f"left:{pos['x']}%;top:{pos['y']}%;"
-                f"width:{sz}px;height:{sz}px;"
-                f"background:radial-gradient(circle,"
-                f"rgba({rgb},0.85) 0%,rgba({rgb},0.45) 30%,"
-                f"rgba({rgb},0.15) 55%,transparent 72%);'>"
-                f"{label}</div>"
+    def _build_hotspots_for_gender(gender: str) -> str:
+        coords = _HOTSPOT_COORDS.get(gender, _HOTSPOT_COORDS["male"])
+        spots = []
+        region_map = {
+            "head": "head", "chest": "chest", "abdomen": "abdomen",
+            "arms_l": "arms", "arms_r": "arms",
+            "legs_l": "legs", "legs_r": "legs",
+            "skin": "skin", "systemic": "systemic",
+        }
+        for key, info in coords.items():
+            region = region_map.get(key, key)
+            cnt = region_counts.get(region, 0)
+            if cnt == 0:
+                continue
+            hex_color = _hex(region)
+            if not hex_color:
+                continue
+            sz = _size_px(region)
+            label_html = f"<span class='hs-cnt'>{cnt}</span>" if info["label"] else ""
+            tooltip = _REGION_DESCRIPTIONS.get(region, region.title())
+            tooltip_escaped = tooltip.replace("'", "&#39;").replace('"', "&quot;")
+
+            if region == "skin":
+                dot_class = "skin-dot"
+                style = (
+                    f"width:{sz}px;height:{sz}px;"
+                    f"border:2px dashed {hex_color};background:transparent;"
+                    f"box-shadow:0 0 10px {hex_color}55;"
+                )
+            elif region == "systemic":
+                dot_class = "systemic-dot"
+                style = (
+                    f"width:{sz}px;height:{sz}px;"
+                    f"background:{hex_color};border:2px solid rgba(255,255,255,0.3);"
+                    f"box-shadow:0 0 12px {hex_color}55;"
+                )
+            else:
+                dot_class = "body-dot"
+                style = (
+                    f"width:{sz}px;height:{sz}px;"
+                    f"background:radial-gradient(circle,{hex_color}dd 0%,{hex_color}66 50%,transparent 72%);"
+                )
+
+            spots.append(
+                f'<button class="Hotspot hs-dot {dot_class}" slot="hotspot-{key}-{gender}" '
+                f'data-position="{info["pos"]}" data-normal="{info["normal"]}" '
+                f'data-visibility-attribute="visible" style="{style}" '
+                f'data-region="{region}" data-tooltip="{tooltip_escaped}" data-count="{cnt}">'
+                f'{label_html}</button>'
             )
-    circles_html = "\n    ".join(circles)
+        return "\n".join(spots)
+
+    male_hotspots = _build_hotspots_for_gender("male")
+    female_hotspots = _build_hotspots_for_gender("female")
 
     skin_count = region_counts.get("skin", 0)
-    skin_overlay = ""
-    skin_legend = ""
-    if skin_count > 0:
-        sk_frac = skin_count / body_max
-        sk_hex = "#dc2626" if sk_frac > 0.66 else "#f59e0b" if sk_frac > 0.33 else "#3b82f6"
-        skin_overlay = (
-            f"<div style='position:absolute;left:6%;top:1%;width:87%;height:96%;"
-            f"border:2.5px dashed {sk_hex};border-radius:35%;opacity:0.55;"
-            f"pointer-events:none;z-index:1'></div>"
-        )
-        skin_legend = f"<span>| Dashed = Skin ({skin_count})</span>"
+    systemic_count = region_counts.get("systemic", 0)
 
-    return f"""<html><head><style>
+    extra_legend = ""
+    if skin_count > 0:
+        sk_hex = _hex("skin") or "#3b82f6"
+        extra_legend += (
+            f'<span><span class="ldot" style="border:2px dashed {sk_hex};'
+            f'background:transparent"></span> Skin ({skin_count})</span>'
+        )
+    if systemic_count > 0:
+        sy_hex = _hex("systemic") or "#3b82f6"
+        extra_legend += (
+            f'<span><span class="ldot" style="background:{sy_hex};'
+            f'border:2px solid rgba(255,255,255,0.3)"></span> Systemic ({systemic_count})</span>'
+        )
+
+    return f"""<html><head>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
 *{{box-sizing:border-box}}
 body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
 .bm-wrap{{text-align:center;padding:4px 0}}
 .bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
 .bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
-.body-ctr{{position:relative;display:inline-block;width:220px;overflow:hidden;cursor:zoom-in}}
-.body-img{{display:block;width:192%;max-width:none;opacity:0.82}}
-.heat-dot{{position:absolute;border-radius:50%;transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2}}
-.cnt{{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6)}}
-.zoom-hint{{position:absolute;bottom:6px;right:6px;font-size:9px;color:#7a9bbf;
-  background:rgba(17,30,46,0.85);padding:2px 7px;border-radius:8px;z-index:3;
-  display:flex;align-items:center;gap:3px;pointer-events:none}}
-.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf}}
+.gender-toggle{{display:inline-flex;gap:4px;margin-bottom:6px}}
+.gender-btn{{padding:4px 14px;border:1px solid #1f3d5a;border-radius:6px;background:#182840;
+  color:#7a9bbf;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:all .15s}}
+.gender-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
+.gender-btn:hover{{background:#1e3450}}
+model-viewer{{width:100%;height:480px;background:transparent;--poster-color:transparent;
+  border:1px solid #1a2f45;border-radius:10px;outline:none}}
+model-viewer .Hotspot{{display:block;border:0;padding:0;border-radius:50%;
+  transform:translate(-50%,-50%);pointer-events:auto;z-index:2;cursor:help;
+  display:flex;align-items:center;justify-content:center}}
+.hs-dot{{position:relative}}
+.hs-cnt{{font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.7);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}}
+.legend{{display:flex;justify-content:center;gap:12px;margin-top:8px;font-size:10px;color:#7a9bbf;flex-wrap:wrap}}
 .legend span{{display:inline-flex;align-items:center;gap:3px}}
 .ldot{{width:10px;height:10px;border-radius:50%;display:inline-block}}
 .how-to{{font-size:10px;color:#3d5a74;margin-top:6px;font-style:italic;line-height:1.4}}
-#zoom-overlay{{display:none;position:fixed;inset:0;z-index:9999;
-  background:rgba(0,0,0,0.82);flex-direction:column;
-  align-items:center;justify-content:center;cursor:pointer;
-  backdrop-filter:blur(6px)}}
-#zoom-inner{{background:#111e2e;border-radius:14px;padding:16px 20px 12px;
-  box-shadow:0 12px 48px rgba(0,0,0,0.45);position:relative;cursor:default;
-  max-width:90vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;align-items:center}}
-#zoom-inner .body-ctr{{width:min(420px,38vh)!important;cursor:default;overflow:hidden}}
-#zoom-inner .body-img{{opacity:1!important}}
-#zoom-inner .zoom-hint{{display:none}}
-#zoom-inner .cnt{{font-size:13px}}
-.zoom-x{{position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,0.08);border:none;cursor:pointer;display:flex;
-  align-items:center;justify-content:center;font-size:20px;color:#7a9bbf;
-  transition:background 0.2s,color 0.2s;z-index:10000}}
-.zoom-x:hover{{background:rgba(255,255,255,0.16);color:#e8f0f8}}
+#hs-tooltip{{display:none;position:absolute;z-index:100;background:rgba(17,30,46,0.96);
+  border:1px solid #2a5278;border-radius:8px;padding:8px 12px;max-width:260px;
+  font-size:11px;line-height:1.45;color:#e8f0f8;pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);white-space:normal}}
+#hs-tooltip .tt-region{{font-weight:800;color:#c4b5fd;font-size:12px;margin-bottom:3px}}
+#hs-tooltip .tt-count{{font-size:10px;color:#7a9bbf;margin-bottom:4px}}
+#hs-tooltip .tt-desc{{color:#7a9bbf}}
 </style></head><body>
 <div class="bm-wrap">
   <div class="bm-title">Symptom Body Map</div>
   <div class="bm-sub">{total} symptom(s) mapped{f' &middot; {unknown} unclassified' if unknown else ''}</div>
-  <div class="body-ctr" id="body-main">
-    <img class="body-img" src="data:image/jpeg;base64,{img_b64}" alt="body outline"/>
-    {skin_overlay}
-    {circles_html}
-    <div class="zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-      stroke="#7a9bbf" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-      Click to zoom</div>
+  <div class="gender-toggle">
+    <button class="gender-btn active" id="btn-male" onclick="switchGender('male')">Male</button>
+    <button class="gender-btn" id="btn-female" onclick="switchGender('female')">Female</button>
+    <button class="gender-btn" id="btn-reset-view" onclick="resetView()" title="Reset camera to default position and resume rotation">&#8634; Reset View</button>
+  </div>
+  <div style="position:relative">
+    <model-viewer id="mv"
+      src="app/static/male.glb"
+      camera-controls interaction-prompt="none"
+      auto-rotate auto-rotate-delay="0" rotation-per-second="15deg"
+      shadow-intensity="0.3" exposure="0.9" tone-mapping="commerce"
+      camera-orbit="0deg 75deg 3.8m"
+      min-camera-orbit="auto auto 2m"
+      max-camera-orbit="auto auto 6m"
+      field-of-view="28deg"
+      ar-status="not-presenting">
+      {male_hotspots}
+    </model-viewer>
+    <div id="hs-tooltip"></div>
   </div>
   <div class="legend">
     <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
     <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
     <span><span class="ldot" style="background:#dc2626"></span> High</span>
-    {skin_legend}
+    {extra_legend}
   </div>
-  <div class="how-to">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-  Numbers indicate symptom count per region.</div>
-</div>
-<div id="zoom-overlay">
-  <div id="zoom-inner">
-    <button class="zoom-x" id="zoom-x-btn" title="Close">&times;</button>
-    <div id="zoom-clone-slot"></div>
-    <div class="legend" style="margin-top:12px">
-      <span><span class="ldot" style="background:#3b82f6"></span> Low</span>
-      <span><span class="ldot" style="background:#f59e0b"></span> Med</span>
-      <span><span class="ldot" style="background:#dc2626"></span> High</span>
-      {skin_legend}
-    </div>
-    <div class="how-to" style="margin-top:8px">Circles show affected areas &mdash; larger &amp; warmer colors mean more reported symptoms.<br/>
-    Numbers indicate symptom count per region.</div>
-  </div>
+  <div class="how-to">Glowing dots show affected areas &mdash; larger &amp; warmer = more reports. Drag to rotate.</div>
 </div>
 <script>
-(function(){{
-  var main=document.getElementById('body-main');
-  var overlay=document.getElementById('zoom-overlay');
-  var inner=document.getElementById('zoom-inner');
-  var xBtn=document.getElementById('zoom-x-btn');
-  var origFrameStyle='';
-  function expandFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f){{
-        origFrameStyle=f.getAttribute('style')||'';
-        f.style.position='fixed';
-        f.style.inset='0';
-        f.style.width='100vw';
-        f.style.height='100vh';
-        f.style.zIndex='9999';
-        f.style.background='transparent';
-      }}
-    }}catch(e){{}}
-  }}
-  function restoreFrame(){{
-    try{{
-      var f=window.frameElement;
-      if(f) f.setAttribute('style',origFrameStyle);
-    }}catch(e){{}}
-  }}
-  var slot=document.getElementById('zoom-clone-slot');
-  function openLightbox(){{
-    expandFrame();
-    var clone=main.cloneNode(true);
-    clone.removeAttribute('id');
-    slot.innerHTML='';
-    slot.appendChild(clone);
-    overlay.style.display='flex';
-  }}
-  function closeLightbox(){{
-    overlay.style.display='none';
-    slot.innerHTML='';
-    restoreFrame();
-  }}
-  main.addEventListener('click',openLightbox);
-  overlay.addEventListener('click',function(e){{
-    if(e.target===overlay) closeLightbox();
-  }});
-  xBtn.addEventListener('click',function(e){{
-    e.stopPropagation();
-    closeLightbox();
-  }});
-  document.addEventListener('keydown',function(e){{
-    if(e.key==='Escape'&&overlay.style.display==='flex') closeLightbox();
-  }});
-}})();
+var maleHotspots = `{male_hotspots}`;
+var femaleHotspots = `{female_hotspots}`;
+var mv = document.getElementById('mv');
+
+mv.addEventListener('load', function() {{
+    try {{
+        mv.model.traverse(function(node) {{
+            if (node.isMesh && node.material) {{
+                node.material.transparent = true;
+                node.material.opacity = 0.55;
+                node.material.needsUpdate = true;
+            }}
+        }});
+    }} catch(e) {{}}
+}});
+
+mv.addEventListener('camera-change', function(e) {{
+    if (e.detail && e.detail.source === 'user-interaction') {{
+        mv.removeAttribute('auto-rotate');
+    }}
+}});
+
+function resetView() {{
+    mv.setAttribute('camera-orbit', '0deg 75deg 3.8m');
+    mv.setAttribute('auto-rotate', '');
+}}
+
+function switchGender(g) {{
+    document.getElementById('btn-male').classList.toggle('active', g==='male');
+    document.getElementById('btn-female').classList.toggle('active', g==='female');
+    mv.querySelectorAll('.Hotspot').forEach(function(h) {{ h.remove(); }});
+    mv.setAttribute('src', 'app/static/' + g + '.glb');
+    var tmp = document.createElement('div');
+    tmp.innerHTML = (g === 'female') ? femaleHotspots : maleHotspots;
+    while (tmp.firstChild) {{ mv.appendChild(tmp.firstChild); }}
+    attachTooltips();
+}}
+
+var tooltip = document.getElementById('hs-tooltip');
+function attachTooltips() {{
+    mv.querySelectorAll('.hs-dot').forEach(function(dot) {{
+        dot.addEventListener('mouseenter', function(e) {{
+            var region = this.getAttribute('data-region') || '';
+            var desc = this.getAttribute('data-tooltip') || '';
+            var cnt = this.getAttribute('data-count') || '';
+            var parts = desc.split(' — ');
+            var title = parts[0] || region;
+            var body = parts[1] || '';
+            tooltip.innerHTML = '<div class="tt-region">' + title + '</div>'
+                + (cnt ? '<div class="tt-count">' + cnt + ' symptom(s) mapped</div>' : '')
+                + (body ? '<div class="tt-desc">' + body + '</div>' : '');
+            tooltip.style.display = 'block';
+        }});
+        dot.addEventListener('mousemove', function(e) {{
+            var rect = mv.getBoundingClientRect();
+            var x = e.clientX - rect.left + 14;
+            var y = e.clientY - rect.top - 10;
+            if (x + 270 > rect.width) x = e.clientX - rect.left - 270;
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }});
+        dot.addEventListener('mouseleave', function() {{
+            tooltip.style.display = 'none';
+        }});
+    }});
+}}
+attachTooltips();
 </script>
 </body></html>"""
 
@@ -1380,6 +1472,12 @@ def _render_risk_calculator(enriched, drug_name):
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+@st.dialog("Personalized Risk Assessment", width="large")
+def _show_risk_dialog(enriched, drug_name):
+    """Lightbox modal for the personalized risk assessment calculator."""
+    _render_risk_calculator(enriched, drug_name)
+
+
 # ══════════════════════════════════════════════════════════════
 #  SIDE-PANEL RENDERERS (Phase 2C)
 # ══════════════════════════════════════════════════════════════
@@ -1428,20 +1526,54 @@ def _render_kg_panel(result):
     else:
         st.markdown("### Knowledge Graph")
 
-    # Interactive vis.js network (compact mode - smaller RADIUS)
     drug_name = result.get("drug_name") or "Drug"
     f_ing = enriched["ingredients"]
     f_ix = enriched["interactions"]
     f_co = enriched["co_reported"]
     f_rx = enriched["reactions"]
 
-    # Re-calculate with smaller radius for right panel
-    def _build_compact_kg_html(drug_name, f_ing, f_ix, f_co, f_rx):
-        # We'll just use the regular one for now, but height-adjusted
-        return _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
+    # Summary cards row
+    most_common_rx = max(raw_rx, key=lambda r: r.get("report_count", 0), default=None)
+    most_severe_ix = next((ix for ix in enriched["interactions"] if ix.get("_severity") == "severe"), None)
+    total_rels = len(raw_ing) + len(raw_ix) + len(raw_co) + len(raw_rx)
 
-    html = _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx)
-    components.html(html, height=520, scrolling=False)
+    s1, s2, s3 = st.columns(3)
+    with s1:
+        st.markdown(
+            f"<div style='background:#111e2e;border:1px solid #1a2f45;border-radius:8px;"
+            f"padding:8px 10px;text-align:center;'>"
+            f"<div style='font-size:10px;color:#7a9bbf;text-transform:uppercase;letter-spacing:0.05em'>"
+            f"Most Common Rxn</div>"
+            f"<div style='font-size:13px;font-weight:800;color:#ef9a9a;margin-top:2px'>"
+            f"{most_common_rx['reaction'][:18] if most_common_rx else 'N/A'}</div></div>",
+            unsafe_allow_html=True,
+        )
+    with s2:
+        ix_name = most_severe_ix["drug_name"][:18] if most_severe_ix else "None"
+        ix_color = "#fca5a5" if most_severe_ix else "#86efac"
+        st.markdown(
+            f"<div style='background:#111e2e;border:1px solid #1a2f45;border-radius:8px;"
+            f"padding:8px 10px;text-align:center;'>"
+            f"<div style='font-size:10px;color:#7a9bbf;text-transform:uppercase;letter-spacing:0.05em'>"
+            f"Severe Interaction</div>"
+            f"<div style='font-size:13px;font-weight:800;color:{ix_color};margin-top:2px'>"
+            f"{ix_name}</div></div>",
+            unsafe_allow_html=True,
+        )
+    with s3:
+        st.markdown(
+            f"<div style='background:#111e2e;border:1px solid #1a2f45;border-radius:8px;"
+            f"padding:8px 10px;text-align:center;'>"
+            f"<div style='font-size:10px;color:#7a9bbf;text-transform:uppercase;letter-spacing:0.05em'>"
+            f"Total Relationships</div>"
+            f"<div style='font-size:13px;font-weight:800;color:#c4b5fd;margin-top:2px'>"
+            f"{total_rels}</div></div>",
+            unsafe_allow_html=True,
+        )
+
+    # Interactive vis.js network (compact mode)
+    html = _build_kg_network_html(drug_name, f_ing, f_ix, f_co, f_rx, compact=True)
+    components.html(html, height=440, scrolling=False)
 
     # Pill summaries
     if raw_ing:
@@ -1475,7 +1607,7 @@ def _render_bodymap_panel(result):
 
     st.markdown("### Adverse-Event Body Map")
     html = _build_body_heatmap_html(region_counts, symptoms)
-    components.html(html, height=530, scrolling=False)
+    components.html(html, height=600, scrolling=False)
 
 def _render_metrics_panel(result):
     """Render query performance metrics in the right panel."""
@@ -1534,22 +1666,22 @@ def render_message_details(result: dict, msg_idx: int):
         st.markdown(f"<div style='margin-top:8px;'>{badges_html}</div>", unsafe_allow_html=True)
 
     # Pill buttons for right panel
-    cols = st.columns([1, 1, 1, 1, 4]) # Adjust spacing
-    with cols[0]:
+    cols = st.columns([2, 1, 1, 1, 1, 2])
+    with cols[1]:
         if st.button("📊 KG", key=f"kg_btn_{msg_idx}", help="View Knowledge Graph", disabled=not result.get("kg_available")):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "kg"}
             st.rerun()
-    with cols[1]:
+    with cols[2]:
         if st.button("📋 Evidence", key=f"ev_btn_{msg_idx}", help="View Source Evidence", disabled=not evidence):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "evidence"}
             st.rerun()
-    with cols[2]:
+    with cols[3]:
         symptoms = _extract_symptoms_from_result(result)
         has_symptoms = len(symptoms) > 0
         if st.button("🫁 Body Map", key=f"bm_btn_{msg_idx}", help="View Symptom Heatmap", disabled=not has_symptoms):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "bodymap"}
             st.rerun()
-    with cols[3]:
+    with cols[4]:
         if st.button("📈 Metrics", key=f"mt_btn_{msg_idx}", help="View Query Metrics"):
             st.session_state.active_detail = {"msg_idx": msg_idx, "panel": "metrics"}
             st.rerun()
@@ -1561,7 +1693,7 @@ def render_message_details(result: dict, msg_idx: int):
 
 # ── Layout: Two-Column Architecture (Phase 2A) ──
 if st.session_state.get("active_detail"):
-    chat_col, detail_col = st.columns([7, 3], gap="medium")
+    chat_col, detail_col = st.columns([6, 4], gap="medium")
 else:
     chat_col, detail_col = st.columns([10, 0.01], gap="small")
 
@@ -1823,8 +1955,9 @@ with st.sidebar:
         raw_ing = latest_kg_result.get("kg_ingredients", [])
         raw_co = latest_kg_result.get("kg_co_reported", [])
         enriched_rc = _enrich_kg_data(raw_ing, raw_ix, raw_co, raw_rx)
-        with st.expander("Interactive Calculator", expanded=True):
-            _render_risk_calculator(enriched_rc, latest_kg_result.get("drug_name", "Drug"))
+        _drug = latest_kg_result.get("drug_name", "Drug")
+        if st.button(f"⚕️ Open Risk Calculator — {_drug.title()}", use_container_width=True):
+            _show_risk_dialog(enriched_rc, _drug)
     else:
         st.caption("Submit a query to enable risk assessment")
 
