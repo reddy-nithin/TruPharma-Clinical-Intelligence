@@ -322,7 +322,7 @@ with st.sidebar:
     render_brand()
     st.divider()
 
-    if st.button("🏠 Home", use_container_width=True):
+    if st.button("⬅ Return to Home", use_container_width=True):
         st.switch_page("app.py")
 
     # New Chat / Clear
