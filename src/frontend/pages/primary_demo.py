@@ -918,7 +918,7 @@ def _build_body_heatmap_html(
     model_file = f"{gender}.glb"
 
     body_max = max(
-        (v for k, v in region_counts.items() if k not in ("unknown", "skin", "systemic")),
+        (v for k, v in region_counts.items() if k != "unknown"),
         default=1,
     ) or 1
     total = sum(region_counts.values())
@@ -941,19 +941,42 @@ def _build_body_heatmap_html(
             return 0
         return 24 + int(20 * (c / body_max))
 
-    region_hotspots: dict[str, list[dict]] = {
-        "head":    [{"pos": "0 1.65 0.12", "normal": "0 0.25 1", "label": True}],
-        "chest":   [{"pos": "0 1.30 0.16", "normal": "0 0 1", "label": True}],
-        "abdomen": [{"pos": "0 1.02 0.14", "normal": "0 0 1", "label": True}],
-        "arms":    [
-            {"pos": "-0.35 1.25 0.06", "normal": "-1 0 0", "label": True},
-            {"pos": "0.35 1.25 0.06", "normal": "1 0 0", "label": False},
-        ],
-        "legs":    [
-            {"pos": "-0.11 0.48 0.09", "normal": "0 0 1", "label": True},
-            {"pos": "0.11 0.48 0.09", "normal": "0 0 1", "label": False},
-        ],
+    # Coordinates from trimesh bounding-box analysis of each .glb.
+    # Both models centered at origin; Y ≈ -0.85 to +0.85.
+    # Z pushed to ~0 so hotspots render inside the semi-transparent body.
+    _HOTSPOT_COORDS = {
+        "male": {
+            "head":    [{"pos": "0 0.738 0.02",     "normal": "0 0.25 1", "label": True}],
+            "chest":   [{"pos": "0 0.378 0.02",     "normal": "0 0 1",    "label": True}],
+            "abdomen": [{"pos": "0 0.137 0.02",     "normal": "0 0 1",    "label": True}],
+            "arms":    [
+                {"pos": "-0.370 0.309 0.00",  "normal": "-1 0 0", "label": True},
+                {"pos": "0.370 0.309 0.00",   "normal": "1 0 0",  "label": False},
+            ],
+            "legs":    [
+                {"pos": "-0.108 -0.481 0.02", "normal": "0 0 1",  "label": True},
+                {"pos": "0.108 -0.481 0.02",  "normal": "0 0 1",  "label": False},
+            ],
+            "skin":    [{"pos": "0.18 0.26 0.02",   "normal": "0 0 1",    "label": True}],
+            "systemic":[{"pos": "-0.16 0.06 0.02",  "normal": "0 0 1",    "label": True}],
+        },
+        "female": {
+            "head":    [{"pos": "0 0.724 0.00",     "normal": "0 0.25 1", "label": True}],
+            "chest":   [{"pos": "0 0.371 0.00",     "normal": "0 0 1",    "label": True}],
+            "abdomen": [{"pos": "0 0.135 0.00",     "normal": "0 0 1",    "label": True}],
+            "arms":    [
+                {"pos": "-0.370 0.303 0.00",  "normal": "-1 0 0", "label": True},
+                {"pos": "0.370 0.303 0.00",   "normal": "1 0 0",  "label": False},
+            ],
+            "legs":    [
+                {"pos": "-0.108 -0.472 0.00", "normal": "0 0 1",  "label": True},
+                {"pos": "0.108 -0.472 0.00",  "normal": "0 0 1",  "label": False},
+            ],
+            "skin":    [{"pos": "0.18 0.24 0.00",   "normal": "0 0 1",    "label": True}],
+            "systemic":[{"pos": "-0.16 0.04 0.00",  "normal": "0 0 1",    "label": True}],
+        },
     }
+    region_hotspots = _HOTSPOT_COORDS.get(gender, _HOTSPOT_COORDS["male"])
 
     hotspot_elements: list[str] = []
     for region, spots in region_hotspots.items():
@@ -965,13 +988,33 @@ def _build_body_heatmap_html(
         for idx, spot in enumerate(spots):
             slot_id = f"hotspot-{region}-{idx}"
             badge = f'<span class="badge">{cnt}</span>' if spot["label"] else ""
-            hotspot_elements.append(
-                f'<button class="hotspot" slot="{slot_id}" '
-                f'data-position="{spot["pos"]}" data-normal="{spot["normal"]}">'
-                f'<span class="dot" style="background:{hex_color};width:{sz}px;height:{sz}px;'
-                f'box-shadow:0 0 {sz // 2}px {hex_color}80"></span>'
-                f"{badge}</button>"
-            )
+            if region == "skin":
+                hotspot_elements.append(
+                    f'<button class="hotspot" slot="{slot_id}" '
+                    f'data-position="{spot["pos"]}" data-normal="{spot["normal"]}">'
+                    f'<span class="dot skin-dot" style="border:2px dashed {hex_color};'
+                    f'background:transparent;width:{sz}px;height:{sz}px;'
+                    f'box-shadow:0 0 {sz}px {hex_color}60"></span>'
+                    f"{badge}</button>"
+                )
+            elif region == "systemic":
+                hotspot_elements.append(
+                    f'<button class="hotspot" slot="{slot_id}" '
+                    f'data-position="{spot["pos"]}" data-normal="{spot["normal"]}">'
+                    f'<span class="dot systemic-dot" style="background:{hex_color};'
+                    f'width:{sz}px;height:{sz}px;'
+                    f'box-shadow:0 0 {sz}px {hex_color}90;'
+                    f'border:2px solid rgba(255,255,255,0.3)"></span>'
+                    f"{badge}</button>"
+                )
+            else:
+                hotspot_elements.append(
+                    f'<button class="hotspot" slot="{slot_id}" '
+                    f'data-position="{spot["pos"]}" data-normal="{spot["normal"]}">'
+                    f'<span class="dot" style="background:{hex_color};width:{sz}px;height:{sz}px;'
+                    f'box-shadow:0 0 {sz // 2}px {hex_color}80"></span>'
+                    f"{badge}</button>"
+                )
     hotspots_html = "\n    ".join(hotspot_elements)
 
     skin_count = region_counts.get("skin", 0)
@@ -984,7 +1027,11 @@ def _build_body_heatmap_html(
             f'background:transparent"></span> Skin ({skin_count})</span>'
         )
     if systemic_count > 0:
-        extra_legend += f'<span>&#9889; Systemic ({systemic_count})</span>'
+        sy_hex = _hex("systemic") or "#3b82f6"
+        extra_legend += (
+            f'<span><span class="ldot" style="background:{sy_hex};'
+            f'border:2px solid rgba(255,255,255,0.3)"></span> Systemic ({systemic_count})</span>'
+        )
 
     return f"""<html><head>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
@@ -994,7 +1041,7 @@ body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-ser
 .bm-wrap{{text-align:center;padding:4px 0}}
 .bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
 .bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
-model-viewer{{width:100%;height:420px;background:transparent;--poster-color:transparent;outline:none}}
+model-viewer{{width:100%;height:480px;background:transparent;--poster-color:transparent;outline:none}}
 model-viewer::part(default-progress-bar){{background:#2dd4bf}}
 .hotspot{{display:flex;align-items:center;gap:4px;background:none;border:none;
   cursor:default;padding:0;pointer-events:auto;position:relative}}
@@ -1023,12 +1070,13 @@ model-viewer::part(default-progress-bar){{background:#2dd4bf}}
     camera-controls touch-action="pan-y"
     auto-rotate auto-rotate-delay="3000"
     rotation-per-second="18deg"
-    shadow-intensity="0.4"
-    exposure="1.1"
-    camera-orbit="0deg 75deg 2.5m"
-    min-camera-orbit="auto auto 1.2m"
-    max-camera-orbit="auto auto 5m"
-    field-of-view="30deg"
+    shadow-intensity="0.3"
+    exposure="0.9"
+    tone-mapping="commerce"
+    camera-orbit="0deg 75deg 3.8m"
+    min-camera-orbit="auto auto 2m"
+    max-camera-orbit="auto auto 6m"
+    field-of-view="28deg"
     interaction-prompt="none"
     ar-status="not-presenting">
     {hotspots_html}
@@ -1047,6 +1095,18 @@ model-viewer::part(default-progress-bar){{background:#2dd4bf}}
   let base = '';
   try {{ base = window.parent.location.origin; }} catch(e) {{}}
   mv.src = base + '/app/static/{model_file}';
+
+  mv.addEventListener('load', () => {{
+    try {{
+      mv.model.traverse((node) => {{
+        if (node.isMesh && node.material) {{
+          node.material.transparent = true;
+          node.material.opacity = 0.55;
+          node.material.needsUpdate = true;
+        }}
+      }});
+    }} catch(e) {{}}
+  }});
 </script>
 </body></html>"""
 
