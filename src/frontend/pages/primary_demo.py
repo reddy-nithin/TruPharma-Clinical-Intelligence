@@ -897,7 +897,7 @@ _HOTSPOT_COORDS = {
 }
 
 
-def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str]) -> str:
+def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str], drug_name: str = "") -> str:
     """Return HTML with a 3D model-viewer body overlaid with hotspot dots (dark theme)."""
     body_max = max(
         (v for k, v in region_counts.items() if k != "unknown"),
@@ -1012,13 +1012,25 @@ def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str])
 body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
 .bm-wrap{{text-align:center;padding:4px 0}}
 .bm-title{{font-size:13px;font-weight:800;color:#e8f0f8;margin-bottom:2px}}
+.bm-drug{{font-size:15px;font-weight:800;color:#c4b5fd;margin-bottom:2px;
+  letter-spacing:0.04em}}
 .bm-sub{{font-size:11px;color:#7a9bbf;margin-bottom:6px}}
-.gender-toggle{{display:inline-flex;gap:4px;margin-bottom:6px}}
+.bm-toolbar{{display:flex;justify-content:center;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap}}
 .gender-btn{{padding:4px 14px;border:1px solid #1f3d5a;border-radius:6px;background:#182840;
   color:#7a9bbf;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;
   transition:all .15s}}
 .gender-btn.active{{background:rgba(124,58,237,0.15);border-color:#7c3aed;color:#c4b5fd}}
 .gender-btn:hover{{background:#1e3450}}
+.zoom-group{{display:inline-flex;align-items:center;gap:0;margin-left:6px}}
+.zoom-btn{{width:28px;height:26px;border:1px solid #1f3d5a;background:#182840;color:#7a9bbf;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;
+  display:inline-flex;align-items:center;justify-content:center}}
+.zoom-btn:first-child{{border-radius:6px 0 0 6px}}
+.zoom-btn:last-child{{border-radius:0 6px 6px 0}}
+.zoom-btn:hover{{background:#1e3450;color:#c4b5fd}}
+.zoom-label{{font-size:10px;color:#3d5a74;padding:0 5px;border-top:1px solid #1f3d5a;
+  border-bottom:1px solid #1f3d5a;height:26px;display:inline-flex;align-items:center;
+  background:#111e2e;font-weight:700;letter-spacing:0.04em}}
 model-viewer{{width:100%;height:480px;background:transparent;--poster-color:transparent;
   border:1px solid #1a2f45;border-radius:10px;outline:none}}
 model-viewer .Hotspot{{display:block;border:0;padding:0;border-radius:50%;
@@ -1041,13 +1053,19 @@ model-viewer .Hotspot{{display:block;border:0;padding:0;border-radius:50%;
 </style></head><body>
 <div class="bm-wrap">
   <div class="bm-title">Symptom Body Map</div>
+  {f'<div class="bm-drug">{drug_name.title()}</div>' if drug_name else ''}
   <div class="bm-sub">{total} symptom(s) mapped{f' &middot; {unknown} unclassified' if unknown else ''}</div>
-  <div class="gender-toggle">
+  <div class="bm-toolbar">
     <button class="gender-btn active" id="btn-male" onclick="switchGender('male')">Male</button>
     <button class="gender-btn" id="btn-female" onclick="switchGender('female')">Female</button>
     <button class="gender-btn" id="btn-reset-view" onclick="resetView()" title="Reset camera to default position and resume rotation">&#8634; Reset View</button>
+    <span class="zoom-group">
+      <button class="zoom-btn" onclick="zoomIn()" title="Zoom in">&plus;</button>
+      <span class="zoom-label" id="zoom-pct">100%</span>
+      <button class="zoom-btn" onclick="zoomOut()" title="Zoom out">&minus;</button>
+    </span>
   </div>
-  <div style="position:relative">
+  <div style="position:relative;overflow:visible">
     <model-viewer id="mv"
       src="app/static/male.glb"
       camera-controls interaction-prompt="none"
@@ -1068,12 +1086,39 @@ model-viewer .Hotspot{{display:block;border:0;padding:0;border-radius:50%;
     <span><span class="ldot" style="background:#dc2626"></span> High</span>
     {extra_legend}
   </div>
-  <div class="how-to">Glowing dots show affected areas &mdash; larger &amp; warmer = more reports. Drag to rotate.</div>
+  <div class="how-to">
+    <span style="color:#c4b5fd;font-style:normal;font-weight:700">+/&minus;</span> Zoom in &amp; out &nbsp;&middot;&nbsp;
+    <span style="color:#c4b5fd;font-style:normal;font-weight:700">Click dot</span> Focus on body region &nbsp;&middot;&nbsp;
+    <span style="color:#c4b5fd;font-style:normal;font-weight:700">Hover dot</span> See details &nbsp;&middot;&nbsp;
+    <span style="color:#c4b5fd;font-style:normal;font-weight:700">Drag</span> Rotate
+  </div>
 </div>
 <script>
 var maleHotspots = `{male_hotspots}`;
 var femaleHotspots = `{female_hotspots}`;
 var mv = document.getElementById('mv');
+var baseFov = 28;
+var currentFov = baseFov;
+var zoomPctEl = document.getElementById('zoom-pct');
+
+function updateZoomLabel() {{
+    var pct = Math.round((baseFov / currentFov) * 100);
+    zoomPctEl.textContent = pct + '%';
+}}
+
+function zoomIn() {{
+    currentFov = Math.max(currentFov - 3, 10);
+    mv.setAttribute('field-of-view', currentFov + 'deg');
+    mv.removeAttribute('auto-rotate');
+    updateZoomLabel();
+}}
+
+function zoomOut() {{
+    currentFov = Math.min(currentFov + 3, 55);
+    mv.setAttribute('field-of-view', currentFov + 'deg');
+    mv.removeAttribute('auto-rotate');
+    updateZoomLabel();
+}}
 
 mv.addEventListener('load', function() {{
     try {{
@@ -1094,8 +1139,12 @@ mv.addEventListener('camera-change', function(e) {{
 }});
 
 function resetView() {{
+    currentFov = baseFov;
+    mv.setAttribute('field-of-view', baseFov + 'deg');
     mv.setAttribute('camera-orbit', '0deg 75deg 3.8m');
+    mv.setAttribute('camera-target', 'auto auto auto');
     mv.setAttribute('auto-rotate', '');
+    updateZoomLabel();
 }}
 
 function switchGender(g) {{
@@ -1125,14 +1174,37 @@ function attachTooltips() {{
             tooltip.style.display = 'block';
         }});
         dot.addEventListener('mousemove', function(e) {{
-            var rect = mv.getBoundingClientRect();
-            var x = e.clientX - rect.left + 14;
-            var y = e.clientY - rect.top - 10;
-            if (x + 270 > rect.width) x = e.clientX - rect.left - 270;
+            var wrapRect = mv.parentElement.getBoundingClientRect();
+            var ttW = tooltip.offsetWidth || 260;
+            var ttH = tooltip.offsetHeight || 60;
+            var iframeW = document.documentElement.clientWidth;
+            var iframeH = document.documentElement.clientHeight;
+            var maxX = Math.min(wrapRect.width, iframeW - wrapRect.left) - ttW - 4;
+            var maxY = Math.min(wrapRect.height, iframeH - wrapRect.top) - ttH - 4;
+
+            var x = e.clientX - wrapRect.left + 14;
+            var y = e.clientY - wrapRect.top - 10;
+
+            if (x > maxX) x = e.clientX - wrapRect.left - ttW - 4;
+            if (x < 0) x = 4;
+            if (y > maxY) y = e.clientY - wrapRect.top - ttH - 10;
+            if (y < 0) y = 4;
+
             tooltip.style.left = x + 'px';
             tooltip.style.top = y + 'px';
         }});
         dot.addEventListener('mouseleave', function() {{
+            tooltip.style.display = 'none';
+        }});
+        dot.addEventListener('click', function(e) {{
+            e.stopPropagation();
+            var pos = this.getAttribute('data-position');
+            if (!pos) return;
+            mv.setAttribute('camera-target', pos);
+            currentFov = Math.min(currentFov, 20);
+            mv.setAttribute('field-of-view', currentFov + 'deg');
+            mv.removeAttribute('auto-rotate');
+            updateZoomLabel();
             tooltip.style.display = 'none';
         }});
     }});
@@ -1605,9 +1677,10 @@ def _render_bodymap_panel(result):
         st.info("Symptoms could not be mapped to specific body regions.")
         return
 
+    drug_name = result.get("drug_name") or ""
     st.markdown("### Adverse-Event Body Map")
-    html = _build_body_heatmap_html(region_counts, symptoms)
-    components.html(html, height=600, scrolling=False)
+    html = _build_body_heatmap_html(region_counts, symptoms, drug_name=drug_name)
+    components.html(html, height=620, scrolling=False)
 
 def _render_metrics_panel(result):
     """Render query performance metrics in the right panel."""
