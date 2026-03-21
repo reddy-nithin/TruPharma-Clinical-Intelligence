@@ -1890,6 +1890,14 @@ with chat_col:
                     "content": answer,
                     "result": result,
                 })
+
+                # Auto-update the detail panel to the latest result so
+                # KG / body-map stay current across queries in the same session.
+                if st.session_state.get("active_detail"):
+                    st.session_state.active_detail["msg_idx"] = (
+                        len(st.session_state.messages) - 1
+                    )
+
                 st.rerun()
 
 with detail_col:
