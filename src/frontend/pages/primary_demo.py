@@ -626,7 +626,7 @@ def _build_kg_network_html(drug_name, ingredients, interactions, co_reported, re
     net_height = 350 if compact else 470
 
     return f"""<html><head>
-<script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
 body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
@@ -1006,7 +1006,7 @@ def _build_body_heatmap_html(region_counts: dict[str, int], symptoms: list[str],
         )
 
     return f"""<html><head>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.3.0/dist/model-viewer.min.js"></script>
 <style>
 *{{box-sizing:border-box}}
 body{{margin:0;padding:0;background:transparent;font-family:"Quicksand",sans-serif}}
@@ -1067,7 +1067,7 @@ model-viewer .Hotspot{{display:block;border:0;padding:0;border-radius:50%;
   </div>
   <div style="position:relative;overflow:visible">
     <model-viewer id="mv"
-      src="app/static/male.glb"
+      src="/app/static/male.glb"
       camera-controls interaction-prompt="none"
       auto-rotate auto-rotate-delay="0" rotation-per-second="15deg"
       shadow-intensity="0.3" exposure="0.9" tone-mapping="commerce"
@@ -1151,7 +1151,7 @@ function switchGender(g) {{
     document.getElementById('btn-male').classList.toggle('active', g==='male');
     document.getElementById('btn-female').classList.toggle('active', g==='female');
     mv.querySelectorAll('.Hotspot').forEach(function(h) {{ h.remove(); }});
-    mv.setAttribute('src', 'app/static/' + g + '.glb');
+    mv.setAttribute('src', '/app/static/' + g + '.glb');
     var tmp = document.createElement('div');
     tmp.innerHTML = (g === 'female') ? femaleHotspots : maleHotspots;
     while (tmp.firstChild) {{ mv.appendChild(tmp.firstChild); }}
