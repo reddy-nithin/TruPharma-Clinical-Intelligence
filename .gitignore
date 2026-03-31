@@ -33,3 +33,7 @@ desktop.ini
 .env
 *.key
 secrets.toml
+.secrets/
+
+# Docker
+docker-compose.override.yml

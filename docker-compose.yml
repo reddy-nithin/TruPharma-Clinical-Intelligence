@@ -1,0 +1,37 @@
+# ══════════════════════════════════════════════════════════════
+#  TruPharma Clinical Intelligence — Docker Compose
+# ══════════════════════════════════════════════════════════════
+#  Run the entire platform: docker compose up
+#  Stop everything:         docker compose down
+# ══════════════════════════════════════════════════════════════
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trupharma-app
+    ports:
+      - "8501:8501"
+
+    # ── Environment ──────────────────────────────────────────
+    # API keys and secrets are injected at runtime from .env
+    # They are NEVER baked into the Docker image
+    env_file:
+      - .env
+
+    # ── Volumes ──────────────────────────────────────────────
+    # Mount data, assets, and logs from host so they:
+    #   1. Don't bloat the Docker image
+    #   2. Persist across container restarts
+    #   3. Can be updated without rebuilding
+    volumes:
+      - ./data:/app/data                                    # KG SQLite DB (~10 MB)
+      - ./opioid_track/data:/app/opioid_track/data          # Opioid JSON datasets (~148 MB)
+      - ./logs:/app/logs                                    # Interaction logs
+      - ./src/frontend/assets:/app/src/frontend/assets      # 3D body models (.glb)
+      - ./src/frontend/static:/app/src/frontend/static      # Static files
+      - ./.secrets:/app/.secrets:ro                         # GCP credentials (read-only)
+
+    # ── Restart policy ───────────────────────────────────────
+    restart: unless-stopped

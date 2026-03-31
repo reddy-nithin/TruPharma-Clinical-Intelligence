@@ -1,0 +1,66 @@
+# ══════════════════════════════════════════════════════════════
+#  TruPharma Clinical Intelligence — .dockerignore
+# ══════════════════════════════════════════════════════════════
+#  Keeps the build context small and prevents secrets/data
+#  from being baked into the Docker image.
+
+# ── Version control ──
+.git/
+.gitignore
+
+# ── Python artifacts ──
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──
+.venv/
+venv/
+env/
+
+# ── Secrets (NEVER bake into image) ──
+.env
+*.key
+secrets.toml
+.secrets/
+.streamlit/secrets.toml
+src/frontend/.streamlit/secrets.toml
+
+# ── IDE / OS ──
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Data directories (volume-mounted at runtime) ──
+data/
+opioid_track/data/
+logs/
+src/frontend/assets/
+src/frontend/static/
+
+# ── Vendor repos (not needed at runtime) ──
+opioid_track/vendor/
+
+# ── Documentation / reports ──
+docs/
+reports/
+*.md
+!requirements.txt
+
+# ── Dev container (superseded by Dockerfile) ──
+.devcontainer/
+
+# ── Jupyter ──
+.ipynb_checkpoints/
+*.ipynb
+
+# ── Cache ──
+.cache/
