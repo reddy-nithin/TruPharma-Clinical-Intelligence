@@ -18,10 +18,6 @@ import logging
 import warnings
 import numpy as np
 
-# #region agent log f1239c
-_engine_logger = logging.getLogger("trupharma.engine")
-_last_gemini_debug: dict = {}
-# #endregion
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
@@ -376,74 +372,39 @@ def _call_gemini(
     api_key : str
         Direct Gemini API key (fallback if Vertex AI unavailable).
     """
-    # Conversation history is now embedded in the prompt by _build_prompt().
-    # _call_gemini no longer prepends it separately.
     full_prompt = prompt
 
-    # #region agent log f1239c
-    _last_gemini_debug.clear()
-    _last_gemini_debug["gcp_project_env"] = os.environ.get("GCP_PROJECT_ID", "EMPTY")
-    _last_gemini_debug["gcp_location_env"] = os.environ.get("GCP_LOCATION", "EMPTY")
-    _last_gemini_debug["api_key_provided"] = bool(api_key)
-    try:
-        from google import genai as _genai_test
-        _last_gemini_debug["genai_import_ok"] = True
-        _last_gemini_debug["genai_has_Client"] = hasattr(_genai_test, "Client")
-    except Exception as _ie:
-        _last_gemini_debug["genai_import_ok"] = False
-        _last_gemini_debug["genai_import_error"] = str(_ie)
-    _engine_logger.warning(f"[DEBUG-f1239c-engine][post-fix] _call_gemini start: {_last_gemini_debug}")
-    # #endregion
-
-    # Try Vertex AI via new google.genai SDK first
+    # Try Vertex AI via google.genai SDK first
     try:
         from src.config import is_vertex_available
-        _vertex_ok = is_vertex_available()
-        # #region agent log f1239c
-        _last_gemini_debug["vertex_available"] = _vertex_ok
-        _engine_logger.warning(f"[DEBUG-f1239c-engine] is_vertex_available={_vertex_ok}")
-        # #endregion
-        if _vertex_ok:
+        if is_vertex_available():
             from google import genai
             client = genai.Client(vertexai=True, project=os.environ.get("GCP_PROJECT_ID", ""),
                                   location=os.environ.get("GCP_LOCATION", "us-central1"))
             resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
             if resp and resp.text:
-                # #region agent log f1239c
-                _last_gemini_debug["vertex_result"] = "SUCCESS"
-                _engine_logger.warning("[DEBUG-f1239c-engine] Vertex AI call SUCCESS")
-                # #endregion
                 return resp.text.strip()
     except Exception as exc:
-        # #region agent log f1239c
-        _last_gemini_debug["vertex_error"] = str(exc)
-        _engine_logger.warning(f"[DEBUG-f1239c-engine] Vertex AI Gemini error: {exc}")
-        # #endregion
         warnings.warn(f"Vertex AI Gemini error: {exc}")
 
-    # Fallback to direct Gemini API key
-    if api_key:
+    # Fallback to direct Gemini API key (resolve from env/secrets if not passed explicitly)
+    _resolved_key = api_key or os.environ.get("GEMINI_API_KEY", "") or os.environ.get("GOOGLE_API_KEY", "")
+    if not _resolved_key:
+        try:
+            import streamlit as _st
+            _resolved_key = _st.secrets.get("GEMINI_API_KEY", "")
+        except Exception:
+            pass
+    if _resolved_key:
         try:
             from google import genai
-            client = genai.Client(api_key=api_key)
+            client = genai.Client(api_key=_resolved_key)
             resp = client.models.generate_content(model="gemini-2.5-flash", contents=full_prompt)
             if resp and resp.text:
-                # #region agent log f1239c
-                _last_gemini_debug["direct_api_result"] = "SUCCESS"
-                _engine_logger.warning("[DEBUG-f1239c-engine] Direct Gemini API call SUCCESS")
-                # #endregion
                 return resp.text.strip()
         except Exception as exc:
-            # #region agent log f1239c
-            _last_gemini_debug["direct_api_error"] = str(exc)
-            _engine_logger.warning(f"[DEBUG-f1239c-engine] Gemini direct API error: {exc}")
-            # #endregion
             warnings.warn(f"Gemini direct API error: {exc}")
 
-    # #region agent log f1239c
-    _last_gemini_debug["final_result"] = "FALLBACK_extractive"
-    _engine_logger.warning(f"[DEBUG-f1239c-engine] Both LLM paths failed, using extractive fallback. debug={_last_gemini_debug}")
-    # #endregion
     return None
 
 

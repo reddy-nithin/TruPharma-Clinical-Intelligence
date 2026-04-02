@@ -347,21 +347,34 @@ with st.sidebar:
         method = st.selectbox("Retrieval method", ["hybrid", "dense", "sparse"], index=0)
         top_k = st.slider("Top-K evidence chunks", 3, 15, 5)
 
-        # Auto-load Gemini key from secrets or environment
-        _default_key = ""
+        # Check if a Gemini key is available server-side (secrets or env)
+        # SECURITY: never send the actual key to the browser
+        _server_key_available = False
+        _key_source = "none"
         try:
-            _default_key = st.secrets.get("GEMINI_API_KEY", "")
+            if st.secrets.get("GEMINI_API_KEY", ""):
+                _server_key_available = True
+                _key_source = "secrets"
         except Exception:
             pass
-        if not _default_key:
+        if not _server_key_available:
             import os as _os
-            _default_key = _os.environ.get("GEMINI_API_KEY", "") or _os.environ.get("GOOGLE_API_KEY", "")
+            if _os.environ.get("GEMINI_API_KEY", "") or _os.environ.get("GOOGLE_API_KEY", ""):
+                _server_key_available = True
+                _key_source = "env"
 
-        gemini_key = st.text_input("Gemini API key (optional)", type="password",
-                                    value=st.session_state.get("_gemini_key", _default_key),
-                                    help="Used for Gemini 2.5 Flash answer generation. Auto-loaded from secrets/environment if available.")
-        if gemini_key:
-            st.session_state["_gemini_key"] = gemini_key
+        if _server_key_available:
+            st.success("Gemini API key configured via server environment.", icon="\u2705")
+            gemini_key = ""
+        else:
+            gemini_key = st.text_input(
+                "Gemini API key (optional)", type="password",
+                value=st.session_state.get("_gemini_key", ""),
+                help="Paste your Gemini API key for answer generation. "
+                     "Not needed if configured server-side.",
+            )
+            if gemini_key:
+                st.session_state["_gemini_key"] = gemini_key
 
     st.divider()
 

@@ -4,6 +4,8 @@ Opioid Track — Central Configuration
 All paths, API endpoints, and constants for the opioid track.
 """
 
+import os
+
 # Base paths
 OPIOID_DATA_DIR = "opioid_track/data"
 
@@ -203,7 +205,7 @@ SIGNAL_CONSENSUS_THRESHOLD = 2  # minimum methods that must flag for consensus s
 # Geographic profiles
 GEO_PROFILES_OUTPUT = f"{OPIOID_DATA_DIR}/opioid_geographic_profiles.json"
 CENSUS_API_BASE = "https://api.census.gov/data"
-CENSUS_API_KEY = "00ea40392d577c234f83e960a8ce07b5c0bab1b8"
+CENSUS_API_KEY = os.environ.get("CENSUS_API_KEY", "")
 
 # === TIER 3 ADDITIONS ===
 
