@@ -364,7 +364,12 @@ with st.sidebar:
                 _key_source = "env"
 
         if _server_key_available:
-            st.success("Gemini API key configured via server environment.", icon="\u2705")
+            st.success(f"Gemini API key configured ({_key_source}).", icon="\u2705")
+            # #region agent log ec1b28
+            import os as _os2
+            _env_has = bool(_os2.environ.get("GEMINI_API_KEY", ""))
+            st.caption(f"[debug] env_has_key={_env_has}, source={_key_source}")
+            # #endregion
             gemini_key = ""
         else:
             gemini_key = st.text_input(

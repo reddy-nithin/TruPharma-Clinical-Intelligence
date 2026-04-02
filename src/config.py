@@ -13,7 +13,28 @@ import logging
 import tempfile
 
 _vertex_initialized = False
+_secrets_propagated = False
 _logger = logging.getLogger("trupharma.config")
+
+
+def _propagate_secrets():
+    """Propagate Streamlit secrets to os.environ so backend modules can resolve
+    API keys without importing Streamlit. Runs once, independent of Vertex AI."""
+    global _secrets_propagated
+    if _secrets_propagated:
+        return
+    _secrets_propagated = True
+
+    _secret_keys = ("GEMINI_API_KEY", "GOOGLE_API_KEY", "PINECONE_API_KEY", "CENSUS_API_KEY")
+    try:
+        import streamlit as st
+        for key in _secret_keys:
+            if not os.environ.get(key):
+                val = st.secrets.get(key, "")
+                if val:
+                    os.environ[key] = val
+    except Exception:
+        pass
 
 
 def _init_vertex_ai():
@@ -74,4 +95,5 @@ def is_vertex_available() -> bool:
 
 
 # Auto-initialize on import
+_propagate_secrets()
 _init_vertex_ai()
