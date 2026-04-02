@@ -350,26 +350,18 @@ with st.sidebar:
         # Check if a Gemini key is available server-side (secrets or env)
         # SECURITY: never send the actual key to the browser
         _server_key_available = False
-        _key_source = "none"
         try:
             if st.secrets.get("GEMINI_API_KEY", ""):
                 _server_key_available = True
-                _key_source = "secrets"
         except Exception:
             pass
         if not _server_key_available:
             import os as _os
             if _os.environ.get("GEMINI_API_KEY", "") or _os.environ.get("GOOGLE_API_KEY", ""):
                 _server_key_available = True
-                _key_source = "env"
 
         if _server_key_available:
-            st.success(f"Gemini API key configured ({_key_source}).", icon="\u2705")
-            # #region agent log ec1b28
-            import os as _os2
-            _env_has = bool(_os2.environ.get("GEMINI_API_KEY", ""))
-            st.caption(f"[debug] env_has_key={_env_has}, source={_key_source}")
-            # #endregion
+            st.success("Gemini API key configured via server environment.", icon="\u2705")
             gemini_key = ""
         else:
             gemini_key = st.text_input(
