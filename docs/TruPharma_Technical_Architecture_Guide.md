@@ -51,68 +51,111 @@ The system functions as a **"Check Engine" light for personal health**, distilli
 
 ---
 
-## 2. Current MVP State Assessment
+## 2. Current System State Assessment
 
-### What Has Been Built (Week 4 Deliverable)
+### What Has Been Built (Current Upgraded System)
 
 | Component | Status | Details |
 |-----------|--------|---------|
-| Streamlit Web App | Done | Deployed at `trupharm.streamlit.app` |
-| Hybrid Retrieval (FAISS + BM25) | Done | Dense + sparse with reciprocal rank fusion |
-| OpenFDA Drug Labels API Integration | Done | Real-time fetch from `/drug/label/` |
-| Google Gemini 2.0 Flash LLM | Done | Optional; extractive fallback when no API key |
-| Text Chunking & Indexing | Done | 250-word chunks, 40-word overlap |
-| Confidence Scoring & Citations | Done | Heuristic 0–1 score, inline `[doc_id::field]` refs |
-| CSV Logging | Done | 20+ interaction records in `product_metrics.csv` |
-| Stress Test Page | Done | Edge-case scenario validation |
-| Error Handling & Graceful Refusal | Done | Returns "Not enough evidence" on empty results |
+| **Streamlit Multi-Page App** | ✅ Done | Landing page + Safety Chat + Opioid Dashboard + Stress Test + Signal Heatmap |
+| **Hybrid Retrieval (FAISS + BM25)** | ✅ Done | Dense + sparse with reciprocal rank fusion + KG-aware score boost |
+| **OpenFDA Drug Labels API** | ✅ Done | Real-time fetch from `/drug/label/` |
+| **OpenFDA FAERS Adverse Events** | ✅ Done | Real-time signal detection via `/drug/event/` count endpoint |
+| **OpenFDA NDC Directory** | ✅ Done | Product metadata (brand names, ingredients, routes) via `/drug/ndc/` |
+| **RxNorm Entity Resolution** | ✅ Done | Brand→generic mapping, RxCUI lookup, fuzzy drug name matching |
+| **Vertex AI Embeddings** | ✅ Done | `text-embedding-004` (768-dim); automatic TF-IDF fallback |
+| **Pinecone Vector Store** | ✅ Done | Cloud vector index with 24h TTL; automatic FAISS local fallback |
+| **Biomedical Knowledge Graph** | ✅ Done | Multi-type node/edge graph: Drug · Ingredient · Reaction · Product · DrugAlias |
+| **Neo4j Aura Free Support** | ✅ Done | Optional cloud KG backend; SQLite default; `create_backend()` auto-detects |
+| **Dynamic KG Expansion** | ✅ Done | Two-phase progressive loading (Phase 1: 2–5 s sync; Phase 2: background thread) |
+| **Many-to-Many KG Relationships** | ✅ Done | MERGE semantics for shared Reaction/Ingredient nodes; `get_drugs_causing_reaction()` |
+| **GraphRAG — Query Analyzer** | ✅ Done | LLM-based entity + intent extraction (safety_check / interaction / comparison / general) |
+| **GraphRAG — Enriched Context** | ✅ Done | Full `[GRAPH CONTEXT]` block: interactions, reactions, disparity score, emerging signals |
+| **Conversational Chat UI** | ✅ Done | `st.chat_input()` + `st.chat_message()`, conversation history (last 5 turns) |
+| **Inline Citation Pills** | ✅ Done | Numbered superscript pills with hover excerpts; source type badges |
+| **KG Network Visualization** | ✅ Done | Interactive vis.js force-directed graph (dark theme) |
+| **Evidence Panel** | ✅ Done | Ranked evidence chunks with field labels and relevance scores |
+| **Body Map Visualization** | ✅ Done | 3D GLB anatomical model with symptom-to-region hotspot overlay |
+| **Patient Risk Calculator** | ✅ Done | Patient-specific risk score using age group, organ function, glucose status |
+| **Query History Sidebar** | ✅ Done | Quick-access to last 8 queries |
+| **Opioid Intelligence Track** | ✅ Done | Tier 3 module: Drug Explorer, Landscape, Geography, Demographics, Signals, Watchdog |
+| **Opioid Watchdog Agent** | ✅ Done | Dose Risk Calculator, Danger Comparator, Intelligence Brief |
+| **FAERS Signal Detection** | ✅ Done | PRR/ROR scoring, consensus signals, label disparity analysis |
+| **Stress Test Page** | ✅ Done | Four edge-case scenarios with side-by-side comparison |
+| **Error Handling & Fallbacks** | ✅ Done | Graceful degradation across all optional services |
+| **CSV Logging** | ✅ Done | Full interaction logs in `logs/product_metrics.csv` |
+| **Docker Support** | ✅ Done | `Dockerfile` + `docker-compose.yml` for containerized deployment |
 
-### What Is Missing (vs. Full Proposal)
+### Remaining / Future Work
 
-| Proposal Component | Status | Impact |
-|--------------------|--------|--------|
-| FAERS Adverse Event Data | **Not started** | Cannot show real-world patient evidence |
-| NDC Directory Data | **Not started** | No structured product metadata |
-| RxNorm Entity Resolution | **Not started** | No brand→generic mapping, no fuzzy matching |
-| DrugBank Enrichment | **Deprioritized** | Requires license; alternatives available |
-| Full Label Field Coverage | **Partial** | Only 10 of 70+ fields extracted |
-| Agentic Orchestration (A/B/C) | **Not started** | No multi-agent reasoning chain |
-| Signal Heatmap Dashboard | **Not started** | No analyst-facing disparity visualization |
-| Dual-Source Validation | **Not started** | Cannot compare label vs. FAERS |
-| A/B Testing Evaluation | **Not started** | No vanilla-LLM vs. RAG comparison |
-| Grounding/Hallucination Audit | **Not started** | No citation precision measurement |
-| BLUE Benchmark Evaluation | **Not started** | No semantic mapping accuracy test |
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Signal Heatmap Dashboard | 🔲 Placeholder | Visualization layer to be connected to signal data |
+| A/B Testing Evaluation | 🔲 Planned | Vanilla-LLM vs. GraphRAG comparison framework |
+| Grounding / Hallucination Audit | 🔲 Planned | Citation precision measurement using curated ground truth |
+| BLEU / Semantic Benchmark | 🔲 Planned | Automated evaluation against reference answers |
+| DrugBank Enrichment | ⏸ Deprioritized | Requires commercial license; FAERS + NDC cover core needs |
 
-### Current Architecture (Week 4)
+### Current Architecture (Upgraded System)
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                   Streamlit UI (Frontend)                │
-│   Query Input  ·  Response  ·  Evidence  ·  Metrics/Logs │
-└────────────────────────┬─────────────────────────────────┘
-                         │
-                         ▼
-┌──────────────────────────────────────────────────────────┐
-│                  RAG Engine (rag_engine.py)               │
-│                                                          │
-│  1. Build openFDA search query from user text            │
-│  2. Fetch drug label records via openFDA API             │
-│  3. Chunk text fields (10 selected label sections)  ◄── LIMITATION
-│  4. Index: FAISS (dense) + BM25 (sparse)                │
-│  5. Hybrid retrieval with reciprocal rank fusion         │
-│  6. Generate answer (Gemini LLM or extractive fallback)  │
-│  7. Log interaction to CSV                               │
-└────────┬──────────────────────────┬──────────────────────┘
-         │                          │
-         ▼                          ▼
-┌─────────────────┐    ┌───────────────────────────┐
-│  openFDA API    │    │  Google Gemini 2.0 Flash   │
-│  /drug/label    │    │  (Optional LLM grounding)  │
-│  ONLY  ◄────────│────│── LIMITATION               │
-└─────────────────┘    └───────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│                    Streamlit UI (Multi-Page Frontend)                 │
+│   Safety Chat  ·  Opioid Dashboard  ·  Stress Test  ·  Signal Heatmap│
+└────────────┬────────────────────────┬────────────────────────────────┘
+             │                        │
+             ▼                        ▼
+┌────────────────────────┐  ┌─────────────────────────────────────────┐
+│   RAG Engine           │  │   Opioid Intelligence Track             │
+│   src/rag/engine.py    │  │   (opioid_track/ pipeline)              │
+│                        │  │                                         │
+│  1. Query analysis     │  │  • Drug registry (RxNorm/NDC)           │
+│     entity + intent    │  │  • Pharmacology & MME calculations      │
+│  2. Pinecone cache     │  │  • FAERS signal detection (PRR/ROR)     │
+│     (24h TTL) or       │  │  • Geographic prescribing patterns      │
+│     openFDA fetch      │  │  • Demographic analysis                 │
+│  3. Vertex AI embed    │  │  • Watchdog agent                       │
+│     text-embedding-004 │  └──────────────────────┬──────────────────┘
+│     (TF-IDF fallback)  │                         │
+│  4. Hybrid retrieval   │                         ▼
+│     FAISS + BM25 +     │               openFDA APIs + RxNorm
+│     KG-aware boost     │
+│  5. Graph enrichment   │
+│     KG context block   │
+│  6. Gemini 2.0 Flash   │
+│     + conv. history    │
+│  7. CSV logging        │
+└────────┬───────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────┐
+│           Biomedical Knowledge Graph            │
+│  SQLite default / Neo4j Aura Free (optional)    │
+│                                                 │
+│  Nodes: Drug · Ingredient · Reaction ·          │
+│         Product · DrugAlias                     │
+│  Edges: HAS_ACTIVE_INGREDIENT (NDC)             │
+│         INTERACTS_WITH (FDA label + Gemini)     │
+│         CO_REPORTED_WITH (FAERS)                │
+│         DRUG_CAUSES_REACTION (FAERS)            │
+│         LABEL_WARNS_REACTION (FDA label)        │
+│         HAS_PRODUCT (NDC)                       │
+│  Dynamic build: Phase 1 (2–5s sync) +          │
+│                 Phase 2 (background thread)     │
+└──────────────────┬──────────────────────────────┘
+                   │
+         ┌─────────┴──────────┐
+         ▼                    ▼
+┌──────────────────┐  ┌───────────────────────┐
+│  openFDA APIs    │  │  Google Cloud          │
+│  /drug/label/    │  │  Vertex AI             │
+│  /drug/event/    │  │  text-embedding-004    │
+│  /drug/ndc/      │  │  Gemini 2.0 Flash      │
+│  RxNorm API      │  └───────────────────────┘
+└──────────────────┘
 ```
 
-**Key Limitation:** The current system can only answer "What does the drug label say?" but NOT the core proposal question: "Is what patients experience different from what the label says?"
+**Core Capability Unlock:** The upgraded system answers both "What does the drug label say?" AND "Is what patients actually experience different from what the label says?" by combining FDA label evidence (FAERS reactions vs. label warnings) through the knowledge graph disparity score.
 
 ---
 
