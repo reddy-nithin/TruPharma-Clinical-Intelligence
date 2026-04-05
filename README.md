@@ -74,7 +74,7 @@ TruPharma Clinical Intelligence is an AI-powered platform for drug safety analys
 │         DRUG_CAUSES_REACTION (FAERS)            ││
 │         LABEL_WARNS_REACTION (FDA label)        ││
 │         HAS_PRODUCT (NDC)                       ││
-│  Dynamic expansion: Phase 1 (2-5s) +           ││
+│  Dynamic expansion: Phase 1 (2–5s) +           ││
 │                     Phase 2 (background thread) ││
 └─────────────────────────────────────────────────┘│
          │                                         │
